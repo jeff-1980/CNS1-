@@ -40,7 +40,7 @@ Other paths: `CNS_ROOT` (repository root, default: parent of `code/`), `CWRU16_D
 
 ## Trained weights
 
-The 1051 weight files (≈1.1 GB) are distributed separately: [WEIGHTS LINK]. Unpack into `results/` (giving `results/ckpt_2x2/`, `results/ckpt_e5/`, …) and run `python code/verify_weights.py`. 138 registry rows from early screening runs have no kept weights and are marked `missing`.
+The 1051 weight files (≈1.1 GB) are attached to release [v1.0](https://github.com/jeff-1980/CNS1-/releases/tag/v1.0) as `CNS1_weights_part1.tar` and `CNS1_weights_part2.tar` (checksums in `SHA256SUMS.txt`). Unpack both into `results/` (giving `results/ckpt_2x2/`, `results/ckpt_e5/`, …) and run `python code/verify_weights.py`. 138 registry rows from early screening runs have no kept weights and are marked `missing`.
 
 ## Retraining and re-inference
 
