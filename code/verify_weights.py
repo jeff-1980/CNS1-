@@ -22,4 +22,4 @@ for r in csv.DictReader(open(ROOT / "results/registry/training_instances.csv", n
         else: bad += 1; bad_rows.append(r["instance_id"])
 print(f"weights verified {ok}, mismatched {bad}, not found {absent}; registry rows without kept weights {notkept}")
 if bad_rows: print("mismatch:", bad_rows[:10])
-sys.exit(1 if bad else 0)
+sys.exit(1 if (bad or absent) else 0)
