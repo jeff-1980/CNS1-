@@ -1,0 +1,103 @@
+{
+ "n": 45,
+ "n_attractor": 40,
+ "n_no_attractor": 5,
+ "macro_counts": {
+  "F": 28,
+  "H": 12
+ },
+ "A_rule": 0.7,
+ "A_maj": 0.7,
+ "majority": "F",
+ "sign_test": {
+  "n10": 12,
+  "n01": 12,
+  "p": 0.5805901288986206
+ },
+ "per_dataset": {
+  "PU": {
+   "rule": 0.5,
+   "const": 0.5,
+   "n": 24,
+   "macro": {
+    "F": 12,
+    "H": 12
+   }
+  },
+  "JNU": {
+   "rule": 1.0,
+   "const": 1.0,
+   "n": 16,
+   "macro": {
+    "F": 16
+   }
+  }
+ },
+ "per_arch": {
+  "wdcnn": 0.45454545454545453,
+  "drsn": 0.8,
+  "lstm": 0.7857142857142857
+ },
+ "conditions": {
+  "c1": true,
+  "c2": false,
+  "c3": false,
+  "c4": true
+ },
+ "fails": [
+  "条件 2：A_rule − A_maj = +0.000，符号检验 p = 0.5806（n10=12, n01=12）",
+  "条件 3：数据集内部 {'PU': {'rule': 0.5, 'const': 0.5, 'n': 24, 'macro': {'F': 12, 'H': 12}}, 'JNU': {'rule': 1.0, 'const': 1.0, 'n': 16, 'macro': {'F': 16}}}"
+ ],
+ "label": "KILLED",
+ "descriptive_Cb_Cc": {
+  "b": 0.7,
+  "c": 0.7
+ },
+ "conc": {
+  "PU|N09_M07_F10|wdcnn|s0": 0.997,
+  "PU|N09_M07_F10|drsn|s0": 1.0,
+  "PU|N09_M07_F10|lstm|s0": 1.0,
+  "PU|N09_M07_F10|wdcnn|s1": 0.905,
+  "PU|N09_M07_F10|drsn|s1": 1.0,
+  "PU|N09_M07_F10|lstm|s1": 1.0,
+  "PU|N09_M07_F10|wdcnn|s2": 1.0,
+  "PU|N09_M07_F10|drsn|s2": 0.988,
+  "PU|N09_M07_F10|lstm|s2": 1.0,
+  "PU|N15_M01_F10|wdcnn|s0": 0.995,
+  "PU|N15_M01_F10|drsn|s0": 1.0,
+  "PU|N15_M01_F10|lstm|s0": 1.0,
+  "PU|N15_M01_F10|wdcnn|s1": 0.523,
+  "PU|N15_M01_F10|drsn|s1": 1.0,
+  "PU|N15_M01_F10|lstm|s1": 1.0,
+  "PU|N15_M01_F10|wdcnn|s2": 1.0,
+  "PU|N15_M01_F10|drsn|s2": 1.0,
+  "PU|N15_M01_F10|lstm|s2": 1.0,
+  "PU|N15_M07_F04|wdcnn|s0": 0.592,
+  "PU|N15_M07_F04|drsn|s0": 0.999,
+  "PU|N15_M07_F04|lstm|s0": 1.0,
+  "PU|N15_M07_F04|wdcnn|s1": 0.344,
+  "PU|N15_M07_F04|drsn|s1": 1.0,
+  "PU|N15_M07_F04|lstm|s1": 1.0,
+  "PU|N15_M07_F04|wdcnn|s2": 0.663,
+  "PU|N15_M07_F04|drsn|s2": 0.999,
+  "PU|N15_M07_F04|lstm|s2": 1.0,
+  "JNU|800|wdcnn|s0": 0.661,
+  "JNU|800|drsn|s0": 1.0,
+  "JNU|800|lstm|s0": 1.0,
+  "JNU|800|wdcnn|s1": 0.999,
+  "JNU|800|drsn|s1": 1.0,
+  "JNU|800|lstm|s1": 0.587,
+  "JNU|800|wdcnn|s2": 0.555,
+  "JNU|800|drsn|s2": 1.0,
+  "JNU|800|lstm|s2": 1.0,
+  "JNU|1000|wdcnn|s0": 0.998,
+  "JNU|1000|drsn|s0": 0.945,
+  "JNU|1000|lstm|s0": 1.0,
+  "JNU|1000|wdcnn|s1": 1.0,
+  "JNU|1000|drsn|s1": 0.996,
+  "JNU|1000|lstm|s1": 1.0,
+  "JNU|1000|wdcnn|s2": 0.999,
+  "JNU|1000|drsn|s2": 1.0,
+  "JNU|1000|lstm|s2": 0.688
+ }
+}

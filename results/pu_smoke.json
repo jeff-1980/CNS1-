@@ -1,0 +1,156 @@
+[
+ {
+  "model": "wdcnn",
+  "seed": 0,
+  "best_val_acc": 0.1845913976430893,
+  "feat_dim": 128,
+  "n_train": 4491,
+  "aspect_c": 0.02850144733912269,
+  "snr_grid": [
+   4.0,
+   2.0,
+   0.0,
+   -2.0,
+   -4.0,
+   -6.0,
+   -8.0,
+   -10.0
+  ],
+  "prior": {
+   "G1_argmin_dist": 2,
+   "G2_argmax_align": 0,
+   "G3_logit_at_mu": 0,
+   "G4_argmin_norm": 2,
+   "G5_argmax_bias": 2,
+   "has_bias": true,
+   "dist_to_mu": [
+    7.826282024383545,
+    7.192298889160156,
+    5.8331828117370605
+   ],
+   "logits_at_mu": [
+    0.48753538727760315,
+    -0.18979281187057495,
+    -1.0942686796188354
+   ],
+   "align_u_mu": [
+    1.504319429397583,
+    -0.32493168115615845,
+    -1.617677092552185
+   ],
+   "bias": [
+    -0.08147724717855453,
+    0.01650620810687542,
+    0.08692207932472229
+   ],
+   "nc_gram": [
+    [
+     1.000000238418579,
+     -0.7013256549835205,
+     -0.4769493341445923
+    ],
+    [
+     -0.7013256549835205,
+     1.0,
+     -0.2920408546924591
+    ],
+    [
+     -0.4769493341445923,
+     -0.2920408546924591,
+     1.0
+    ]
+   ]
+  },
+  "observed": {
+   "4.0": {
+    "accuracy": 0.6490759296370519,
+    "top_pred": 0,
+    "concentration": 0.6593186372745491,
+    "collapsed": false,
+    "pred_distribution": [
+     2961,
+     0,
+     1530
+    ]
+   },
+   "2.0": {
+    "accuracy": 0.5940770429748385,
+    "top_pred": 0,
+    "concentration": 0.7321309285237141,
+    "collapsed": false,
+    "pred_distribution": [
+     3288,
+     0,
+     1203
+    ]
+   },
+   "0.0": {
+    "accuracy": 0.4633711868180806,
+    "top_pred": 0,
+    "concentration": 0.8690714762859052,
+    "collapsed": false,
+    "pred_distribution": [
+     3903,
+     0,
+     588
+    ]
+   },
+   "-2.0": {
+    "accuracy": 0.35292807837898016,
+    "top_pred": 0,
+    "concentration": 0.9804052549543532,
+    "collapsed": true,
+    "pred_distribution": [
+     4403,
+     0,
+     88
+    ]
+   },
+   "-4.0": {
+    "accuracy": 0.33377866844800713,
+    "top_pred": 0,
+    "concentration": 0.9995546648853262,
+    "collapsed": true,
+    "pred_distribution": [
+     4489,
+     0,
+     2
+    ]
+   },
+   "-6.0": {
+    "accuracy": 0.3333333333333333,
+    "top_pred": 0,
+    "concentration": 1.0,
+    "collapsed": true,
+    "pred_distribution": [
+     4491,
+     0,
+     0
+    ]
+   },
+   "-8.0": {
+    "accuracy": 0.3333333333333333,
+    "top_pred": 0,
+    "concentration": 1.0,
+    "collapsed": true,
+    "pred_distribution": [
+     4491,
+     0,
+     0
+    ]
+   },
+   "-10.0": {
+    "accuracy": 0.3333333333333333,
+    "top_pred": 0,
+    "concentration": 1.0,
+    "collapsed": true,
+    "pred_distribution": [
+     4491,
+     0,
+     0
+    ]
+   }
+  },
+  "wall_s": 3.8
+ }
+]

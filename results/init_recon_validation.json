@@ -1,0 +1,35 @@
+[
+ {
+  "key": [
+   "S014",
+   0,
+   "wdcnn",
+   0
+  ],
+  "prev_seed": 0,
+  "bitwise": false,
+  "max_abs_diff": 0.607715368270874
+ },
+ {
+  "key": [
+   "S_ALL",
+   2,
+   "wdcnn",
+   1
+  ],
+  "prev_seed": 1,
+  "bitwise": false,
+  "max_abs_diff": 3.3746871948242188
+ },
+ {
+  "key": [
+   "S007",
+   1,
+   "wdcnn",
+   2
+  ],
+  "prev_seed": 2,
+  "bitwise": false,
+  "max_abs_diff": 0.008248686790466309
+ }
+]

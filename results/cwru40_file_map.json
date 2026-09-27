@@ -1,0 +1,162 @@
+{
+ "B007_load0": {
+  "split": "train",
+  "windows": 238
+ },
+ "B007_load1": {
+  "split": "train",
+  "windows": 236
+ },
+ "B007_load2": {
+  "split": "test",
+  "windows": 236
+ },
+ "B007_load3": {
+  "split": "train",
+  "windows": 236
+ },
+ "B014_load0": {
+  "split": "val",
+  "windows": 236
+ },
+ "B014_load1": {
+  "split": "val",
+  "windows": 237
+ },
+ "B014_load2": {
+  "split": "train",
+  "windows": 237
+ },
+ "B014_load3": {
+  "split": "test",
+  "windows": 237
+ },
+ "B021_load0": {
+  "split": "train",
+  "windows": 237
+ },
+ "B021_load1": {
+  "split": "train",
+  "windows": 236
+ },
+ "B021_load2": {
+  "split": "train",
+  "windows": 237
+ },
+ "B021_load3": {
+  "split": "test",
+  "windows": 237
+ },
+ "IR007_load0": {
+  "split": "train",
+  "windows": 235
+ },
+ "IR007_load1": {
+  "split": "val",
+  "windows": 237
+ },
+ "IR007_load2": {
+  "split": "train",
+  "windows": 237
+ },
+ "IR007_load3": {
+  "split": "train",
+  "windows": 239
+ },
+ "IR014_load0": {
+  "split": "test",
+  "windows": 236
+ },
+ "IR014_load1": {
+  "split": "train",
+  "windows": 236
+ },
+ "IR014_load2": {
+  "split": "val",
+  "windows": 236
+ },
+ "IR014_load3": {
+  "split": "test",
+  "windows": 236
+ },
+ "IR021_load0": {
+  "split": "train",
+  "windows": 237
+ },
+ "IR021_load1": {
+  "split": "train",
+  "windows": 236
+ },
+ "IR021_load2": {
+  "split": "test",
+  "windows": 236
+ },
+ "IR021_load3": {
+  "split": "train",
+  "windows": 237
+ },
+ "Normal_load0": {
+  "split": "train",
+  "windows": 475
+ },
+ "Normal_load1": {
+  "split": "test",
+  "windows": 944
+ },
+ "Normal_load2": {
+  "split": "train",
+  "windows": 944
+ },
+ "Normal_load3": {
+  "split": "val",
+  "windows": 947
+ },
+ "OR007@6_load0": {
+  "split": "val",
+  "windows": 237
+ },
+ "OR007@6_load1": {
+  "split": "train",
+  "windows": 238
+ },
+ "OR007@6_load2": {
+  "split": "train",
+  "windows": 236
+ },
+ "OR007@6_load3": {
+  "split": "train",
+  "windows": 238
+ },
+ "OR014@6_load0": {
+  "split": "train",
+  "windows": 236
+ },
+ "OR014@6_load1": {
+  "split": "test",
+  "windows": 237
+ },
+ "OR014@6_load2": {
+  "split": "train",
+  "windows": 236
+ },
+ "OR014@6_load3": {
+  "split": "train",
+  "windows": 237
+ },
+ "OR021@6_load0": {
+  "split": "val",
+  "windows": 238
+ },
+ "OR021@6_load1": {
+  "split": "test",
+  "windows": 237
+ },
+ "OR021@6_load2": {
+  "split": "train",
+  "windows": 237
+ },
+ "OR021@6_load3": {
+  "split": "test",
+  "windows": 237
+ }
+}

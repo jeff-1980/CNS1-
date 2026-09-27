@@ -1,0 +1,236 @@
+{
+ "fault diagnosis low SNR predictions collapse single class": [
+  0,
+  []
+ ],
+ "bearing fault diagnosis noise all samples predicted as one class": [
+  0,
+  []
+ ],
+ "fault severity damage size training set noise robustness misclassification bias": [
+  0,
+  []
+ ],
+ "CWRU damage size generalization deep learning noise": [
+  0,
+  []
+ ],
+ "class prior noise input neural network predicts majority class": [
+  0,
+  []
+ ],
+ "noise fixed point classifier collapse attractor class": [
+  0,
+  []
+ ],
+ "__short__": {
+  "bearing fault diagnosis noise": [
+   1013,
+   20,
+   [
+    [
+     7818,
+     1968,
+     "Fractional Brownian Motions, Fractional Noises and Applications"
+    ],
+    [
+     1413,
+     2017,
+     "A deep convolutional neural network with new training methods for bearing fault diagnosis under noisy environment and different working load"
+    ],
+    [
+     886,
+     2000,
+     "FEATURE EXTRACTION BASED ON MORLET WAVELET AND ITS APPLICATION FOR MECHANICAL FAULT DIAGNOSIS"
+    ],
+    [
+     645,
+     2020,
+     "Bearing fault diagnosis based on vibro-acoustic data fusion and 1D-CNN network"
+    ]
+   ]
+  ],
+  "fault diagnosis noise robustness deep learning": [
+   130,
+   20,
+   [
+    [
+     7818,
+     1968,
+     "Fractional Brownian Motions, Fractional Noises and Applications"
+    ],
+    [
+     782,
+     2016,
+     "Fault diagnosis of rotary machinery components using a stacked denoising autoencoder-based health state identification"
+    ],
+    [
+     437,
+     2017,
+     "Intelligent fault diagnosis of rolling bearing using hierarchical convolutional network based health state classification"
+    ],
+    [
+     338,
+     2020,
+     "Fault diagnosis of rotating machinery based on recurrent neural networks"
+    ]
+   ]
+  ],
+  "Case Western Reserve bearing": [
+   298,
+   20,
+   [
+    [
+     2708,
+     2015,
+     "Rolling element bearing diagnostics using the Case Western Reserve University data: A benchmark study"
+    ],
+    [
+     1100,
+     2017,
+     "A New Deep Transfer Learning Based on Sparse Auto-Encoder for Fault Diagnosis"
+    ],
+    [
+     898,
+     2020,
+     "Deep Learning Algorithms for Bearing Fault Diagnostics—A Comprehensive Review"
+    ],
+    [
+     779,
+     2019,
+     "A transfer convolutional neural network for fault diagnosis based on ResNet-50"
+    ]
+   ]
+  ],
+  "bearing fault diagnosis fault size": [
+   419,
+   5,
+   [
+    [
+     7818,
+     1968,
+     "Fractional Brownian Motions, Fractional Noises and Applications"
+    ],
+    [
+     786,
+     2016,
+     "Hierarchical adaptive deep convolution neural network and its application to bearing fault diagnosis"
+    ],
+    [
+     737,
+     2020,
+     "Bearing fault diagnosis base on multi-scale CNN and LSTM model"
+    ],
+    [
+     730,
+     2017,
+     "A review on data-driven fault severity assessment in rolling bearings"
+    ]
+   ]
+  ],
+  "fault diagnosis class imbalance noise": [
+   48,
+   5,
+   [
+    [
+     155,
+     2020,
+     "New imbalanced bearing fault diagnosis method based on Sample-characteristic Oversampling TechniquE (SCOTE) and multi-class LS-SVM"
+    ],
+    [
+     74,
+     2023,
+     "Review of resampling techniques for the treatment of imbalanced industrial data classification in equipment condition monitoring"
+    ],
+    [
+     67,
+     2024,
+     "Attention-enhanced conditional-diffusion-based data synthesis for data augmentation in machine fault diagnosis"
+    ],
+    [
+     67,
+     2021,
+     "A Novel Imbalanced Data Classification Method Based on Weakly Supervised Learning for Fault Diagnosis"
+    ]
+   ]
+  ],
+  "predicted class distribution noise collapse": [
+   8,
+   0,
+   [
+    [
+     351,
+     2003,
+     "Critical market crashes"
+    ],
+    [
+     138,
+     2006,
+     "Complexity, simplicity, and epidemiology"
+    ],
+    [
+     13,
+     2025,
+     "Robust Prediction of Enzyme Variant Kinetics with RealKcat"
+    ],
+    [
+     11,
+     2022,
+     "Entropy-Driven Sampling and Training Scheme for Conditional Diffusion Generation"
+    ]
+   ]
+  ],
+  "bearing fault severity cross domain": [
+   12,
+   5,
+   [
+    [
+     299,
+     2020,
+     "Domain Adversarial Transfer Network for Cross-Domain Fault Diagnosis of Rotary Machinery"
+    ],
+    [
+     68,
+     2020,
+     "Cross-domain intelligent fault classification of bearings based on tensor-aligned invariant subspace learning and two-dimensional convolutional neural networks"
+    ],
+    [
+     27,
+     2025,
+     "A Deep Transferable Convolution Neural Network for Unsupervised Cross-Domain Diagnostics of Rolling Bearings in Industrial Internet of Things"
+    ],
+    [
+     27,
+     2018,
+     "Fault Severity Monitoring of Rolling Bearings Based on Texture Feature Extraction of Sparse Time–Frequency Images"
+    ]
+   ]
+  ],
+  "prediction collapse low signal-to-noise": [
+   20,
+   0,
+   [
+    [
+     179,
+     1999,
+     "Theoretical electroencephalogram stationary spectrum for a white-noise-driven cortex: Evidence for a general anesthetic-induced phase transition"
+    ],
+    [
+     106,
+     2013,
+     "ALIGNMENT BETWEEN FLATTENED PROTOSTELLAR INFALL ENVELOPES AND AMBIENT MAGNETIC FIELDS"
+    ],
+    [
+     75,
+     2005,
+     "Astrophysical constraints from gamma-ray spectroscopy"
+    ],
+    [
+     67,
+     2016,
+     "ALIGNMENT BETWEEN FLATTENED PROTOSTELLAR INFALL ENVELOPES AND AMBIENT MAGNETIC FIELDS"
+    ]
+   ]
+  ]
+ }
+}

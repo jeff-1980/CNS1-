@@ -1,0 +1,297 @@
+{
+ "n_2x2": 80,
+ "n_e5": 189,
+ "validity": {
+  "C-2x2": {
+   "groups": 20,
+   "invalid": []
+  },
+  "C-E5": {
+   "groups": 9,
+   "invalid": []
+  }
+ },
+ "c2x2": {
+  "wdcnn": {
+   "label": "REPLICATED",
+   "ratio": "RATIO_NULL_REPLICATED",
+   "dist": {
+    "C007_R11": {
+     "IR": 5
+    },
+    "C007_R31": {
+     "IR": 5
+    },
+    "CALL_R11": {
+     "OR": 5
+    },
+    "CALL_R31": {
+     "OR": 5
+    }
+   },
+   "n_event090": 20
+  },
+  "drsn": {
+   "label": "REPLICATED",
+   "ratio": "RATIO_NULL_REPLICATED",
+   "dist": {
+    "C007_R11": {
+     "IR": 5
+    },
+    "C007_R31": {
+     "IR": 5
+    },
+    "CALL_R11": {
+     "OR": 5
+    },
+    "CALL_R31": {
+     "OR": 5
+    }
+   },
+   "n_event090": 19
+  },
+  "lstm": {
+   "label": "NOT_REPLICATED",
+   "ratio": "RATIO_NULL_REPLICATED",
+   "dist": {
+    "C007_R11": {
+     "IR": 5
+    },
+    "C007_R31": {
+     "IR": 5
+    },
+    "CALL_R11": {
+     "OR": 4,
+     "IR": 1
+    },
+    "CALL_R31": {
+     "OR": 3,
+     "IR": 2
+    }
+   },
+   "n_event090": 17
+  },
+  "cnn1d": {
+   "label": "NOT_REPLICATED",
+   "ratio": "RATIO_NULL_REPLICATED",
+   "dist": {
+    "C007_R11": {
+     "IR": 1,
+     "OR": 4
+    },
+    "C007_R31": {
+     "IR": 2,
+     "OR": 3
+    },
+    "CALL_R11": {
+     "OR": 5
+    },
+    "CALL_R31": {
+     "OR": 5
+    }
+   },
+   "n_event090": 18
+  }
+ },
+ "ce5": {
+  "wdcnn": {
+   "label": "ANY_LARGER_SIZE",
+   "original_label": "ANY_LARGER_SIZE",
+   "replicated": true,
+   "P_IR": {
+    "S007": 1.0,
+    "S014": 0.0,
+    "S021": 0.0,
+    "S007+014": 0.0,
+    "S007+021": 0.0,
+    "S014+021": 0.0,
+    "S_ALL": 0.0
+   },
+   "dist": {
+    "S007": {
+     "IR": 9
+    },
+    "S014": {
+     "OR": 9
+    },
+    "S021": {
+     "Ball": 9
+    },
+    "S007+014": {
+     "OR": 9
+    },
+    "S007+021": {
+     "Ball": 6,
+     "Normal": 3
+    },
+    "S014+021": {
+     "OR": 9
+    },
+    "S_ALL": {
+     "OR": 9
+    }
+   },
+   "original_dist": {
+    "S007": {
+     "IR": 9
+    },
+    "S014": {
+     "OR": 9
+    },
+    "S021": {
+     "Normal": 2,
+     "Ball": 7
+    },
+    "S007+014": {
+     "OR": 9
+    },
+    "S007+021": {
+     "Ball": 8,
+     "Normal": 1
+    },
+    "S014+021": {
+     "OR": 9
+    },
+    "S_ALL": {
+     "OR": 9
+    }
+   },
+   "cells_same_majority_as_original": "7/7"
+  },
+  "drsn": {
+   "label": "ANY_LARGER_SIZE",
+   "original_label": "ANY_LARGER_SIZE",
+   "replicated": true,
+   "P_IR": {
+    "S007": 1.0,
+    "S014": 0.0,
+    "S021": 0.0,
+    "S007+014": 0.2222222222222222,
+    "S007+021": 0.5555555555555555,
+    "S014+021": 0.0,
+    "S_ALL": 0.0
+   },
+   "dist": {
+    "S007": {
+     "IR": 9
+    },
+    "S014": {
+     "OR": 8,
+     "Normal": 1
+    },
+    "S021": {
+     "OR": 9
+    },
+    "S007+014": {
+     "OR": 7,
+     "IR": 2
+    },
+    "S007+021": {
+     "OR": 4,
+     "IR": 5
+    },
+    "S014+021": {
+     "OR": 9
+    },
+    "S_ALL": {
+     "OR": 9
+    }
+   },
+   "original_dist": {
+    "S007": {
+     "IR": 9
+    },
+    "S014": {
+     "OR": 9
+    },
+    "S021": {
+     "OR": 7,
+     "Ball": 2
+    },
+    "S007+014": {
+     "OR": 9
+    },
+    "S007+021": {
+     "OR": 8,
+     "IR": 1
+    },
+    "S014+021": {
+     "OR": 9
+    },
+    "S_ALL": {
+     "OR": 9
+    }
+   },
+   "cells_same_majority_as_original": "6/7"
+  },
+  "lstm": {
+   "label": "ANY_LARGER_SIZE",
+   "original_label": "ANY_LARGER_SIZE",
+   "replicated": true,
+   "P_IR": {
+    "S007": 1.0,
+    "S014": 0.0,
+    "S021": 0.0,
+    "S007+014": 0.3333333333333333,
+    "S007+021": 1.0,
+    "S014+021": 0.0,
+    "S_ALL": 0.2222222222222222
+   },
+   "dist": {
+    "S007": {
+     "IR": 9
+    },
+    "S014": {
+     "OR": 9
+    },
+    "S021": {
+     "Ball": 9
+    },
+    "S007+014": {
+     "OR": 6,
+     "IR": 3
+    },
+    "S007+021": {
+     "IR": 9
+    },
+    "S014+021": {
+     "OR": 8,
+     "Ball": 1
+    },
+    "S_ALL": {
+     "Ball": 1,
+     "OR": 6,
+     "IR": 2
+    }
+   },
+   "original_dist": {
+    "S007": {
+     "IR": 9
+    },
+    "S014": {
+     "OR": 9
+    },
+    "S021": {
+     "OR": 1,
+     "Ball": 7,
+     "Normal": 1
+    },
+    "S007+014": {
+     "IR": 3,
+     "OR": 6
+    },
+    "S007+021": {
+     "IR": 9
+    },
+    "S014+021": {
+     "OR": 9
+    },
+    "S_ALL": {
+     "OR": 9
+    }
+   },
+   "cells_same_majority_as_original": "7/7"
+  }
+ },
+ "manuscript_rule": "NARROW"
+}

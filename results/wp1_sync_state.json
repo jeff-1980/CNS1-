@@ -1,0 +1,1 @@
+{"done": ["JNU 转速识别", "C-clean（lstm, transformer）", "C-awgn（5 个非 Mamba 架构）", "J（5 个非 Mamba 架构，600 rpm）", "C-clean-M（vibrmamba）", "C-m2（mamba2，非融合）", "C-awgn-M（vibrmamba, mamba2）", "J-M（vibrmamba, mamba2）"], "chain_done": true, "error": false}

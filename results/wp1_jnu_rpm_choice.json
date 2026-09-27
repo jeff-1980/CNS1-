@@ -1,0 +1,18 @@
+{
+ "per_rpm": {
+  "600": {
+   "bitwise": false,
+   "mae": 0.0049
+  },
+  "800": {
+   "bitwise": false,
+   "mae": 0.1034
+  },
+  "1000": {
+   "bitwise": false,
+   "mae": 0.0637
+  }
+ },
+ "chosen": 600,
+ "mode": "BEHAVIORAL_ONLY"
+}

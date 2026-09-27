@@ -1,0 +1,1 @@
+{"done": ["R 真实损伤块（wdcnn, drsn, lstm）", "A 人工损伤块（wdcnn, drsn, lstm）", "R 单列（cnn1d, transformer；R-L1 / R-L12a）"], "chain_done": true, "error": false}

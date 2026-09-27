@@ -1,0 +1,14 @@
+name: cns1
+channels: [conda-forge, pytorch, nvidia]
+dependencies:
+  - python=3.11
+  - numpy=2.4
+  - scipy=1.17
+  - matplotlib=3.11
+  - pandas=2.3
+  - scikit-learn
+  - pip
+  - pip:
+      - torch==2.13.0   # CUDA build used for training: 2.13.0+cu130
+# Mamba models (vibrmamba, mamba2) were run in a separate environment:
+#   python 3.11, torch 2.5.1+cu124, mamba-ssm 2.2.4 (+ causal-conv1d); mamba2 in the non-fused path (see code/wp1_harness.py)

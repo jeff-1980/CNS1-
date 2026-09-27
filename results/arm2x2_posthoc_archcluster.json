@@ -1,0 +1,25 @@
+{
+ "note": "POST HOC, not preregistered: architecture as resampling unit",
+ "per_arch": {
+  "cnn1d": [
+   0.0,
+   0.0
+  ],
+  "wdcnn": [
+   1.0,
+   0.0
+  ],
+  "drsn": [
+   1.0,
+   0.0
+  ]
+ },
+ "ci_dC": [
+  0.0,
+  1.0
+ ],
+ "ci_dR": [
+  0.0,
+  0.0
+ ]
+}

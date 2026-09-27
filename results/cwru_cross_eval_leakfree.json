@@ -1,0 +1,362 @@
+[
+ {
+  "train_cfg": "40file",
+  "model": "cnn1d",
+  "seed": 0,
+  "test_cfg": "Test_40",
+  "leaked": false,
+  "top_pred": "OR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.2314
+ },
+ {
+  "train_cfg": "40file",
+  "model": "cnn1d",
+  "seed": 0,
+  "test_cfg": "Test_16",
+  "leaked": true,
+  "top_pred": "OR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.1428
+ },
+ {
+  "train_cfg": "40file",
+  "model": "cnn1d",
+  "seed": 0,
+  "test_cfg": "Test_16_leakfree",
+  "leaked": false,
+  "top_pred": "OR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.0
+ },
+ {
+  "train_cfg": "40file",
+  "model": "cnn1d",
+  "seed": 1,
+  "test_cfg": "Test_40",
+  "leaked": false,
+  "top_pred": "OR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.2314
+ },
+ {
+  "train_cfg": "40file",
+  "model": "cnn1d",
+  "seed": 1,
+  "test_cfg": "Test_16",
+  "leaked": true,
+  "top_pred": "OR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.1428
+ },
+ {
+  "train_cfg": "40file",
+  "model": "cnn1d",
+  "seed": 1,
+  "test_cfg": "Test_16_leakfree",
+  "leaked": false,
+  "top_pred": "OR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.0
+ },
+ {
+  "train_cfg": "40file",
+  "model": "drsn",
+  "seed": 0,
+  "test_cfg": "Test_40",
+  "leaked": false,
+  "top_pred": "OR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.2314
+ },
+ {
+  "train_cfg": "40file",
+  "model": "drsn",
+  "seed": 0,
+  "test_cfg": "Test_16",
+  "leaked": true,
+  "top_pred": "OR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.1428
+ },
+ {
+  "train_cfg": "40file",
+  "model": "drsn",
+  "seed": 0,
+  "test_cfg": "Test_16_leakfree",
+  "leaked": false,
+  "top_pred": "OR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.0
+ },
+ {
+  "train_cfg": "40file",
+  "model": "drsn",
+  "seed": 1,
+  "test_cfg": "Test_40",
+  "leaked": false,
+  "top_pred": "OR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.2314
+ },
+ {
+  "train_cfg": "40file",
+  "model": "drsn",
+  "seed": 1,
+  "test_cfg": "Test_16",
+  "leaked": true,
+  "top_pred": "OR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.1428
+ },
+ {
+  "train_cfg": "40file",
+  "model": "drsn",
+  "seed": 1,
+  "test_cfg": "Test_16_leakfree",
+  "leaked": false,
+  "top_pred": "OR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.0
+ },
+ {
+  "train_cfg": "40file",
+  "model": "wdcnn",
+  "seed": 0,
+  "test_cfg": "Test_40",
+  "leaked": false,
+  "top_pred": "OR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.2314
+ },
+ {
+  "train_cfg": "40file",
+  "model": "wdcnn",
+  "seed": 0,
+  "test_cfg": "Test_16",
+  "leaked": true,
+  "top_pred": "OR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.1428
+ },
+ {
+  "train_cfg": "40file",
+  "model": "wdcnn",
+  "seed": 0,
+  "test_cfg": "Test_16_leakfree",
+  "leaked": false,
+  "top_pred": "OR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.0
+ },
+ {
+  "train_cfg": "40file",
+  "model": "wdcnn",
+  "seed": 1,
+  "test_cfg": "Test_40",
+  "leaked": false,
+  "top_pred": "OR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.2314
+ },
+ {
+  "train_cfg": "40file",
+  "model": "wdcnn",
+  "seed": 1,
+  "test_cfg": "Test_16",
+  "leaked": true,
+  "top_pred": "OR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.1428
+ },
+ {
+  "train_cfg": "40file",
+  "model": "wdcnn",
+  "seed": 1,
+  "test_cfg": "Test_16_leakfree",
+  "leaked": false,
+  "top_pred": "OR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.0
+ },
+ {
+  "train_cfg": "16file",
+  "model": "cnn1d",
+  "seed": 0,
+  "test_cfg": "Test_40",
+  "leaked": false,
+  "top_pred": "IR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.2304
+ },
+ {
+  "train_cfg": "16file",
+  "model": "cnn1d",
+  "seed": 0,
+  "test_cfg": "Test_16",
+  "leaked": false,
+  "top_pred": "IR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.1434
+ },
+ {
+  "train_cfg": "16file",
+  "model": "cnn1d",
+  "seed": 0,
+  "test_cfg": "Test_16_leakfree",
+  "leaked": false,
+  "top_pred": "IR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.0
+ },
+ {
+  "train_cfg": "16file",
+  "model": "cnn1d",
+  "seed": 1,
+  "test_cfg": "Test_40",
+  "leaked": false,
+  "top_pred": "IR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.2304
+ },
+ {
+  "train_cfg": "16file",
+  "model": "cnn1d",
+  "seed": 1,
+  "test_cfg": "Test_16",
+  "leaked": false,
+  "top_pred": "IR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.1434
+ },
+ {
+  "train_cfg": "16file",
+  "model": "cnn1d",
+  "seed": 1,
+  "test_cfg": "Test_16_leakfree",
+  "leaked": false,
+  "top_pred": "IR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.0
+ },
+ {
+  "train_cfg": "16file",
+  "model": "drsn",
+  "seed": 0,
+  "test_cfg": "Test_40",
+  "leaked": false,
+  "top_pred": "IR",
+  "conc_mean": 0.9491,
+  "acc_mean": 0.2813
+ },
+ {
+  "train_cfg": "16file",
+  "model": "drsn",
+  "seed": 0,
+  "test_cfg": "Test_16",
+  "leaked": false,
+  "top_pred": "IR",
+  "conc_mean": 0.8995,
+  "acc_mean": 0.2439
+ },
+ {
+  "train_cfg": "16file",
+  "model": "drsn",
+  "seed": 0,
+  "test_cfg": "Test_16_leakfree",
+  "leaked": false,
+  "top_pred": "IR",
+  "conc_mean": 0.8671,
+  "acc_mean": 0.1329
+ },
+ {
+  "train_cfg": "16file",
+  "model": "drsn",
+  "seed": 1,
+  "test_cfg": "Test_40",
+  "leaked": false,
+  "top_pred": "IR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.2304
+ },
+ {
+  "train_cfg": "16file",
+  "model": "drsn",
+  "seed": 1,
+  "test_cfg": "Test_16",
+  "leaked": false,
+  "top_pred": "IR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.1434
+ },
+ {
+  "train_cfg": "16file",
+  "model": "drsn",
+  "seed": 1,
+  "test_cfg": "Test_16_leakfree",
+  "leaked": false,
+  "top_pred": "IR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.0
+ },
+ {
+  "train_cfg": "16file",
+  "model": "wdcnn",
+  "seed": 0,
+  "test_cfg": "Test_40",
+  "leaked": false,
+  "top_pred": "IR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.2304
+ },
+ {
+  "train_cfg": "16file",
+  "model": "wdcnn",
+  "seed": 0,
+  "test_cfg": "Test_16",
+  "leaked": false,
+  "top_pred": "IR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.1434
+ },
+ {
+  "train_cfg": "16file",
+  "model": "wdcnn",
+  "seed": 0,
+  "test_cfg": "Test_16_leakfree",
+  "leaked": false,
+  "top_pred": "IR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.0
+ },
+ {
+  "train_cfg": "16file",
+  "model": "wdcnn",
+  "seed": 1,
+  "test_cfg": "Test_40",
+  "leaked": false,
+  "top_pred": "IR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.2304
+ },
+ {
+  "train_cfg": "16file",
+  "model": "wdcnn",
+  "seed": 1,
+  "test_cfg": "Test_16",
+  "leaked": false,
+  "top_pred": "IR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.1434
+ },
+ {
+  "train_cfg": "16file",
+  "model": "wdcnn",
+  "seed": 1,
+  "test_cfg": "Test_16_leakfree",
+  "leaked": false,
+  "top_pred": "IR",
+  "conc_mean": 1.0,
+  "acc_mean": 0.0
+ }
+]

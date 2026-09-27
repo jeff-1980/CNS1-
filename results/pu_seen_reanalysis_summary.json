@@ -1,0 +1,354 @@
+{
+ "note": "POST HOC (review comment 4/5). WP2 weights re-inferred; test windows split into bearings seen in training (time-separated segments) vs unseen fault bearings. Does not change the preregistered WP2 label.",
+ "test_composition": {
+  "block_R_bearings": 8,
+  "windows_per_healthy": 450,
+  "windows_per_fault": 300,
+  "seen_windows_per_arm": 2100,
+  "unseen_windows_per_arm": 600
+ },
+ "cells": {
+  "A|A-L1|drsn": {
+   "seen_targets": {
+    "Healthy": 5
+   },
+   "seen_mean_dist_HOI": [
+    0.998,
+    0.001,
+    0.001
+   ],
+   "all_targets": {
+    "Healthy": 5
+   },
+   "seen_clean_acc": 0.8979999999999999,
+   "unseen_clean_acc": 0.33555555555555555
+  },
+  "A|A-L1|lstm": {
+   "seen_targets": {
+    "Healthy": 3,
+    "OR": 1,
+    "IR": 1
+   },
+   "seen_mean_dist_HOI": [
+    0.682,
+    0.205,
+    0.113
+   ],
+   "all_targets": {
+    "Healthy": 4,
+    "OR": 1
+   },
+   "seen_clean_acc": 0.9144761904761903,
+   "unseen_clean_acc": 0.31422222222222224
+  },
+  "A|A-L1|wdcnn": {
+   "seen_targets": {
+    "IR": 4,
+    "OR": 1
+   },
+   "seen_mean_dist_HOI": [
+    0.205,
+    0.265,
+    0.529
+   ],
+   "all_targets": {
+    "IR": 4,
+    "OR": 1
+   },
+   "seen_clean_acc": 0.9248571428571427,
+   "unseen_clean_acc": 0.3433333333333333
+  },
+  "A|A-L12a|drsn": {
+   "seen_targets": {
+    "Healthy": 1,
+    "OR": 4
+   },
+   "seen_mean_dist_HOI": [
+    0.168,
+    0.832,
+    0.0
+   ],
+   "all_targets": {
+    "Healthy": 1,
+    "OR": 4
+   },
+   "seen_clean_acc": 0.980857142857143,
+   "unseen_clean_acc": 0.19355555555555554
+  },
+  "A|A-L12a|lstm": {
+   "seen_targets": {
+    "Healthy": 5
+   },
+   "seen_mean_dist_HOI": [
+    0.902,
+    0.098,
+    0.0
+   ],
+   "all_targets": {
+    "Healthy": 5
+   },
+   "seen_clean_acc": 0.9895238095238096,
+   "unseen_clean_acc": 0.32911111111111113
+  },
+  "A|A-L12a|wdcnn": {
+   "seen_targets": {
+    "OR": 5
+   },
+   "seen_mean_dist_HOI": [
+    0.194,
+    0.727,
+    0.079
+   ],
+   "all_targets": {
+    "OR": 5
+   },
+   "seen_clean_acc": 0.9952380952380953,
+   "unseen_clean_acc": 0.3908888888888889
+  },
+  "A|A-L12b|drsn": {
+   "seen_targets": {
+    "OR": 2,
+    "Healthy": 3
+   },
+   "seen_mean_dist_HOI": [
+    0.551,
+    0.449,
+    0.0
+   ],
+   "all_targets": {
+    "OR": 2,
+    "Healthy": 3
+   },
+   "seen_clean_acc": 0.8896190476190476,
+   "unseen_clean_acc": 0.184
+  },
+  "A|A-L12b|lstm": {
+   "seen_targets": {
+    "OR": 5
+   },
+   "seen_mean_dist_HOI": [
+    0.154,
+    0.845,
+    0.001
+   ],
+   "all_targets": {
+    "OR": 5
+   },
+   "seen_clean_acc": 0.8905714285714286,
+   "unseen_clean_acc": 0.1468888888888889
+  },
+  "A|A-L12b|wdcnn": {
+   "seen_targets": {
+    "IR": 4,
+    "Healthy": 1
+   },
+   "seen_mean_dist_HOI": [
+    0.439,
+    0.043,
+    0.518
+   ],
+   "all_targets": {
+    "IR": 4,
+    "Healthy": 1
+   },
+   "seen_clean_acc": 0.9036190476190477,
+   "unseen_clean_acc": 0.5355555555555556
+  },
+  "R|R-L1|cnn1d": {
+   "seen_targets": {
+    "Healthy": 5
+   },
+   "seen_mean_dist_HOI": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "all_targets": {
+    "Healthy": 5
+   },
+   "seen_clean_acc": 0.9987619047619047,
+   "unseen_clean_acc": 0.7303333333333333
+  },
+  "R|R-L1|drsn": {
+   "seen_targets": {
+    "Healthy": 5
+   },
+   "seen_mean_dist_HOI": [
+    0.999,
+    0.0,
+    0.001
+   ],
+   "all_targets": {
+    "Healthy": 5
+   },
+   "seen_clean_acc": 0.9983809523809523,
+   "unseen_clean_acc": 0.746
+  },
+  "R|R-L1|lstm": {
+   "seen_targets": {
+    "Healthy": 5
+   },
+   "seen_mean_dist_HOI": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "all_targets": {
+    "Healthy": 5
+   },
+   "seen_clean_acc": 0.9960952380952381,
+   "unseen_clean_acc": 0.775
+  },
+  "R|R-L1|transformer": {
+   "seen_targets": {
+    "Healthy": 5
+   },
+   "seen_mean_dist_HOI": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "all_targets": {
+    "Healthy": 5
+   },
+   "seen_clean_acc": 0.9897142857142857,
+   "unseen_clean_acc": 0.7243333333333333
+  },
+  "R|R-L1|wdcnn": {
+   "seen_targets": {
+    "OR": 5
+   },
+   "seen_mean_dist_HOI": [
+    0.068,
+    0.932,
+    0.0
+   ],
+   "all_targets": {
+    "OR": 5
+   },
+   "seen_clean_acc": 0.999904761904762,
+   "unseen_clean_acc": 0.7363333333333333
+  },
+  "R|R-L12a|cnn1d": {
+   "seen_targets": {
+    "Healthy": 5
+   },
+   "seen_mean_dist_HOI": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "all_targets": {
+    "Healthy": 5
+   },
+   "seen_clean_acc": 0.9976190476190476,
+   "unseen_clean_acc": 0.7133333333333333
+  },
+  "R|R-L12a|drsn": {
+   "seen_targets": {
+    "Healthy": 5
+   },
+   "seen_mean_dist_HOI": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "all_targets": {
+    "Healthy": 5
+   },
+   "seen_clean_acc": 0.9963809523809524,
+   "unseen_clean_acc": 0.6880000000000001
+  },
+  "R|R-L12a|lstm": {
+   "seen_targets": {
+    "Healthy": 5
+   },
+   "seen_mean_dist_HOI": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "all_targets": {
+    "Healthy": 5
+   },
+   "seen_clean_acc": 0.9963809523809524,
+   "unseen_clean_acc": 0.8073333333333335
+  },
+  "R|R-L12a|transformer": {
+   "seen_targets": {
+    "Healthy": 5
+   },
+   "seen_mean_dist_HOI": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "all_targets": {
+    "Healthy": 5
+   },
+   "seen_clean_acc": 0.9861904761904761,
+   "unseen_clean_acc": 0.7966666666666666
+  },
+  "R|R-L12a|wdcnn": {
+   "seen_targets": {
+    "Healthy": 5
+   },
+   "seen_mean_dist_HOI": [
+    0.921,
+    0.004,
+    0.075
+   ],
+   "all_targets": {
+    "Healthy": 5
+   },
+   "seen_clean_acc": 0.9991428571428571,
+   "unseen_clean_acc": 0.9616666666666667
+  },
+  "R|R-L12b|drsn": {
+   "seen_targets": {
+    "Healthy": 5
+   },
+   "seen_mean_dist_HOI": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "all_targets": {
+    "Healthy": 5
+   },
+   "seen_clean_acc": 0.9992380952380954,
+   "unseen_clean_acc": 0.571
+  },
+  "R|R-L12b|lstm": {
+   "seen_targets": {
+    "Healthy": 5
+   },
+   "seen_mean_dist_HOI": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "all_targets": {
+    "Healthy": 5
+   },
+   "seen_clean_acc": 0.9996190476190476,
+   "unseen_clean_acc": 0.53
+  },
+  "R|R-L12b|wdcnn": {
+   "seen_targets": {
+    "Healthy": 5
+   },
+   "seen_mean_dist_HOI": [
+    0.985,
+    0.0,
+    0.015
+   ],
+   "all_targets": {
+    "Healthy": 5
+   },
+   "seen_clean_acc": 1.0,
+   "unseen_clean_acc": 0.27233333333333337
+  }
+ },
+ "instances_same_target_seen_vs_all": "109/110"
+}

@@ -1,0 +1,6 @@
+data/
+external/
+results/ckpt_*/
+__pycache__/
+*.pyc
+.mpl/

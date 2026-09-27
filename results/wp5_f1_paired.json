@@ -1,0 +1,172 @@
+{
+ "note": "POST HOC paired sensitivity (review round 2, R3); does not replace preregistered WP5 labels",
+ "wdcnn": {
+  "delta": 0.0,
+  "ci_paired": [
+   0.0,
+   0.0
+  ],
+  "label_paired": "EQUIV",
+  "per_seed": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "ci_prereg_unpaired": [
+   0.0,
+   0.0
+  ],
+  "label_prereg": "EQUIV",
+  "point_beyond_bound": false,
+  "ci_entirely_beyond_bound": false
+ },
+ "drsn": {
+  "delta": -7.415175437927579e-05,
+  "ci_paired": [
+   -0.00022245526313782737,
+   0.0
+  ],
+  "label_paired": "EQUIV",
+  "per_seed": [
+   0.0,
+   -0.0004,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "ci_prereg_unpaired": [
+   -0.00018008291721349767,
+   0.0
+  ],
+  "label_prereg": "EQUIV",
+  "point_beyond_bound": false,
+  "ci_entirely_beyond_bound": false
+ },
+ "lstm": {
+  "delta": 0.20015304732311048,
+  "ci_paired": [
+   0.07176965354243292,
+   0.3285364411037881
+  ],
+  "label_paired": "MATTERS",
+  "per_seed": [
+   0.3981,
+   0.0871,
+   -0.0008,
+   0.1863,
+   0.3301
+  ],
+  "ci_prereg_unpaired": [
+   0.052551780572452085,
+   0.33101705225359174
+  ],
+  "label_prereg": "MATTERS",
+  "point_beyond_bound": true,
+  "ci_entirely_beyond_bound": false
+ },
+ "cnn1d": {
+  "delta": -0.0314830505847931,
+  "ci_paired": [
+   -0.0464512711763382,
+   -0.016514829993248003
+  ],
+  "label_paired": "EQUIV",
+  "per_seed": [
+   -0.0541,
+   -0.0171,
+   -0.0461,
+   -0.0319,
+   -0.0082
+  ],
+  "ci_prereg_unpaired": [
+   -0.05092187428474431,
+   -0.014024365350604133
+  ],
+  "label_prereg": "EQUIV",
+  "point_beyond_bound": false,
+  "ci_entirely_beyond_bound": false
+ },
+ "transformer": {
+  "delta": 0.03149725499446504,
+  "ci_paired": [
+   -0.1354387679399224,
+   0.1810846394894179
+  ],
+  "label_paired": "EQUIV",
+  "per_seed": [
+   0.1642,
+   0.1961,
+   -0.2372,
+   0.1745,
+   -0.1402
+  ],
+  "ci_prereg_unpaired": [
+   -0.13003159707023582,
+   0.1905672548692091
+  ],
+  "label_prereg": "EQUIV",
+  "point_beyond_bound": false,
+  "ci_entirely_beyond_bound": false
+ },
+ "F2_note": "F2 already paired (best vs final of the same run, per-seed differences bootstrapped)",
+ "F2_bound": {
+  "cnn1d": {
+   "delta": 0.31834745790809393,
+   "ci": [
+    0.1784533903002739,
+    0.4582415255159139
+   ],
+   "ci_entirely_beyond_bound": false
+  },
+  "wdcnn": {
+   "delta": 0.03639830470085144,
+   "ci": [
+    -6.35576248169012e-05,
+    0.1092584717273712
+   ],
+   "ci_entirely_beyond_bound": false
+  },
+  "drsn": {
+   "delta": -0.002436439990997319,
+   "ci": [
+    -0.007309319972991957,
+    0.0
+   ],
+   "ci_entirely_beyond_bound": false
+  },
+  "lstm": {
+   "delta": 0.053847595723345874,
+   "ci": [
+    0.0036485796608030792,
+    0.1379237300157547
+   ],
+   "ci_entirely_beyond_bound": false
+  },
+  "transformer": {
+   "delta": 0.22054703052155672,
+   "ci": [
+    0.05671819387935102,
+    0.38437586716376243
+   ],
+   "ci_entirely_beyond_bound": false
+  },
+  "vibrmamba": {
+   "delta": 0.0,
+   "ci": [
+    0.0,
+    0.0
+   ],
+   "ci_entirely_beyond_bound": false
+  },
+  "mamba2": {
+   "delta": 2.118644071742892e-05,
+   "ci": [
+    0.0,
+    6.355932215228676e-05
+   ],
+   "ci_entirely_beyond_bound": false
+  }
+ }
+}

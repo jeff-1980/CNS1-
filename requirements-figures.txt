@@ -1,0 +1,4 @@
+# enough to regenerate all figures, supplementary tables and preregistered analyses from results/
+numpy==2.4.*
+scipy==1.17.*
+matplotlib==3.11.*

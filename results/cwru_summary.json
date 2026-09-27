@@ -1,0 +1,1 @@
+{"n": 20, "hits": {"G1_argmin_dist": 8, "G2_argmax_align": 4, "G3_logit_at_mu": 1, "G4_argmin_norm": 9, "G5_argmax_bias": 9}, "GS": ["G1_argmin_dist", "G2_argmax_align", "G3_logit_at_mu", "G4_argmin_norm", "G5_argmax_bias"]}

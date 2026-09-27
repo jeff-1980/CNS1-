@@ -1,0 +1,993 @@
+{
+ "jnu_rpm": {
+  "per_rpm": {
+   "600": {
+    "bitwise": false,
+    "mae": 0.0049
+   },
+   "800": {
+    "bitwise": false,
+    "mae": 0.1034
+   },
+   "1000": {
+    "bitwise": false,
+    "mae": 0.0637
+   }
+  },
+  "chosen": 600,
+  "mode": "BEHAVIORAL_ONLY"
+ },
+ "missing": [],
+ "cells": [
+  {
+   "arm": "C-clean",
+   "model": "lstm",
+   "n": 5,
+   "level": "BEHAVIORAL",
+   "mae": 0.0305,
+   "best_epochs": [
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "pb_best_val": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "collapsed_best": {
+    "-8.0": [
+     91.8,
+     {
+      "Normal": 1,
+      "IR": 4
+     }
+    ]
+   },
+   "collapsed_final": {
+    "-8.0": [
+     96.9,
+     {
+      "Normal": 1,
+      "IR": 4
+     }
+    ],
+    "-6.0": [
+     92.0,
+     {
+      "Normal": 1,
+      "IR": 4
+     }
+    ]
+   },
+   "n_coll_best": 1,
+   "n_coll_final": 2,
+   "unfused": false,
+   "snr_grid": [
+    "-8.0",
+    "-6.0",
+    "-4.0",
+    "-2.0",
+    "0.0",
+    "2.0",
+    "4.0",
+    "6.0",
+    "8.0",
+    "10.0"
+   ]
+  },
+  {
+   "arm": "C-clean",
+   "model": "transformer",
+   "n": 5,
+   "level": "BITWISE",
+   "mae": 0.0,
+   "best_epochs": [
+    1,
+    4,
+    1,
+    2,
+    2
+   ],
+   "pb_best_val": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "collapsed_best": {},
+   "collapsed_final": {},
+   "n_coll_best": 0,
+   "n_coll_final": 0,
+   "unfused": false,
+   "snr_grid": [
+    "-8.0",
+    "-6.0",
+    "-4.0",
+    "-2.0",
+    "0.0",
+    "2.0",
+    "4.0",
+    "6.0",
+    "8.0",
+    "10.0"
+   ]
+  },
+  {
+   "arm": "C-clean-M",
+   "model": "vibrmamba",
+   "n": 5,
+   "level": "BITWISE",
+   "mae": 0.0,
+   "best_epochs": [
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "pb_best_val": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "collapsed_best": {
+    "-8.0": [
+     95.5,
+     {
+      "IR": 5
+     }
+    ],
+    "-6.0": [
+     91.0,
+     {
+      "IR": 5
+     }
+    ]
+   },
+   "collapsed_final": {
+    "-8.0": [
+     99.5,
+     {
+      "IR": 5
+     }
+    ],
+    "-6.0": [
+     99.1,
+     {
+      "IR": 5
+     }
+    ],
+    "-4.0": [
+     97.7,
+     {
+      "IR": 5
+     }
+    ],
+    "-2.0": [
+     90.5,
+     {
+      "IR": 5
+     }
+    ]
+   },
+   "n_coll_best": 2,
+   "n_coll_final": 4,
+   "unfused": false,
+   "snr_grid": [
+    "-8.0",
+    "-6.0",
+    "-4.0",
+    "-2.0",
+    "0.0",
+    "2.0",
+    "4.0",
+    "6.0",
+    "8.0",
+    "10.0"
+   ]
+  },
+  {
+   "arm": "C-m2",
+   "model": "mamba2",
+   "n": 5,
+   "level": "BITWISE",
+   "mae": 0.0,
+   "best_epochs": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "pb_best_val": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "collapsed_best": {
+    "-8.0": [
+     100.0,
+     {
+      "IR": 5
+     }
+    ],
+    "-6.0": [
+     100.0,
+     {
+      "IR": 5
+     }
+    ],
+    "-4.0": [
+     98.9,
+     {
+      "IR": 5
+     }
+    ]
+   },
+   "collapsed_final": {
+    "-8.0": [
+     100.0,
+     {
+      "IR": 5
+     }
+    ],
+    "-6.0": [
+     100.0,
+     {
+      "IR": 5
+     }
+    ],
+    "-4.0": [
+     100.0,
+     {
+      "IR": 5
+     }
+    ],
+    "-2.0": [
+     99.7,
+     {
+      "IR": 5
+     }
+    ]
+   },
+   "n_coll_best": 3,
+   "n_coll_final": 4,
+   "unfused": true,
+   "snr_grid": [
+    "-8.0",
+    "-6.0",
+    "-4.0",
+    "-2.0",
+    "0.0",
+    "2.0",
+    "4.0",
+    "6.0",
+    "8.0",
+    "10.0"
+   ]
+  },
+  {
+   "arm": "C-awgn",
+   "model": "cnn1d",
+   "n": 5,
+   "level": "BEHAVIORAL",
+   "mae": 0.0222,
+   "best_epochs": [
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "pb_best_val": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "collapsed_best": {},
+   "collapsed_final": {},
+   "n_coll_best": 0,
+   "n_coll_final": 0,
+   "unfused": false,
+   "snr_grid": [
+    "-8.0",
+    "-6.0",
+    "-4.0",
+    "-2.0",
+    "0.0",
+    "2.0",
+    "4.0",
+    "6.0",
+    "8.0",
+    "10.0"
+   ]
+  },
+  {
+   "arm": "C-awgn",
+   "model": "wdcnn",
+   "n": 5,
+   "level": "BEHAVIORAL",
+   "mae": 0.0105,
+   "best_epochs": [
+    2,
+    1,
+    1,
+    2,
+    1
+   ],
+   "pb_best_val": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "collapsed_best": {},
+   "collapsed_final": {},
+   "n_coll_best": 0,
+   "n_coll_final": 0,
+   "unfused": false,
+   "snr_grid": [
+    "-8.0",
+    "-6.0",
+    "-4.0",
+    "-2.0",
+    "0.0",
+    "2.0",
+    "4.0",
+    "6.0",
+    "8.0",
+    "10.0"
+   ]
+  },
+  {
+   "arm": "C-awgn",
+   "model": "drsn",
+   "n": 5,
+   "level": "BEHAVIORAL",
+   "mae": 0.0162,
+   "best_epochs": [
+    2,
+    3,
+    3,
+    2,
+    3
+   ],
+   "pb_best_val": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "collapsed_best": {},
+   "collapsed_final": {},
+   "n_coll_best": 0,
+   "n_coll_final": 0,
+   "unfused": false,
+   "snr_grid": [
+    "-8.0",
+    "-6.0",
+    "-4.0",
+    "-2.0",
+    "0.0",
+    "2.0",
+    "4.0",
+    "6.0",
+    "8.0",
+    "10.0"
+   ]
+  },
+  {
+   "arm": "C-awgn",
+   "model": "lstm",
+   "n": 5,
+   "level": "BEHAVIORAL",
+   "mae": 0.0194,
+   "best_epochs": [
+    4,
+    4,
+    3,
+    5,
+    5
+   ],
+   "pb_best_val": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "collapsed_best": {},
+   "collapsed_final": {},
+   "n_coll_best": 0,
+   "n_coll_final": 0,
+   "unfused": false,
+   "snr_grid": [
+    "-8.0",
+    "-6.0",
+    "-4.0",
+    "-2.0",
+    "0.0",
+    "2.0",
+    "4.0",
+    "6.0",
+    "8.0",
+    "10.0"
+   ]
+  },
+  {
+   "arm": "C-awgn",
+   "model": "transformer",
+   "n": 5,
+   "level": "BEHAVIORAL",
+   "mae": 0.0163,
+   "best_epochs": [
+    6,
+    6,
+    5,
+    9,
+    6
+   ],
+   "pb_best_val": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "collapsed_best": {},
+   "collapsed_final": {},
+   "n_coll_best": 0,
+   "n_coll_final": 0,
+   "unfused": false,
+   "snr_grid": [
+    "-8.0",
+    "-6.0",
+    "-4.0",
+    "-2.0",
+    "0.0",
+    "2.0",
+    "4.0",
+    "6.0",
+    "8.0",
+    "10.0"
+   ]
+  },
+  {
+   "arm": "C-awgn-M",
+   "model": "vibrmamba",
+   "n": 5,
+   "level": "BEHAVIORAL",
+   "mae": 0.0293,
+   "best_epochs": [
+    3,
+    3,
+    4,
+    3,
+    17
+   ],
+   "pb_best_val": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "collapsed_best": {},
+   "collapsed_final": {},
+   "n_coll_best": 0,
+   "n_coll_final": 0,
+   "unfused": false,
+   "snr_grid": [
+    "-8.0",
+    "-6.0",
+    "-4.0",
+    "-2.0",
+    "0.0",
+    "2.0",
+    "4.0",
+    "6.0",
+    "8.0",
+    "10.0"
+   ]
+  },
+  {
+   "arm": "C-awgn-M",
+   "model": "mamba2",
+   "n": 5,
+   "level": "BEHAVIORAL",
+   "mae": 0.0168,
+   "best_epochs": [
+    5,
+    4,
+    5,
+    11,
+    4
+   ],
+   "pb_best_val": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "collapsed_best": {},
+   "collapsed_final": {},
+   "n_coll_best": 0,
+   "n_coll_final": 0,
+   "unfused": true,
+   "snr_grid": [
+    "-8.0",
+    "-6.0",
+    "-4.0",
+    "-2.0",
+    "0.0",
+    "2.0",
+    "4.0",
+    "6.0",
+    "8.0",
+    "10.0"
+   ]
+  },
+  {
+   "arm": "J",
+   "model": "cnn1d",
+   "n": 5,
+   "level": "BEHAVIORAL",
+   "mae": 0.003,
+   "best_epochs": [
+    23,
+    32,
+    50,
+    73,
+    73
+   ],
+   "pb_best_val": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "collapsed_best": {
+    "-8.0": [
+     97.0,
+     {
+      "Ball": 5
+     }
+    ]
+   },
+   "collapsed_final": {
+    "-8.0": [
+     96.8,
+     {
+      "Ball": 5
+     }
+    ]
+   },
+   "n_coll_best": 1,
+   "n_coll_final": 1,
+   "unfused": false,
+   "snr_grid": [
+    "-8.0",
+    "-4.0",
+    "0.0"
+   ]
+  },
+  {
+   "arm": "J",
+   "model": "wdcnn",
+   "n": 5,
+   "level": "BEHAVIORAL",
+   "mae": 0.0054,
+   "best_epochs": [
+    54,
+    23,
+    11,
+    16,
+    10
+   ],
+   "pb_best_val": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "collapsed_best": {},
+   "collapsed_final": {},
+   "n_coll_best": 0,
+   "n_coll_final": 0,
+   "unfused": false,
+   "snr_grid": [
+    "-8.0",
+    "-4.0",
+    "0.0"
+   ]
+  },
+  {
+   "arm": "J",
+   "model": "drsn",
+   "n": 5,
+   "level": "BEHAVIORAL",
+   "mae": 0.0036,
+   "best_epochs": [
+    88,
+    81,
+    70,
+    63,
+    88
+   ],
+   "pb_best_val": [
+    0.9974,
+    0.9957,
+    0.9983,
+    0.9966,
+    0.9983
+   ],
+   "collapsed_best": {},
+   "collapsed_final": {
+    "-8.0": [
+     92.6,
+     {
+      "Ball": 3,
+      "IR": 2
+     }
+    ]
+   },
+   "n_coll_best": 0,
+   "n_coll_final": 1,
+   "unfused": false,
+   "snr_grid": [
+    "-8.0",
+    "-4.0",
+    "0.0"
+   ]
+  },
+  {
+   "arm": "J",
+   "model": "lstm",
+   "n": 5,
+   "level": "BEHAVIORAL",
+   "mae": 0.0035,
+   "best_epochs": [
+    56,
+    50,
+    52,
+    54,
+    58
+   ],
+   "pb_best_val": [
+    0.9906,
+    0.9863,
+    0.9914,
+    0.9931,
+    0.9906
+   ],
+   "collapsed_best": {
+    "0.0": [
+     90.9,
+     {
+      "IR": 5
+     }
+    ]
+   },
+   "collapsed_final": {},
+   "n_coll_best": 1,
+   "n_coll_final": 0,
+   "unfused": false,
+   "snr_grid": [
+    "-8.0",
+    "-4.0",
+    "0.0"
+   ]
+  },
+  {
+   "arm": "J",
+   "model": "transformer",
+   "n": 5,
+   "level": "BEHAVIORAL",
+   "mae": 0.013,
+   "best_epochs": [
+    88,
+    70,
+    53,
+    79,
+    41
+   ],
+   "pb_best_val": [
+    0.9674,
+    0.9674,
+    0.9657,
+    0.9683,
+    0.97
+   ],
+   "collapsed_best": {
+    "-8.0": [
+     96.2,
+     {
+      "IR": 5
+     }
+    ]
+   },
+   "collapsed_final": {
+    "-8.0": [
+     93.7,
+     {
+      "IR": 5
+     }
+    ]
+   },
+   "n_coll_best": 1,
+   "n_coll_final": 1,
+   "unfused": false,
+   "snr_grid": [
+    "-8.0",
+    "-4.0",
+    "0.0"
+   ]
+  },
+  {
+   "arm": "J-M",
+   "model": "vibrmamba",
+   "n": 5,
+   "level": "BEHAVIORAL",
+   "mae": 0.0048,
+   "best_epochs": [
+    47,
+    14,
+    34,
+    56,
+    14
+   ],
+   "pb_best_val": [
+    0.9897,
+    0.9897,
+    0.9906,
+    0.9914,
+    0.988
+   ],
+   "collapsed_best": {},
+   "collapsed_final": {},
+   "n_coll_best": 0,
+   "n_coll_final": 0,
+   "unfused": false,
+   "snr_grid": [
+    "-8.0",
+    "-4.0",
+    "0.0"
+   ]
+  },
+  {
+   "arm": "J-M",
+   "model": "mamba2",
+   "n": 5,
+   "level": "BEHAVIORAL",
+   "mae": 0.0049,
+   "best_epochs": [
+    24,
+    11,
+    16,
+    35,
+    13
+   ],
+   "pb_best_val": [
+    0.9871,
+    0.9871,
+    0.9889,
+    0.9889,
+    0.9846
+   ],
+   "collapsed_best": {},
+   "collapsed_final": {},
+   "n_coll_best": 0,
+   "n_coll_final": 0,
+   "unfused": true,
+   "snr_grid": [
+    "-8.0",
+    "-4.0",
+    "0.0"
+   ]
+  }
+ ],
+ "H1": {
+  "k": 20,
+  "n": 30,
+  "label": "NOT_SUPPORTED",
+  "pool": [
+   [
+    "C-clean",
+    "lstm",
+    0,
+    2
+   ],
+   [
+    "C-clean",
+    "lstm",
+    1,
+    2
+   ],
+   [
+    "C-clean",
+    "lstm",
+    2,
+    2
+   ],
+   [
+    "C-clean",
+    "lstm",
+    3,
+    2
+   ],
+   [
+    "C-clean",
+    "lstm",
+    4,
+    2
+   ],
+   [
+    "C-clean",
+    "transformer",
+    0,
+    1
+   ],
+   [
+    "C-clean",
+    "transformer",
+    1,
+    4
+   ],
+   [
+    "C-clean",
+    "transformer",
+    2,
+    1
+   ],
+   [
+    "C-clean",
+    "transformer",
+    3,
+    2
+   ],
+   [
+    "C-clean",
+    "transformer",
+    4,
+    2
+   ],
+   [
+    "C-clean-M",
+    "vibrmamba",
+    0,
+    2
+   ],
+   [
+    "C-clean-M",
+    "vibrmamba",
+    1,
+    2
+   ],
+   [
+    "C-clean-M",
+    "vibrmamba",
+    2,
+    2
+   ],
+   [
+    "C-clean-M",
+    "vibrmamba",
+    3,
+    2
+   ],
+   [
+    "C-clean-M",
+    "vibrmamba",
+    4,
+    2
+   ],
+   [
+    "C-m2",
+    "mamba2",
+    0,
+    1
+   ],
+   [
+    "C-m2",
+    "mamba2",
+    1,
+    1
+   ],
+   [
+    "C-m2",
+    "mamba2",
+    2,
+    1
+   ],
+   [
+    "C-m2",
+    "mamba2",
+    3,
+    1
+   ],
+   [
+    "C-m2",
+    "mamba2",
+    4,
+    1
+   ],
+   [
+    "J",
+    "cnn1d",
+    0,
+    23
+   ],
+   [
+    "J",
+    "cnn1d",
+    1,
+    32
+   ],
+   [
+    "J",
+    "cnn1d",
+    2,
+    50
+   ],
+   [
+    "J",
+    "cnn1d",
+    3,
+    73
+   ],
+   [
+    "J",
+    "cnn1d",
+    4,
+    73
+   ],
+   [
+    "J",
+    "wdcnn",
+    0,
+    54
+   ],
+   [
+    "J",
+    "wdcnn",
+    1,
+    23
+   ],
+   [
+    "J",
+    "wdcnn",
+    2,
+    11
+   ],
+   [
+    "J",
+    "wdcnn",
+    3,
+    16
+   ],
+   [
+    "J",
+    "wdcnn",
+    4,
+    10
+   ]
+  ]
+ }
+}
