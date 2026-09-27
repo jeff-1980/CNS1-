@@ -94,18 +94,18 @@ Instances whose dominant class differed between realizations (both aggregation o
 
 The hashes show that each preregistration was not modified after it was registered; they do not prove to a third party when it was written.
 
-| 实验 | 性质 | 预注册文件（mtime） | 结果文件（最后写入） | 规模 |
+| experiment | type | preregistration file (mtime) | result file (last write) | size |
 |---|---|---|---|---|
-| 2×2 coverage × ratio | training | `PREREG_2x2_coverage_ratio.md`（2026-09-23 20:03） | `arm2x2.json`（2026-09-23 20:58） | 60 instances, ~54 min |
-| E1/E2/E3 (cnn1d factorial, size vs file count, lstm/transformer) | training | `PREREG_ext_cnn1d_size_arch.md`（2026-09-23 21:09） | `arm2x2_lt.json`（2026-09-24 02:49） | 3 chained runs |
-| E4 reference protocol | training | `PREREG_E4_paperB_checkpoint.md`（2026-09-24 06:52） | `e4_paperB_harness.json`（2026-09-24 07:21） | 15 instances |
-| WP1 reference-protocol baseline | training | `PREREG_WP1_protocol_baseline.md`（2026-09-24 09:38） | `wp1_cwru_clean.json`（2026-09-24 12:05） | 92 instances |
-| WP2 PU damage extent | training | `PREREG_WP2_pu_extent.md`（2026-09-24 23:46） | `wp2_R.json`（2026-09-25 00:56） | 110 instances |
-| WP5 decision consequence | inference on existing weights (frozen before analysis) | `PREREG_WP5_decision_consequence.md`（2026-09-25 12:08） | `wp5_main.json`（2026-09-25 17:44） | 350 weights |
-| B line development | inference / rule selection | `PREREG_B_hierarchical_attractor.md`（2026-09-25 12:21） | `b_dev.json`（2026-09-25 13:56） | existing weights |
-| B line confirmation | training (rule frozen before) | `B_RULE_FREEZE.md`（2026-09-25 13:57） | `b_confirm.json`（2026-09-25 17:37） | new instances |
-| E5 size identification | training | `PREREG_E5_size_identification.md`（2026-09-25 22:21） | `e5_size_id.json`（2026-09-26 05:01） | 189 instances |
-| C-INIT fixed-initialization confirmation | training | `PREREG_CINIT_confirmation.md`（2026-09-26 09:02） | `cinit_e5.json`（2026-09-26 17:25） | 269 instances |
+| 2×2 coverage × ratio | training | `PREREG_2x2_coverage_ratio.md` (2026-09-23 20:03) | `arm2x2.json` (2026-09-23 20:58) | 60 instances, ~54 min |
+| E1/E2/E3 (cnn1d factorial, size vs file count, lstm/transformer) | training | `PREREG_ext_cnn1d_size_arch.md` (2026-09-23 21:09) | `arm2x2_lt.json` (2026-09-24 02:49) | 3 chained runs |
+| E4 reference protocol | training | `PREREG_E4_paperB_checkpoint.md` (2026-09-24 06:52) | `e4_paperB_harness.json` (2026-09-24 07:21) | 15 instances |
+| WP1 reference-protocol baseline | training | `PREREG_WP1_protocol_baseline.md` (2026-09-24 09:38) | `wp1_cwru_clean.json` (2026-09-24 12:05) | 92 instances |
+| WP2 PU damage extent | training | `PREREG_WP2_pu_extent.md` (2026-09-24 23:46) | `wp2_R.json` (2026-09-25 00:56) | 110 instances |
+| WP5 decision consequence | inference on existing weights (frozen before analysis) | `PREREG_WP5_decision_consequence.md` (2026-09-25 12:08) | `wp5_main.json` (2026-09-25 17:44) | 350 weights |
+| B line development | inference / rule selection | `PREREG_B_hierarchical_attractor.md` (2026-09-25 12:21) | `b_dev.json` (2026-09-25 13:56) | existing weights |
+| B line confirmation | training (rule frozen before) | `B_RULE_FREEZE.md` (2026-09-25 13:57) | `b_confirm.json` (2026-09-25 17:37) | new instances |
+| E5 size identification | training | `PREREG_E5_size_identification.md` (2026-09-25 22:21) | `e5_size_id.json` (2026-09-26 05:01) | 189 instances |
+| C-INIT fixed-initialization confirmation | training | `PREREG_CINIT_confirmation.md` (2026-09-26 09:02) | `cinit_e5.json` (2026-09-26 17:25) | 269 instances |
 
 ## Table S5. PU: dominant class at −8 dB on bearings seen in training versus all test bearings (109/110 instances unchanged)
 

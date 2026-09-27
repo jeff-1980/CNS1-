@@ -35,6 +35,8 @@ L += ["", "## Table S3. E5 file draws (one recording per class and size in each 
 for k in sorted({k for _, k in draws}): L.append(f"| {k} | " + " | ".join(draws.get((d, k), "—") for d in (0, 1, 2)) + " |")
 # S4
 tl = (R / "PREREG_TIMELINE.md").read_text(); tab = [l for l in tl.splitlines() if l.startswith("|")]
+tab = [l.replace("（", " (").replace("）", ")") for l in tab]
+tab[0] = "| experiment | type | preregistration file (mtime) | result file (last write) | size |"
 L += ["", "## Table S4. Preregistration timeline (file modification times on the local file system; hashes in `registry/`)", "", "The hashes show that each preregistration was not modified after it was registered; they do not prove to a third party when it was written.", ""] + tab
 # S5
 p = J("pu_seen_reanalysis_summary.json")
