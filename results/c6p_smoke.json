@@ -1,0 +1,87 @@
+{
+ "d1": {
+  "budget": 230,
+  "classes": [
+   "NORM",
+   "MI",
+   "STTC",
+   "CD"
+  ],
+  "orders": {
+   "MI": [
+    "IMI",
+    "AMI"
+   ],
+   "STTC": [
+    "STTC",
+    "NST_",
+    "ISCA"
+   ],
+   "CD": [
+    "LAFB/LPFB",
+    "CLBBB",
+    "IRBBB"
+   ]
+  },
+  "deviations": [
+   "MI: 无满足配额 76 的子类 c，S_ALL 只用 a/b"
+  ],
+  "avail": {
+   "MI": {
+    "IMI": 393,
+    "AMI": 356,
+    "LMI": 1
+   },
+   "STTC": {
+    "STTC": 1087,
+    "NST_": 319,
+    "ISCA": 125,
+    "ISCI": 58,
+    "ISC_": 17
+   },
+   "CD": {
+    "LAFB/LPFB": 313,
+    "CLBBB": 285,
+    "IRBBB": 232,
+    "CRBBB": 75,
+    "IVCD": 65,
+    "WPW": 50,
+    "_AVB": 45,
+    "ILBBB": 2
+   },
+   "HYP": {
+    "LVH": 68,
+    "LAO/LAE": 13,
+    "RAO/RAE": 10,
+    "SEHYP": 3
+   }
+  }
+ },
+ "d2": {
+  "classes": [
+   "large_natural_outdoor_scenes",
+   "fish",
+   "flowers",
+   "vehicles_1"
+  ],
+  "ab": {
+   "fish": [
+    "aquarium_fish",
+    "flatfish"
+   ],
+   "flowers": [
+    "orchid",
+    "poppy"
+   ],
+   "vehicles_1": [
+    "bicycle",
+    "bus"
+   ]
+  }
+ },
+ "awgn_cwru_input": "CWRU 100.mat:X100_DE_time（真实窗口，逐窗 z-score）",
+ "awgn_image_measured_snr": {
+  "10.0": 9.994624137878418,
+  "-8.0": -8.005375862121582
+ }
+}
