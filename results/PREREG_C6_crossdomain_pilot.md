@@ -1,6 +1,6 @@
-# 预注册（草案）C6-P：训练覆盖决定强噪声失效吸引子——跨域小试点
+# 预注册 C6-P：训练覆盖决定强噪声失效吸引子——跨域小试点
 
-> **状态：草案，未冻结。** 2026-10-11 起草，写于任何 C6-P 数据下载、训练或评估之前。
+> **状态：已冻结（2026-10-12，经 Jeff 确认），写于任何 C6-P 训练与评估之前。** SHA256 登记在 `results/registry/prereg_c6p_sha256.txt`，`analyze_c6p.py` 运行时校验。OSF 第三方时间戳待 Jeff 上传后补记到 `results/registry/prereg_c6p_timestamp.txt`。§9 冒烟在冻结前运行（只构造数据与检查噪声），见 `DEVIATIONS_C6P.md`。
 > 冻结流程（经 Jeff 确认后）：① 定稿；② SHA256 登记到 `results/registry/prereg_c6p_sha256.txt`；③ 上传 OSF Registries 取得第三方时间戳（`PREREG_TIMELINE.md` 自己的建议），时间戳写入 `results/registry/prereg_c6p_timestamp.txt`；④ 才允许跑 §9 的冒烟检查。
 > 上游：`VERDICT_thesis_falsified.md` §三（C6 未检验）、`VERDICT_E5.md`（ANY_LARGER_SIZE）、`VERDICT_CINIT.md`（NARROW）。
 > 本试点**不改变任何已有判定**，也不进入 MSSP 稿件。
