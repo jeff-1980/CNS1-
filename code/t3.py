@@ -212,6 +212,8 @@ def calib(cands):
             D[c] = domain(c); fc = feas.setdefault(c, {})
             for m in ARCHS:
                 if m in fc: continue
+                if sum(not v["reached"] for v in fc.values()) > len(ARCHS) - 2:   # 已有 2 个架构不达标：无论其余结果如何都不可行（DEVIATIONS_T3.md 第 6 条）
+                    fc[m] = dict(skipped="候选已确定不可行，未训练", reached=False); save(); continue
                 rows = []
                 for T in N_HI_GRID:
                     rows.append(run(c, m, T))
