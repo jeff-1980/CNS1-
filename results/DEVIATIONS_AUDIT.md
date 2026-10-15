@@ -11,3 +11,4 @@
 | 2026-10-15 | P3 UDTL | 运行脚本的“已完成跳过”检查查错了日志名（UDTL 写 `train.log`，不是 `training.log`），已改 | 仅影响重跑时是否跳过 | 无：20 次都是完整新跑 |
 | 2026-10-15 | P5 pdm-bench | 不改源码，经 `code/audit/ext/pdm_hook.py` 在每轮结束时用作者的 evaluate 与损失函数在 test 上多评估一次（RNG 与模型模式隔离），得到逐 epoch 的 test 曲线；作者口径 = 最后一轮，另报 best（按 test 挑） | 作者代码只在最后一轮评估 test、无验证集，没有逐 epoch 记录就算不出替代协议 | 训练轨迹不变（评估不更新参数，RNG 已隔离）；最后一轮记录与作者 TEST 结果逐次核对 |
 | 2026-10-15 | P5 pdm-bench | 只跑 cwru_cross_load，4 个 DL 模型（cnn1d / fft / stft / mlp），作者 "long" 档，种子 41–45；数据用本机 CWRU 12k DE 的 10 类文件按 Kaggle 目录建软链接，不含 0.028 与外圈 @3/@12 | 试点规模；本机没有 Kaggle 版全集 | 测试集类别构成与作者完整数据不同，结果只用于协议比较，不与原文数值对照 |
+| 2026-10-16 | P5 pdm-bench | 运行时多传 `--config-path $PDM_DIR/config`（commit dda8f25）；CWRU 软链接源为 `~/audit_ext/data/cwru_udtl`（四个负载齐全），最终指向 `~/论文CNS/data/cwru_12k_de` 原文件；xgboost 以 --no-deps 安装 | 由审计钩子导入后调用 Hydra main 时，相对 config_path 被当成包路径；`cwru_zhao` 只有 load 0；DL 流水线不用 xgboost | 无：作者代码与配置未改，20 次最后一轮记录均与作者 TEST 一致 |
