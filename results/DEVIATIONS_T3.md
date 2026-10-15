@@ -6,3 +6,4 @@
 2. **§4.1 可行性的执行顺序**（实现说明）。每个架构按步数网格从小到大训练，达到 0.95 即停，与“取最小步数”等价
 3. **N1 数据读取**（实现说明）。直接从压缩包读取四个词的 wav 与两个划分列表，不解压整个数据集；缓存 `~/论文CNS/data/t3_cache/speech4.npz` 在仓库外
 4. **`BASE_DOMINATED` 的“训练集多数类”**（实现说明）。按干净训练标签计数取最大类；多个类并列最大（如 CWRU 每类 475）时视为没有多数类，该格不触发此标注
+5. **N2 的来源与读取**（实现说明，写于 N2 下载与任何 N2 训练之前）。timeseriesclassification.com 的单数据集下载地址在 Jeff 本机返回网页而非压缩包。`slc_data` 同时接受单数据集包（`StarLightCurves_TRAIN.txt`）和 UCR 2018 官方整包（`StarLightCurves/StarLightCurves_TRAIN.tsv`，档案公开口令）。两者是同一份 UCR 数据与同一官方划分，预注册 §1 的定义不变；实际使用的文件与 SHA256 登记在 `raw_hashes_t3.csv`

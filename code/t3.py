@@ -81,8 +81,9 @@ def slc_data():
     """N2：StarLightCurves，UCR 官方训练 / 测试划分，K = 3，长度 1024；标签 1..3 → 0..2。"""
     with zipfile.ZipFile(SLC_ZIP) as zf:
         def rd(part):
-            nm = [n for n in zf.namelist() if n.endswith(f"StarLightCurves_{part}.txt")][0]
-            a = np.loadtxt(zf.open(nm)); return torch.from_numpy(a[:, 1:][:, None].astype(np.float32)), torch.from_numpy(a[:, 0].astype(int) - 1).long()
+            # 单数据集包（StarLightCurves_TRAIN.txt）或 UCR 2018 整包（StarLightCurves/StarLightCurves_TRAIN.tsv，口令为档案公开的 someone）；两者是同一份数据
+            nm = [n for n in zf.namelist() if n.endswith((f"StarLightCurves_{part}.txt", f"StarLightCurves_{part}.tsv"))][0]
+            a = np.loadtxt(zf.open(nm, pwd=b"someone")); return torch.from_numpy(a[:, 1:][:, None].astype(np.float32)), torch.from_numpy(a[:, 0].astype(int) - 1).long()
         Xtr, ytr = rd("TRAIN"); Xte, yte = rd("TEST")
     return Xtr, ytr, Xte, yte, {}
 
