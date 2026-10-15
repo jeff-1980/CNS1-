@@ -11,7 +11,7 @@ for t in $TASKS; do
   for method in basis adabn; do
     for r in $REPS; do
       d="$OUT_DIR/p3/t${tn}_${method}/rep${r}"
-      if ls "$d"/*/training.log >/dev/null 2>&1 && grep -q "Epoch: 299 target_val-Loss" "$d"/*/training.log; then echo "skip $tn $method rep$r"; continue; fi
+      if ls "$d"/*/train.log >/dev/null 2>&1 && grep -q "Epoch: 299 target_val-Loss" "$d"/*/train.log; then echo "skip $tn $method rep$r"; continue; fi
       rm -rf "$d"; mkdir -p "$d"
       echo "=== task $t $method rep$r $(date -Is) ==="
       if [ "$method" = basis ]; then extra=(--adabn ""); else extra=(); fi

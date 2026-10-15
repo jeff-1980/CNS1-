@@ -13,7 +13,7 @@ LOG_RE = re.compile(r"Epoch: (\d+) (\S+)-Loss: ([\d.naninf]+) \S+-Acc: ([\d.nani
 
 
 def parse_log(path, phase):
-    """Zhao / UDTL 的 training.log：返回按 epoch 排序的 (acc, loss)。phase = 'val'（Zhao）或 'target_val'（UDTL）。"""
+    """Zhao 的 training.log / UDTL 的 train.log：返回按 epoch 排序的 (acc, loss)。phase = 'val'（Zhao）或 'target_val'（UDTL）。"""
     rows = {}
     for line in open(path, errors="replace"):
         m = LOG_RE.search(line)
@@ -44,7 +44,7 @@ def protocols(acc, loss):
 
 
 def find_record(run_dir, kind):
-    pat = {"zhao": "**/training.log", "udtl": "**/training.log", "tfn": "**/Records.mat"}[kind]
+    pat = {"zhao": "**/training.log", "udtl": "**/train.log", "tfn": "**/Records.mat"}[kind]
     hits = sorted(glob.glob(os.path.join(run_dir, pat), recursive=True))
     if len(hits) != 1: raise ValueError(f"{run_dir}: expected 1 record, found {len(hits)}")
     return hits[0]
@@ -59,10 +59,12 @@ def main():
     for d in a.run_dirs:
         rec = find_record(d, a.kind)
         acc, loss = parse_tfn(rec) if a.kind == "tfn" else parse_log(rec, "val" if a.kind == "zhao" else "target_val")
-        out.append(dict(run_dir=os.path.abspath(d), record=rec, n_epochs=len(acc), acc_curve=acc, loss_curve=loss,
+        rd = os.path.abspath(d).rstrip("/")
+        group, rep = os.path.basename(os.path.dirname(rd)), os.path.basename(rd)
+        out.append(dict(run_dir=rd, group=group, rep=rep, record=rec, n_epochs=len(acc), acc_curve=acc, loss_curve=loss,
                         protocols=protocols(acc, loss)))
         p = out[-1]["protocols"]
-        print(os.path.basename(d.rstrip("/")), " ".join(f"{k}=ep{v['epoch']}:{v['acc']:.4f}" for k, v in p.items()))
+        print(group, rep, " ".join(f"{k}=ep{v['epoch']}:{v['acc']:.4f}" for k, v in p.items()))
     json.dump(out, open(a.out, "w"), indent=1)
 
 
