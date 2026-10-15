@@ -9,6 +9,7 @@
 | `adapters/paperb.py` | P1 paperB 适配器，逐行对应 E4 的 `run_one` |
 | `provenance.py` | §3.4 溯源检验 d(epoch) |
 | `run_audit.py` | 命令行入口 |
+| `partI_reanalysis.py` | 第 I 部分（论文A）再分析：配对 t 检验判决改变、BH-FDR、符号翻转零假设下的反转期望、架构对层级、5 种子子集分布（§0b） |
 | `test_harness_core.py` | 纯 numpy 的逻辑测试（含“隔离失效能被检出”） |
 
 在 `code/` 目录下运行。数据与 paperB 代码路径和 E4 相同，由环境变量指定；jeff-work 上是：
