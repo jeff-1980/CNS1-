@@ -8,7 +8,7 @@
      （对每个种子随机翻转配对差的符号，两准则用同一翻转，保留准则间相关；默认 2000 次）；
      并在“架构对”层级（对噪声档取平均后再检验）报告
   1. 种子数 ≥ 20 时，另报 200 个随机 5 种子子集的反转数与不可判定率分布（种子数不足时注明不适用）
-在 code/ 下运行：python -m audit.partI_reanalysis RUNS_DIR --scenario jnu --out OUT.json [--md OUT.md]"""
+在 code/ 下运行：python -m audit.partI_reanalysis RUNS_DIR [RUNS_DIR ...] --scenario jnu --out OUT.json [--md OUT.md]"""
 import argparse, glob, itertools, json, math, os, random, re
 import numpy as np
 
@@ -83,16 +83,19 @@ def _acc_table(rec):
     return out
 
 
-def load(runs_dir, scenario):
+def load(runs_dirs, scenario):
+    """runs_dirs：一个或多个目录（如论文A 的 seed 0–4 与 5–19 两代）。同一 (model, seed) 出现两次即报错。"""
     pat = re.compile(rf"^{re.escape(scenario)}_(.+)_(\d+)\.json$")
     data = {}
-    for f in sorted(glob.glob(os.path.join(runs_dir, "*.json"))):
+    files = sorted(f for d in runs_dirs for f in glob.glob(os.path.join(d, "*.json")))
+    for f in files:
         m = pat.match(os.path.basename(f))
         if not m: continue
         rec = json.load(open(f))
         model, seed = rec.get("model", m.group(1)), int(rec.get("seed", m.group(2)))
+        if (model, seed) in data: raise SystemExit(f"duplicate run {(model, seed)}: {f}")
         data[(model, seed)] = _acc_table(rec)
-    if not data: raise SystemExit(f"no runs for scenario {scenario} in {runs_dir}")
+    if not data: raise SystemExit(f"no runs for scenario {scenario} in {runs_dirs}")
     models = sorted({k[0] for k in data}); seeds = sorted({k[1] for k in data})
     missing = [(m, s) for m in models for s in seeds if (m, s) not in data]
     if missing: raise SystemExit(f"incomplete grid, missing {missing[:5]}…")
@@ -212,16 +215,16 @@ def to_md(out):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("runs_dir"); ap.add_argument("--scenario", required=True)
+    ap.add_argument("runs_dirs", nargs="+"); ap.add_argument("--scenario", required=True)
     ap.add_argument("--out", required=True); ap.add_argument("--md")
     ap.add_argument("--n-perm", type=int, default=2000); ap.add_argument("--subsets", type=int, default=200)
     ap.add_argument("--seed", type=int, default=20261015)
     a = ap.parse_args()
     rng = np.random.default_rng(a.seed)
-    A, models, seeds, snrs = load(a.runs_dir, a.scenario)
+    A, models, seeds, snrs = load(a.runs_dirs, a.scenario)
     primary = [("first100", "last")]
     others = [p for p in itertools.combinations(CRITERIA, 2) if p != ("first100", "last")]
-    out = dict(scenario=a.scenario, runs_dir=os.path.abspath(a.runs_dir), models=models, seeds=seeds, snrs=snrs,
+    out = dict(scenario=a.scenario, runs_dir=[os.path.abspath(d) for d in a.runs_dirs], models=models, seeds=seeds, snrs=snrs,
                rng_seed=a.seed, primary=list(primary[0]), pairs=[])
     for c1, c2 in primary + others:
         out["pairs"].append(analyse_pair(A, models, seeds, snrs, c1, c2, a.n_perm if (c1, c2) in primary else 0, rng, a.subsets))
