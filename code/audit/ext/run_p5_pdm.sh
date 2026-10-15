@@ -14,7 +14,7 @@ for m in $MODELS; do
     if [ -f "$d/epochs.json" ]; then echo "skip $m seed$s"; continue; fi
     rm -rf "$d"; mkdir -p "$d"
     echo "=== $m seed$s $(date -Is) ==="
-    PDM_EPOCH_LOG="$d/epochs.json" "$AUDIT_PY" -m audit.ext.pdm_hook "task=cwru_cross_load/$m" \
+    PDM_EPOCH_LOG="$d/epochs.json" "$AUDIT_PY" -m audit.ext.pdm_hook --config-path "$PDM_DIR/config" "task=cwru_cross_load/$m" \
       "run.output_dir=$d/artifacts" "+train.random_state=$s" \
       train.epochs=$EPOCHS train.batch_size=64 train.num_workers=0 windowing.train_overlap=0.75 windowing.test_overlap=0.5 \
       > "$d/stdout.txt" 2>&1 || echo "FAILED $m seed$s (see $d/stdout.txt)"

@@ -5,8 +5,8 @@ pdm-bench 只在最后一轮评估 test、没有验证集，作者口径就是�
 不改源码：只替换引擎模块里的 make_model / _build_training_objects / _prepare_dataloaders / _log_epoch_line
 四个名字，取到模型、损失函数和 test loader。结束时核对最后一轮的记录与作者自己的 TEST 结果是否一致（cudnn.benchmark 下可能有极小差异，只记录不中断）。
 
-用法（hydra 参数原样透传）：
-  PDM_EPOCH_LOG=/abs/out.json PYTHONPATH=$PDM_DIR/src python -m audit.ext.pdm_hook task=cwru_cross_load/cnn1d ..."""
+用法（hydra 参数原样透传；由导入的模块调用 main 时相对 config_path 失效，须给绝对 --config-path）：
+  PDM_EPOCH_LOG=/abs/out.json PYTHONPATH=$PDM_DIR/src python -m audit.ext.pdm_hook --config-path $PDM_DIR/config task=cwru_cross_load/cnn1d ..."""
 import json, os, sys
 import torch
 from audit.torch_utils import isolate
