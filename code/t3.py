@@ -184,6 +184,8 @@ def smoke(news):
     if os.path.exists(reg):
         old = pd.read_csv(reg); bad = [r["path"] for r in rows if r["path"] in set(old.path) and old.set_index("path").sha256[r["path"]] != r["sha256"]]
         print(f"[哈希] 新领域原始文件与登记表不符：{bad or '无'}")
+        add = [r for r in rows if r["path"] not in set(old.path)]
+        if add: pd.concat([old, pd.DataFrame(add)]).to_csv(reg, index=False); print(f"[哈希] 新增登记：{add}")
     else:
         pd.DataFrame(rows).to_csv(reg, index=False); print(f"[哈希] 首次登记 {reg}：{rows}")
     print("[SMOKE] 完成（未训练）")
