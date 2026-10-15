@@ -86,6 +86,9 @@ def fmt(x): return f"{x:.4f}"
 
 
 def to_md(name, G, strata_re):
+    global PROTOCOLS   # 各对象的协议集合取自 JSON（P5 多一个 best = 按 test 挑）
+    PROTOCOLS = tuple(next(iter(next(iter(G.values())).values()))["protocols"])
+    extra = "best" in PROTOCOLS
     H, T = h1(G), table(G)
     res, cnt, rank, rch, npairs = flips(T, strata_re)
     L = [f"## {name}", "", f"组数 {len(T)}，每组 rep 数 {sorted({len(v) for v in G.values()})}，比较对数 {npairs}"
@@ -94,10 +97,13 @@ def to_md(name, G, strata_re):
     for g, r in H.items():
         L.append(f"| {g} | {r['early']}/{r['n']} | {r['limit']} | {', '.join('—' if f is None else str(f) for f in r['first'])} |")
     L += ["", "### 各协议下的报告值（均值 ± 标准差；括号内为排名）", "",
-          "| 组 | " + " | ".join(PROTOCOLS) + " | author − last | author 所选 epoch |", "|---|" + "---|" * (len(PROTOCOLS) + 2)]
+          "| 组 | " + " | ".join(PROTOCOLS) + " | author − last |" + (" best − author |" if extra else "") + " author 所选 epoch（P5 为 best 所选）|",
+          "|---|" + "---|" * (len(PROTOCOLS) + 2 + extra)]
     for g in T:
         cells = [f"{fmt(T[g][p].mean())} ± {fmt(T[g][p].std(ddof=1))} ({rank[p][g]})" for p in PROTOCOLS]
-        L.append(f"| {g} | " + " | ".join(cells) + f" | {fmt((T[g]['author'] - T[g]['last']).mean())} | {', '.join(map(str, T[g]['_epochs']['author']))} |")
+        L.append(f"| {g} | " + " | ".join(cells) + f" | {fmt((T[g]['author'] - T[g]['last']).mean())} |"
+                 + (f" {fmt((T[g]['best'] - T[g]['author']).mean())} |" if extra else "")
+                 + f" {', '.join(map(str, T[g]['_epochs'][('best' if extra else 'author')]))} |")
     L += ["", "### 相对作者默认协议的结论变化（配对 t，α=0.05；括号内为协议内 BH-FDR 后）", "",
           "| 协议 | 新增显著 | 显著消失 | 方向反转 | 均值排名反序的组对 |", "|---|---|---|---|---|"]
     for p, c in cnt.items():
