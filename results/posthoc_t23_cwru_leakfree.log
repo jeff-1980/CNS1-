@@ -1,0 +1,17 @@
+Test_40 Normal 窗口在（旧加载器的）训练池中有副本：944/944；测试集大小 {'orig': (3073, 944), 'N100': (3076, 947), 'N099': (3075, 946)}
+orig 复现记录的 clean_acc：150/150
+T2 strong     wdcnn  n=10 干净准确率 orig 0.944  N100 0.944  N099 0.944   Normal 召回 orig 1.000  N100 1.000  N099 1.000
+T2 weak_steps wdcnn  n=10 干净准确率 orig 0.938  N100 0.938  N099 0.938   Normal 召回 orig 1.000  N100 1.000  N099 1.000
+T2 weak_label wdcnn  n=10 干净准确率 orig 0.547  N100 0.550  N099 0.567   Normal 召回 orig 0.571  N100 0.579  N099 0.634
+T2 strong     drsn   n=10 干净准确率 orig 0.994  N100 0.994  N099 0.994   Normal 召回 orig 1.000  N100 1.000  N099 1.000
+T2 weak_steps drsn   n=10 干净准确率 orig 0.839  N100 0.840  N099 0.840   Normal 召回 orig 1.000  N100 1.000  N099 1.000
+T2 weak_label drsn   n=10 干净准确率 orig 0.635  N100 0.582  N099 0.616   Normal 召回 orig 0.702  N100 0.532  N099 0.641
+T2 strong     lstm   n=10 干净准确率 orig 0.988  N100 0.988  N099 0.988   Normal 召回 orig 1.000  N100 1.000  N099 1.000
+T2 weak_steps lstm   n=10 干净准确率 orig 0.601  N100 0.601  N099 0.601   Normal 召回 orig 1.000  N100 1.000  N099 1.000
+T2 weak_label lstm   n=10 干净准确率 orig 0.558  N100 0.530  N099 0.546   Normal 召回 orig 0.746  N100 0.655  N099 0.707
+T3 hi         wdcnn  n=10 干净准确率 orig 0.943  N100 0.943  N099 0.943   Normal 召回 orig 1.000  N100 1.000  N099 1.000
+T3 lo         wdcnn  n=10 干净准确率 orig 0.770  N100 0.764  N099 0.787   Normal 召回 orig 0.790  N100 0.769  N099 0.845
+T3 hi         drsn   n=10 干净准确率 orig 0.994  N100 0.994  N099 0.994   Normal 召回 orig 1.000  N100 1.000  N099 1.000
+T3 lo         drsn   n=10 干净准确率 orig 0.760  N100 0.712  N099 0.746   Normal 召回 orig 0.794  N100 0.638  N099 0.748
+T3 hi         lstm   n=10 干净准确率 orig 0.979  N100 0.979  N099 0.979   Normal 召回 orig 1.000  N100 1.000  N099 1.000
+T3 lo         lstm   n=10 干净准确率 orig 0.708  N100 0.696  N099 0.704   Normal 召回 orig 0.888  N100 0.848  N099 0.875

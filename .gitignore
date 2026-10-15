@@ -4,3 +4,7 @@ results/ckpt_*/
 __pycache__/
 *.pyc
 .mpl/
+!code/pbx/
+!code/pbx/data/
+code/pbx/data/*
+!code/pbx/data/cwru_loader.py
