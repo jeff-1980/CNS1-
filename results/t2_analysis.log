@@ -1,0 +1,25 @@
+wdcnn  步数弱化 INDETERMINATE ΔS=+0.145[0.056, 0.208] ΔD=+0.635[0.547, 0.699]  | 标签噪声弱化 BOTH          ΔS=+0.424[0.366, 0.474] ΔD=+0.241[0.189, 0.294]  → INDETERMINATE
+drsn   步数弱化 BOTH          ΔS=+0.415[0.247, 0.55] ΔD=+0.293[0.15, 0.451]  | 标签噪声弱化 INDETERMINATE ΔS=+0.499[0.384, 0.611] ΔD=+0.166[0.041, 0.259]  → INDETERMINATE
+lstm   步数弱化 INDETERMINATE ΔS=+0.202[-0.036, 0.442] ΔD=+0.251[0.001, 0.479]  | 标签噪声弱化 INDETERMINATE ΔS=+0.546[0.384, 0.701] ΔD=+0.096[-0.067, 0.25]  → INDETERMINATE
+跨架构判定： INDETERMINATE   缺失： 无
+有效性标注： {'T1_NOT_REPLICATED': False, 'STRENGTH_GAP': {'cwru|wdcnn': True, 'ecg|wdcnn': True, 'ecg|drsn': True, 'ecg|lstm': True}, 'WEAK_GAP': {'cwru|wdcnn': ['steps'], 'cwru|drsn': ['steps', 'label'], 'ecg|wdcnn': ['steps']}, 'NO_COLLAPSE_CELL': False, 'NORM_DOMINATED': False}
+§7： 不作机制推论；T2 只作为 CNS1# 的局限说明
+敏感性（字面自助口径，含自身配对）： {'wdcnn|steps': 'INDETERMINATE', 'wdcnn|label': 'INDETERMINATE', 'drsn|steps': 'INDETERMINATE', 'drsn|label': 'INDETERMINATE', 'lstm|steps': 'INDETERMINATE', 'lstm|label': 'INDETERMINATE'}
+  cwru|strong|wdcnn      A=1.000 −8dB众数占比=1.0 崩溃比例=1.0 干净=0.944 基准类(噪声/−8dB)=0.0/0.0 低通/高通同白=0.0/1.0
+  cwru|strong|drsn       A=1.000 −8dB众数占比=1.0 崩溃比例=1.0 干净=0.994 基准类(噪声/−8dB)=0.0/0.0 低通/高通同白=0.0/1.0
+  cwru|strong|lstm       A=1.000 −8dB众数占比=1.0 崩溃比例=1.0 干净=0.988 基准类(噪声/−8dB)=0.0/0.0 低通/高通同白=0.0/1.0
+  cwru|weak_steps|wdcnn  A=1.000 −8dB众数占比=1.0 崩溃比例=1.0 干净=0.938 基准类(噪声/−8dB)=0.0/0.0 低通/高通同白=0.2/1.0
+  cwru|weak_steps|drsn   A=0.431 −8dB众数占比=0.6 崩溃比例=0.7 干净=0.839 基准类(噪声/−8dB)=0.0/0.1 低通/高通同白=0.2/0.6
+  cwru|weak_steps|lstm   A=0.767 −8dB众数占比=0.9 崩溃比例=1.0 干净=0.601 基准类(噪声/−8dB)=0.0/0.0 低通/高通同白=0.2/0.9
+  cwru|weak_label|wdcnn  A=0.327 −8dB众数占比=0.5 崩溃比例=0.6 干净=0.547 基准类(噪声/−8dB)=0.0/0.1 低通/高通同白=0.6/0.9
+  cwru|weak_label|drsn   A=0.221 −8dB众数占比=0.4 崩溃比例=1.0 干净=0.635 基准类(噪声/−8dB)=0.4/0.1 低通/高通同白=0.9/0.8
+  cwru|weak_label|lstm   A=0.267 −8dB众数占比=0.4 崩溃比例=0.7 干净=0.558 基准类(噪声/−8dB)=0.0/0.1 低通/高通同白=0.1/0.4
+  ecg|strong|wdcnn       A=0.510 −8dB众数占比=0.6 崩溃比例=0.7 干净=0.772 基准类(噪声/−8dB)=0.0/0.0 低通/高通同白=0.8/0.9
+  ecg|strong|drsn        A=0.553 −8dB众数占比=0.9 崩溃比例=1.0 干净=0.783 基准类(噪声/−8dB)=0.0/0.9 低通/高通同白=1.0/0.6
+  ecg|strong|lstm        A=0.717 −8dB众数占比=0.7 崩溃比例=0.9 干净=0.788 基准类(噪声/−8dB)=0.0/0.0 低通/高通同白=0.9/0.8
+  ecg|weak_steps|wdcnn   A=0.220 −8dB众数占比=0.7 崩溃比例=1.0 干净=0.687 基准类(噪声/−8dB)=0.2/0.3 低通/高通同白=1.0/0.9
+  ecg|weak_steps|drsn    A=0.292 −8dB众数占比=0.7 崩溃比例=1.0 干净=0.636 基准类(噪声/−8dB)=0.0/0.0 低通/高通同白=1.0/1.0
+  ecg|weak_steps|lstm    A=0.547 −8dB众数占比=1.0 崩溃比例=1.0 干净=0.594 基准类(噪声/−8dB)=0.0/0.0 低通/高通同白=1.0/1.0
+  ecg|weak_label|wdcnn   A=0.335 −8dB众数占比=0.5 崩溃比例=0.6 干净=0.654 基准类(噪声/−8dB)=0.1/0.1 低通/高通同白=0.9/0.8
+  ecg|weak_label|drsn    A=0.335 −8dB众数占比=0.5 崩溃比例=0.9 干净=0.591 基准类(噪声/−8dB)=0.3/0.5 低通/高通同白=0.8/1.0
+  ecg|weak_label|lstm    A=0.357 −8dB众数占比=0.4 崩溃比例=0.8 干净=0.603 基准类(噪声/−8dB)=0.0/0.2 低通/高通同白=1.0/1.0

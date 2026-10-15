@@ -36,6 +36,8 @@ The raw data are not redistributed. Obtain them from the providers and check the
 | Paderborn (PU) | KAt-DataCenter, Paderborn University [Lessmeier et al. 2016] | bearing folders `K001 … KI21`, any depth (`PU_DIR`) |
 | JNU | Jiangnan University bearing data [Li et al. 2013] | 12 `.csv` files, e.g. `ib600_2.csv` (`JNU_DIR`) |
 
+**CWRU loader correction (2026-10-13).** `99.mat` stores two drive-end arrays, `X098_DE_time` (a copy of `98.mat`) and `X099_DE_time`. `code/pbx/data/cwru_loader.py` now takes the array whose number matches the file name; the earlier loader took the first match, so the training recording "99" was byte-identical to the test recording 98 (manuscript Section 3.8). Results archived before the fix (release v1.0, and the CWRU cells of T2 and T3) were produced with the old behaviour; set `CWRU_LEGACY_FIRST_KEY=1` to reproduce them. Leave it unset for new runs.
+
 Other paths: `CNS_ROOT` (repository root, default: parent of `code/`), `CWRU16_DIR` (default `data/cwru_16`), `PAPERB_CODE` and `PAPERB_RESULTS` (code package and published result package of Wang and Tang 2026, used only by the reference-protocol scripts `e4_paperB_harness.py`, `wp1_harness.py`, `select_rpm.py`, `analyze_e4.py`, `analyze_wp1.py` and by the Mamba models).
 
 ## Trained weights

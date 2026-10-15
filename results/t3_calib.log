@@ -1,0 +1,51 @@
+### CALIB start 2026-10-15T08:45:59+08:00
+  speech|wdcnn T=3000 ρ=None median=0.917
+  speech|wdcnn T=6000 ρ=None median=0.923
+  speech|wdcnn T=12000 ρ=None median=0.920
+  speech|drsn T=3000 ρ=None median=0.908
+  speech|drsn T=6000 ρ=None median=0.926
+  speech|drsn T=12000 ρ=None median=0.930
+### CALIB restarted with 97cf6f5 code (N2 loader reads UCR 2018 archive) 2026-10-15T10:40:25+08:00; speech wdcnn/drsn feasibility kept, speech lstm reruns from start
+### CALIB start 2026-10-15T10:40:33+08:00
+[W1015 10:51:44.144550641 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 16032727040 bytes (free: 4010803200, total: 17179344896).
+### RESTART with 32db3e2 after WSL forced restart (11:38, low virtual memory) 2026-10-15T11:44:00+08:00; speech lstm will be skipped per DEVIATIONS_T3 #6
+### CALIB start 2026-10-15T11:44:05+08:00
+  slc|wdcnn T=3000 ρ=None median=0.972
+  slc|drsn T=3000 ρ=None median=0.969
+  slc|lstm T=3000 ρ=None median=0.960
+  cwru|wdcnn T=3000 ρ=None median=0.944
+  cwru|drsn T=3000 ρ=None median=0.996
+  cwru|lstm T=3000 ρ=None median=0.994
+  cwru|wdcnn T=3000 ρ=0.1 median=0.918
+  cwru|wdcnn T=3000 ρ=0.2 median=0.858
+  cwru|wdcnn T=3000 ρ=0.3 median=0.765
+  cwru|wdcnn T=3000 ρ=0.4 median=0.657
+[校准] cwru|wdcnn → hi 3000 (0.944) ρ=0.3 (0.765)
+  cwru|drsn T=3000 ρ=0.1 median=0.950
+  cwru|drsn T=3000 ρ=0.2 median=0.838
+  cwru|drsn T=3000 ρ=0.3 median=0.770
+  cwru|drsn T=3000 ρ=0.4 median=0.644
+[校准] cwru|drsn → hi 3000 (0.996) ρ=0.3 (0.770)
+  cwru|lstm T=3000 ρ=0.1 median=0.962
+  cwru|lstm T=3000 ρ=0.2 median=0.965
+  cwru|lstm T=3000 ρ=0.3 median=0.959
+  cwru|lstm T=3000 ρ=0.4 median=0.916
+  cwru|lstm T=3000 ρ=0.5 median=0.697
+[校准] cwru|lstm → hi 3000 (0.994) ρ=0.5 (0.697)
+  slc|wdcnn T=3000 ρ=0.1 median=0.928
+  slc|wdcnn T=3000 ρ=0.2 median=0.864
+  slc|wdcnn T=3000 ρ=0.3 median=0.792
+  slc|wdcnn T=3000 ρ=0.4 median=0.694
+[校准] slc|wdcnn → hi 3000 (0.972) ρ=0.3 (0.792)
+  slc|drsn T=3000 ρ=0.1 median=0.913
+  slc|drsn T=3000 ρ=0.2 median=0.878
+  slc|drsn T=3000 ρ=0.3 median=0.763
+  slc|drsn T=3000 ρ=0.4 median=0.707
+[校准] slc|drsn → hi 3000 (0.969) ρ=0.3 (0.763)
+  slc|lstm T=3000 ρ=0.1 median=0.934
+  slc|lstm T=3000 ρ=0.2 median=0.905
+  slc|lstm T=3000 ρ=0.3 median=0.848
+  slc|lstm T=3000 ρ=0.4 median=0.824
+  slc|lstm T=3000 ρ=0.5 median=0.658
+[校准] slc|lstm → hi 3000 (0.960) ρ=0.4 (0.824)
+### CALIB done 2026-10-15T13:09:44+08:00

@@ -4,3 +4,5 @@ results/ckpt_*/
 __pycache__/
 *.pyc
 .mpl/
+# pbx/data holds the data-loader source code (the root data/ rule would otherwise exclude it)
+!code/pbx/data/

@@ -1,0 +1,459 @@
+{
+ "prereg_sha256": "596b04ac70c2144e847aa1e141c3a5db9d91addc419509d9de6f04c928b47e46",
+ "domains": {
+  "d1": {
+   "name": "D1 心电（PTB-XL）",
+   "classes": [
+    "NORM",
+    "MI",
+    "STTC",
+    "CD"
+   ],
+   "n_instances": 45,
+   "missing": {},
+   "labels": {
+    "wdcnn": "UNSTABLE",
+    "drsn": "UNSTABLE",
+    "lstm": "MIXED"
+   },
+   "label_info": {
+    "wdcnn": {
+     "snr": "-8.0",
+     "conc_thr": 0.6,
+     "S_ALL_clean_acc_mean": 0.6022102936532996,
+     "collapse_frac": 1.0,
+     "q": {
+      "S_a": [
+       0.0,
+       0.6,
+       0.4,
+       0.0
+      ],
+      "S_b": [
+       0.0,
+       0.2,
+       0.8,
+       0.0
+      ],
+      "S_ALL": [
+       0.0,
+       0.6,
+       0.4,
+       0.0
+      ]
+     },
+     "consistency": {
+      "S_a": 0.6,
+      "S_b": 0.8,
+      "S_ALL": 0.6
+     },
+     "TV": {
+      "a_ALL": 0.0,
+      "b_ALL": 0.4,
+      "a_b": 0.4
+     },
+     "note": ""
+    },
+    "drsn": {
+     "snr": "-8.0",
+     "conc_thr": 0.6,
+     "S_ALL_clean_acc_mean": 0.5993684875276287,
+     "collapse_frac": 0.9333333333333333,
+     "q": {
+      "S_a": [
+       0.6,
+       0.0,
+       0.4,
+       0.0
+      ],
+      "S_b": [
+       0.2,
+       0.2,
+       0.6,
+       0.0
+      ],
+      "S_ALL": [
+       0.0,
+       0.6,
+       0.4,
+       0.0
+      ]
+     },
+     "consistency": {
+      "S_a": 0.6,
+      "S_b": 0.6,
+      "S_ALL": 0.6
+     },
+     "TV": {
+      "a_ALL": 0.6,
+      "b_ALL": 0.4,
+      "a_b": 0.4
+     },
+     "note": ""
+    },
+    "lstm": {
+     "snr": "-8.0",
+     "conc_thr": 0.6,
+     "S_ALL_clean_acc_mean": 0.6021471424060626,
+     "collapse_frac": 0.8666666666666667,
+     "q": {
+      "S_a": [
+       0.0,
+       0.8,
+       0.2,
+       0.0
+      ],
+      "S_b": [
+       0.0,
+       0.2,
+       0.8,
+       0.0
+      ],
+      "S_ALL": [
+       0.0,
+       0.4,
+       0.6,
+       0.0
+      ]
+     },
+     "consistency": {
+      "S_a": 0.8,
+      "S_b": 0.8,
+      "S_ALL": 0.6
+     },
+     "TV": {
+      "a_ALL": 0.4,
+      "b_ALL": 0.2,
+      "a_b": 0.6
+     },
+     "note": "+SUBTYPE_SPECIFIC"
+    }
+   },
+   "verdict": "INCONCLUSIVE",
+   "secondary_labels": {
+    "-6dB": {
+     "wdcnn": "MIXED",
+     "drsn": "UNSTABLE",
+     "lstm": "MIXED"
+    },
+    "conc>=0.90": {
+     "wdcnn": "UNSTABLE",
+     "drsn": "UNSTABLE",
+     "lstm": "MIXED"
+    }
+   },
+   "probe": {
+    "hit_rate": 0.6666666666666666,
+    "constant_class": "STTC",
+    "constant_hit_rate": 0.5111111111111111,
+    "per_model": {
+     "wdcnn": 0.6,
+     "drsn": 0.7333333333333333,
+     "lstm": 0.6666666666666666
+    }
+   },
+   "full": {
+    "wdcnn": {
+     "S_a": {
+      "dominant": {
+       "MI": 3,
+       "STTC": 2
+      },
+      "clean_acc": 0.6292390274707925,
+      "acc_p10": 0.4536532996526681,
+      "conc_mean": 0.8011240922008209
+     },
+     "S_b": {
+      "dominant": {
+       "STTC": 4,
+       "MI": 1
+      },
+      "clean_acc": 0.574802652352384,
+      "acc_p10": 0.3664035364698453,
+      "conc_mean": 0.9487338174928954
+     },
+     "S_ALL": {
+      "dominant": {
+       "MI": 3,
+       "STTC": 2
+      },
+      "clean_acc": 0.6022102936532996,
+      "acc_p10": 0.39280075781496687,
+      "conc_mean": 0.96903062835491
+     }
+    },
+    "drsn": {
+     "S_a": {
+      "dominant": {
+       "STTC": 2,
+       "NORM": 3
+      },
+      "clean_acc": 0.6200189453741711,
+      "acc_p10": 0.32690874644774237,
+      "conc_mean": 0.9999115882538681
+     },
+     "S_b": {
+      "dominant": {
+       "STTC": 3,
+       "NORM": 1,
+       "MI": 1
+      },
+      "clean_acc": 0.5816861383012314,
+      "acc_p10": 0.2546131986106726,
+      "conc_mean": 0.84903062835491
+     },
+     "S_ALL": {
+      "dominant": {
+       "STTC": 2,
+       "MI": 3
+      },
+      "clean_acc": 0.5993684875276287,
+      "acc_p10": 0.20994000631512474,
+      "conc_mean": 0.9487969687401326
+     }
+    },
+    "lstm": {
+     "S_a": {
+      "dominant": {
+       "STTC": 1,
+       "MI": 4
+      },
+      "clean_acc": 0.6282917587622355,
+      "acc_p10": 0.4039785285759393,
+      "conc_mean": 0.8297442374486896
+     },
+     "S_b": {
+      "dominant": {
+       "STTC": 4,
+       "MI": 1
+      },
+      "clean_acc": 0.5737922323965898,
+      "acc_p10": 0.3796147773918535,
+      "conc_mean": 0.973590148405431
+     },
+     "S_ALL": {
+      "dominant": {
+       "MI": 2,
+       "STTC": 3
+      },
+      "clean_acc": 0.6021471424060626,
+      "acc_p10": 0.40344805809914747,
+      "conc_mean": 0.7888980107357121
+     }
+    }
+   },
+   "base_class_attractor_frac": 0.08888888888888889
+  },
+  "d2": {
+   "name": "D2 自然图像（CIFAR-100）",
+   "classes": [
+    "large_natural_outdoor_scenes",
+    "fish",
+    "flowers",
+    "vehicles_1"
+   ],
+   "n_instances": 45,
+   "missing": {},
+   "labels": {
+    "cnn4": "COVERAGE_INVARIANT",
+    "resnet18": "UNSTABLE",
+    "vit_tiny": "NO_COLLAPSE"
+   },
+   "label_info": {
+    "cnn4": {
+     "snr": "-8.0",
+     "conc_thr": 0.6,
+     "S_ALL_clean_acc_mean": 0.8265,
+     "collapse_frac": 0.9333333333333333,
+     "q": {
+      "S_a": [
+       0.0,
+       0.0,
+       0.0,
+       1.0
+      ],
+      "S_b": [
+       0.0,
+       0.0,
+       0.0,
+       1.0
+      ],
+      "S_ALL": [
+       0.0,
+       0.0,
+       0.2,
+       0.8
+      ]
+     },
+     "consistency": {
+      "S_a": 1.0,
+      "S_b": 1.0,
+      "S_ALL": 0.8
+     },
+     "TV": {
+      "a_ALL": 0.2,
+      "b_ALL": 0.2,
+      "a_b": 0.0
+     },
+     "note": ""
+    },
+    "resnet18": {
+     "snr": "-8.0",
+     "conc_thr": 0.6,
+     "S_ALL_clean_acc_mean": 0.7331,
+     "collapse_frac": 0.8,
+     "q": {
+      "S_a": [
+       0.0,
+       0.0,
+       1.0,
+       0.0
+      ],
+      "S_b": [
+       0.0,
+       0.0,
+       0.6,
+       0.4
+      ],
+      "S_ALL": [
+       0.0,
+       0.0,
+       0.4,
+       0.6
+      ]
+     },
+     "consistency": {
+      "S_a": 1.0,
+      "S_b": 0.6,
+      "S_ALL": 0.6
+     },
+     "TV": {
+      "a_ALL": 0.6,
+      "b_ALL": 0.2,
+      "a_b": 0.4
+     },
+     "note": ""
+    },
+    "vit_tiny": {
+     "snr": "-8.0",
+     "conc_thr": 0.6,
+     "S_ALL_clean_acc_mean": 0.6849000000000001,
+     "collapse_frac": 0.2,
+     "collapse_frac_-12": 0.26666666666666666
+    }
+   },
+   "verdict": "INCONCLUSIVE",
+   "secondary_labels": {
+    "-6dB": {
+     "cnn4": "COVERAGE_INVARIANT",
+     "resnet18": "UNSTABLE",
+     "vit_tiny": "NO_COLLAPSE"
+    },
+    "conc>=0.90": {
+     "cnn4": "COVERAGE_INVARIANT",
+     "resnet18": "UNSTABLE",
+     "vit_tiny": "NO_COLLAPSE"
+    }
+   },
+   "probe": {
+    "hit_rate": 0.6888888888888889,
+    "constant_class": "vehicles_1",
+    "constant_hit_rate": 0.6222222222222222,
+    "per_model": {
+     "cnn4": 0.9333333333333333,
+     "resnet18": 0.5333333333333333,
+     "vit_tiny": 0.6
+    }
+   },
+   "full": {
+    "cnn4": {
+     "S_a": {
+      "dominant": {
+       "vehicles_1": 5
+      },
+      "clean_acc": 0.6438,
+      "acc_p10": 0.6023,
+      "conc_mean": 0.99562
+     },
+     "S_b": {
+      "dominant": {
+       "vehicles_1": 5
+      },
+      "clean_acc": 0.7238,
+      "acc_p10": 0.6570199999999999,
+      "conc_mean": 0.98636
+     },
+     "S_ALL": {
+      "dominant": {
+       "vehicles_1": 4,
+       "flowers": 1
+      },
+      "clean_acc": 0.8265,
+      "acc_p10": 0.72402,
+      "conc_mean": 0.9195800000000001
+     }
+    },
+    "resnet18": {
+     "S_a": {
+      "dominant": {
+       "flowers": 5
+      },
+      "clean_acc": 0.593,
+      "acc_p10": 0.5810000000000001,
+      "conc_mean": 0.83134
+     },
+     "S_b": {
+      "dominant": {
+       "flowers": 3,
+       "vehicles_1": 2
+      },
+      "clean_acc": 0.6535,
+      "acc_p10": 0.63748,
+      "conc_mean": 0.7570600000000001
+     },
+     "S_ALL": {
+      "dominant": {
+       "vehicles_1": 3,
+       "flowers": 2
+      },
+      "clean_acc": 0.7331,
+      "acc_p10": 0.6986399999999999,
+      "conc_mean": 0.82406
+     }
+    },
+    "vit_tiny": {
+     "S_a": {
+      "dominant": {
+       "vehicles_1": 2,
+       "flowers": 3
+      },
+      "clean_acc": 0.5513,
+      "acc_p10": 0.5255600000000001,
+      "conc_mean": 0.5051800000000001
+     },
+     "S_b": {
+      "dominant": {
+       "flowers": 1,
+       "vehicles_1": 4
+      },
+      "clean_acc": 0.6407,
+      "acc_p10": 0.6184000000000001,
+      "conc_mean": 0.5945199999999999
+     },
+     "S_ALL": {
+      "dominant": {
+       "vehicles_1": 3,
+       "flowers": 2
+      },
+      "clean_acc": 0.6849000000000001,
+      "acc_p10": 0.65958,
+      "conc_mean": 0.6056600000000001
+     }
+    }
+   },
+   "base_class_attractor_frac": 0.0
+  }
+ },
+ "consequence": "NOT_COVERED",
+ "consequence_text": "§6 未预先约定此组合（如一个 SUPPORTS、一个 CONTRADICTS，或 INCONCLUSIVE 与非 SUPPORTS 的组合）；不作推论，交 Jeff 决定"
+}

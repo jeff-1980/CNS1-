@@ -1,0 +1,491 @@
+{
+ "prereg_sha256": "a1c5d2770b94c8250c7c9638f31a921b1feae0fdb694eaef2794615fb791fd20",
+ "missing": {},
+ "per_arch": {
+  "wdcnn": {
+   "by_weakening": {
+    "steps": {
+     "label": "INDETERMINATE",
+     "dS": 0.145,
+     "ciS": [
+      0.056,
+      0.208
+     ],
+     "dD": 0.635,
+     "ciD": [
+      0.547,
+      0.699
+     ]
+    },
+    "label": {
+     "label": "BOTH",
+     "dS": 0.424,
+     "ciS": [
+      0.366,
+      0.474
+     ],
+     "dD": 0.241,
+     "ciD": [
+      0.189,
+      0.294
+     ]
+    }
+   },
+   "label": "INDETERMINATE"
+  },
+  "drsn": {
+   "by_weakening": {
+    "steps": {
+     "label": "BOTH",
+     "dS": 0.415,
+     "ciS": [
+      0.247,
+      0.55
+     ],
+     "dD": 0.293,
+     "ciD": [
+      0.15,
+      0.451
+     ]
+    },
+    "label": {
+     "label": "INDETERMINATE",
+     "dS": 0.499,
+     "ciS": [
+      0.384,
+      0.611
+     ],
+     "dD": 0.166,
+     "ciD": [
+      0.041,
+      0.259
+     ]
+    }
+   },
+   "label": "INDETERMINATE"
+  },
+  "lstm": {
+   "by_weakening": {
+    "steps": {
+     "label": "INDETERMINATE",
+     "dS": 0.202,
+     "ciS": [
+      -0.036,
+      0.442
+     ],
+     "dD": 0.251,
+     "ciD": [
+      0.001,
+      0.479
+     ]
+    },
+    "label": {
+     "label": "INDETERMINATE",
+     "dS": 0.546,
+     "ciS": [
+      0.384,
+      0.701
+     ],
+     "dD": 0.096,
+     "ciD": [
+      -0.067,
+      0.25
+     ]
+    }
+   },
+   "label": "INDETERMINATE"
+  }
+ },
+ "verdict": "INDETERMINATE",
+ "consequence": "不作机制推论；T2 只作为 CNS1# 的局限说明",
+ "flags": {
+  "T1_NOT_REPLICATED": false,
+  "STRENGTH_GAP": {
+   "cwru|wdcnn": true,
+   "ecg|wdcnn": true,
+   "ecg|drsn": true,
+   "ecg|lstm": true
+  },
+  "WEAK_GAP": {
+   "cwru|wdcnn": [
+    "steps"
+   ],
+   "cwru|drsn": [
+    "steps",
+    "label"
+   ],
+   "ecg|wdcnn": [
+    "steps"
+   ]
+  },
+  "NO_COLLAPSE_CELL": false,
+  "NORM_DOMINATED": false
+ },
+ "cells": {
+  "cwru|strong|wdcnn": {
+   "A": 1.0,
+   "mode_share_m8": 1.0,
+   "dominant_m8": {
+    "2": 10
+   },
+   "collapse_frac_060": 1.0,
+   "noise_margin_median": 11.044989585876465,
+   "base_share_noise": 0.0,
+   "base_share_m8": 0.0,
+   "low_same_as_white": 0.0,
+   "high_same_as_white": 1.0,
+   "clean_acc": 0.9440937161445617,
+   "acc_p10": 0.9225772860397006
+  },
+  "cwru|strong|drsn": {
+   "A": 1.0,
+   "mode_share_m8": 1.0,
+   "dominant_m8": {
+    "2": 10
+   },
+   "collapse_frac_060": 1.0,
+   "noise_margin_median": 33.15795707702637,
+   "base_share_noise": 0.0,
+   "base_share_m8": 0.0,
+   "low_same_as_white": 0.0,
+   "high_same_as_white": 1.0,
+   "clean_acc": 0.9941750764846802,
+   "acc_p10": 0.9674780344939797
+  },
+  "cwru|strong|lstm": {
+   "A": 1.0,
+   "mode_share_m8": 1.0,
+   "dominant_m8": {
+    "2": 10
+   },
+   "collapse_frac_060": 1.0,
+   "noise_margin_median": 12.403955936431885,
+   "base_share_noise": 0.0,
+   "base_share_m8": 0.0,
+   "low_same_as_white": 0.0,
+   "high_same_as_white": 1.0,
+   "clean_acc": 0.9877318620681763,
+   "acc_p10": 0.8517865278229744
+  },
+  "cwru|weak_steps|wdcnn": {
+   "A": 1.0,
+   "mode_share_m8": 1.0,
+   "dominant_m8": {
+    "2": 10
+   },
+   "collapse_frac_060": 1.0,
+   "noise_margin_median": 9.064942836761475,
+   "base_share_noise": 0.0,
+   "base_share_m8": 0.0,
+   "low_same_as_white": 0.2,
+   "high_same_as_white": 1.0,
+   "clean_acc": 0.9382687926292419,
+   "acc_p10": 0.9180735437683045
+  },
+  "cwru|weak_steps|drsn": {
+   "A": 0.431,
+   "mode_share_m8": 0.6,
+   "dominant_m8": {
+    "1": 6,
+    "0": 1,
+    "2": 3
+   },
+   "collapse_frac_060": 0.7,
+   "noise_margin_median": 0.16734757274389267,
+   "base_share_noise": 0.0,
+   "base_share_m8": 0.1,
+   "low_same_as_white": 0.2,
+   "high_same_as_white": 0.6,
+   "clean_acc": 0.8394402742385865,
+   "acc_p10": 0.8464301985030914
+  },
+  "cwru|weak_steps|lstm": {
+   "A": 0.767,
+   "mode_share_m8": 0.9,
+   "dominant_m8": {
+    "3": 9,
+    "1": 1
+   },
+   "collapse_frac_060": 1.0,
+   "noise_margin_median": 0.17546342313289642,
+   "base_share_noise": 0.0,
+   "base_share_m8": 0.0,
+   "low_same_as_white": 0.2,
+   "high_same_as_white": 0.9,
+   "clean_acc": 0.6005532085895539,
+   "acc_p10": 0.5838529124633909
+  },
+  "cwru|weak_label|wdcnn": {
+   "A": 0.327,
+   "mode_share_m8": 0.5,
+   "dominant_m8": {
+    "2": 5,
+    "3": 4,
+    "0": 1
+   },
+   "collapse_frac_060": 0.6,
+   "noise_margin_median": 3.0776060819625854,
+   "base_share_noise": 0.0,
+   "base_share_m8": 0.1,
+   "low_same_as_white": 0.6,
+   "high_same_as_white": 0.9,
+   "clean_acc": 0.5474129498004914,
+   "acc_p10": 0.5124178327367394
+  },
+  "cwru|weak_label|drsn": {
+   "A": 0.221,
+   "mode_share_m8": 0.4,
+   "dominant_m8": {
+    "3": 4,
+    "2": 2,
+    "1": 3,
+    "0": 1
+   },
+   "collapse_frac_060": 1.0,
+   "noise_margin_median": 4.31181263923645,
+   "base_share_noise": 0.4,
+   "base_share_m8": 0.1,
+   "low_same_as_white": 0.9,
+   "high_same_as_white": 0.8,
+   "clean_acc": 0.6345916032791138,
+   "acc_p10": 0.5501529450048812
+  },
+  "cwru|weak_label|lstm": {
+   "A": 0.267,
+   "mode_share_m8": 0.4,
+   "dominant_m8": {
+    "3": 3,
+    "1": 4,
+    "2": 2,
+    "0": 1
+   },
+   "collapse_frac_060": 0.7,
+   "noise_margin_median": 1.4001473188400269,
+   "base_share_noise": 0.0,
+   "base_share_m8": 0.1,
+   "low_same_as_white": 0.1,
+   "high_same_as_white": 0.4,
+   "clean_acc": 0.5576309859752655,
+   "acc_p10": 0.5058379433778066
+  },
+  "ecg|strong|wdcnn": {
+   "A": 0.51,
+   "mode_share_m8": 0.6,
+   "dominant_m8": {
+    "1": 4,
+    "2": 6
+   },
+   "collapse_frac_060": 0.7,
+   "noise_margin_median": 5.767435312271118,
+   "base_share_noise": 0.0,
+   "base_share_m8": 0.0,
+   "low_same_as_white": 0.8,
+   "high_same_as_white": 0.9,
+   "clean_acc": 0.7720871448516846,
+   "acc_p10": 0.7564572150299969
+  },
+  "ecg|strong|drsn": {
+   "A": 0.553,
+   "mode_share_m8": 0.9,
+   "dominant_m8": {
+    "0": 9,
+    "1": 1
+   },
+   "collapse_frac_060": 1.0,
+   "noise_margin_median": 5.342698574066162,
+   "base_share_noise": 0.0,
+   "base_share_m8": 0.9,
+   "low_same_as_white": 1.0,
+   "high_same_as_white": 0.6,
+   "clean_acc": 0.7825702548027038,
+   "acc_p10": 0.7596210925165772
+  },
+  "ecg|strong|lstm": {
+   "A": 0.717,
+   "mode_share_m8": 0.7,
+   "dominant_m8": {
+    "2": 3,
+    "1": 7
+   },
+   "collapse_frac_060": 0.9,
+   "noise_margin_median": 20.468098640441895,
+   "base_share_noise": 0.0,
+   "base_share_m8": 0.0,
+   "low_same_as_white": 0.9,
+   "high_same_as_white": 0.8,
+   "clean_acc": 0.7879381060600281,
+   "acc_p10": 0.7775371013577518
+  },
+  "ecg|weak_steps|wdcnn": {
+   "A": 0.22,
+   "mode_share_m8": 0.7,
+   "dominant_m8": {
+    "3": 7,
+    "0": 3
+   },
+   "collapse_frac_060": 1.0,
+   "noise_margin_median": 0.18454469740390778,
+   "base_share_noise": 0.2,
+   "base_share_m8": 0.3,
+   "low_same_as_white": 1.0,
+   "high_same_as_white": 0.9,
+   "clean_acc": 0.686738234758377,
+   "acc_p10": 0.6815345753078623
+  },
+  "ecg|weak_steps|drsn": {
+   "A": 0.292,
+   "mode_share_m8": 0.7,
+   "dominant_m8": {
+    "3": 7,
+    "1": 1,
+    "2": 2
+   },
+   "collapse_frac_060": 1.0,
+   "noise_margin_median": 0.11560067534446716,
+   "base_share_noise": 0.0,
+   "base_share_m8": 0.0,
+   "low_same_as_white": 1.0,
+   "high_same_as_white": 1.0,
+   "clean_acc": 0.6362803995609283,
+   "acc_p10": 0.622046100410483
+  },
+  "ecg|weak_steps|lstm": {
+   "A": 0.547,
+   "mode_share_m8": 1.0,
+   "dominant_m8": {
+    "3": 10
+   },
+   "collapse_frac_060": 1.0,
+   "noise_margin_median": 0.13484890758991241,
+   "base_share_noise": 0.0,
+   "base_share_m8": 0.0,
+   "low_same_as_white": 1.0,
+   "high_same_as_white": 1.0,
+   "clean_acc": 0.5942532300949097,
+   "acc_p10": 0.5661256709820018
+  },
+  "ecg|weak_label|wdcnn": {
+   "A": 0.335,
+   "mode_share_m8": 0.5,
+   "dominant_m8": {
+    "0": 1,
+    "1": 3,
+    "2": 5,
+    "3": 1
+   },
+   "collapse_frac_060": 0.6,
+   "noise_margin_median": 4.992327928543091,
+   "base_share_noise": 0.1,
+   "base_share_m8": 0.1,
+   "low_same_as_white": 0.9,
+   "high_same_as_white": 0.8,
+   "clean_acc": 0.6541206181049347,
+   "acc_p10": 0.611872434480581
+  },
+  "ecg|weak_label|drsn": {
+   "A": 0.335,
+   "mode_share_m8": 0.5,
+   "dominant_m8": {
+    "3": 3,
+    "0": 5,
+    "1": 2
+   },
+   "collapse_frac_060": 0.9,
+   "noise_margin_median": 5.5588719844818115,
+   "base_share_noise": 0.3,
+   "base_share_m8": 0.5,
+   "low_same_as_white": 0.8,
+   "high_same_as_white": 1.0,
+   "clean_acc": 0.5909377932548523,
+   "acc_p10": 0.5858730659930534
+  },
+  "ecg|weak_label|lstm": {
+   "A": 0.357,
+   "mode_share_m8": 0.4,
+   "dominant_m8": {
+    "1": 4,
+    "3": 2,
+    "2": 2,
+    "0": 2
+   },
+   "collapse_frac_060": 0.8,
+   "noise_margin_median": 7.796686172485352,
+   "base_share_noise": 0.0,
+   "base_share_m8": 0.2,
+   "low_same_as_white": 1.0,
+   "high_same_as_white": 1.0,
+   "clean_acc": 0.6033785939216614,
+   "acc_p10": 0.6025955162614461
+  }
+ },
+ "calibration_chosen": {
+  "cwru|wdcnn": {
+   "strong_steps": 3000,
+   "strong_median": 0.9450048804283142,
+   "weak_steps": 400,
+   "weak_steps_in_range": false,
+   "rho": 0.5,
+   "rho_in_range": true,
+   "strength_gap": true,
+   "wall_s": 214
+  },
+  "cwru|drsn": {
+   "strong_steps": 3000,
+   "strong_median": 0.9967458248138428,
+   "weak_steps": 25,
+   "weak_steps_in_range": false,
+   "rho": 0.4,
+   "rho_in_range": false,
+   "strength_gap": false,
+   "wall_s": 1165
+  },
+  "cwru|lstm": {
+   "strong_steps": 3000,
+   "strong_median": 0.9967458248138428,
+   "weak_steps": 25,
+   "weak_steps_in_range": true,
+   "rho": 0.6,
+   "rho_in_range": true,
+   "strength_gap": false,
+   "wall_s": 1665
+  },
+  "ecg|wdcnn": {
+   "strong_steps": 12000,
+   "strong_median": 0.7758130431175232,
+   "weak_steps": 25,
+   "weak_steps_in_range": false,
+   "rho": 0.2,
+   "rho_in_range": true,
+   "strength_gap": true,
+   "wall_s": 400
+  },
+  "ecg|drsn": {
+   "strong_steps": 12000,
+   "strong_median": 0.7767603397369385,
+   "weak_steps": 25,
+   "weak_steps_in_range": true,
+   "rho": 0.3,
+   "rho_in_range": true,
+   "strength_gap": true,
+   "wall_s": 2105
+  },
+  "ecg|lstm": {
+   "strong_steps": 12000,
+   "strong_median": 0.790022075176239,
+   "weak_steps": 50,
+   "weak_steps_in_range": true,
+   "rho": 0.3,
+   "rho_in_range": true,
+   "strength_gap": true,
+   "wall_s": 4328
+  }
+ },
+ "sensitivity_bootstrap_keep_self_pairs": {
+  "wdcnn|steps": "INDETERMINATE",
+  "wdcnn|label": "INDETERMINATE",
+  "drsn|steps": "INDETERMINATE",
+  "drsn|label": "INDETERMINATE",
+  "lstm|steps": "INDETERMINATE",
+  "lstm|label": "INDETERMINATE"
+ }
+}
