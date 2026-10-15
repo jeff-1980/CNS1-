@@ -41,7 +41,7 @@ P5 在 jeff-work 上：
 
 ```bash
 export AUDIT_PY=~/audit_ext/venv/bin/python PDM_DIR=~/audit_ext/pdm-bench PDM_WORKSPACE=~/audit_ext/data/pdm OUT_DIR=~/audit_ext/runs
-CWRU12_SRC=~/audit_ext/data/cwru_zhao bash audit/ext/setup_p5_data.sh
+CWRU12_SRC=~/audit_ext/data/cwru_udtl bash audit/ext/setup_p5_data.sh
 OUT_DIR=~/audit_ext/smoke MODELS=cnn1d SEEDS=41 EPOCHS=2 bash audit/ext/run_p5_pdm.sh   # 冒烟
 bash audit/ext/run_p5_pdm.sh
 python -m audit.ext.epoch_protocols pdm ~/audit_ext/runs/p5/*/seed* --out ~/audit_ext/results/p5_protocols.json
