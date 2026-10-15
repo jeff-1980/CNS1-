@@ -11,7 +11,12 @@
 | `run_audit.py` | 命令行入口 |
 | `test_harness_core.py` | 纯 numpy 的逻辑测试（含“隔离失效能被检出”） |
 
-在 `code/` 目录下运行：
+在 `code/` 目录下运行。数据与 paperB 代码路径和 E4 相同，由环境变量指定；jeff-work 上是：
+
+```bash
+export CNS_ROOT=~/论文CNS PAPERB_CODE=~/论文CNS/tmp/pbsrc_root CWRU16_DIR=~/论文CNS/tmp/cwru_16
+```
+
 
 ```bash
 python -m audit.test_harness_core                                   # 逻辑测试，无需 GPU

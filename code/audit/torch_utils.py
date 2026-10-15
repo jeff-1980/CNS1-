@@ -28,7 +28,7 @@ def state_sha256(state):
     for k in sorted(state):
         t = state[k].detach().cpu().contiguous()
         h.update(k.encode()); h.update(str(t.dtype).encode()); h.update(str(tuple(t.shape)).encode())
-        h.update(t.view(torch.uint8).numpy().tobytes() if t.numel() else b"")
+        h.update(t.reshape(-1).view(torch.uint8).numpy().tobytes() if t.numel() else b"")   # 0 维张量（如 num_batches_tracked）须先展平
     return h.hexdigest()
 
 
