@@ -69,8 +69,8 @@ def verdict(m, sig):
 # ---------- 读取论文A 结果 ----------
 def _acc_table(rec):
     """返回 {criterion: {snr(float): accuracy}}。兼容 snr_sweep[crit][snr] 与 snr_sweep[snr][crit] 两种结构。"""
-    sw = rec.get("snr_sweep")
-    if sw is None: raise KeyError("no snr_sweep; keys=" + ",".join(rec))
+    sw = rec.get("snr_sweep") or rec.get("cross_domain")   # 论文A 的跨载结果把同结构的数据存在 cross_domain
+    if sw is None: raise KeyError("no snr_sweep/cross_domain; keys=" + ",".join(rec))
     def acc(v): return float(v["accuracy"] if isinstance(v, dict) else v)
     out = {}
     if set(sw) & set(CRITERIA):
