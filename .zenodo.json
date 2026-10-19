@@ -1,16 +1,11 @@
 {
-  "title": "CNS1: code, result records, preregistrations and trained weights for a preregistered failure evaluation of deep bearing fault classifiers under strong noise",
+  "title": "Code, preregistrations and results for: Failure Evaluation of Deep Bearing Fault Classifiers Under Strong Noise: Training-Data Composition Changes the Collapse Class",
   "upload_type": "software",
-  "description": "Code, per-instance result records, preregistrations (with SHA-256 checksums), verdicts and figure/table generators for the study of how training-file composition changes the strong-noise collapse class of deep bearing fault classifiers. Release v2.0.1 contains the corrected CWRU loader, the 99.mat audit, the C-INIT-FIX confirmation and the post-fix inference. Code is MIT-licensed; results, documents and trained weights are CC BY 4.0 (see LICENSE-DATA.md). Trained weights are attached to the GitHub releases v1.0 and v2.0.",
+  "description": "Training, analysis and figure scripts, preregistered analysis plans with SHA-256 hashes, the training-instance registry and result files for the study. Release v2.0.1 has the same content as v2.0 (corrected CWRU loader, audit of the loading error, corrected-loader confirmation runs and post-hoc inference on the corrected weights) plus licence and archive metadata. Trained weights are attached to the GitHub releases v1.0 and v2.0 and can be checked with code/verify_weights.py against the SHA-256 values in the registry.",
   "creators": [
-    {"name": "Wang, Yi", "affiliation": "Lishui University"},
-    {"name": "Tang, Yongqing", "affiliation": "Longyan University"}
+    {"name": "Wang, Yi", "affiliation": "College of Engineering, Lishui University, Lishui, Zhejiang, China"},
+    {"name": "Tang, Yongqing", "affiliation": "School of Physics, Mechanics & Electronics, Longyan University, Longyan, Fujian, China"}
   ],
   "license": "MIT",
-  "keywords": ["bearing fault diagnosis", "deep learning", "strong noise", "failure evaluation", "preregistration", "reproducibility", "CWRU"],
-  "related_identifiers": [
-    {"identifier": "https://github.com/jeff-1980/CNS1-", "relation": "isSupplementTo", "scheme": "url"}
-  ],
-  "grants": [],
-  "notes": "Supported by the Natural Science Foundation of Fujian Province, grant 2026J0011040."
+  "keywords": ["bearing fault diagnosis", "deep learning", "noise robustness", "failure evaluation", "CWRU", "Paderborn", "selective classification", "preregistration"]
 }

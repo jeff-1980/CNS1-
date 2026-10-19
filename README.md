@@ -83,3 +83,7 @@ GPU training is not bitwise deterministic: retraining from identical initial wei
 
 - Result records keep the absolute paths of the machine on which they were produced; only the relative weight paths are used by the scripts.
 - Comments and the preregistration / verdict documents are partly in Chinese; the manuscript and its supplementary tables are in English.
+
+## Licence and archive
+
+Code and documentation are released under the MIT License (`LICENSE`). Release v2.0.1 (same content as v2.0 plus `LICENSE` and `.zenodo.json`) is archived on Zenodo; the DOI is shown on the Zenodo record linked from the release page.
