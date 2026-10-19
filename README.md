@@ -86,4 +86,4 @@ GPU training is not bitwise deterministic: retraining from identical initial wei
 
 ## Licence and archive
 
-Code and documentation are released under the MIT License (`LICENSE`). Release v2.0.1 (same content as v2.0 plus `LICENSE` and `.zenodo.json`) is archived on Zenodo; the DOI is shown on the Zenodo record linked from the release page.
+Code is released under the MIT License (`LICENSE`); result records, documents, figures and trained weights under CC BY 4.0 (`LICENSE-DATA.md`). Release v2.0.1 (same content as v2.0 plus the licence and archive metadata) is archived on Zenodo: [doi:10.5281/zenodo.23463695](https://doi.org/10.5281/zenodo.23463695). The concept DOI [10.5281/zenodo.23463694](https://doi.org/10.5281/zenodo.23463694) always resolves to the latest archived release.
