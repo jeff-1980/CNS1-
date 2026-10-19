@@ -1,0 +1,714 @@
+exp,source_json,arm,draw,model,seed,md5_replay_match,test_set,n_normal_train,n_normal_from_test_copy,distinct_test_windows_in_train
+2x2,arm2x2.json,C007_R11,,wdcnn,0,True,40,475,320,320
+2x2,arm2x2.json,C007_R31,,wdcnn,0,True,40,950,646,646
+2x2,arm2x2.json,CALL_R11,,wdcnn,0,True,40,475,320,320
+2x2,arm2x2.json,CALL_R31,,wdcnn,0,True,40,950,646,646
+2x2,arm2x2.json,C007_R11,,cnn1d,0,True,40,475,320,320
+2x2,arm2x2.json,C007_R31,,cnn1d,0,True,40,950,646,646
+2x2,arm2x2.json,CALL_R11,,cnn1d,0,True,40,475,320,320
+2x2,arm2x2.json,CALL_R31,,cnn1d,0,True,40,950,646,646
+2x2,arm2x2.json,C007_R11,,drsn,0,True,40,475,320,320
+2x2,arm2x2.json,C007_R31,,drsn,0,True,40,950,646,646
+2x2,arm2x2.json,CALL_R11,,drsn,0,True,40,475,320,320
+2x2,arm2x2.json,CALL_R31,,drsn,0,True,40,950,646,646
+2x2,arm2x2.json,C007_R11,,wdcnn,1,True,40,475,331,331
+2x2,arm2x2.json,C007_R31,,wdcnn,1,True,40,950,640,640
+2x2,arm2x2.json,CALL_R11,,wdcnn,1,True,40,475,331,331
+2x2,arm2x2.json,CALL_R31,,wdcnn,1,True,40,950,640,640
+2x2,arm2x2.json,C007_R11,,cnn1d,1,True,40,475,331,331
+2x2,arm2x2.json,C007_R31,,cnn1d,1,True,40,950,640,640
+2x2,arm2x2.json,CALL_R11,,cnn1d,1,True,40,475,331,331
+2x2,arm2x2.json,CALL_R31,,cnn1d,1,True,40,950,640,640
+2x2,arm2x2.json,C007_R11,,drsn,1,True,40,475,331,331
+2x2,arm2x2.json,C007_R31,,drsn,1,True,40,950,640,640
+2x2,arm2x2.json,CALL_R11,,drsn,1,True,40,475,331,331
+2x2,arm2x2.json,CALL_R31,,drsn,1,True,40,950,640,640
+2x2,arm2x2.json,C007_R11,,wdcnn,2,True,40,475,322,322
+2x2,arm2x2.json,C007_R31,,wdcnn,2,True,40,950,631,631
+2x2,arm2x2.json,CALL_R11,,wdcnn,2,True,40,475,322,322
+2x2,arm2x2.json,CALL_R31,,wdcnn,2,True,40,950,631,631
+2x2,arm2x2.json,C007_R11,,cnn1d,2,True,40,475,322,322
+2x2,arm2x2.json,C007_R31,,cnn1d,2,True,40,950,631,631
+2x2,arm2x2.json,CALL_R11,,cnn1d,2,True,40,475,322,322
+2x2,arm2x2.json,CALL_R31,,cnn1d,2,True,40,950,631,631
+2x2,arm2x2.json,C007_R11,,drsn,2,True,40,475,322,322
+2x2,arm2x2.json,C007_R31,,drsn,2,True,40,950,631,631
+2x2,arm2x2.json,CALL_R11,,drsn,2,True,40,475,322,322
+2x2,arm2x2.json,CALL_R31,,drsn,2,True,40,950,631,631
+2x2,arm2x2.json,C007_R11,,wdcnn,3,True,40,475,310,310
+2x2,arm2x2.json,C007_R31,,wdcnn,3,True,40,950,642,642
+2x2,arm2x2.json,CALL_R11,,wdcnn,3,True,40,475,310,310
+2x2,arm2x2.json,CALL_R31,,wdcnn,3,True,40,950,642,642
+2x2,arm2x2.json,C007_R11,,cnn1d,3,True,40,475,310,310
+2x2,arm2x2.json,C007_R31,,cnn1d,3,True,40,950,642,642
+2x2,arm2x2.json,CALL_R11,,cnn1d,3,True,40,475,310,310
+2x2,arm2x2.json,CALL_R31,,cnn1d,3,True,40,950,642,642
+2x2,arm2x2.json,C007_R11,,drsn,3,True,40,475,310,310
+2x2,arm2x2.json,C007_R31,,drsn,3,True,40,950,642,642
+2x2,arm2x2.json,CALL_R11,,drsn,3,True,40,475,310,310
+2x2,arm2x2.json,CALL_R31,,drsn,3,True,40,950,642,642
+2x2,arm2x2.json,C007_R11,,wdcnn,4,True,40,475,318,318
+2x2,arm2x2.json,C007_R31,,wdcnn,4,True,40,950,638,638
+2x2,arm2x2.json,CALL_R11,,wdcnn,4,True,40,475,318,318
+2x2,arm2x2.json,CALL_R31,,wdcnn,4,True,40,950,638,638
+2x2,arm2x2.json,C007_R11,,cnn1d,4,True,40,475,318,318
+2x2,arm2x2.json,C007_R31,,cnn1d,4,True,40,950,638,638
+2x2,arm2x2.json,CALL_R11,,cnn1d,4,True,40,475,318,318
+2x2,arm2x2.json,CALL_R31,,cnn1d,4,True,40,950,638,638
+2x2,arm2x2.json,C007_R11,,drsn,4,True,40,475,318,318
+2x2,arm2x2.json,C007_R31,,drsn,4,True,40,950,638,638
+2x2,arm2x2.json,CALL_R11,,drsn,4,True,40,475,318,318
+2x2,arm2x2.json,CALL_R31,,drsn,4,True,40,950,638,638
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R11,,lstm,0,True,40,475,320,320
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R31,,lstm,0,True,40,950,646,646
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R11,,lstm,0,True,40,475,320,320
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R31,,lstm,0,True,40,950,646,646
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R11,,transformer,0,True,40,475,320,320
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R31,,transformer,0,True,40,950,646,646
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R11,,transformer,0,True,40,475,320,320
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R31,,transformer,0,True,40,950,646,646
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R11,,lstm,1,True,40,475,331,331
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R31,,lstm,1,True,40,950,640,640
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R11,,lstm,1,True,40,475,331,331
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R31,,lstm,1,True,40,950,640,640
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R11,,transformer,1,True,40,475,331,331
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R31,,transformer,1,True,40,950,640,640
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R11,,transformer,1,True,40,475,331,331
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R31,,transformer,1,True,40,950,640,640
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R11,,lstm,2,True,40,475,322,322
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R31,,lstm,2,True,40,950,631,631
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R11,,lstm,2,True,40,475,322,322
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R31,,lstm,2,True,40,950,631,631
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R11,,transformer,2,True,40,475,322,322
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R31,,transformer,2,True,40,950,631,631
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R11,,transformer,2,True,40,475,322,322
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R31,,transformer,2,True,40,950,631,631
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R11,,lstm,3,True,40,475,310,310
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R31,,lstm,3,True,40,950,642,642
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R11,,lstm,3,True,40,475,310,310
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R31,,lstm,3,True,40,950,642,642
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R11,,transformer,3,True,40,475,310,310
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R31,,transformer,3,True,40,950,642,642
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R11,,transformer,3,True,40,475,310,310
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R31,,transformer,3,True,40,950,642,642
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R11,,lstm,4,True,40,475,318,318
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R31,,lstm,4,True,40,950,638,638
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R11,,lstm,4,True,40,475,318,318
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R31,,lstm,4,True,40,950,638,638
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R11,,transformer,4,True,40,475,318,318
+E3 (2x2 lstm/transformer),arm2x2_lt.json,C007_R31,,transformer,4,True,40,950,638,638
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R11,,transformer,4,True,40,475,318,318
+E3 (2x2 lstm/transformer),arm2x2_lt.json,CALL_R31,,transformer,4,True,40,950,638,638
+C-INIT 2x2,cinit_2x2.json,C007_R11,,wdcnn,0,,40,475,320,320
+C-INIT 2x2,cinit_2x2.json,C007_R31,,wdcnn,0,,40,950,646,646
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,wdcnn,0,,40,475,320,320
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,wdcnn,0,,40,950,646,646
+C-INIT 2x2,cinit_2x2.json,C007_R11,,wdcnn,1,,40,475,331,331
+C-INIT 2x2,cinit_2x2.json,C007_R31,,wdcnn,1,,40,950,640,640
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,wdcnn,1,,40,475,331,331
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,wdcnn,1,,40,950,640,640
+C-INIT 2x2,cinit_2x2.json,C007_R11,,wdcnn,2,,40,475,322,322
+C-INIT 2x2,cinit_2x2.json,C007_R31,,wdcnn,2,,40,950,631,631
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,wdcnn,2,,40,475,322,322
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,wdcnn,2,,40,950,631,631
+C-INIT 2x2,cinit_2x2.json,C007_R11,,wdcnn,3,,40,475,310,310
+C-INIT 2x2,cinit_2x2.json,C007_R31,,wdcnn,3,,40,950,642,642
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,wdcnn,3,,40,475,310,310
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,wdcnn,3,,40,950,642,642
+C-INIT 2x2,cinit_2x2.json,C007_R11,,wdcnn,4,,40,475,318,318
+C-INIT 2x2,cinit_2x2.json,C007_R31,,wdcnn,4,,40,950,638,638
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,wdcnn,4,,40,475,318,318
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,wdcnn,4,,40,950,638,638
+C-INIT 2x2,cinit_2x2.json,C007_R11,,cnn1d,0,,40,475,320,320
+C-INIT 2x2,cinit_2x2.json,C007_R31,,cnn1d,0,,40,950,646,646
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,cnn1d,0,,40,475,320,320
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,cnn1d,0,,40,950,646,646
+C-INIT 2x2,cinit_2x2.json,C007_R11,,cnn1d,1,,40,475,331,331
+C-INIT 2x2,cinit_2x2.json,C007_R31,,cnn1d,1,,40,950,640,640
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,cnn1d,1,,40,475,331,331
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,cnn1d,1,,40,950,640,640
+C-INIT 2x2,cinit_2x2.json,C007_R11,,cnn1d,2,,40,475,322,322
+C-INIT 2x2,cinit_2x2.json,C007_R31,,cnn1d,2,,40,950,631,631
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,cnn1d,2,,40,475,322,322
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,cnn1d,2,,40,950,631,631
+C-INIT 2x2,cinit_2x2.json,C007_R11,,cnn1d,3,,40,475,310,310
+C-INIT 2x2,cinit_2x2.json,C007_R31,,cnn1d,3,,40,950,642,642
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,cnn1d,3,,40,475,310,310
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,cnn1d,3,,40,950,642,642
+C-INIT 2x2,cinit_2x2.json,C007_R11,,cnn1d,4,,40,475,318,318
+C-INIT 2x2,cinit_2x2.json,C007_R31,,cnn1d,4,,40,950,638,638
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,cnn1d,4,,40,475,318,318
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,cnn1d,4,,40,950,638,638
+C-INIT 2x2,cinit_2x2.json,C007_R11,,drsn,0,,40,475,320,320
+C-INIT 2x2,cinit_2x2.json,C007_R31,,drsn,0,,40,950,646,646
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,drsn,0,,40,475,320,320
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,drsn,0,,40,950,646,646
+C-INIT 2x2,cinit_2x2.json,C007_R11,,drsn,1,,40,475,331,331
+C-INIT 2x2,cinit_2x2.json,C007_R31,,drsn,1,,40,950,640,640
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,drsn,1,,40,475,331,331
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,drsn,1,,40,950,640,640
+C-INIT 2x2,cinit_2x2.json,C007_R11,,drsn,2,,40,475,322,322
+C-INIT 2x2,cinit_2x2.json,C007_R31,,drsn,2,,40,950,631,631
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,drsn,2,,40,475,322,322
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,drsn,2,,40,950,631,631
+C-INIT 2x2,cinit_2x2.json,C007_R11,,drsn,3,,40,475,310,310
+C-INIT 2x2,cinit_2x2.json,C007_R31,,drsn,3,,40,950,642,642
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,drsn,3,,40,475,310,310
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,drsn,3,,40,950,642,642
+C-INIT 2x2,cinit_2x2.json,C007_R11,,drsn,4,,40,475,318,318
+C-INIT 2x2,cinit_2x2.json,C007_R31,,drsn,4,,40,950,638,638
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,drsn,4,,40,475,318,318
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,drsn,4,,40,950,638,638
+C-INIT 2x2,cinit_2x2.json,C007_R11,,lstm,0,,40,475,320,320
+C-INIT 2x2,cinit_2x2.json,C007_R31,,lstm,0,,40,950,646,646
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,lstm,0,,40,475,320,320
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,lstm,0,,40,950,646,646
+C-INIT 2x2,cinit_2x2.json,C007_R11,,lstm,1,,40,475,331,331
+C-INIT 2x2,cinit_2x2.json,C007_R31,,lstm,1,,40,950,640,640
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,lstm,1,,40,475,331,331
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,lstm,1,,40,950,640,640
+C-INIT 2x2,cinit_2x2.json,C007_R11,,lstm,2,,40,475,322,322
+C-INIT 2x2,cinit_2x2.json,C007_R31,,lstm,2,,40,950,631,631
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,lstm,2,,40,475,322,322
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,lstm,2,,40,950,631,631
+C-INIT 2x2,cinit_2x2.json,C007_R11,,lstm,3,,40,475,310,310
+C-INIT 2x2,cinit_2x2.json,C007_R31,,lstm,3,,40,950,642,642
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,lstm,3,,40,475,310,310
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,lstm,3,,40,950,642,642
+C-INIT 2x2,cinit_2x2.json,C007_R11,,lstm,4,,40,475,318,318
+C-INIT 2x2,cinit_2x2.json,C007_R31,,lstm,4,,40,950,638,638
+C-INIT 2x2,cinit_2x2.json,CALL_R11,,lstm,4,,40,475,318,318
+C-INIT 2x2,cinit_2x2.json,CALL_R31,,lstm,4,,40,950,638,638
+E5,e5_size_id.json,S007,0,wdcnn,0,,40,230,0,0
+E5,e5_size_id.json,S014,0,wdcnn,0,,40,230,0,0
+E5,e5_size_id.json,S021,0,wdcnn,0,,40,230,0,0
+E5,e5_size_id.json,S007+014,0,wdcnn,0,,40,230,0,0
+E5,e5_size_id.json,S007+021,0,wdcnn,0,,40,230,0,0
+E5,e5_size_id.json,S014+021,0,wdcnn,0,,40,230,0,0
+E5,e5_size_id.json,S_ALL,0,wdcnn,0,,40,230,0,0
+E5,e5_size_id.json,S007,0,drsn,0,,40,230,0,0
+E5,e5_size_id.json,S014,0,drsn,0,,40,230,0,0
+E5,e5_size_id.json,S021,0,drsn,0,,40,230,0,0
+E5,e5_size_id.json,S007+014,0,drsn,0,,40,230,0,0
+E5,e5_size_id.json,S007+021,0,drsn,0,,40,230,0,0
+E5,e5_size_id.json,S014+021,0,drsn,0,,40,230,0,0
+E5,e5_size_id.json,S_ALL,0,drsn,0,,40,230,0,0
+E5,e5_size_id.json,S007,0,lstm,0,,40,230,0,0
+E5,e5_size_id.json,S014,0,lstm,0,,40,230,0,0
+E5,e5_size_id.json,S021,0,lstm,0,,40,230,0,0
+E5,e5_size_id.json,S007+014,0,lstm,0,,40,230,0,0
+E5,e5_size_id.json,S007+021,0,lstm,0,,40,230,0,0
+E5,e5_size_id.json,S014+021,0,lstm,0,,40,230,0,0
+E5,e5_size_id.json,S007,1,wdcnn,0,,40,230,230,230
+E5,e5_size_id.json,S014,1,wdcnn,0,,40,230,230,230
+E5,e5_size_id.json,S021,1,wdcnn,0,,40,230,230,230
+E5,e5_size_id.json,S007+014,1,wdcnn,0,,40,230,230,230
+E5,e5_size_id.json,S007+021,1,wdcnn,0,,40,230,230,230
+E5,e5_size_id.json,S014+021,1,wdcnn,0,,40,230,230,230
+E5,e5_size_id.json,S_ALL,1,wdcnn,0,,40,230,230,230
+E5,e5_size_id.json,S007,1,drsn,0,,40,230,230,230
+E5,e5_size_id.json,S014,1,drsn,0,,40,230,230,230
+E5,e5_size_id.json,S021,1,drsn,0,,40,230,230,230
+E5,e5_size_id.json,S007+014,1,drsn,0,,40,230,230,230
+E5,e5_size_id.json,S007+021,1,drsn,0,,40,230,230,230
+E5,e5_size_id.json,S014+021,1,drsn,0,,40,230,230,230
+E5,e5_size_id.json,S_ALL,1,drsn,0,,40,230,230,230
+E5,e5_size_id.json,S007,2,wdcnn,0,,40,230,0,0
+E5,e5_size_id.json,S014,2,wdcnn,0,,40,230,0,0
+E5,e5_size_id.json,S021,2,wdcnn,0,,40,230,0,0
+E5,e5_size_id.json,S007+014,2,wdcnn,0,,40,230,0,0
+E5,e5_size_id.json,S007+021,2,wdcnn,0,,40,230,0,0
+E5,e5_size_id.json,S014+021,2,wdcnn,0,,40,230,0,0
+E5,e5_size_id.json,S_ALL,2,wdcnn,0,,40,230,0,0
+E5,e5_size_id.json,S007,2,drsn,0,,40,230,0,0
+E5,e5_size_id.json,S014,2,drsn,0,,40,230,0,0
+E5,e5_size_id.json,S021,2,drsn,0,,40,230,0,0
+E5,e5_size_id.json,S007+014,2,drsn,0,,40,230,0,0
+E5,e5_size_id.json,S007+021,2,drsn,0,,40,230,0,0
+E5,e5_size_id.json,S014+021,2,drsn,0,,40,230,0,0
+E5,e5_size_id.json,S_ALL,2,drsn,0,,40,230,0,0
+E5,e5_size_id.json,S007,0,wdcnn,1,,40,230,0,0
+E5,e5_size_id.json,S014,0,wdcnn,1,,40,230,0,0
+E5,e5_size_id.json,S021,0,wdcnn,1,,40,230,0,0
+E5,e5_size_id.json,S007+014,0,wdcnn,1,,40,230,0,0
+E5,e5_size_id.json,S007+021,0,wdcnn,1,,40,230,0,0
+E5,e5_size_id.json,S014+021,0,wdcnn,1,,40,230,0,0
+E5,e5_size_id.json,S_ALL,0,wdcnn,1,,40,230,0,0
+E5,e5_size_id.json,S007,0,drsn,1,,40,230,0,0
+E5,e5_size_id.json,S014,0,drsn,1,,40,230,0,0
+E5,e5_size_id.json,S021,0,drsn,1,,40,230,0,0
+E5,e5_size_id.json,S007+014,0,drsn,1,,40,230,0,0
+E5,e5_size_id.json,S007+021,0,drsn,1,,40,230,0,0
+E5,e5_size_id.json,S014+021,0,drsn,1,,40,230,0,0
+E5,e5_size_id.json,S_ALL,0,drsn,1,,40,230,0,0
+E5,e5_size_id.json,S007,1,wdcnn,1,,40,230,230,230
+E5,e5_size_id.json,S014,1,wdcnn,1,,40,230,230,230
+E5,e5_size_id.json,S021,1,wdcnn,1,,40,230,230,230
+E5,e5_size_id.json,S007+014,1,wdcnn,1,,40,230,230,230
+E5,e5_size_id.json,S007+021,1,wdcnn,1,,40,230,230,230
+E5,e5_size_id.json,S014+021,1,wdcnn,1,,40,230,230,230
+E5,e5_size_id.json,S_ALL,1,wdcnn,1,,40,230,230,230
+E5,e5_size_id.json,S007,1,drsn,1,,40,230,230,230
+E5,e5_size_id.json,S014,1,drsn,1,,40,230,230,230
+E5,e5_size_id.json,S021,1,drsn,1,,40,230,230,230
+E5,e5_size_id.json,S007+014,1,drsn,1,,40,230,230,230
+E5,e5_size_id.json,S007+021,1,drsn,1,,40,230,230,230
+E5,e5_size_id.json,S014+021,1,drsn,1,,40,230,230,230
+E5,e5_size_id.json,S_ALL,1,drsn,1,,40,230,230,230
+E5,e5_size_id.json,S007,2,wdcnn,1,,40,230,0,0
+E5,e5_size_id.json,S014,2,wdcnn,1,,40,230,0,0
+E5,e5_size_id.json,S021,2,wdcnn,1,,40,230,0,0
+E5,e5_size_id.json,S007+014,2,wdcnn,1,,40,230,0,0
+E5,e5_size_id.json,S007+021,2,wdcnn,1,,40,230,0,0
+E5,e5_size_id.json,S014+021,2,wdcnn,1,,40,230,0,0
+E5,e5_size_id.json,S_ALL,2,wdcnn,1,,40,230,0,0
+E5,e5_size_id.json,S007,2,drsn,1,,40,230,0,0
+E5,e5_size_id.json,S014,2,drsn,1,,40,230,0,0
+E5,e5_size_id.json,S021,2,drsn,1,,40,230,0,0
+E5,e5_size_id.json,S007+014,2,drsn,1,,40,230,0,0
+E5,e5_size_id.json,S007+021,2,drsn,1,,40,230,0,0
+E5,e5_size_id.json,S014+021,2,drsn,1,,40,230,0,0
+E5,e5_size_id.json,S_ALL,2,drsn,1,,40,230,0,0
+E5,e5_size_id.json,S007,0,wdcnn,2,,40,230,0,0
+E5,e5_size_id.json,S014,0,wdcnn,2,,40,230,0,0
+E5,e5_size_id.json,S021,0,wdcnn,2,,40,230,0,0
+E5,e5_size_id.json,S007+014,0,wdcnn,2,,40,230,0,0
+E5,e5_size_id.json,S007+021,0,wdcnn,2,,40,230,0,0
+E5,e5_size_id.json,S014+021,0,wdcnn,2,,40,230,0,0
+E5,e5_size_id.json,S_ALL,0,wdcnn,2,,40,230,0,0
+E5,e5_size_id.json,S007,0,drsn,2,,40,230,0,0
+E5,e5_size_id.json,S014,0,drsn,2,,40,230,0,0
+E5,e5_size_id.json,S021,0,drsn,2,,40,230,0,0
+E5,e5_size_id.json,S007+014,0,drsn,2,,40,230,0,0
+E5,e5_size_id.json,S007+021,0,drsn,2,,40,230,0,0
+E5,e5_size_id.json,S014+021,0,drsn,2,,40,230,0,0
+E5,e5_size_id.json,S_ALL,0,drsn,2,,40,230,0,0
+E5,e5_size_id.json,S007,1,wdcnn,2,,40,230,230,230
+E5,e5_size_id.json,S014,1,wdcnn,2,,40,230,230,230
+E5,e5_size_id.json,S021,1,wdcnn,2,,40,230,230,230
+E5,e5_size_id.json,S007+014,1,wdcnn,2,,40,230,230,230
+E5,e5_size_id.json,S007+021,1,wdcnn,2,,40,230,230,230
+E5,e5_size_id.json,S014+021,1,wdcnn,2,,40,230,230,230
+E5,e5_size_id.json,S_ALL,1,wdcnn,2,,40,230,230,230
+E5,e5_size_id.json,S007,1,drsn,2,,40,230,230,230
+E5,e5_size_id.json,S014,1,drsn,2,,40,230,230,230
+E5,e5_size_id.json,S021,1,drsn,2,,40,230,230,230
+E5,e5_size_id.json,S007+014,1,drsn,2,,40,230,230,230
+E5,e5_size_id.json,S007+021,1,drsn,2,,40,230,230,230
+E5,e5_size_id.json,S014+021,1,drsn,2,,40,230,230,230
+E5,e5_size_id.json,S_ALL,1,drsn,2,,40,230,230,230
+E5,e5_size_id.json,S007,2,wdcnn,2,,40,230,0,0
+E5,e5_size_id.json,S014,2,wdcnn,2,,40,230,0,0
+E5,e5_size_id.json,S021,2,wdcnn,2,,40,230,0,0
+E5,e5_size_id.json,S007+014,2,wdcnn,2,,40,230,0,0
+E5,e5_size_id.json,S007+021,2,wdcnn,2,,40,230,0,0
+E5,e5_size_id.json,S014+021,2,wdcnn,2,,40,230,0,0
+E5,e5_size_id.json,S_ALL,2,wdcnn,2,,40,230,0,0
+E5,e5_size_id.json,S007,2,drsn,2,,40,230,0,0
+E5,e5_size_id.json,S014,2,drsn,2,,40,230,0,0
+E5,e5_size_id.json,S021,2,drsn,2,,40,230,0,0
+E5,e5_size_id.json,S007+014,2,drsn,2,,40,230,0,0
+E5,e5_size_id.json,S007+021,2,drsn,2,,40,230,0,0
+E5,e5_size_id.json,S014+021,2,drsn,2,,40,230,0,0
+E5,e5_size_id.json,S_ALL,2,drsn,2,,40,230,0,0
+E5,e5_size_id.json,S_ALL,0,lstm,0,,40,230,0,0
+E5,e5_size_id.json,S007,1,lstm,0,,40,230,230,230
+E5,e5_size_id.json,S014,1,lstm,0,,40,230,230,230
+E5,e5_size_id.json,S021,1,lstm,0,,40,230,230,230
+E5,e5_size_id.json,S007+014,1,lstm,0,,40,230,230,230
+E5,e5_size_id.json,S007+021,1,lstm,0,,40,230,230,230
+E5,e5_size_id.json,S014+021,1,lstm,0,,40,230,230,230
+E5,e5_size_id.json,S_ALL,1,lstm,0,,40,230,230,230
+E5,e5_size_id.json,S007,2,lstm,0,,40,230,0,0
+E5,e5_size_id.json,S014,2,lstm,0,,40,230,0,0
+E5,e5_size_id.json,S021,2,lstm,0,,40,230,0,0
+E5,e5_size_id.json,S007+014,2,lstm,0,,40,230,0,0
+E5,e5_size_id.json,S007+021,2,lstm,0,,40,230,0,0
+E5,e5_size_id.json,S014+021,2,lstm,0,,40,230,0,0
+E5,e5_size_id.json,S_ALL,2,lstm,0,,40,230,0,0
+E5,e5_size_id.json,S007,0,lstm,1,,40,230,0,0
+E5,e5_size_id.json,S014,0,lstm,1,,40,230,0,0
+E5,e5_size_id.json,S021,0,lstm,1,,40,230,0,0
+E5,e5_size_id.json,S007+014,0,lstm,1,,40,230,0,0
+E5,e5_size_id.json,S007+021,0,lstm,1,,40,230,0,0
+E5,e5_size_id.json,S014+021,0,lstm,1,,40,230,0,0
+E5,e5_size_id.json,S_ALL,0,lstm,1,,40,230,0,0
+E5,e5_size_id.json,S007,1,lstm,1,,40,230,230,230
+E5,e5_size_id.json,S014,1,lstm,1,,40,230,230,230
+E5,e5_size_id.json,S021,1,lstm,1,,40,230,230,230
+E5,e5_size_id.json,S007+014,1,lstm,1,,40,230,230,230
+E5,e5_size_id.json,S007+021,1,lstm,1,,40,230,230,230
+E5,e5_size_id.json,S014+021,1,lstm,1,,40,230,230,230
+E5,e5_size_id.json,S_ALL,1,lstm,1,,40,230,230,230
+E5,e5_size_id.json,S007,2,lstm,1,,40,230,0,0
+E5,e5_size_id.json,S014,2,lstm,1,,40,230,0,0
+E5,e5_size_id.json,S021,2,lstm,1,,40,230,0,0
+E5,e5_size_id.json,S007+014,2,lstm,1,,40,230,0,0
+E5,e5_size_id.json,S007+021,2,lstm,1,,40,230,0,0
+E5,e5_size_id.json,S014+021,2,lstm,1,,40,230,0,0
+E5,e5_size_id.json,S_ALL,2,lstm,1,,40,230,0,0
+E5,e5_size_id.json,S007,0,lstm,2,,40,230,0,0
+E5,e5_size_id.json,S014,0,lstm,2,,40,230,0,0
+E5,e5_size_id.json,S021,0,lstm,2,,40,230,0,0
+E5,e5_size_id.json,S007+014,0,lstm,2,,40,230,0,0
+E5,e5_size_id.json,S007+021,0,lstm,2,,40,230,0,0
+E5,e5_size_id.json,S014+021,0,lstm,2,,40,230,0,0
+E5,e5_size_id.json,S_ALL,0,lstm,2,,40,230,0,0
+E5,e5_size_id.json,S007,1,lstm,2,,40,230,230,230
+E5,e5_size_id.json,S014,1,lstm,2,,40,230,230,230
+E5,e5_size_id.json,S021,1,lstm,2,,40,230,230,230
+E5,e5_size_id.json,S007+014,1,lstm,2,,40,230,230,230
+E5,e5_size_id.json,S007+021,1,lstm,2,,40,230,230,230
+E5,e5_size_id.json,S014+021,1,lstm,2,,40,230,230,230
+E5,e5_size_id.json,S_ALL,1,lstm,2,,40,230,230,230
+E5,e5_size_id.json,S007,2,lstm,2,,40,230,0,0
+E5,e5_size_id.json,S014,2,lstm,2,,40,230,0,0
+E5,e5_size_id.json,S021,2,lstm,2,,40,230,0,0
+E5,e5_size_id.json,S007+014,2,lstm,2,,40,230,0,0
+E5,e5_size_id.json,S007+021,2,lstm,2,,40,230,0,0
+E5,e5_size_id.json,S014+021,2,lstm,2,,40,230,0,0
+E5,e5_size_id.json,S_ALL,2,lstm,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007,0,wdcnn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014,0,wdcnn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S021,0,wdcnn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+014,0,wdcnn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+021,0,wdcnn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014+021,0,wdcnn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S_ALL,0,wdcnn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007,1,wdcnn,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S014,1,wdcnn,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S021,1,wdcnn,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007+014,1,wdcnn,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007+021,1,wdcnn,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S014+021,1,wdcnn,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S_ALL,1,wdcnn,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007,2,wdcnn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014,2,wdcnn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S021,2,wdcnn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+014,2,wdcnn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+021,2,wdcnn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014+021,2,wdcnn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S_ALL,2,wdcnn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007,0,wdcnn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014,0,wdcnn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S021,0,wdcnn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+014,0,wdcnn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+021,0,wdcnn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014+021,0,wdcnn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S_ALL,0,wdcnn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007,1,wdcnn,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S014,1,wdcnn,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S021,1,wdcnn,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007+014,1,wdcnn,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007+021,1,wdcnn,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S014+021,1,wdcnn,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S_ALL,1,wdcnn,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007,2,wdcnn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014,2,wdcnn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S021,2,wdcnn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+014,2,wdcnn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+021,2,wdcnn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014+021,2,wdcnn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S_ALL,2,wdcnn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007,0,wdcnn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014,0,wdcnn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S021,0,wdcnn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+014,0,wdcnn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+021,0,wdcnn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014+021,0,wdcnn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S_ALL,0,wdcnn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007,1,wdcnn,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S014,1,wdcnn,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S021,1,wdcnn,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007+014,1,wdcnn,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007+021,1,wdcnn,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S014+021,1,wdcnn,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S_ALL,1,wdcnn,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007,2,wdcnn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014,2,wdcnn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S021,2,wdcnn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+014,2,wdcnn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+021,2,wdcnn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014+021,2,wdcnn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S_ALL,2,wdcnn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007,0,drsn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014,0,drsn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S021,0,drsn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+014,0,drsn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+021,0,drsn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014+021,0,drsn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S_ALL,0,drsn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007,1,drsn,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S014,1,drsn,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S021,1,drsn,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007+014,1,drsn,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007+021,1,drsn,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S014+021,1,drsn,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S_ALL,1,drsn,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007,2,drsn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014,2,drsn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S021,2,drsn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+014,2,drsn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+021,2,drsn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014+021,2,drsn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S_ALL,2,drsn,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007,0,drsn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014,0,drsn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S021,0,drsn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+014,0,drsn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+021,0,drsn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014+021,0,drsn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S_ALL,0,drsn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007,1,drsn,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S014,1,drsn,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S021,1,drsn,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007+014,1,drsn,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007+021,1,drsn,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S014+021,1,drsn,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S_ALL,1,drsn,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007,2,drsn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014,2,drsn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S021,2,drsn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+014,2,drsn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+021,2,drsn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014+021,2,drsn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S_ALL,2,drsn,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007,0,drsn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014,0,drsn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S021,0,drsn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+014,0,drsn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+021,0,drsn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014+021,0,drsn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S_ALL,0,drsn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007,1,drsn,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S014,1,drsn,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S021,1,drsn,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007+014,1,drsn,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007+021,1,drsn,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S014+021,1,drsn,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S_ALL,1,drsn,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007,2,drsn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014,2,drsn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S021,2,drsn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+014,2,drsn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+021,2,drsn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014+021,2,drsn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S_ALL,2,drsn,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007,0,lstm,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014,0,lstm,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S021,0,lstm,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+014,0,lstm,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+021,0,lstm,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014+021,0,lstm,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S_ALL,0,lstm,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007,1,lstm,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S014,1,lstm,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S021,1,lstm,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007+014,1,lstm,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007+021,1,lstm,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S014+021,1,lstm,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S_ALL,1,lstm,0,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007,2,lstm,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014,2,lstm,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S021,2,lstm,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+014,2,lstm,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+021,2,lstm,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014+021,2,lstm,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S_ALL,2,lstm,0,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007,0,lstm,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014,0,lstm,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S021,0,lstm,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+014,0,lstm,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+021,0,lstm,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014+021,0,lstm,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S_ALL,0,lstm,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007,1,lstm,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S014,1,lstm,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S021,1,lstm,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007+014,1,lstm,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007+021,1,lstm,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S014+021,1,lstm,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S_ALL,1,lstm,1,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007,2,lstm,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014,2,lstm,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S021,2,lstm,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+014,2,lstm,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+021,2,lstm,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014+021,2,lstm,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S_ALL,2,lstm,1,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007,0,lstm,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014,0,lstm,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S021,0,lstm,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+014,0,lstm,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+021,0,lstm,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014+021,0,lstm,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S_ALL,0,lstm,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007,1,lstm,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S014,1,lstm,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S021,1,lstm,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007+014,1,lstm,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007+021,1,lstm,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S014+021,1,lstm,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S_ALL,1,lstm,2,,40,230,230,230
+C-INIT E5,cinit_e5.json,S007,2,lstm,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014,2,lstm,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S021,2,lstm,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+014,2,lstm,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S007+021,2,lstm,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S014+021,2,lstm,2,,40,230,0,0
+C-INIT E5,cinit_e5.json,S_ALL,2,lstm,2,,40,230,0,0
+E1,ext_e1.json,ID0N0S0,,cnn1d,0,True,40,950,646,646
+E1,ext_e1.json,ID0N0S1,,cnn1d,0,True,40,950,646,646
+E1,ext_e1.json,ID0N1S0,,cnn1d,0,True,40,1419,944,944
+E1,ext_e1.json,ID0N1S1,,cnn1d,0,True,40,1419,944,944
+E1,ext_e1.json,ID1N0S0,,cnn1d,0,True,16,950,646,646
+E1,ext_e1.json,ID1N0S1,,cnn1d,0,True,16,950,646,646
+E1,ext_e1.json,ID1N1S0,,cnn1d,0,True,16,1419,944,944
+E1,ext_e1.json,ID1N1S1,,cnn1d,0,True,16,1419,944,944
+E1,ext_e1.json,ID0N0S0,,cnn1d,1,True,40,950,640,640
+E1,ext_e1.json,ID0N0S1,,cnn1d,1,True,40,950,640,640
+E1,ext_e1.json,ID0N1S0,,cnn1d,1,True,40,1419,944,944
+E1,ext_e1.json,ID0N1S1,,cnn1d,1,True,40,1419,944,944
+E1,ext_e1.json,ID1N0S0,,cnn1d,1,True,16,950,640,640
+E1,ext_e1.json,ID1N0S1,,cnn1d,1,True,16,950,640,640
+E1,ext_e1.json,ID1N1S0,,cnn1d,1,True,16,1419,944,944
+E1,ext_e1.json,ID1N1S1,,cnn1d,1,True,16,1419,944,944
+E1,ext_e1.json,ID0N0S0,,cnn1d,2,True,40,950,631,631
+E1,ext_e1.json,ID0N0S1,,cnn1d,2,True,40,950,631,631
+E1,ext_e1.json,ID0N1S0,,cnn1d,2,True,40,1419,944,944
+E1,ext_e1.json,ID0N1S1,,cnn1d,2,True,40,1419,944,944
+E1,ext_e1.json,ID1N0S0,,cnn1d,2,True,16,950,631,631
+E1,ext_e1.json,ID1N0S1,,cnn1d,2,True,16,950,631,631
+E1,ext_e1.json,ID1N1S0,,cnn1d,2,True,16,1419,944,944
+E1,ext_e1.json,ID1N1S1,,cnn1d,2,True,16,1419,944,944
+E1,ext_e1.json,ID0N0S0,,cnn1d,3,True,40,950,642,642
+E1,ext_e1.json,ID0N0S1,,cnn1d,3,True,40,950,642,642
+E1,ext_e1.json,ID0N1S0,,cnn1d,3,True,40,1419,944,944
+E1,ext_e1.json,ID0N1S1,,cnn1d,3,True,40,1419,944,944
+E1,ext_e1.json,ID1N0S0,,cnn1d,3,True,16,950,642,642
+E1,ext_e1.json,ID1N0S1,,cnn1d,3,True,16,950,642,642
+E1,ext_e1.json,ID1N1S0,,cnn1d,3,True,16,1419,944,944
+E1,ext_e1.json,ID1N1S1,,cnn1d,3,True,16,1419,944,944
+E1,ext_e1.json,ID0N0S0,,cnn1d,4,True,40,950,638,638
+E1,ext_e1.json,ID0N0S1,,cnn1d,4,True,40,950,638,638
+E1,ext_e1.json,ID0N1S0,,cnn1d,4,True,40,1419,944,944
+E1,ext_e1.json,ID0N1S1,,cnn1d,4,True,40,1419,944,944
+E1,ext_e1.json,ID1N0S0,,cnn1d,4,True,16,950,638,638
+E1,ext_e1.json,ID1N0S1,,cnn1d,4,True,16,950,638,638
+E1,ext_e1.json,ID1N1S0,,cnn1d,4,True,16,1419,944,944
+E1,ext_e1.json,ID1N1S1,,cnn1d,4,True,16,1419,944,944
+E2,ext_e2.json,S1L3,,wdcnn,0,True,40,230,165,165
+E2,ext_e2.json,S3L1,,wdcnn,0,True,40,230,165,165
+E2,ext_e2.json,S1L1,,wdcnn,0,True,40,230,165,165
+E2,ext_e2.json,S1L3,,drsn,0,True,40,230,165,165
+E2,ext_e2.json,S3L1,,drsn,0,True,40,230,165,165
+E2,ext_e2.json,S1L1,,drsn,0,True,40,230,165,165
+E2,ext_e2.json,S1L3,,cnn1d,0,True,40,230,165,165
+E2,ext_e2.json,S3L1,,cnn1d,0,True,40,230,165,165
+E2,ext_e2.json,S1L1,,cnn1d,0,True,40,230,165,165
+E2,ext_e2.json,S1L3,,wdcnn,1,True,40,230,156,156
+E2,ext_e2.json,S3L1,,wdcnn,1,True,40,230,156,156
+E2,ext_e2.json,S1L1,,wdcnn,1,True,40,230,156,156
+E2,ext_e2.json,S1L3,,drsn,1,True,40,230,156,156
+E2,ext_e2.json,S3L1,,drsn,1,True,40,230,156,156
+E2,ext_e2.json,S1L1,,drsn,1,True,40,230,156,156
+E2,ext_e2.json,S1L3,,cnn1d,1,True,40,230,156,156
+E2,ext_e2.json,S3L1,,cnn1d,1,True,40,230,156,156
+E2,ext_e2.json,S1L1,,cnn1d,1,True,40,230,156,156
+E2,ext_e2.json,S1L3,,wdcnn,2,True,40,230,158,158
+E2,ext_e2.json,S3L1,,wdcnn,2,True,40,230,158,158
+E2,ext_e2.json,S1L1,,wdcnn,2,True,40,230,158,158
+E2,ext_e2.json,S1L3,,drsn,2,True,40,230,158,158
+E2,ext_e2.json,S3L1,,drsn,2,True,40,230,158,158
+E2,ext_e2.json,S1L1,,drsn,2,True,40,230,158,158
+E2,ext_e2.json,S1L3,,cnn1d,2,True,40,230,158,158
+E2,ext_e2.json,S3L1,,cnn1d,2,True,40,230,158,158
+E2,ext_e2.json,S1L1,,cnn1d,2,True,40,230,158,158
+E2,ext_e2.json,S1L3,,wdcnn,3,True,40,230,157,157
+E2,ext_e2.json,S3L1,,wdcnn,3,True,40,230,157,157
+E2,ext_e2.json,S1L1,,wdcnn,3,True,40,230,157,157
+E2,ext_e2.json,S1L3,,drsn,3,True,40,230,157,157
+E2,ext_e2.json,S3L1,,drsn,3,True,40,230,157,157
+E2,ext_e2.json,S1L1,,drsn,3,True,40,230,157,157
+E2,ext_e2.json,S1L3,,cnn1d,3,True,40,230,157,157
+E2,ext_e2.json,S3L1,,cnn1d,3,True,40,230,157,157
+E2,ext_e2.json,S1L1,,cnn1d,3,True,40,230,157,157
+E2,ext_e2.json,S1L3,,wdcnn,4,True,40,230,144,144
+E2,ext_e2.json,S3L1,,wdcnn,4,True,40,230,144,144
+E2,ext_e2.json,S1L1,,wdcnn,4,True,40,230,144,144
+E2,ext_e2.json,S1L3,,drsn,4,True,40,230,144,144
+E2,ext_e2.json,S3L1,,drsn,4,True,40,230,144,144
+E2,ext_e2.json,S1L1,,drsn,4,True,40,230,144,144
+E2,ext_e2.json,S1L3,,cnn1d,4,True,40,230,144,144
+E2,ext_e2.json,S3L1,,cnn1d,4,True,40,230,144,144
+E2,ext_e2.json,S1L1,,cnn1d,4,True,40,230,144,144
+E4 reference protocol,e4_paperB_harness.json,,,wdcnn,0,,16,1419,944,944
+E4 reference protocol,e4_paperB_harness.json,,,cnn1d,0,,16,1419,944,944
+E4 reference protocol,e4_paperB_harness.json,,,drsn,0,,16,1419,944,944
+E4 reference protocol,e4_paperB_harness.json,,,wdcnn,1,,16,1419,944,944
+E4 reference protocol,e4_paperB_harness.json,,,cnn1d,1,,16,1419,944,944
+E4 reference protocol,e4_paperB_harness.json,,,drsn,1,,16,1419,944,944
+E4 reference protocol,e4_paperB_harness.json,,,wdcnn,2,,16,1419,944,944
+E4 reference protocol,e4_paperB_harness.json,,,cnn1d,2,,16,1419,944,944
+E4 reference protocol,e4_paperB_harness.json,,,drsn,2,,16,1419,944,944
+E4 reference protocol,e4_paperB_harness.json,,,wdcnn,3,,16,1419,944,944
+E4 reference protocol,e4_paperB_harness.json,,,cnn1d,3,,16,1419,944,944
+E4 reference protocol,e4_paperB_harness.json,,,drsn,3,,16,1419,944,944
+E4 reference protocol,e4_paperB_harness.json,,,wdcnn,4,,16,1419,944,944
+E4 reference protocol,e4_paperB_harness.json,,,cnn1d,4,,16,1419,944,944
+E4 reference protocol,e4_paperB_harness.json,,,drsn,4,,16,1419,944,944
+WP1 CWRU clean,wp1_cwru_clean.json,,,lstm,0,,16,1419,944,944
+WP1 CWRU clean,wp1_cwru_clean.json,,,transformer,0,,16,1419,944,944
+WP1 CWRU clean,wp1_cwru_clean.json,,,lstm,1,,16,1419,944,944
+WP1 CWRU clean,wp1_cwru_clean.json,,,transformer,1,,16,1419,944,944
+WP1 CWRU clean,wp1_cwru_clean.json,,,lstm,2,,16,1419,944,944
+WP1 CWRU clean,wp1_cwru_clean.json,,,transformer,2,,16,1419,944,944
+WP1 CWRU clean,wp1_cwru_clean.json,,,lstm,3,,16,1419,944,944
+WP1 CWRU clean,wp1_cwru_clean.json,,,transformer,3,,16,1419,944,944
+WP1 CWRU clean,wp1_cwru_clean.json,,,lstm,4,,16,1419,944,944
+WP1 CWRU clean,wp1_cwru_clean.json,,,transformer,4,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,cnn1d,0,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,wdcnn,0,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,drsn,0,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,lstm,0,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,transformer,0,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,cnn1d,1,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,wdcnn,1,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,drsn,1,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,lstm,1,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,transformer,1,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,cnn1d,2,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,wdcnn,2,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,drsn,2,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,lstm,2,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,transformer,2,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,cnn1d,3,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,wdcnn,3,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,drsn,3,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,lstm,3,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,transformer,3,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,cnn1d,4,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,wdcnn,4,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,drsn,4,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,lstm,4,,16,1419,944,944
+WP1 CWRU awgn,wp1_cwru_awgn.json,,,transformer,4,,16,1419,944,944
+WP1 CWRU clean (Mamba),wp1_cwru_clean_M.json,,,vibrmamba,0,,16,1419,944,944
+WP1 CWRU clean (Mamba),wp1_cwru_clean_M.json,,,vibrmamba,1,,16,1419,944,944
+WP1 CWRU clean (Mamba),wp1_cwru_clean_M.json,,,vibrmamba,2,,16,1419,944,944
+WP1 CWRU clean (Mamba),wp1_cwru_clean_M.json,,,vibrmamba,3,,16,1419,944,944
+WP1 CWRU clean (Mamba),wp1_cwru_clean_M.json,,,vibrmamba,4,,16,1419,944,944
+WP1 CWRU mamba2,wp1_cwru_m2.json,,,mamba2,0,,16,1419,944,944
+WP1 CWRU mamba2,wp1_cwru_m2.json,,,mamba2,1,,16,1419,944,944
+WP1 CWRU mamba2,wp1_cwru_m2.json,,,mamba2,2,,16,1419,944,944
+WP1 CWRU mamba2,wp1_cwru_m2.json,,,mamba2,3,,16,1419,944,944
+WP1 CWRU mamba2,wp1_cwru_m2.json,,,mamba2,4,,16,1419,944,944
+WP1 CWRU awgn (Mamba),wp1_cwru_awgn_M.json,,,vibrmamba,0,,16,1419,944,944
+WP1 CWRU awgn (Mamba),wp1_cwru_awgn_M.json,,,mamba2,0,,16,1419,944,944
+WP1 CWRU awgn (Mamba),wp1_cwru_awgn_M.json,,,vibrmamba,1,,16,1419,944,944
+WP1 CWRU awgn (Mamba),wp1_cwru_awgn_M.json,,,mamba2,1,,16,1419,944,944
+WP1 CWRU awgn (Mamba),wp1_cwru_awgn_M.json,,,vibrmamba,2,,16,1419,944,944
+WP1 CWRU awgn (Mamba),wp1_cwru_awgn_M.json,,,mamba2,2,,16,1419,944,944
+WP1 CWRU awgn (Mamba),wp1_cwru_awgn_M.json,,,vibrmamba,3,,16,1419,944,944
+WP1 CWRU awgn (Mamba),wp1_cwru_awgn_M.json,,,mamba2,3,,16,1419,944,944
+WP1 CWRU awgn (Mamba),wp1_cwru_awgn_M.json,,,vibrmamba,4,,16,1419,944,944
+WP1 CWRU awgn (Mamba),wp1_cwru_awgn_M.json,,,mamba2,4,,16,1419,944,944

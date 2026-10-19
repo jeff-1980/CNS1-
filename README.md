@@ -40,6 +40,21 @@ The raw data are not redistributed. Obtain them from the providers and check the
 
 Other paths: `CNS_ROOT` (repository root, default: parent of `code/`), `CWRU16_DIR` (default `data/cwru_16`), `PAPERB_CODE` and `PAPERB_RESULTS` (code package and published result package of Wang and Tang 2026, used only by the reference-protocol scripts `e4_paperB_harness.py`, `wp1_harness.py`, `select_rpm.py`, `analyze_e4.py`, `analyze_wp1.py` and by the Mamba models).
 
+## Release v2.0 (corrected CWRU loader)
+
+Release v2.0 adds the correction of the CWRU loading error and everything that depends on it. Release v1.0 is unchanged and reproduces the original runs with `CWRU_LEGACY_FIRST_KEY=1`.
+
+| path | content |
+|---|---|
+| `code/pbx/data/cwru_loader.py` | corrected loader (selects the drive-end array whose number matches the file name) |
+| `audit/` | exposure audit of every original instance, re-scoring of archived weights on unseen Normal windows, false-alarm check, loader verification (`verify_fix.py`), C-INIT-FIX verdict |
+| `code/cinit_fix.py`, `code/run_cinit_fix.sh` | confirmation runs with the corrected loader (C-INIT 2 × 2 and the affected E5 draw); preregistration `results/PREREG_CINIT_FIX_loader.md`, verdict `results/VERDICT_CINIT_FIX.md`, erratum `results/ERRATA_CINIT_FIX.md`, audit report `results/AUDIT_CWRU_99mat.md` |
+| `results/cinit_fix_*.json` | corrected-loader result records (143 instances; registered in `results/registry/training_instances.csv`, now 1224 rows) |
+| `code/postfix_inference.py`, `code/summarize_postfix.py`, `code/postfix_figs.py` | post-hoc inference on the corrected weights (no training): performance without added noise, recalibrated confidence rule B2 with risk–coverage, input-scale controls; summary and figures. Run from `code/` without `CWRU_LEGACY_FIRST_KEY` |
+| `results/postfix_*.json`, `results/postfix_summary.txt` | outputs of the post-hoc inference |
+
+The corrected-loader weights are attached to release v2.0 as `CNS1_weights_v2_cinit_fix.tar` (143 files, SHA-256 `723e2e7d9e59675bdb942408084670119b218252da9b5bfddf81f51aa949a93c`); unpack into `results/` (giving `results/ckpt_cinit_fix/`) and run `python code/verify_weights.py`. The exploratory cross-domain experiments (C6-P, T1–T3) are documented by their preregistrations, verdicts and result records in `results/`; their weights are not distributed.
+
 ## Trained weights
 
 The 1051 weight files (≈1.1 GB) are attached to release [v1.0](https://github.com/jeff-1980/CNS1-/releases/tag/v1.0) as `CNS1_weights_part1.tar` and `CNS1_weights_part2.tar` (checksums in `SHA256SUMS.txt`). Unpack both into `results/` (giving `results/ckpt_2x2/`, `results/ckpt_e5/`, …) and run `python code/verify_weights.py`. 138 registry rows from early screening runs have no kept weights and are marked `missing`.
