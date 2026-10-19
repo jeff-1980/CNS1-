@@ -1,6 +1,8 @@
 # Training-file composition and the collapse class of deep bearing fault classifiers under strong noise
 
-Code, result records, preregistrations and figure/table generators for the manuscript submitted to *Mechanical Systems and Signal Processing*.
+Code, result records, preregistrations and figure/table generators for the accompanying manuscript.
+
+**License.** Code: MIT (`LICENSE`). Results, documents and trained weights: CC BY 4.0 (`LICENSE-DATA.md`). **Citation:** see `CITATION.cff`; an archived copy of each release is deposited on Zenodo.
 
 ## Layout
 

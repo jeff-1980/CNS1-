@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this code or these results, please cite them as below."
+title: "CNS1: code, result records, preregistrations and trained weights for a preregistered failure evaluation of deep bearing fault classifiers under strong noise"
+type: software
+authors:
+  - family-names: Wang
+    given-names: Yi
+    affiliation: "Department of Mechanical Engineering, College of Engineering, Lishui University"
+  - family-names: Tang
+    given-names: Yongqing
+    affiliation: "School of Physics, Mechanics & Electronics, Longyan University"
+    email: yq_tang@lyun.edu.cn
+repository-code: "https://github.com/jeff-1980/CNS1-"
+license: MIT
+version: "2.0.1"
+date-released: "2026-10-19"
