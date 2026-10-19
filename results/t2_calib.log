@@ -1,0 +1,84 @@
+### CALIB start 2026-10-14T15:01:37+08:00
+  cwru|wdcnn weak_steps T=25 median=0.965
+  cwru|wdcnn weak_steps T=50 median=0.975
+  cwru|wdcnn weak_steps T=100 median=0.964
+  cwru|wdcnn weak_steps T=200 median=0.939
+  cwru|wdcnn weak_steps T=400 median=0.933
+  cwru|wdcnn weak_steps T=800 median=0.936
+  cwru|wdcnn weak_steps T=1500 median=0.935
+  cwru|wdcnn weak_label ρ=0.2 median=0.869
+### CALIB stopped by operator to decouple from main run 2026-10-14T15:04:08+08:00
+### CALIB-only restart 2026-10-14T15:04:15+08:00
+  cwru|wdcnn weak_steps T=25 median=0.965
+  cwru|wdcnn weak_steps T=50 median=0.975
+  cwru|wdcnn weak_steps T=100 median=0.964
+  cwru|wdcnn weak_steps T=200 median=0.940
+  cwru|wdcnn weak_steps T=400 median=0.933
+  cwru|wdcnn weak_steps T=800 median=0.935
+  cwru|wdcnn weak_steps T=1500 median=0.935
+  cwru|wdcnn weak_label ρ=0.2 median=0.864
+  cwru|wdcnn weak_label ρ=0.3 median=0.774
+  cwru|wdcnn weak_label ρ=0.4 median=0.673
+  cwru|wdcnn weak_label ρ=0.5 median=0.556
+[校准] cwru|wdcnn → {'strong_steps': 3000, 'strong_median': 0.9450048804283142, 'weak_steps': 400, 'weak_steps_in_range': False, 'rho': 0.5, 'rho_in_range': True, 'strength_gap': True, 'wall_s': 214}
+  cwru|drsn weak_steps T=25 median=0.817
+  cwru|drsn weak_steps T=50 median=0.940
+  cwru|drsn weak_steps T=100 median=0.986
+  cwru|drsn weak_steps T=200 median=0.994
+  cwru|drsn weak_steps T=400 median=0.996
+  cwru|drsn weak_steps T=800 median=0.997
+  cwru|drsn weak_steps T=1500 median=0.996
+  cwru|drsn weak_label ρ=0.2 median=0.851
+  cwru|drsn weak_label ρ=0.3 median=0.759
+  cwru|drsn weak_label ρ=0.4 median=0.653
+  cwru|drsn weak_label ρ=0.5 median=0.535
+  cwru|drsn weak_label ρ=0.6 median=0.419
+  cwru|drsn weak_label ρ=0.7 median=0.307
+[校准] cwru|drsn → {'strong_steps': 3000, 'strong_median': 0.9967458248138428, 'weak_steps': 25, 'weak_steps_in_range': False, 'rho': 0.4, 'rho_in_range': False, 'strength_gap': False, 'wall_s': 1165}
+  cwru|lstm weak_steps T=25 median=0.587
+  cwru|lstm weak_label ρ=0.2 median=0.972
+  cwru|lstm weak_label ρ=0.3 median=0.952
+  cwru|lstm weak_label ρ=0.4 median=0.940
+  cwru|lstm weak_label ρ=0.5 median=0.720
+  cwru|lstm weak_label ρ=0.6 median=0.572
+[校准] cwru|lstm → {'strong_steps': 3000, 'strong_median': 0.9967458248138428, 'weak_steps': 25, 'weak_steps_in_range': True, 'rho': 0.6, 'rho_in_range': True, 'strength_gap': False, 'wall_s': 1665}
+  ecg|wdcnn strong T=1500 median=0.777
+  ecg|wdcnn strong T=3000 median=0.781
+  ecg|wdcnn strong T=6000 median=0.779
+  ecg|wdcnn strong T=12000 median=0.776
+  ecg|wdcnn weak_steps T=25 median=0.691
+  ecg|wdcnn weak_steps T=50 median=0.696
+  ecg|wdcnn weak_steps T=100 median=0.737
+  ecg|wdcnn weak_steps T=200 median=0.756
+  ecg|wdcnn weak_steps T=400 median=0.768
+  ecg|wdcnn weak_steps T=800 median=0.772
+  ecg|wdcnn weak_steps T=1500 median=0.781
+  ecg|wdcnn weak_label ρ=0.2 median=0.643
+[校准] ecg|wdcnn → {'strong_steps': 12000, 'strong_median': 0.7758130431175232, 'weak_steps': 25, 'weak_steps_in_range': False, 'rho': 0.2, 'rho_in_range': True, 'strength_gap': True, 'wall_s': 400}
+  ecg|drsn strong T=1500 median=0.777
+  ecg|drsn strong T=3000 median=0.778
+  ecg|drsn strong T=6000 median=0.776
+  ecg|drsn strong T=12000 median=0.777
+  ecg|drsn weak_steps T=25 median=0.607
+  ecg|drsn weak_label ρ=0.2 median=0.661
+  ecg|drsn weak_label ρ=0.3 median=0.584
+[校准] ecg|drsn → {'strong_steps': 12000, 'strong_median': 0.7767603397369385, 'weak_steps': 25, 'weak_steps_in_range': True, 'rho': 0.3, 'rho_in_range': True, 'strength_gap': True, 'wall_s': 2105}
+  ecg|lstm strong T=1500 median=0.776
+  ecg|lstm strong T=3000 median=0.789
+  ecg|lstm strong T=6000 median=0.790
+  ecg|lstm strong T=12000 median=0.790
+  ecg|lstm weak_steps T=25 median=0.505
+  ecg|lstm weak_steps T=50 median=0.614
+  ecg|lstm weak_label ρ=0.2 median=0.662
+### RESUME after WSL restart 2026-10-14T18:09:26+08:00: calib keys with 'chosen' are skipped by t2.py; ecg|lstm partial grid was not saved and reruns from its start
+### CALIB start 2026-10-14T18:09:26+08:00
+  ecg|lstm strong T=1500 median=0.775
+  ecg|lstm strong T=3000 median=0.789
+  ecg|lstm strong T=6000 median=0.789
+  ecg|lstm strong T=12000 median=0.790
+  ecg|lstm weak_steps T=25 median=0.505
+  ecg|lstm weak_steps T=50 median=0.614
+  ecg|lstm weak_label ρ=0.2 median=0.665
+  ecg|lstm weak_label ρ=0.3 median=0.589
+[校准] ecg|lstm → {'strong_steps': 12000, 'strong_median': 0.790022075176239, 'weak_steps': 50, 'weak_steps_in_range': True, 'rho': 0.3, 'rho_in_range': True, 'strength_gap': True, 'wall_s': 4328}
+### CALIB done 2026-10-14T19:21:49+08:00

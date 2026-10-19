@@ -1,0 +1,176 @@
+{
+ "fact": "99.mat first DE key = X098_DE_time, byte-identical to 98.mat; split_seed=42 puts 99 in train, 98 in test (both 40- and 16-file sets); 944/944 Normal test windows have byte-identical copies in the train split",
+ "per_experiment": {
+  "2x2": {
+   "n": 60,
+   "n_exposed": 60,
+   "distinct_test_windows_min": 310,
+   "distinct_test_windows_max": 646,
+   "share_of_normal_train_that_is_test_copy": [
+    0.653,
+    0.697
+   ],
+   "idx_md5_replay": "60/60"
+  },
+  "E3 (2x2 lstm/transformer)": {
+   "n": 40,
+   "n_exposed": 40,
+   "distinct_test_windows_min": 310,
+   "distinct_test_windows_max": 646,
+   "share_of_normal_train_that_is_test_copy": [
+    0.653,
+    0.697
+   ],
+   "idx_md5_replay": "40/40"
+  },
+  "C-INIT 2x2": {
+   "n": 80,
+   "n_exposed": 80,
+   "distinct_test_windows_min": 310,
+   "distinct_test_windows_max": 646,
+   "share_of_normal_train_that_is_test_copy": [
+    0.653,
+    0.697
+   ],
+   "idx_md5_replay": "n/a"
+  },
+  "E5": {
+   "n": 189,
+   "n_exposed": 63,
+   "distinct_test_windows_min": 0,
+   "distinct_test_windows_max": 230,
+   "share_of_normal_train_that_is_test_copy": [
+    0.0,
+    1.0
+   ],
+   "idx_md5_replay": "n/a",
+   "by_draw": {
+    "0": {
+     "n": 63,
+     "exposed": 0
+    },
+    "1": {
+     "n": 63,
+     "exposed": 63
+    },
+    "2": {
+     "n": 63,
+     "exposed": 0
+    }
+   }
+  },
+  "C-INIT E5": {
+   "n": 189,
+   "n_exposed": 63,
+   "distinct_test_windows_min": 0,
+   "distinct_test_windows_max": 230,
+   "share_of_normal_train_that_is_test_copy": [
+    0.0,
+    1.0
+   ],
+   "idx_md5_replay": "n/a",
+   "by_draw": {
+    "0": {
+     "n": 63,
+     "exposed": 0
+    },
+    "1": {
+     "n": 63,
+     "exposed": 63
+    },
+    "2": {
+     "n": 63,
+     "exposed": 0
+    }
+   }
+  },
+  "E1": {
+   "n": 40,
+   "n_exposed": 40,
+   "distinct_test_windows_min": 631,
+   "distinct_test_windows_max": 944,
+   "share_of_normal_train_that_is_test_copy": [
+    0.664,
+    0.68
+   ],
+   "idx_md5_replay": "40/40"
+  },
+  "E2": {
+   "n": 45,
+   "n_exposed": 45,
+   "distinct_test_windows_min": 144,
+   "distinct_test_windows_max": 165,
+   "share_of_normal_train_that_is_test_copy": [
+    0.626,
+    0.717
+   ],
+   "idx_md5_replay": "45/45"
+  },
+  "E4 reference protocol": {
+   "n": 15,
+   "n_exposed": 15,
+   "distinct_test_windows_min": 944,
+   "distinct_test_windows_max": 944,
+   "share_of_normal_train_that_is_test_copy": [
+    0.665,
+    0.665
+   ],
+   "idx_md5_replay": "n/a"
+  },
+  "WP1 CWRU clean": {
+   "n": 10,
+   "n_exposed": 10,
+   "distinct_test_windows_min": 944,
+   "distinct_test_windows_max": 944,
+   "share_of_normal_train_that_is_test_copy": [
+    0.665,
+    0.665
+   ],
+   "idx_md5_replay": "n/a"
+  },
+  "WP1 CWRU awgn": {
+   "n": 25,
+   "n_exposed": 25,
+   "distinct_test_windows_min": 944,
+   "distinct_test_windows_max": 944,
+   "share_of_normal_train_that_is_test_copy": [
+    0.665,
+    0.665
+   ],
+   "idx_md5_replay": "n/a"
+  },
+  "WP1 CWRU clean (Mamba)": {
+   "n": 5,
+   "n_exposed": 5,
+   "distinct_test_windows_min": 944,
+   "distinct_test_windows_max": 944,
+   "share_of_normal_train_that_is_test_copy": [
+    0.665,
+    0.665
+   ],
+   "idx_md5_replay": "n/a"
+  },
+  "WP1 CWRU mamba2": {
+   "n": 5,
+   "n_exposed": 5,
+   "distinct_test_windows_min": 944,
+   "distinct_test_windows_max": 944,
+   "share_of_normal_train_that_is_test_copy": [
+    0.665,
+    0.665
+   ],
+   "idx_md5_replay": "n/a"
+  },
+  "WP1 CWRU awgn (Mamba)": {
+   "n": 10,
+   "n_exposed": 10,
+   "distinct_test_windows_min": 944,
+   "distinct_test_windows_max": 944,
+   "share_of_normal_train_that_is_test_copy": [
+    0.665,
+    0.665
+   ],
+   "idx_md5_replay": "n/a"
+  }
+ }
+}

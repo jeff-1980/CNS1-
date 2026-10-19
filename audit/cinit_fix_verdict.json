@@ -1,0 +1,257 @@
+{
+ "n_2x2": 80,
+ "n_e5d1": 63,
+ "c2x2": {
+  "wdcnn": {
+   "label": "REPLICATED",
+   "ratio": "RATIO_NULL",
+   "dist": {
+    "C007_R11": {
+     "IR": 5
+    },
+    "C007_R31": {
+     "IR": 5
+    },
+    "CALL_R11": {
+     "OR": 5
+    },
+    "CALL_R31": {
+     "OR": 5
+    }
+   },
+   "per_instance_agree_with_cinit": "20/20",
+   "events": "18/20",
+   "events_cinit": "20/20",
+   "acc10": 0.8742661893914742,
+   "acc10_cinit": 0.8721282134721771
+  },
+  "drsn": {
+   "label": "REPLICATED",
+   "ratio": "RATIO_NULL",
+   "dist": {
+    "C007_R11": {
+     "IR": 5
+    },
+    "C007_R31": {
+     "IR": 5
+    },
+    "CALL_R11": {
+     "OR": 5
+    },
+    "CALL_R31": {
+     "OR": 5
+    }
+   },
+   "per_instance_agree_with_cinit": "20/20",
+   "events": "20/20",
+   "events_cinit": "19/20",
+   "acc10": 0.8413634884477709,
+   "acc10_cinit": 0.8398535632931988
+  },
+  "lstm": {
+   "label": "REPLICATED",
+   "ratio": "RATIO_NULL",
+   "dist": {
+    "C007_R11": {
+     "IR": 4,
+     "Normal": 1
+    },
+    "C007_R31": {
+     "IR": 4,
+     "Normal": 1
+    },
+    "CALL_R11": {
+     "OR": 5
+    },
+    "CALL_R31": {
+     "OR": 4,
+     "IR": 1
+    }
+   },
+   "per_instance_agree_with_cinit": "16/20",
+   "events": "16/20",
+   "events_cinit": "17/20",
+   "acc10": 0.7594337780670354,
+   "acc10_cinit": 0.750497884803124
+  },
+  "cnn1d": {
+   "label": "NOT_REPLICATED",
+   "ratio": "RATIO_NULL",
+   "dist": {
+    "C007_R11": {
+     "IR": 1,
+     "OR": 4
+    },
+    "C007_R31": {
+     "IR": 2,
+     "OR": 3
+    },
+    "CALL_R11": {
+     "OR": 5
+    },
+    "CALL_R31": {
+     "OR": 5
+    }
+   },
+   "per_instance_agree_with_cinit": "20/20",
+   "events": "16/20",
+   "events_cinit": "18/20",
+   "acc10": 0.8066026684022128,
+   "acc10_cinit": 0.8114904002603319
+  }
+ },
+ "e5": {
+  "wdcnn": {
+   "label": "ANY_LARGER_SIZE",
+   "label_cinit": "ANY_LARGER_SIZE",
+   "per_set": {
+    "S007": {
+     "d0": "IR",
+     "d1_fix": "IR",
+     "d1_leaky": "IR",
+     "d2": "IR"
+    },
+    "S014": {
+     "d0": "OR",
+     "d1_fix": "OR",
+     "d1_leaky": "OR",
+     "d2": "OR"
+    },
+    "S021": {
+     "d0": "Ball",
+     "d1_fix": "Ball",
+     "d1_leaky": "Ball",
+     "d2": "Ball"
+    },
+    "S007+014": {
+     "d0": "OR",
+     "d1_fix": "OR",
+     "d1_leaky": "OR",
+     "d2": "OR"
+    },
+    "S007+021": {
+     "d0": "Ball",
+     "d1_fix": "Ball",
+     "d1_leaky": "Ball",
+     "d2": "Normal"
+    },
+    "S014+021": {
+     "d0": "OR",
+     "d1_fix": "OR",
+     "d1_leaky": "OR",
+     "d2": "OR"
+    },
+    "S_ALL": {
+     "d0": "OR",
+     "d1_fix": "OR",
+     "d1_leaky": "OR",
+     "d2": "OR"
+    }
+   },
+   "draw1_fix_matches_leaky": 7,
+   "draw1_fix_matches_clean_draws": 6
+  },
+  "drsn": {
+   "label": "ANY_LARGER_SIZE",
+   "label_cinit": "ANY_LARGER_SIZE",
+   "per_set": {
+    "S007": {
+     "d0": "IR",
+     "d1_fix": "IR",
+     "d1_leaky": "IR",
+     "d2": "IR"
+    },
+    "S014": {
+     "d0": "OR",
+     "d1_fix": "OR",
+     "d1_leaky": "OR",
+     "d2": "OR"
+    },
+    "S021": {
+     "d0": "OR",
+     "d1_fix": "OR",
+     "d1_leaky": "OR",
+     "d2": "OR"
+    },
+    "S007+014": {
+     "d0": "OR",
+     "d1_fix": "OR",
+     "d1_leaky": "OR",
+     "d2": "OR"
+    },
+    "S007+021": {
+     "d0": "OR",
+     "d1_fix": "IR",
+     "d1_leaky": "IR",
+     "d2": "OR"
+    },
+    "S014+021": {
+     "d0": "OR",
+     "d1_fix": "OR",
+     "d1_leaky": "OR",
+     "d2": "OR"
+    },
+    "S_ALL": {
+     "d0": "OR",
+     "d1_fix": "OR",
+     "d1_leaky": "OR",
+     "d2": "OR"
+    }
+   },
+   "draw1_fix_matches_leaky": 7,
+   "draw1_fix_matches_clean_draws": 6
+  },
+  "lstm": {
+   "label": "FILE_DEPENDENT",
+   "label_cinit": "ANY_LARGER_SIZE",
+   "per_set": {
+    "S007": {
+     "d0": "IR",
+     "d1_fix": "IR",
+     "d1_leaky": "IR",
+     "d2": "IR"
+    },
+    "S014": {
+     "d0": "OR",
+     "d1_fix": "OR",
+     "d1_leaky": "OR",
+     "d2": "OR"
+    },
+    "S021": {
+     "d0": "Ball",
+     "d1_fix": "Ball",
+     "d1_leaky": "Ball",
+     "d2": "Ball"
+    },
+    "S007+014": {
+     "d0": "OR",
+     "d1_fix": "IR",
+     "d1_leaky": "OR",
+     "d2": "OR"
+    },
+    "S007+021": {
+     "d0": "IR",
+     "d1_fix": "IR",
+     "d1_leaky": "IR",
+     "d2": "IR"
+    },
+    "S014+021": {
+     "d0": "OR",
+     "d1_fix": "OR",
+     "d1_leaky": "OR",
+     "d2": "OR"
+    },
+    "S_ALL": {
+     "d0": "OR",
+     "d1_fix": "IR",
+     "d1_leaky": "OR",
+     "d2": "OR"
+    }
+   },
+   "draw1_fix_matches_leaky": 5,
+   "draw1_fix_matches_clean_draws": 5
+  }
+ },
+ "init_same_as_cinit": "143/143",
+ "primary": "LEAK_ROBUST"
+}

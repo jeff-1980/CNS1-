@@ -1,6 +1,8 @@
 # Training-file composition and the collapse class of deep bearing fault classifiers under strong noise
 
-Code, result records, preregistrations and figure/table generators for the manuscript submitted to *Mechanical Systems and Signal Processing*.
+Code, result records, preregistrations and figure/table generators for the accompanying manuscript.
+
+**License.** Code: MIT (`LICENSE`). Results, documents and trained weights: CC BY 4.0 (`LICENSE-DATA.md`). **Citation:** see `CITATION.cff`; an archived copy of each release is deposited on Zenodo.
 
 ## Layout
 
@@ -36,7 +38,24 @@ The raw data are not redistributed. Obtain them from the providers and check the
 | Paderborn (PU) | KAt-DataCenter, Paderborn University [Lessmeier et al. 2016] | bearing folders `K001 … KI21`, any depth (`PU_DIR`) |
 | JNU | Jiangnan University bearing data [Li et al. 2013] | 12 `.csv` files, e.g. `ib600_2.csv` (`JNU_DIR`) |
 
+**CWRU loader correction (2026-10-13).** `99.mat` stores two drive-end arrays, `X098_DE_time` (a copy of `98.mat`) and `X099_DE_time`. `code/pbx/data/cwru_loader.py` now takes the array whose number matches the file name; the earlier loader took the first match, so the training recording "99" was byte-identical to the test recording 98 (manuscript Section 3.8). Results archived before the fix (release v1.0, and the CWRU cells of T2 and T3) were produced with the old behaviour; set `CWRU_LEGACY_FIRST_KEY=1` to reproduce them. Leave it unset for new runs.
+
 Other paths: `CNS_ROOT` (repository root, default: parent of `code/`), `CWRU16_DIR` (default `data/cwru_16`), `PAPERB_CODE` and `PAPERB_RESULTS` (code package and published result package of Wang and Tang 2026, used only by the reference-protocol scripts `e4_paperB_harness.py`, `wp1_harness.py`, `select_rpm.py`, `analyze_e4.py`, `analyze_wp1.py` and by the Mamba models).
+
+## Release v2.0 (corrected CWRU loader)
+
+Release v2.0 adds the correction of the CWRU loading error and everything that depends on it. Release v1.0 is unchanged and reproduces the original runs with `CWRU_LEGACY_FIRST_KEY=1`.
+
+| path | content |
+|---|---|
+| `code/pbx/data/cwru_loader.py` | corrected loader (selects the drive-end array whose number matches the file name) |
+| `audit/` | exposure audit of every original instance, re-scoring of archived weights on unseen Normal windows, false-alarm check, loader verification (`verify_fix.py`), C-INIT-FIX verdict |
+| `code/cinit_fix.py`, `code/run_cinit_fix.sh` | confirmation runs with the corrected loader (C-INIT 2 × 2 and the affected E5 draw); preregistration `results/PREREG_CINIT_FIX_loader.md`, verdict `results/VERDICT_CINIT_FIX.md`, erratum `results/ERRATA_CINIT_FIX.md`, audit report `results/AUDIT_CWRU_99mat.md` |
+| `results/cinit_fix_*.json` | corrected-loader result records (143 instances; registered in `results/registry/training_instances.csv`, now 1224 rows) |
+| `code/postfix_inference.py`, `code/summarize_postfix.py`, `code/postfix_figs.py` | post-hoc inference on the corrected weights (no training): performance without added noise, recalibrated confidence rule B2 with risk–coverage, input-scale controls; summary and figures. Run from `code/` without `CWRU_LEGACY_FIRST_KEY` |
+| `results/postfix_*.json`, `results/postfix_summary.txt` | outputs of the post-hoc inference |
+
+The corrected-loader weights are attached to release v2.0 as `CNS1_weights_v2_cinit_fix.tar` (143 files, SHA-256 `723e2e7d9e59675bdb942408084670119b218252da9b5bfddf81f51aa949a93c`); unpack into `results/` (giving `results/ckpt_cinit_fix/`) and run `python code/verify_weights.py`. The exploratory cross-domain experiments (C6-P, T1–T3) are documented by their preregistrations, verdicts and result records in `results/`; their weights are not distributed.
 
 ## Trained weights
 
@@ -64,3 +83,7 @@ GPU training is not bitwise deterministic: retraining from identical initial wei
 
 - Result records keep the absolute paths of the machine on which they were produced; only the relative weight paths are used by the scripts.
 - Comments and the preregistration / verdict documents are partly in Chinese; the manuscript and its supplementary tables are in English.
+
+## Licence and archive
+
+Code is released under the MIT License (`LICENSE`); result records, documents, figures and trained weights under CC BY 4.0 (`LICENSE-DATA.md`). Release v2.0.2 (same content as v2.0 plus the licence and archive metadata) is archived on Zenodo: [doi:10.5281/zenodo.23464015](https://doi.org/10.5281/zenodo.23464015). The concept DOI [10.5281/zenodo.23463694](https://doi.org/10.5281/zenodo.23463694) always resolves to the latest archived release.

@@ -1,0 +1,33 @@
+{
+  "title": "CNS1: code, result records, preregistrations and trained weights for a preregistered failure evaluation of deep bearing fault classifiers under strong noise",
+  "upload_type": "software",
+  "description": "Code, per-instance result records, preregistrations (with SHA-256 checksums), verdicts and figure/table generators for the study of how training-file composition changes the strong-noise collapse class of deep bearing fault classifiers. Release v2.0.2 has the content of v2.0 (the corrected CWRU loader, the 99.mat audit, the C-INIT-FIX confirmation and the post-fix inference) plus licence, citation and archive metadata. Code is MIT-licensed; results, documents and trained weights are CC BY 4.0 (see LICENSE-DATA.md). Trained weights are attached to the GitHub releases v1.0 and v2.0.",
+  "creators": [
+    {
+      "name": "Wang, Yi",
+      "affiliation": "Lishui University"
+    },
+    {
+      "name": "Tang, Yongqing",
+      "affiliation": "Longyan University"
+    }
+  ],
+  "license": "MIT",
+  "keywords": [
+    "bearing fault diagnosis",
+    "deep learning",
+    "strong noise",
+    "failure evaluation",
+    "preregistration",
+    "reproducibility",
+    "CWRU"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/jeff-1980/CNS1-",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ],
+  "notes": "Supported by the Natural Science Foundation of Fujian Province, grant 2026J0011040."
+}
