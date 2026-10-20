@@ -8,14 +8,16 @@ def isolate(models, device):
     """保存并恢复 torch（CPU + 当前 CUDA）、numpy、python random 状态，以及各模型的 train/eval 模式。
     DataLoader 每次迭代都会从 torch 默认生成器取 base_seed，所以即使不打乱也要隔离。"""
     ps, rs = np.random.get_state(), random.getstate()
-    modes = [m.training for m in models]
+    # 逐子模块保存 train/eval 标志：model.train(t) 会递归覆盖子模块，作者有意设成 eval 的子模块（如冻结的 BN）会被改掉
+    modes = [[(mod, mod.training) for mod in m.modules()] for m in models]
     devs = [torch.cuda.current_device()] if device.type == "cuda" else []
     try:
         with torch.random.fork_rng(devices=devs):
             yield
     finally:
         np.random.set_state(ps); random.setstate(rs)
-        for m, t in zip(models, modes): m.train(t)
+        for saved in modes:
+            for mod, t in saved: mod.training = t
 
 
 def snapshot(model):
