@@ -28,10 +28,13 @@ NOW = lambda: dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
 def sliced(q, lo, hi, log):
     """created:lo..hi 内取全；超过 1000 条就把日期区间对半分。"""
     sq = f"{q} created:{lo.isoformat()}..{hi.isoformat()}"
-    n, items, inc = run_query(sq); time.sleep(2.5)
+    # 先只取计数再决定是否二分：run_query 会一直翻页，超过 1000 条时第 11 页起 GitHub 返回 422
+    n = gh("search/repositories", dict(q=sq, per_page=1))["total_count"]; time.sleep(2.5)
     if n > 1000 and lo < hi:
         mid = lo + (hi - lo) // 2
         return sliced(q, lo, mid, log) + sliced(q, mid + dt.timedelta(days=1), hi, log)
+    if n > 1000: raise SystemExit(f"{sq}: {n} > 1000 within a single day")
+    n, items, inc = (run_query(sq) if n else (0, [], False)); time.sleep(2.5)
     log.append(dict(query=sq, total_count=n, returned=len(items), incomplete=inc))
     return items
 
