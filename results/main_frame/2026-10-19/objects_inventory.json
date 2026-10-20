@@ -1,12 +1,11 @@
 {
  "meta": {
-  "built_at_utc": "2026-10-19T16:53:47+00:00",
+  "built_at_utc": "2026-10-20T00:46:13+00:00",
   "n": 32,
   "status": {
-   "fetch_failed": 2,
-   "ok": 30
+   "ok": 32
   },
-  "free_gb_after": 50.3,
+  "free_gb_after": 57.8,
   "registration": "https://osf.io/2tqv6"
  },
  "objects": [
@@ -569,8 +568,53 @@
    "framework": "pytorch",
    "public_data": "CWRU",
    "status_note": "confirmed from dossier",
-   "status": "fetch_failed",
-   "error": "error: RPC failed; curl 56 GnuTLS recv error (-9): Error decoding the received TLS packet.\nerror: 1 bytes of body are still expected\nfetch-pack: unexpected disconnect while reading sideband packet\nfatal: early EOF\nfatal: unpack-objects failed"
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/13_asdvfghg__BearingPGA-Net",
+   "head": "96392f3527498a38c8d2e00911deb810e168fb79",
+   "size_mb": 13.7,
+   "entry_candidates": [
+    "train_dkd.py",
+    "train_single.py"
+   ],
+   "epoch_loop": [
+    "train_single.py:262: config.epochs = 75  # number of epochs to train (default: 10)",
+    "train_dkd.py:377: config.epochs = 75  # number of epochs to train (default: 10)",
+    "utils/Preprocess.py:100: Encoder.fit(Train_Y)",
+    "utils/Preprocess.py:108: scalar = preprocessing.StandardScaler().fit(Train_X)"
+   ],
+   "save": [
+    "train_single.py:210: torch.save(net0.state_dict(), file)",
+    "train_single.py:211: wandb.save('*.pth')",
+    "train_dkd.py:135: # torch.save(net.state_dict(), file)",
+    "train_dkd.py:141: torch.save(teacher_model.state_dict(), file)",
+    "train_dkd.py:142: wandb.save('*.pth')",
+    "train_dkd.py:321: torch.save(net0.state_dict(), file)",
+    "train_dkd.py:322: wandb.save('*.pth')"
+   ],
+   "select": [],
+   "seed": [
+    "inference_only.py:31: torch.manual_seed(seed)",
+    "inference_only.py:32: torch.cuda.manual_seed(seed)",
+    "inference_only.py:33: torch.cuda.manual_seed_all(seed)  # if you are using multi-GPU.",
+    "inference_only.py:34: np.random.seed(seed)  # Numpy module.",
+    "inference_only.py:35: random.seed(seed)  # Python random module.",
+    "train_single.py:32: torch.manual_seed(seed)",
+    "train_single.py:33: torch.cuda.manual_seed(seed)",
+    "train_single.py:34: torch.cuda.manual_seed_all(seed)  # if you are using multi-GPU.",
+    "train_single.py:35: np.random.seed(seed)  # Numpy module.",
+    "train_single.py:36: random.seed(seed)  # Python random module.",
+    "train_dkd.py:32: torch.manual_seed(seed)",
+    "train_dkd.py:33: torch.cuda.manual_seed(seed)",
+    "train_dkd.py:34: torch.cuda.manual_seed_all(seed)  # if you are using multi-GPU.",
+    "train_dkd.py:35: np.random.seed(seed)  # Numpy module.",
+    "train_dkd.py:36: random.seed(seed)  # Python random module.",
+    "utils/Preprocess.py:14: torch.manual_seed(seed)",
+    "utils/Preprocess.py:15: torch.cuda.manual_seed(seed)",
+    "utils/Preprocess.py:16: torch.cuda.manual_seed_all(seed)  # if you are using multi-GPU.",
+    "utils/Preprocess.py:17: np.random.seed(seed)  # Numpy module.",
+    "utils/Preprocess.py:18: random.seed(seed)  # Python random module.",
+    "utils/Preprocess.py:144: np.random.seed(42)  # 设置随机种子"
+   ]
   },
   {
    "attempt_order": "14",
@@ -1047,8 +1091,58 @@
    "framework": "pytorch",
    "public_data": "CWRU; SEU",
    "status_note": "confirmed from dossier",
-   "status": "fetch_failed",
-   "error": "error: RPC failed; curl 56 GnuTLS recv error (-9): Error decoding the received TLS packet.\nerror: 160 bytes of body are still expected\nfetch-pack: unexpected disconnect while reading sideband packet\nfatal: early EOF\nfatal: unpack-objects failed"
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/22_amstlldj__DLRSD-SMOTE",
+   "head": "b9970548bac540122a5afb8481fe7721b27da23f",
+   "size_mb": 65.3,
+   "entry_candidates": [
+    "Classfier/main.ipynb",
+    "DLRSD-SMOTE/main.py"
+   ],
+   "epoch_loop": [
+    "DLRSD-SMOTE/main.py:132: for epoch in range(opt.n_epochs):",
+    "DLRSD-SMOTE/main.py:280: if epoch == opt.n_epochs - 1:",
+    "Classfier/main.ipynb:121: \"    num_epochs=200, early_stopping=early_stopping, \\n\",",
+    "Classfier/Classfier.py:297: def train(model, train_loader, criterion, optimizer, num_epochs=100, early_stopping=None, device='cuda', output_file='results/training_results.csv'):",
+    "Classfier/Classfier.py:306: for epoch in range(num_epochs):",
+    "Classfier/Classfier.py:356: for epoch in range(num_epochs):"
+   ],
+   "save": [
+    "DLRSD-SMOTE/main.py:272: torch.save({",
+    "DLRSD-SMOTE/main.py:274: 'encoder_state_dict': model.state_dict(),",
+    "DLRSD-SMOTE/main.py:275: 'model_optim_state_dict': model_optim.state_dict(),"
+   ],
+   "select": [
+    "Classfier/main.ipynb:78: \"early_stopping = Classfier.EarlyStopping(patience=patience, min_loss=0.0001, max_accuracy=0.995, verbose=True)\"",
+    "Classfier/main.ipynb:121: \"    num_epochs=200, early_stopping=early_stopping, \\n\",",
+    "Classfier/Classfier.py:236: class EarlyStopping:",
+    "Classfier/Classfier.py:237: def __init__(self, patience=5, min_loss=0.01, max_accuracy=0.99, verbose=False):",
+    "Classfier/Classfier.py:239: self.min_loss = min_loss",
+    "Classfier/Classfier.py:240: self.max_accuracy = max_accuracy",
+    "Classfier/Classfier.py:242: self.best_loss = np.inf",
+    "Classfier/Classfier.py:243: self.early_stop = False",
+    "Classfier/Classfier.py:247: if train_loss < self.min_loss or train_accuracy > self.max_accuracy:",
+    "Classfier/Classfier.py:248: self.early_stop = True",
+    "Classfier/Classfier.py:253: if train_loss < self.best_loss:",
+    "Classfier/Classfier.py:254: self.best_loss = train_loss",
+    "Classfier/Classfier.py:260: self.early_stop = True",
+    "Classfier/Classfier.py:297: def train(model, train_loader, criterion, optimizer, num_epochs=100, early_stopping=None, device='cuda', output_file='results/training_results.csv'):",
+    "Classfier/Classfier.py:338: if epoch > 20 and early_stopping is not None:",
+    "Classfier/Classfier.py:339: early_stopping(epoch_loss, epoch_acc)",
+    "Classfier/Classfier.py:340: if early_stopping.early_stop:"
+   ],
+   "seed": [
+    "DLRSD-SMOTE/main.py:42: torch.manual_seed(seed)",
+    "DLRSD-SMOTE/main.py:43: np.random.seed(seed)",
+    "DLRSD-SMOTE/main.py:44: random.seed(seed)",
+    "DLRSD-SMOTE/main.py:45: torch.cuda.manual_seed(seed)",
+    "DLRSD-SMOTE/main.py:46: torch.cuda.manual_seed_all(seed)",
+    "Classfier/Classfier.py:22: random.seed(seed)  # Python 随机数生成器的种子",
+    "Classfier/Classfier.py:23: np.random.seed(seed)  # NumPy 随机数生成器的种子",
+    "Classfier/Classfier.py:24: torch.manual_seed(seed)  # PyTorch CPU 的随机数生成器的种子",
+    "Classfier/Classfier.py:26: torch.cuda.manual_seed(seed)  # PyTorch GPU 的随机数生成器的种子",
+    "Classfier/Classfier.py:27: torch.cuda.manual_seed_all(seed)  # 对所有 GPU 设置种子"
+   ]
   },
   {
    "attempt_order": "23",
