@@ -20,7 +20,7 @@
    - 所有改动存成 `results/main_objects/patches/NN_owner__repo.diff`（`git diff`），逐条写进 `results/DEVIATIONS_AUDIT.md`。
 4. **冒烟**：每组 1 个种子跑 2 轮，确认记录文件生成、`author_check.matches` 为真、显存与内存正常（WSL 内存远低于 35 GB）。
 5. **时间估计**：由冒烟得出单次完整训练的时长。单次超过 2 GPU 小时记为排除（原因 `E6_runtime`）。总时长（组数 × 10 × 单次）超过 3 小时的，先汇报估计再等确认。
-6. **正式跑**：`AUDIT_RECORD_DIR=~/audit_ext/main_records` 下逐组逐种子跑。一次只占用一个 GPU 任务。跑完运行 `python -m audit.main.protocols ~/audit_ext/main_records/NN --out ../results/main_objects/protocols/NN.json`。
+6. **正式跑**（缺失数据规则见 OSF 表单补充 `results/registry/prereg_audit_main_osf_form_additions.md` 第 1 条：崩溃的运行用同一种子**重跑一次**，再失败才记为缺失；首次崩溃仍记录并报告；组内完整种子 ≥ 5 才进 H-B 分析）：`AUDIT_RECORD_DIR=~/audit_ext/main_records` 下逐组逐种子跑。一次只占用一个 GPU 任务。跑完运行 `python -m audit.main.protocols ~/audit_ext/main_records/NN --out ../results/main_objects/protocols/NN.json`。
 7. **记结果**：在 `results/main_objects/attempts.csv` 追加一行：`attempt_order,full_name,status,reason,env_minutes,smoke_ok,runs_done,author_check_all,notes`。
    - `status` = `runnable` / `failed` / `excluded`；`reason` 用 `env_timeout`、`data_unavailable`、`code_broken`、`no_training_script`、`E1_not_author`、`E5_private_data`、`E6_runtime`、`author_check_failed` 之一，或简短说明。
    - pending 对象核实不通过时记 `excluded` 和对应原因码。
