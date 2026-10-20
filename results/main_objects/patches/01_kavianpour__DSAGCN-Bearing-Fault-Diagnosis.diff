@@ -1,0 +1,79 @@
+diff --git a/audit_run.py b/audit_run.py
+new file mode 100644
+index 0000000..5b49bfe
+--- /dev/null
++++ b/audit_run.py
+@@ -0,0 +1,28 @@
++"""[audit] Driver for object 01: groups x seeds on CWRU B->D with author defaults.
++Same call as run_method(): fit_model(cfg, ds, DEEP_METHODS[m], 1, 3, epochs, seed).
++Needs PYTHONPATH=~/audit_cns/code and AUDIT_RECORD_DIR set."""
++import argparse, json, time
++from config import cfg
++from datasets import get_dataset
++from methods import DEEP_METHODS
++from train import fit_model
++from audit.main.epoch_record import Recorder
++
++p = argparse.ArgumentParser()
++p.add_argument("--methods", default="DSAGCN,GC-MMD,GC-MKMMD,GC-CORAL")
++p.add_argument("--seeds", default="0-9")
++p.add_argument("--epochs", type=int, default=None)
++p.add_argument("--data_root", required=True)
++a = p.parse_args()
++cfg.data_root = a.data_root
++lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds), int(a.seeds))
++ds = get_dataset("cwru", cfg)
++epochs = a.epochs or ds["epochs"]
++for m in a.methods.split(","):
++    for s in range(lo, hi + 1):
++        rec = Recorder(obj="01", group=f"{m}|CWRU B->D", seed=s, select_split=None, report_split="test",
++                       note=f"epochs={epochs}")
++        t0 = time.time()
++        _, _, _, final_acc, best_acc = fit_model(cfg, ds, DEEP_METHODS[m], 1, 3, epochs, s, rec=rec)
++        print(json.dumps(dict(method=m, seed=s, epochs=epochs, final=final_acc, best=best_acc,
++                              seconds=round(time.time() - t0, 1), check=rec.d.get("author_check"))), flush=True)
+diff --git a/train.py b/train.py
+index 5189c70..885cfc1 100644
+--- a/train.py
++++ b/train.py
+@@ -67,7 +67,20 @@ def third_loss(name, feat_s, feat_t, ys, logits_t, lmmd_module):
+     raise ValueError(name)
+ 
+ 
+-def fit_model(cfg, ds, spec, source, target, epochs, seed, verbose=False):
++@torch.no_grad()
++def _audit_test_loss(model, loader, device):
++    # [audit] mean CE on the report split, same forward pass as evaluate()
++    model.eval()
++    tot = n = 0.0
++    for x, y in loader:
++        x, y = x.to(device), y.to(device)
++        _, logits = model(x)
++        tot += nn.functional.cross_entropy(logits, y, reduction="sum").item()
++        n += y.size(0)
++    return tot / max(n, 1)
++
++
++def fit_model(cfg, ds, spec, source, target, epochs, seed, verbose=False, rec=None):
+     """Train one model and return (model, loaders, device, final_acc, best_acc)."""
+     device = torch.device(cfg.device if torch.cuda.is_available() else "cpu")
+     set_seed(seed)
+@@ -115,10 +128,18 @@ def fit_model(cfg, ds, spec, source, target, epochs, seed, verbose=False):
+ 
+         acc = evaluate(model, loaders["target_test"], device)
+         best_acc = max(best_acc, acc)
++        if rec is not None:   # [audit] author's own per-epoch test acc + isolated test loss
++            from audit.torch_utils import isolate
++            with isolate([model], device):
++                tl = _audit_test_loss(model, loaders["target_test"], device)
++            rec.log(epoch + 1, "test", acc / 100.0, tl)
+         if verbose:
+             print(f"  epoch {epoch+1:3d}/{epochs}  target_acc={acc:6.2f}  best={best_acc:6.2f}")
+ 
+     final_acc = evaluate(model, loaders["target_test"], device)
++    if rec is not None:       # [audit] run_method reports final_acc = last epoch
++        rec.author_pick(epochs)
++        rec.finish(final_acc / 100.0)
+     return model, loaders, device, final_acc, best_acc
+ 
+ 
