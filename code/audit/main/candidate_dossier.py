@@ -22,12 +22,15 @@ def text(path):
 
 
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument("--frame", required=True); a = ap.parse_args()
+    ap = argparse.ArgumentParser(); ap.add_argument("--frame", required=True)
+    ap.add_argument("--link-files", default="openalex_code_links.json,epmc_code_links.json", help="DIR 下给出论文代码链接的文件")
+    ap.add_argument("--exclude", default="", help="已筛过的 candidate_dossier.json，其中的仓库不再收（扩大检索用）")
+    a = ap.parse_args()
     F = lambda n: json.load(open(os.path.join(a.frame, n)))
     cands = {r["full_name"].lower(): dict(full_name=r["full_name"], source="github_search", commit=r["head_commit"],
                                           paper_dois=r["dois"], stars=r["stars"], language=r["language"])
              for r in F("screen_doi.json")["repos"]}
-    for name in ("openalex_code_links.json", "epmc_code_links.json"):
+    for name in a.link_files.split(","):
         for w in F(name)["works"]:
             for u in w["links"]:
                 fn = repo_of(u)
@@ -36,6 +39,9 @@ def main():
                                              paper_dois=[w["doi"]], stars=None, language=None)
                 elif fn and w["doi"] not in cands[fn.lower()]["paper_dois"]:
                     cands[fn.lower()].setdefault("frame_dois", []).append(w["doi"])
+    seen = {r["full_name"].lower() for r in json.load(open(a.exclude))["repos"]} if a.exclude else set()
+    excluded = sorted(k for k in cands if k in seen)
+    cands = {k: v for k, v in cands.items() if k not in seen}
     out = []
     for i, c in enumerate(sorted(cands.values(), key=lambda c: c["full_name"].lower())):
         meta = gh(f"repos/{c['full_name']}")
@@ -58,6 +64,7 @@ def main():
         if (i + 1) % 20 == 0: print(f"{i + 1}/{len(cands)}", flush=True)
     meta = dict(built_at_utc=dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), n_candidates=len(out),
                 by_source={s: sum(o["source"] == s for o in out) for s in sorted({o["source"] for o in out})},
+                link_files=a.link_files, excluded_as_already_screened=len(excluded), exclude_file=a.exclude or None,
                 registration="https://osf.io/2tqv6")
     json.dump(dict(meta=meta, repos=out), open(os.path.join(a.frame, "candidate_dossier.json"), "w"), indent=1, ensure_ascii=False)
     print(json.dumps(meta, indent=1))

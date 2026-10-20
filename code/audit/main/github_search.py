@@ -19,11 +19,15 @@ DOI_RE = re.compile(r"\b(10\.\d{4,9}/[^\s\"'<>\]\)\},;]+)", re.I)
 def gh(path, params=None, retries=4):
     cmd = ["gh", "api", "-X", "GET", path, "-H", "Accept: application/vnd.github+json"]
     for k, v in (params or {}).items(): cmd += ["-f", f"{k}={v}"]
-    for i in range(retries):
+    i = limited = 0
+    while i < retries:
         p = subprocess.run(cmd, capture_output=True, text=True)
         if p.returncode == 0: return json.loads(p.stdout)
         if "Not Found" in p.stderr or "404" in p.stderr: return None
-        wait = 60 if ("rate limit" in p.stderr.lower() or "403" in p.stderr) else 2 ** (i + 1)
+        if ("rate limit" in p.stderr.lower() or "403" in p.stderr) and limited < 90:   # 限流等待不算重试次数，最多约 90 分钟
+            limited += 1; wait = 60
+        else:
+            i += 1; wait = 2 ** i
         print(f"gh error ({p.stderr.strip()[:120]}); retry in {wait}s", file=sys.stderr); time.sleep(wait)
     raise RuntimeError(f"gh api {path} failed: {p.stderr.strip()[:300]}")
 
