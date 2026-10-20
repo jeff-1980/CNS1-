@@ -44,9 +44,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--order", required=True); ap.add_argument("--dest", required=True); ap.add_argument("--out", required=True)
     ap.add_argument("--min-free-gb", type=float, default=10.0)
+    ap.add_argument("--only", default="", help="逗号分隔的 attempt_order，只重取这些，结果并入已有 objects_inventory.json")
     a = ap.parse_args()
     dest = os.path.expanduser(a.dest); os.makedirs(dest, exist_ok=True)
     rows = list(csv.DictReader(open(a.order)))
+    only = {int(x) for x in a.only.split(",") if x}
+    inv_path = os.path.join(a.out, "objects_inventory.json")
+    keep = [o for o in json.load(open(inv_path))["objects"] if int(o["attempt_order"]) not in only] if only else []
+    if only: rows = [r for r in rows if int(r["attempt_order"]) in only]
     inv = []
     for r in rows:
         free = free_gb(dest)
@@ -61,10 +66,11 @@ def main():
         head = run(["git", "rev-parse", "HEAD"], d).stdout.strip()
         inv.append(dict(r, status="ok" if head == r["commit"] else "commit_mismatch", path=d, head=head, **scan(d)))
         print(f"{r['attempt_order']:>2} {r['full_name']}: {inv[-1]['status']} {inv[-1].get('size_mb')} MB", flush=True)
+    inv = sorted(keep + inv, key=lambda o: int(o["attempt_order"]))
     meta = dict(built_at_utc=dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), n=len(inv),
                 status={s: sum(i["status"] == s for i in inv) for s in sorted({i["status"] for i in inv})},
                 free_gb_after=round(free_gb(dest), 1), registration="https://osf.io/2tqv6")
-    json.dump(dict(meta=meta, objects=inv), open(os.path.join(a.out, "objects_inventory.json"), "w"), indent=1, ensure_ascii=False)
+    json.dump(dict(meta=meta, objects=inv), open(inv_path, "w"), indent=1, ensure_ascii=False)
     print(json.dumps(meta, indent=1))
 
 
