@@ -1,0 +1,1619 @@
+{
+ "meta": {
+  "built_at_utc": "2026-10-19T16:53:47+00:00",
+  "n": 32,
+  "status": {
+   "fetch_failed": 2,
+   "ok": 30
+  },
+  "free_gb_after": 50.3,
+  "registration": "https://osf.io/2tqv6"
+ },
+ "objects": [
+  {
+   "attempt_order": "1",
+   "own_paper_doi": "10.1016/j.neucom.2022.10.057",
+   "full_name": "kavianpour/DSAGCN-Bearing-Fault-Diagnosis",
+   "commit": "0ec074aa6af4e4a7e0070b90027fc184830f8057",
+   "framework": "pytorch",
+   "public_data": "CWRU; PU; JNU",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/01_kavianpour__DSAGCN-Bearing-Fault-Diagnosis",
+   "head": "0ec074aa6af4e4a7e0070b90027fc184830f8057",
+   "size_mb": 2.3,
+   "entry_candidates": [
+    "run_on_colab.ipynb",
+    "train.py"
+   ],
+   "epoch_loop": [
+    "ablation.py:91: eps = 1.0 - LinearSVC(max_iter=5000).fit(X, dom).score(X, dom)",
+    "ablation.py:102: eps_c = 1.0 - LinearSVC(max_iter=5000).fit(Xc, dc).score(Xc, dc)",
+    "classic.py:46: sc = StandardScaler().fit(Fs)",
+    "classic.py:47: clf = SVC(kernel=\"rbf\").fit(sc.transform(Fs), ys)",
+    "classic.py:54: pca = PCA(n_components=min(n_pca, Xs.shape[1])).fit(np.concatenate([Xs, Xt]))",
+    "classic.py:62: knn = KNeighborsClassifier(n_neighbors=k).fit(Xs_aligned, ys)",
+    "classic.py:70: pca = PCA(n_components=min(n_pca, Xs.shape[1])).fit(np.concatenate([Xs, Xt]))",
+    "classic.py:103: knn = KNeighborsClassifier(n_neighbors=k).fit(Zs, ys)",
+    "classic.py:106: knn = KNeighborsClassifier(n_neighbors=k).fit(Zs, ys)",
+    "train.py:89: for epoch in range(epochs):",
+    "train.py:164: epochs = args.epochs if args.epochs is not None else ds[\"epochs\"]",
+    "datasets.py:22: num_classes=10, epochs=cfg.epochs_cwru, cond_names=cwru.LOAD_NAMES,",
+    "datasets.py:29: num_classes=9, epochs=cfg.epochs_pu, cond_names=pu.PU_COND_ORDER,",
+    "datasets.py:36: num_classes=4, epochs=cfg.epochs_cwru, cond_names=jnu.JNU_SPEED_ORDER,"
+   ],
+   "save": [],
+   "select": [
+    "train.py:71: \"\"\"Train one model and return (model, loaders, device, final_acc, best_acc).\"\"\"",
+    "train.py:88: best_acc = 0.0",
+    "train.py:117: best_acc = max(best_acc, acc)",
+    "train.py:119: print(f\"  epoch {epoch+1:3d}/{epochs}  target_acc={acc:6.2f}  best={best_acc:6.2f}\")",
+    "train.py:122: return model, loaders, device, final_acc, best_acc",
+    "train.py:126: _, _, _, final_acc, best_acc = fit_model(cfg, ds, spec, source, target, epochs, seed, verbose)",
+    "train.py:127: return final_acc, best_acc"
+   ],
+   "seed": [
+    "train.py:38: def set_seed(seed):",
+    "train.py:39: np.random.seed(seed)",
+    "train.py:40: torch.manual_seed(seed)",
+    "train.py:41: torch.cuda.manual_seed_all(seed)",
+    "train.py:73: set_seed(seed)"
+   ]
+  },
+  {
+   "attempt_order": "2",
+   "own_paper_doi": "10.1016/j.compeleceng.2024.110004",
+   "full_name": "giabao804/few-shot-mamba",
+   "commit": "41bd1757102d7a03f7750dc3d0fb0b95e8f9410d",
+   "framework": "pytorch",
+   "public_data": "CWRU; HUST",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/02_giabao804__few-shot-mamba",
+   "head": "41bd1757102d7a03f7750dc3d0fb0b95e8f9410d",
+   "size_mb": 1.4,
+   "entry_candidates": [
+    "train_1shot.py",
+    "train_5shot.py"
+   ],
+   "epoch_loop": [
+    "train_5shot.py:205: num_epochs = args.num_epochs,",
+    "train_5shot.py:221: for epoch in range(1, num_epochs + 1):",
+    "train_5shot.py:287: num_epochs = args.num_epochs,",
+    "train_5shot.py:298: num_epochs = args.num_epochs,",
+    "train_5shot.py:311: num_epochs = args.num_epochs,",
+    "train_1shot.py:207: num_epochs = args.num_epochs,",
+    "train_1shot.py:223: for epoch in range(1, num_epochs + 1):",
+    "train_1shot.py:305: num_epochs = args.num_epochs,",
+    "train_1shot.py:316: num_epochs = args.num_epochs,",
+    "train_1shot.py:329: num_epochs = args.num_epochs,"
+   ],
+   "save": [
+    "train_5shot.py:269: torch.save(net, path_weight + model_name)",
+    "train_1shot.py:271: torch.save(net, path_weight + model_name)"
+   ],
+   "select": [],
+   "seed": [
+    "function/function.py:17: random.seed(42)",
+    "function/function.py:18: np.random.seed(42)",
+    "function/function.py:19: torch.manual_seed(42)"
+   ]
+  },
+  {
+   "attempt_order": "3",
+   "own_paper_doi": "10.1007/s11071-024-10157-1",
+   "full_name": "Yks151/Dynamic-CAME-TD",
+   "commit": "f1fbd76cc33ac2e03b56b7d33c28fe09c0e161cd",
+   "framework": "pytorch",
+   "public_data": "",
+   "status_note": "sound+vibration dataset and training entry to verify at attempt",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/03_Yks151__Dynamic-CAME-TD",
+   "head": "f1fbd76cc33ac2e03b56b7d33c28fe09c0e161cd",
+   "size_mb": 0.0,
+   "entry_candidates": [],
+   "epoch_loop": [
+    "CNN_fuse.py:107: scaler.fit(features)",
+    "CNN_fuse.py:191: num_epochs = 10",
+    "CNN_fuse.py:204: for epoch in range(num_epochs):",
+    "Transformer_fuse.py:282: epochs = 100",
+    "Transformer_fuse.py:325: for epoch in range(epochs):",
+    "Transformer_fuse.py:404: for epoch in epochs_to_visualize:"
+   ],
+   "save": [
+    "Transformer_fuse.py:454: torch.save(model.state_dict(), 'best_model.pt')"
+   ],
+   "select": [
+    "CNN_fuse.py:249: val_accuracy = val_correct / len(val_dataset)",
+    "CNN_fuse.py:254: f'Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}')",
+    "Transformer_fuse.py:318: val_accuracies = []",
+    "Transformer_fuse.py:363: val_accuracy = val_correct_predictions / len(val_dataset)",
+    "Transformer_fuse.py:369: val_accuracies.append(val_accuracy)",
+    "Transformer_fuse.py:371: print(f\"Epoch {epoch+1}/{epochs} - Train Loss: {train_loss:.4f} - Train Accuracy: {train_accuracy:.4f} - Val Loss: {val_loss:.4f} - Val Accuracy: {val_accuracy:",
+    "Transformer_fuse.py:392: 'Val Accuracy': val_accuracies",
+    "Transformer_fuse.py:446: plt.plot(range(1, epochs+1), val_accuracies, label='Validation Accuracy', color='orange')",
+    "Transformer_fuse.py:454: torch.save(model.state_dict(), 'best_model.pt')",
+    "Transformer_fuse.py:457: model.load_state_dict(torch.load('best_model.pt'))",
+    "Transformer_fuse.py:509: val_accuracy = accuracy_score(val_label, final_val_predictions)",
+    "Transformer_fuse.py:546: print(\"Validation Accuracy: {:.4f}\".format(val_accuracy))"
+   ],
+   "seed": []
+  },
+  {
+   "attempt_order": "4",
+   "own_paper_doi": "10.1109/access.2019.2916935",
+   "full_name": "mingzhangPHD/Transfer-Learning-for-Fault-Diagnosis",
+   "commit": "90ff8fe55cc88f20b7eb95cebed1a5093f8c3b02",
+   "framework": "tensorflow",
+   "public_data": "CWRU",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/04_mingzhangPHD__Transfer-Learning-for-Fault-Diagnosis",
+   "head": "90ff8fe55cc88f20b7eb95cebed1a5093f8c3b02",
+   "size_mb": 0.6,
+   "entry_candidates": [
+    "MAAN/run_main_TAN.py",
+    "WDMAN/run_main_TAN.py"
+   ],
+   "epoch_loop": [
+    "MAAN/FD_DCTAN_model.py:287: for epoch in range(Epoch_C):",
+    "MAAN/FD_DCTAN_model.py:1301: self.epoch = 0",
+    "MAAN/FD_DCTAN_model.py:1645: for epoch in range(Epoch_C):",
+    "MAAN/FD_DCTAN_model.py:1717: for epoch in range(config.epoch):",
+    "MAAN/FD_DCTAN_model.py:1719: self.epoch = epoch",
+    "MAAN/FD_DCTAN_model.py:1740: i_s, i_t = self.tuning_discriminator(config=config, n_critic=2, n_critic_init=5, epoch=epoch, d_optim=dc01_optim, d_loss=self.dc01_loss,",
+    "MAAN/FD_DCTAN_model.py:1746: i_s, i_t = self.tuning_discriminator(config=config, n_critic=2, n_critic_init=5, epoch=epoch, d_optim=dc02_optim, d_loss=self.dc02_loss,",
+    "MAAN/FD_DCTAN_model.py:1785: def tuning_discriminator(self, config, n_critic=1, n_critic_init=25, epoch=0, d_optim=None, d_loss=None, d_m_sum=None,",
+    "MAAN/FD_DCTAN_model.py:1792: epoch = epoch",
+    "WDMAN/FD_DCTAN_model.py:108: self.epoch = 0",
+    "WDMAN/FD_DCTAN_model.py:402: for epoch in range(Epoch_C):",
+    "WDMAN/FD_DCTAN_model.py:403: self.epoch = epoch",
+    "WDMAN/FD_DCTAN_model.py:458: for epoch in range(config.epoch):",
+    "WDMAN/FD_DCTAN_model.py:459: self.epoch = epoch",
+    "WDMAN/FD_DCTAN_model.py:480: i_s, i_t = self.tuning_discriminator(config=config, n_critic=2, n_critic_init=5, epoch=epoch, d_optim=dc01_optim, d_loss=self.dc01_loss,",
+    "WDMAN/FD_DCTAN_model.py:486: i_s, i_t = self.tuning_discriminator(config=config, n_critic=2, n_critic_init=5, epoch=epoch, d_optim=dc02_optim, d_loss=self.dc02_loss,",
+    "WDMAN/FD_DCTAN_model.py:523: def tuning_discriminator(self, config, n_critic=1, n_critic_init=25, epoch=0, d_optim=None, d_loss=None, d_m_sum=None,",
+    "WDMAN/FD_DCTAN_model.py:530: epoch = epoch"
+   ],
+   "save": [
+    "MAAN/FD_DCTAN_model.py:313: #     self.save(config.checkpoint_dir, counter)",
+    "MAAN/FD_DCTAN_model.py:336: #     self.save(config.checkpoint_dir, counter)",
+    "MAAN/FD_DCTAN_model.py:1103: self.saver.save(self.sess,",
+    "MAAN/FD_DCTAN_model.py:1120: self.saver.save(self.sess,",
+    "MAAN/FD_DCTAN_model.py:1671: #     self.save(config.checkpoint_dir, counter)",
+    "MAAN/FD_DCTAN_model.py:1695: #     self.save(config.checkpoint_dir, counter)",
+    "MAAN/FD_DCTAN_model.py:3048: self.saver.save(self.sess,",
+    "MAAN/FD_DCTAN_model.py:3085: self.saver.save(self.sess,",
+    "WDMAN/FD_DCTAN_model.py:1654: self.saver.save(self.sess,",
+    "WDMAN/FD_DCTAN_model.py:1691: self.saver.save(self.sess,"
+   ],
+   "select": [
+    "MAAN/FD_DCTAN_model.py:337: name = 'BestAccuracy'",
+    "MAAN/FD_DCTAN_model.py:776: # name = self.model_name + '_BestAccuracy_'+ self.dataset_name_s + '_' + self.dataset_name_t",
+    "MAAN/FD_DCTAN_model.py:777: name = 'BestAccuracy_Source'",
+    "MAAN/FD_DCTAN_model.py:889: # name = self.model_name + '_BestAccuracy_'+ self.dataset_name_s + '_' + self.dataset_name_t",
+    "MAAN/FD_DCTAN_model.py:890: name = 'BestAccuracy'",
+    "MAAN/FD_DCTAN_model.py:892: tempbestAcc = r_t[1]",
+    "MAAN/FD_DCTAN_model.py:895: if tempbestAcc > self.bestTestAcc and trainAcc >= self.trainThre and testAcc >= self.testThre:",
+    "MAAN/FD_DCTAN_model.py:896: self.bestTestAcc = tempbestAcc",
+    "MAAN/FD_DCTAN_model.py:1295: # self.load_name = 'BestAccuracy-100'",
+    "MAAN/FD_DCTAN_model.py:1321: self.bestAccuracy_sign = False",
+    "MAAN/FD_DCTAN_model.py:1696: name = 'BestAccuracy'",
+    "MAAN/FD_DCTAN_model.py:2457: # name = self.model_name + '_BestAccuracy_'+ self.dataset_name_s + '_' + self.dataset_name_t",
+    "MAAN/FD_DCTAN_model.py:2458: name = 'BestAccuracy_DA'",
+    "MAAN/FD_DCTAN_model.py:2460: tempbestAcc = r_t[1]",
+    "MAAN/FD_DCTAN_model.py:2463: if tempbestAcc > self.bestTestAcc and trainAcc >= self.trainThre and testAcc >= self.testThre:",
+    "MAAN/FD_DCTAN_model.py:2465: self.bestTestAcc = tempbestAcc",
+    "MAAN/FD_DCTAN_model.py:2592: # name = self.model_name + '_BestAccuracy_'+ self.dataset_name_s + '_' + self.dataset_name_t",
+    "MAAN/FD_DCTAN_model.py:2593: name = 'BestAccuracy_Source'",
+    "MAAN/FD_DCTAN_model.py:2707: # name = self.model_name + '_BestAccuracy_'+ self.dataset_name_s + '_' + self.dataset_name_t",
+    "MAAN/FD_DCTAN_model.py:2708: name = 'BestAccuracy'",
+    "MAAN/FD_DCTAN_model.py:2710: tempbestAcc = r_t[1]",
+    "MAAN/FD_DCTAN_model.py:2713: if tempbestAcc > self.bestTestAcc and trainAcc >= self.trainThre_pre and testAcc >= self.testThre_pre:",
+    "MAAN/FD_DCTAN_model.py:2714: self.bestTestAcc = tempbestAcc",
+    "MAAN/FD_DCTAN_model.py:2720: if self.bestAccuracy_sign:",
+    "MAAN/FD_DCTAN_model.py:2749: self.bestAccuracy_sign = True",
+    "WDMAN/FD_DCTAN_model.py:102: # self.load_name = 'BestAccuracy-100'",
+    "WDMAN/FD_DCTAN_model.py:125: self.bestAccuracy_sign = False",
+    "WDMAN/FD_DCTAN_model.py:1066: # name = self.model_name + '_BestAccuracy_'+ self.dataset_name_s + '_' + self.dataset_name_t",
+    "WDMAN/FD_DCTAN_model.py:1067: name = 'BestAccuracy_DA'",
+    "WDMAN/FD_DCTAN_model.py:1069: tempbestAcc = r_t[1]",
+    "WDMAN/FD_DCTAN_model.py:1072: if tempbestAcc > self.bestTestAcc and trainAcc >= self.trainThre and testAcc >= self.testThre:",
+    "WDMAN/FD_DCTAN_model.py:1074: self.bestTestAcc = tempbestAcc",
+    "WDMAN/FD_DCTAN_model.py:1205: # name = self.model_name + '_BestAccuracy_'+ self.dataset_name_s + '_' + self.dataset_name_t",
+    "WDMAN/FD_DCTAN_model.py:1206: name = 'BestAccuracy_Source'",
+    "WDMAN/FD_DCTAN_model.py:1320: # name = self.model_name + '_BestAccuracy_'+ self.dataset_name_s + '_' + self.dataset_name_t",
+    "WDMAN/FD_DCTAN_model.py:1321: name = 'BestAccuracy'",
+    "WDMAN/FD_DCTAN_model.py:1323: tempbestAcc = r_t[1]",
+    "WDMAN/FD_DCTAN_model.py:1326: if tempbestAcc > self.bestTestAcc and trainAcc >= self.trainThre_pre and testAcc >= self.testThre_pre:",
+    "WDMAN/FD_DCTAN_model.py:1327: self.bestTestAcc = tempbestAcc",
+    "WDMAN/FD_DCTAN_model.py:1333: if self.bestAccuracy_sign:"
+   ],
+   "seed": [
+    "MAAN/tf_utils_zm.py:37: np.random.seed(seed)",
+    "MAAN/tf_utils_zm.py:76: np.random.seed(seed)",
+    "MAAN/tf_utils_zm.py:116: np.random.seed(seed)",
+    "WDMAN/tf_utils_zm.py:37: np.random.seed(seed)",
+    "WDMAN/tf_utils_zm.py:76: np.random.seed(seed)",
+    "WDMAN/tf_utils_zm.py:116: np.random.seed(seed)"
+   ]
+  },
+  {
+   "attempt_order": "5",
+   "own_paper_doi": "10.1088/1361-6501/ad099b",
+   "full_name": "hxf1228/hfn-current-fd",
+   "commit": "143828f06eb0b93eced6d94cf286d60484df1936",
+   "framework": "pytorch",
+   "public_data": "",
+   "status_note": "current-signal dataset to verify as public (e.g. PU) at attempt",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/05_hxf1228__hfn-current-fd",
+   "head": "143828f06eb0b93eced6d94cf286d60484df1936",
+   "size_mb": 1.3,
+   "entry_candidates": [
+    "train.py",
+    "train_test_3dcnn.py"
+   ],
+   "epoch_loop": [
+    "train_test_3dcnn.py:25: num_epochs = 150",
+    "train_test_3dcnn.py:77: best_epoch = 1",
+    "train_test_3dcnn.py:88: for iEpoch in range(num_epochs):",
+    "train_test_3dcnn.py:118: best_epoch = iEpoch",
+    "train.py:28: num_epochs = 150",
+    "train.py:115: for iEpoch in range(num_epochs):"
+   ],
+   "save": [
+    "train_test_3dcnn.py:121: torch.save(best_model.state_dict(), model_path)",
+    "train.py:147: torch.save(classifier.state_dict(), model_path)"
+   ],
+   "select": [
+    "train_test_3dcnn.py:76: min_loss = 10000",
+    "train_test_3dcnn.py:77: best_epoch = 1",
+    "train_test_3dcnn.py:86: best_model = None",
+    "train_test_3dcnn.py:116: if val_loss < min_loss:",
+    "train_test_3dcnn.py:117: min_loss = val_loss",
+    "train_test_3dcnn.py:118: best_epoch = iEpoch",
+    "train_test_3dcnn.py:119: best_model = copy.deepcopy(classifier)",
+    "train_test_3dcnn.py:121: torch.save(best_model.state_dict(), model_path)",
+    "train_test_3dcnn.py:124: (iEpoch, 'val', val_loss, min_loss, best_epoch))",
+    "train_test_3dcnn.py:127: best_model.eval()",
+    "train_test_3dcnn.py:133: outputs_test = best_model(inputs_test)"
+   ],
+   "seed": [
+    "train_test_3dcnn.py:8: from utils.reproduce import set_seed",
+    "train_test_3dcnn.py:33: set_seed(seed)",
+    "train_test_3dcnn.py:50: set_seed(seed)",
+    "train.py:12: from utils.reproduce import set_seed",
+    "train.py:36: set_seed(seed)",
+    "train.py:64: set_seed(seed)",
+    "random_generate.py:5: from utils.reproduce import set_seed",
+    "random_generate.py:26: set_seed(seed)",
+    "random_generate.py:43: set_seed(seed)",
+    "pred_confusion.py:11: from utils.reproduce import set_seed",
+    "pred_confusion.py:39: set_seed(seed)",
+    "pred_confusion.py:69: set_seed(seed)",
+    "test.py:10: from utils.reproduce import set_seed",
+    "test.py:30: set_seed(seed)",
+    "utils/reproduce.py:7: def set_seed(seed: int = 0):",
+    "utils/reproduce.py:15: np.random.seed(seed)",
+    "utils/reproduce.py:16: random.seed(seed)",
+    "utils/reproduce.py:17: torch.manual_seed(seed)",
+    "utils/reproduce.py:18: torch.cuda.manual_seed(seed)",
+    "utils/reproduce.py:19: torch.cuda.manual_seed_all(seed)"
+   ]
+  },
+  {
+   "attempt_order": "6",
+   "own_paper_doi": "10.48550/arxiv.2311.18547",
+   "full_name": "TuomasJalonen/motor-fault-icit2024",
+   "commit": "2a1a5f98678d049e5235a4f75cf256a813802462",
+   "framework": "tensorflow",
+   "public_data": "KAIST",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/06_TuomasJalonen__motor-fault-icit2024",
+   "head": "2a1a5f98678d049e5235a4f75cf256a813802462",
+   "size_mb": 0.1,
+   "entry_candidates": [
+    "Src/train.py"
+   ],
+   "epoch_loop": [
+    "Src/t-sne.py:40: epochs = 150",
+    "Src/train.py:70: epochs = 150",
+    "Src/train.py:187: history = model.fit(",
+    "Src/train.py:190: epochs=epochs,",
+    "Src/monte_carlo_simulations.py:38: epochs = 150"
+   ],
+   "save": [
+    "Src/utils.py:49: def save_model(directory):",
+    "Src/utils.py:53: acc_callback = tf.keras.callbacks.ModelCheckpoint(",
+    "Src/utils.py:55: save_weights_only=True,",
+    "Src/t-sne.py:151: np.save(os.path.join(split_dir, \"features_tsne.npy\"), features_tsne)",
+    "Src/train.py:25: save_model,",
+    "Src/train.py:168: savemodel = save_model(split_dir)",
+    "Src/train.py:195: np.save(os.path.join(split_dir, \"history.npy\"), history.history)",
+    "Src/train.py:220: np.save(os.path.join(split_dir, \"predictions.npy\"), predictions)",
+    "Src/train.py:224: np.save(os.path.join(split_dir, \"predicted_indices.npy\"), predicted_indices)",
+    "Src/train.py:228: np.save(os.path.join(split_dir, \"true_indices.npy\"), true_indices)",
+    "Src/train.py:232: np.save(os.path.join(split_dir, \"cm.npy\"), cm)",
+    "Src/train.py:236: np.save(os.path.join(split_dir, \"cr.npy\"), cr)",
+    "Src/train.py:259: np.save(os.path.join(split_dir, \"misclassified_ids.npy\"), misclassified_ids)"
+   ],
+   "select": [
+    "Src/utils.py:56: monitor=\"val_accuracy\",",
+    "Src/utils.py:129: plt.plot(history.history[\"val_accuracy\"])",
+    "Src/utils.py:180: ax1.plot(history.history[\"val_accuracy\"])"
+   ],
+   "seed": [
+    "Src/t-sne.py:80: np.random.seed(42)",
+    "Src/train.py:106: np.random.seed(42)",
+    "Src/monte_carlo_simulations.py:76: np.random.seed(42)"
+   ]
+  },
+  {
+   "attempt_order": "7",
+   "own_paper_doi": "10.1109/tii.2024.3438229",
+   "full_name": "John-520/DMsrTTLN",
+   "commit": "b770b535a26d4a5045394a1eb7573dc701fb9284",
+   "framework": "pytorch",
+   "public_data": "CWRU; JNU; PU; SEU",
+   "status_note": "time-varying-speed datasets to verify as public at attempt",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/07_John-520__DMsrTTLN",
+   "head": "b770b535a26d4a5045394a1eb7573dc701fb9284",
+   "size_mb": 3.6,
+   "entry_candidates": [
+    "main.py"
+   ],
+   "epoch_loop": [
+    "main.py:130: epoch_epoch = args.nepoch",
+    "main.py:131: for epoch in range(1, args.nepoch + 1):"
+   ],
+   "save": [
+    "main.py:149: torch.save(model, 'pseudo_model.pkl')",
+    "main.py:153: torch.save(model, 'model.pkl')"
+   ],
+   "select": [
+    "main.py:157: if stop >= args.early_stop:",
+    "ulties_functions.py:202: parser.add_argument('--early_stop', type=int,"
+   ],
+   "seed": []
+  },
+  {
+   "attempt_order": "8",
+   "own_paper_doi": "10.1109/access.2023.3281910",
+   "full_name": "junior209lsj/FaultDiagnosisOptimizerBenchmark",
+   "commit": "536b97040cfd66cee194c0376c475d3554d77f2e",
+   "framework": "pytorch",
+   "public_data": "public bearing datasets auto-downloaded (fdob/download.py); names not listed in dossier",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/08_junior209lsj__FaultDiagnosisOptimizerBenchmark",
+   "head": "536b97040cfd66cee194c0376c475d3554d77f2e",
+   "size_mb": 0.3,
+   "entry_candidates": [
+    "fdob/trainmodule.py"
+   ],
+   "epoch_loop": [
+    "benchmark.py:76: max_epochs=n_epochs,",
+    "benchmark.py:82: trainer.fit(",
+    "benchmark.py:162: max_epochs=n_epochs,",
+    "tutorial.ipynb:214: \"n_epochs = 5\\n\",",
+    "fdob/trainmodule.py:32: self.log(\"train_loss\", loss, prog_bar=True, on_step=False, on_epoch=True)",
+    "fdob/trainmodule.py:33: self.log(\"train_acc\", acc, prog_bar=True, on_step=False, on_epoch=True)",
+    "fdob/trainmodule.py:57: f\"{stage}_loss\", val_loss, prog_bar=True, on_step=False, on_epoch=True",
+    "fdob/trainmodule.py:60: f\"{stage}_acc\", val_acc, prog_bar=True, on_step=False, on_epoch=True"
+   ],
+   "save": [
+    "benchmark.py:8: from pytorch_lightning.callbacks import ModelCheckpoint",
+    "benchmark.py:66: callback = ModelCheckpoint(",
+    "benchmark.py:152: callback = ModelCheckpoint("
+   ],
+   "select": [
+    "benchmark.py:68: dirpath=f\"{result_dir}/best_model\",",
+    "benchmark.py:88: f\"{result_dir}/best_model/model.ckpt\",",
+    "benchmark.py:154: dirpath=f\"{result_dir}/best_model\",",
+    "benchmark.py:169: f\"{result_dir}/best_model/model.ckpt\",",
+    "fdob/trainmodule.py:45: val_acc = accuracy(preds, y)",
+    "fdob/trainmodule.py:52: \"acc\": val_acc,",
+    "fdob/trainmodule.py:60: f\"{stage}_acc\", val_acc, prog_bar=True, on_step=False, on_epoch=True"
+   ],
+   "seed": [
+    "benchmark.py:46: torch.manual_seed(random_seed)",
+    "benchmark.py:47: np.random.seed(random_seed)",
+    "benchmark.py:48: random.seed(random_seed)",
+    "benchmark.py:132: torch.manual_seed(random_seed)",
+    "benchmark.py:133: np.random.seed(random_seed)",
+    "benchmark.py:134: random.seed(random_seed)"
+   ]
+  },
+  {
+   "attempt_order": "9",
+   "own_paper_doi": "10.1109/tim.2022.3196742",
+   "full_name": "ShaneSpace/MyResearchWorksPublic",
+   "commit": "3e26367dd8e66a8043ba0cc4b5fda188a5a7d92c",
+   "framework": "unclear",
+   "public_data": "",
+   "status_note": "single-file scripts; training loop, data and framework to verify at attempt",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/09_ShaneSpace__MyResearchWorksPublic",
+   "head": "3e26367dd8e66a8043ba0cc4b5fda188a5a7d92c",
+   "size_mb": 0.0,
+   "entry_candidates": [],
+   "epoch_loop": [],
+   "save": [
+    "reimplementation/model07_jiangguoqian_multiscale.py:31: from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau"
+   ],
+   "select": [
+    "reimplementation/model07_jiangguoqian_multiscale.py:31: from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau"
+   ],
+   "seed": []
+  },
+  {
+   "attempt_order": "10",
+   "own_paper_doi": "10.1007/s10489-025-06361-0",
+   "full_name": "linhthan216/MixMamba-Fewshot",
+   "commit": "3b25f04020c07f7c566a13b08a9e86880e96f7a8",
+   "framework": "pytorch",
+   "public_data": "CWRU",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/10_linhthan216__MixMamba-Fewshot",
+   "head": "3b25f04020c07f7c566a13b08a9e86880e96f7a8",
+   "size_mb": 1.1,
+   "entry_candidates": [
+    "train_1shot.py",
+    "train_5shot.py"
+   ],
+   "epoch_loop": [
+    "train_5shot.py:150: num_epochs = args.num_epochs,",
+    "train_5shot.py:165: for epoch in range(1, num_epochs + 1):",
+    "train_5shot.py:224: num_epochs = args.num_epochs,",
+    "train_5shot.py:234: num_epochs = args.num_epochs,",
+    "train_1shot.py:150: num_epochs = args.num_epochs,",
+    "train_1shot.py:165: for epoch in range(1, num_epochs + 1):",
+    "train_1shot.py:224: num_epochs = args.num_epochs,",
+    "train_1shot.py:234: num_epochs = args.num_epochs,"
+   ],
+   "save": [
+    "train_5shot.py:207: torch.save(net, path_weight + model_name)",
+    "train_1shot.py:207: torch.save(net, path_weight + model_name)"
+   ],
+   "select": [],
+   "seed": [
+    "function/function.py:17: random.seed(42)",
+    "function/function.py:18: np.random.seed(42)",
+    "function/function.py:19: torch.manual_seed(42)"
+   ]
+  },
+  {
+   "attempt_order": "11",
+   "own_paper_doi": "10.1109/tim.2025.3582302",
+   "full_name": "Vitoyoung/HETPM_intelligent_fault_diagnosis",
+   "commit": "51abc83dd3820297d66ad6db821d367b2aa65e0e",
+   "framework": "pytorch",
+   "public_data": "JNU; HUST",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/11_Vitoyoung__HETPM_intelligent_fault_diagnosis",
+   "head": "51abc83dd3820297d66ad6db821d367b2aa65e0e",
+   "size_mb": 1.2,
+   "entry_candidates": [
+    "HETPM_open/utils/train_util_HETPM.py"
+   ],
+   "epoch_loop": [
+    "HETPM_open/utils/train_util_HETPM.py:217: self.start_epoch = 0",
+    "HETPM_open/utils/train_util_HETPM.py:268: for epoch in tqdm(range(self.start_epoch, args.max_epoch), position=0):",
+    "HETPM_open/utils/train_util_HETPM.py:583: if epoch == args.max_epoch - 1:",
+    "HETPM_open/utils/train_util_HETPM.py:675: if epoch == args.max_epoch - 1:"
+   ],
+   "save": [],
+   "select": [
+    "HETPM_open/utils/train_util_HETPM.py:258: source_val_acc_pic = []",
+    "HETPM_open/utils/train_util_HETPM.py:259: target_val_acc_pic = []",
+    "HETPM_open/utils/train_util_HETPM.py:654: source_val_acc_pic.append((epoch_acc))",
+    "HETPM_open/utils/train_util_HETPM.py:657: target_val_acc_pic.append((epoch_acc))",
+    "HETPM_open/utils/train_util_HETPM.py:715: plt.plot(x_for_pic, source_val_acc_pic, label=\"source_val_acc\")",
+    "HETPM_open/utils/train_util_HETPM.py:716: plt.plot(x_for_pic, target_val_acc_pic, label=\"target_val_acc\")",
+    "HETPM_open/utils/train_util_HETPM.py:753: # source_val_acc",
+    "HETPM_open/utils/train_util_HETPM.py:755: source_val_acc_pic = np.array(source_val_acc_pic)",
+    "HETPM_open/utils/train_util_HETPM.py:756: np.savetxt(array_dir_sva, source_val_acc_pic, delimiter=',')",
+    "HETPM_open/utils/train_util_HETPM.py:758: # target_val_acc",
+    "HETPM_open/utils/train_util_HETPM.py:760: target_val_acc_pic = np.array(target_val_acc_pic)",
+    "HETPM_open/utils/train_util_HETPM.py:761: np.savetxt(array_dir_tva, target_val_acc_pic, delimiter=',')"
+   ],
+   "seed": []
+  },
+  {
+   "attempt_order": "12",
+   "own_paper_doi": "10.1016/j.neucom.2025.131518",
+   "full_name": "thzhere/MLFork",
+   "commit": "517e95f627ad370e427bcd82f525b945c121b976",
+   "framework": "pytorch",
+   "public_data": "CWRU; PU",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/12_thzhere__MLFork",
+   "head": "517e95f627ad370e427bcd82f525b945c121b976",
+   "size_mb": 0.9,
+   "entry_candidates": [
+    "train_1shot.py",
+    "train_5shot.py"
+   ],
+   "epoch_loop": [
+    "train_5shot.py:132: num_epochs = args.num_epochs,",
+    "train_5shot.py:149: for epoch in range(1, num_epochs + 1):",
+    "train_5shot.py:212: num_epochs = args.num_epochs,",
+    "train_5shot.py:223: num_epochs = args.num_epochs,",
+    "train_1shot.py:134: num_epochs = args.num_epochs,",
+    "train_1shot.py:151: for epoch in range(1, num_epochs + 1):",
+    "train_1shot.py:214: num_epochs = args.num_epochs,",
+    "train_1shot.py:225: num_epochs = args.num_epochs,"
+   ],
+   "save": [
+    "train_5shot.py:195: torch.save(net, path_weight + model_name)",
+    "train_1shot.py:197: torch.save(net, path_weight + model_name)"
+   ],
+   "select": [],
+   "seed": [
+    "function/function.py:16: random.seed(42)",
+    "function/function.py:17: np.random.seed(42)",
+    "function/function.py:18: torch.manual_seed(42)"
+   ]
+  },
+  {
+   "attempt_order": "13",
+   "own_paper_doi": "10.1109/tim.2023.3346517",
+   "full_name": "asdvfghg/BearingPGA-Net",
+   "commit": "96392f3527498a38c8d2e00911deb810e168fb79",
+   "framework": "pytorch",
+   "public_data": "CWRU",
+   "status_note": "confirmed from dossier",
+   "status": "fetch_failed",
+   "error": "error: RPC failed; curl 56 GnuTLS recv error (-9): Error decoding the received TLS packet.\nerror: 1 bytes of body are still expected\nfetch-pack: unexpected disconnect while reading sideband packet\nfatal: early EOF\nfatal: unpack-objects failed"
+  },
+  {
+   "attempt_order": "14",
+   "own_paper_doi": "10.1109/tim.2023.3259031",
+   "full_name": "asdvfghg/QCNN_for_bearing_diagnosis",
+   "commit": "e325210b1ca19bdbfc731959685f6a2a2c9d7ddc",
+   "framework": "pytorch",
+   "public_data": "CWRU",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/14_asdvfghg__QCNN_for_bearing_diagnosis",
+   "head": "e325210b1ca19bdbfc731959685f6a2a2c9d7ddc",
+   "size_mb": 42.6,
+   "entry_candidates": [
+    "train.py",
+    "utils/train_function.py"
+   ],
+   "epoch_loop": [
+    "train.py:256: config.epochs = 50  # number of epochs to train (default: 10)",
+    "utils/Preprocess.py:82: Encoder.fit(Train_Y)",
+    "utils/Preprocess.py:89: scalar = preprocessing.StandardScaler().fit(Train_X)"
+   ],
+   "save": [
+    "train.py:141: torch.save(net.state_dict(), f'Models/best_checkpoint.pth')",
+    "train.py:189: # torch.save(net.state_dict(), os.path.join(wandb.run.dir, \"checkpoint.pth\"))",
+    "train.py:190: # wandb.save('*.pth')"
+   ],
+   "select": [
+    "qttention.py:81: best_model_dict = torch.load(run_path, map_location=torch.device('cpu'))",
+    "qttention.py:82: model.load_state_dict(best_model_dict)",
+    "train.py:50: max_acc = 0.0",
+    "train.py:137: if acc >= max_acc:",
+    "train.py:138: max_acc = acc"
+   ],
+   "seed": [
+    "train.py:27: torch.manual_seed(seed)",
+    "train.py:28: torch.cuda.manual_seed(seed)",
+    "train.py:29: torch.cuda.manual_seed_all(seed)  # if you are using multi-GPU.",
+    "train.py:30: np.random.seed(seed)  # Numpy module.",
+    "train.py:31: random.seed(seed)  # Python random module."
+   ]
+  },
+  {
+   "attempt_order": "15",
+   "own_paper_doi": "10.1016/j.ymssp.2026.114827",
+   "full_name": "autouch/AWT-DDFN",
+   "commit": "a77c7baffbe341dd446c33a5a572f64ba061b545",
+   "framework": "unclear",
+   "public_data": "PU",
+   "status_note": "framework to verify at attempt",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/15_autouch__AWT-DDFN",
+   "head": "a77c7baffbe341dd446c33a5a572f64ba061b545",
+   "size_mb": 0.0,
+   "entry_candidates": [
+    "train.py"
+   ],
+   "epoch_loop": [
+    "train.py:119: for epoch in range(config['epochs']):"
+   ],
+   "save": [
+    "train.py:35: save_model_path=save_path+'saved_model/'",
+    "train.py:36: if not os.path.exists(save_model_path):",
+    "train.py:37: os.makedirs(save_model_path, exist_ok=True)",
+    "train.py:126: 'model_state_dict': model.state_dict(),",
+    "train.py:128: torch.save(best_checkpoint, save_model_path+'model_best_weights.pth')",
+    "train.py:140: 'model_state_dict': model.state_dict(),",
+    "train.py:142: torch.save(last_checkpoint, save_model_path+'model_last_weights.pth')",
+    "train.py:143: best_checkpoint = torch.load(save_model_path+'model_best_weights.pth')",
+    "train.py:152: last_checkpoint = torch.load(save_model_path+'model_last_weights.pth')"
+   ],
+   "select": [
+    "train.py:148: print(\"best_model test result:\")"
+   ],
+   "seed": [
+    "dataload.py:83: random.seed(seed)",
+    "dataload.py:84: np.random.seed(seed)"
+   ]
+  },
+  {
+   "attempt_order": "16",
+   "own_paper_doi": "10.1109/access.2026.3663988",
+   "full_name": "enzoniko/LPFTDSPIPIFD",
+   "commit": "799bf2d5d602f52d13c514059aa1c01cc8e2b6c5",
+   "framework": "unclear",
+   "public_data": "",
+   "status_note": "ring-bearing dataset source and framework to verify at attempt",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/16_enzoniko__LPFTDSPIPIFD",
+   "head": "799bf2d5d602f52d13c514059aa1c01cc8e2b6c5",
+   "size_mb": 2.0,
+   "entry_candidates": [
+    "anomaly_detection/scripts/run_all_models.py",
+    "scripts/run_all_models_parallel.py",
+    "scripts/run_siamese_analysis.py",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py",
+    "siamese_analysis/training/trainer.py",
+    "training_scripts/adaptive_lbpin_training.py",
+    "training_scripts/alpinn_training.py",
+    "training_scripts/brdr_training.py",
+    "training_scripts/constant_weight_pinn_training.py",
+    "training_scripts/data_driven_training.py",
+    "training_scripts/dwpinn_training.py",
+    "training_scripts/gradnorm_training.py",
+    "training_scripts/pecann_training.py",
+    "training_scripts/relobralo_training.py",
+    "training_scripts/run_smoke_tests.py",
+    "training_scripts/train_best_models.py"
+   ],
+   "epoch_loop": [
+    "siamese_analysis/data/parallel_features.py:261: scaler.fit(reshaped)",
+    "siamese_analysis/data/parallel_features.py:293: scaler.fit(reshaped)",
+    "siamese_analysis/data/parallel_features.py:398: global_scaler.fit(all_features)",
+    "siamese_analysis/training/randomized_search.py:678: warmup_epochs = params.get('warmup_epochs', 0)",
+    "siamese_analysis/training/randomized_search.py:757: warmup_epochs=warmup_epochs",
+    "siamese_analysis/training/randomized_search.py:817: epochs=epochs,",
+    "siamese_analysis/training/randomized_search.py:829: epochs=epochs,",
+    "siamese_analysis/training/randomized_search.py:1084: epochs=epochs,",
+    "siamese_analysis/training/randomized_search.py:1308: epochs=args.epochs,",
+    "siamese_analysis/training/trainer.py:170: def __init__(self, model, device, model_kwargs, criterion=None, optimizer=None, lr=0.001, lr_scheduler=None, warmup_epochs=0):",
+    "siamese_analysis/training/trainer.py:200: self.warmup_epochs = warmup_epochs",
+    "siamese_analysis/training/trainer.py:203: def train_epoch(self, dataloader, epoch=None):",
+    "siamese_analysis/training/trainer.py:282: def train(self, train_dataloader, val_dataloader=None, epochs=100, verbose=1, fold=None):",
+    "siamese_analysis/training/trainer.py:310: for epoch in epoch_iterator:",
+    "siamese_analysis/training/trainer.py:312: train_loss = self.train_epoch(train_dataloader, epoch=epoch)",
+    "siamese_analysis/training/trainer.py:321: if self.warmup_epochs == 0 or epoch >= self.warmup_epochs:",
+    "siamese_analysis/training/trainer.py:340: if self.warmup_epochs == 0 or epoch >= self.warmup_epochs:",
+    "siamese_analysis/training/trainer.py:356: def train_with_cross_validation(self, cv_splits, epochs=100, callbacks=None, verbose=1,",
+    "siamese_analysis/training/trainer.py:503: epochs=epochs,",
+    "siamese_analysis/training/trainer.py:525: def train_with_single_split(self, dataset, train_indices, val_indices, epochs=100,",
+    "siamese_analysis/training/trainer.py:676: epochs=epochs,",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:170: def __init__(self, model, device, model_kwargs, criterion=None, optimizer=None, lr=0.001, lr_scheduler=None, warmup_epochs=0):",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:200: self.warmup_epochs = warmup_epochs",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:203: def train_epoch(self, dataloader, epoch=None):",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:282: def train(self, train_dataloader, val_dataloader=None, epochs=100, verbose=1, fold=None):",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:310: for epoch in epoch_iterator:",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:312: train_loss = self.train_epoch(train_dataloader, epoch=epoch)",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:321: if self.warmup_epochs == 0 or epoch >= self.warmup_epochs:",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:340: if self.warmup_epochs == 0 or epoch >= self.warmup_epochs:",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:356: def train_with_cross_validation(self, cv_splits, epochs=100, callbacks=None, verbose=1,",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:446: epochs=epochs,",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:468: def train_with_single_split(self, dataset, train_indices, val_indices, epochs=100,",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:561: epochs=epochs,",
+    "siamese_analysis/training/.ipynb_checkpoints/randomized_search-checkpoint.py:628: warmup_epochs = params.get('warmup_epochs', 0)",
+    "siamese_analysis/training/.ipynb_checkpoints/randomized_search-checkpoint.py:689: warmup_epochs=warmup_epochs",
+    "siamese_analysis/training/.ipynb_checkpoints/randomized_search-checkpoint.py:748: epochs=epochs,",
+    "siamese_analysis/training/.ipynb_checkpoints/randomized_search-checkpoint.py:1001: epochs=epochs,",
+    "siamese_analysis/training/.ipynb_checkpoints/randomized_search-checkpoint.py:1196: epochs=args.epochs,",
+    "siamese_analysis/evaluation/evaluator.py:1654: grid_search.fit(X_train, y_train)",
+    "siamese_analysis/evaluation/evaluator.py:1755: grid_search.fit(X_train, y_train)"
+   ],
+   "save": [
+    "siamese_analysis/training/randomized_search.py:860: torch.save(model.state_dict(), model_path)",
+    "siamese_analysis/training/randomized_search.py:940: torch.save(torch.load(model_info[\"model_path\"]), weights_path)",
+    "siamese_analysis/training/randomized_search.py:1106: torch.save(model.state_dict(), best_weights_path)",
+    "siamese_analysis/training/randomized_search.py:1369: torch.save(default_model.state_dict(), default_model_path)",
+    "siamese_analysis/training/trainer.py:74: class ModelCheckpoint:",
+    "siamese_analysis/training/trainer.py:105: self._save_model(model)",
+    "siamese_analysis/training/trainer.py:114: self.best_model_state = copy.deepcopy(model.state_dict())",
+    "siamese_analysis/training/trainer.py:117: self._save_model(model, is_best=True)",
+    "siamese_analysis/training/trainer.py:122: def _save_model(self, model, is_best=False):",
+    "siamese_analysis/training/trainer.py:133: torch.save(model.state_dict(), self.filepath)",
+    "siamese_analysis/training/trainer.py:140: torch.save(self.best_model_state, best_filepath)",
+    "siamese_analysis/training/trainer.py:143: torch.save(model.state_dict(), best_filepath)",
+    "siamese_analysis/training/trainer.py:332: self.best_model_state = copy.deepcopy(self.model.state_dict())",
+    "siamese_analysis/training/trainer.py:485: fold_checkpoint = ModelCheckpoint(",
+    "siamese_analysis/training/trainer.py:658: checkpoint = ModelCheckpoint(",
+    "siamese_analysis/training/trainer.py:689: def save_model(self, path):",
+    "siamese_analysis/training/trainer.py:695: torch.save(self.model.state_dict(), path)",
+    "siamese_analysis/training/__init__.py:5: from .trainer import SiameseTrainer, EarlyStopping, ModelCheckpoint",
+    "siamese_analysis/training/__init__.py:15: 'ModelCheckpoint',",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:74: class ModelCheckpoint:",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:105: self._save_model(model)",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:114: self.best_model_state = copy.deepcopy(model.state_dict())",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:117: self._save_model(model, is_best=True)",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:122: def _save_model(self, model, is_best=False):",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:133: torch.save(model.state_dict(), self.filepath)",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:140: torch.save(self.best_model_state, best_filepath)",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:143: torch.save(model.state_dict(), best_filepath)",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:332: self.best_model_state = copy.deepcopy(self.model.state_dict())",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:428: fold_checkpoint = ModelCheckpoint(",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:543: checkpoint = ModelCheckpoint(",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:574: def save_model(self, path):",
+    "siamese_analysis/training/.ipynb_checkpoints/trainer-checkpoint.py:580: torch.save(self.model.state_dict(), path)",
+    "siamese_analysis/training/.ipynb_checkpoints/randomized_search-checkpoint.py:777: torch.save(model.state_dict(), model_path)",
+    "siamese_analysis/training/.ipynb_checkpoints/randomized_search-checkpoint.py:857: torch.save(torch.load(model_info[\"model_path\"]), weights_path)",
+    "siamese_analysis/training/.ipynb_checkpoints/randomized_search-checkpoint.py:1023: torch.save(model.state_dict(), best_weights_path)",
+    "siamese_analysis/training/.ipynb_checkpoints/randomized_search-checkpoint.py:1257: torch.save(default_model.state_dict(), default_model_path)",
+    "siamese_analysis/evaluation/evaluator.py:951: np.save(os.path.join(output_dir, f\"{filename_prefix}_level{level}.npy\"), cm)",
+    "scripts/siamese_residuals.py:384: def save_model(self, path):",
+    "scripts/siamese_residuals.py:386: torch.save(self.model.state_dict(), path)",
+    "scripts/siamese_residuals.py:685: trainer.save_model(os.path.join(args.output_dir, \"siamese_model.pt\"))"
+   ],
+   "select": [
+    "siamese_analysis/cli.py:67: parser.add_argument('--output-dir', type=str, default='siamese_results_v3_100000triplets_physical_4faultgroups_48samplespergroupBESTMODELALLFEATURES0',",
+    "siamese_analysis/cli.py:178: help='Path to a directory containing best_configuration.json and best_model.pt to load directly, skipping search.')",
+    "siamese_analysis/cli.py:358: best_model = randomized_search(args, actual_channels, feature_size)",
+    "siamese_analysis/.ipynb_checkpoints/cli-checkpoint.py:67: parser.add_argument('--output-dir', type=str, default='siamese_results_v3_100000triplets_physical_4faultgroups_48samplespergroupBESTMODEL1',",
+    "siamese_analysis/.ipynb_checkpoints/cli-checkpoint.py:332: best_model = randomized_search(args, actual_channels, feature_size)",
+    "siamese_analysis/training/randomized_search.py:889: best_model = self._evaluate_top_models(top_models, in_channels, feature_size, epochs, learning_rate, batch_size, data_loader_workers)",
+    "siamese_analysis/training/randomized_search.py:890: return best_model",
+    "siamese_analysis/training/randomized_search.py:899: best_model_path = top_models[0][\"model_path\"]",
+    "siamese_analysis/training/randomized_search.py:900: best_weights = torch.load(best_model_path)",
+    "siamese_analysis/training/randomized_search.py:904: best_model, best_model_kwargs = self.create_model(",
+    "siamese_analysis/training/randomized_search.py:909: best_model.load_state_dict(best_weights)",
+    "siamese_analysis/training/randomized_search.py:910: return best_model",
+    "siamese_analysis/training/randomized_search.py:994: min_loss = np.min(losses)",
+    "siamese_analysis/training/randomized_search.py:1003: f.write(f\"  Min Loss: {min_loss:.6f}\\n\")",
+    "siamese_analysis/training/randomized_search.py:1036: best_model = None",
+    "siamese_analysis/training/randomized_search.py:1037: best_model_idx = -1",
+    "siamese_analysis/training/randomized_search.py:1100: best_model = model",
+    "siamese_analysis/training/randomized_search.py:1101: best_model_idx = model_idx",
+    "siamese_analysis/training/randomized_search.py:1104: best_weights_path = os.path.join(self.results_dir, \"best_model.pt\")",
+    "siamese_analysis/training/randomized_search.py:1134: best_model_idx = 0",
+    "siamese_analysis/training/randomized_search.py:1135: params = top_models[best_model_idx][\"params\"]",
+    "siamese_analysis/training/randomized_search.py:1136: best_model, best_model_kwargs = self.create_model(in_channels, feature_size, params)",
+    "siamese_analysis/training/randomized_search.py:1137: best_model.load_state_dict(torch.load(top_models[best_model_idx][\"model_path\"]))",
+    "siamese_analysis/training/randomized_search.py:1146: if best_model_idx >= 0 and best_model_idx < len(top_models):",
+    "siamese_analysis/training/randomized_search.py:1147: best_config = top_models[best_model_idx][\"configuration\"]",
+    "siamese_analysis/training/randomized_search.py:1148: best_config[\"params\"] = top_models[best_model_idx][\"params\"]",
+    "siamese_analysis/training/randomized_search.py:1150: # Fallback in case best_model_idx is invalid",
+    "siamese_analysis/training/randomized_search.py:1151: logger.warning(\"Invalid best_model_idx, using first model as fallback\")",
+    "siamese_analysis/training/randomized_search.py:1161: if best_model is not None:",
+    "siamese_analysis/training/randomized_search.py:1163: model=best_model,",
+    "siamese_analysis/training/randomized_search.py:1172: return best_model",
+    "siamese_analysis/training/randomized_search.py:1196: if hasattr(args, 'load_best_model_from') and args.load_best_model_from:",
+    "siamese_analysis/training/randomized_search.py:1197: load_path = args.load_best_model_from",
+    "siamese_analysis/training/randomized_search.py:1216: logger.error(f\"Error: Could not find best_configuration.json or best_model.pt in {load_path}\")",
+    "siamese_analysis/training/randomized_search.py:1305: best_model = searcher.run_search(",
+    "siamese_analysis/training/randomized_search.py:1316: return best_model",
+    "siamese_analysis/training/randomized_search.py:1367: # Save model weights as best_model.pt so the main code can find it",
+    "siamese_analysis/training/randomized_search.py:1368: default_model_path = os.path.join(results_dir, \"best_model.pt\")",
+    "siamese_analysis/training/randomized_search.py:1716: weights_path = os.path.join(results_dir, \"best_model.pt\")",
+    "siamese_analysis/training/randomized_search.py:1727: # If best_model.pt doesn't exist, try default_model.pt"
+   ],
+   "seed": [
+    "siamese_analysis/cli.py:213: torch.manual_seed(args.seed)",
+    "siamese_analysis/cli.py:214: np.random.seed(args.seed)",
+    "siamese_analysis/.ipynb_checkpoints/cli-checkpoint.py:197: torch.manual_seed(args.seed)",
+    "siamese_analysis/.ipynb_checkpoints/cli-checkpoint.py:198: np.random.seed(args.seed)",
+    "siamese_analysis/training/randomized_search.py:73: np.random.seed(random_state)",
+    "siamese_analysis/training/randomized_search.py:74: torch.manual_seed(random_state)",
+    "siamese_analysis/training/randomized_search.py:75: random.seed(random_state)  # Add this line to set the Python random seed",
+    "siamese_analysis/training/.ipynb_checkpoints/randomized_search-checkpoint.py:73: np.random.seed(random_state)",
+    "siamese_analysis/training/.ipynb_checkpoints/randomized_search-checkpoint.py:74: torch.manual_seed(random_state)",
+    "siamese_analysis/training/.ipynb_checkpoints/randomized_search-checkpoint.py:75: random.seed(random_state)  # Add this line to set the Python random seed",
+    "siamese_analysis/evaluation/evaluator.py:1494: np.random.seed(random_state)",
+    "siamese_analysis/evaluation/evaluator.py:1867: np.random.seed(42)",
+    "siamese_analysis/evaluation/evaluator.py:1911: np.random.seed(42)",
+    "siamese_analysis/evaluation/evaluator.py:2055: np.random.seed(42)",
+    "scripts/siamese_residuals.py:617: torch.manual_seed(42)",
+    "scripts/siamese_residuals.py:618: np.random.seed(42)",
+    "scripts/overnight_siamese_analysis.py:102: random.seed(random_seed)",
+    "scripts/pinn_direct_umap_visualization.py:1571: np.random.seed(args.seed)",
+    "scripts/pinn_direct_umap_visualization.py:1572: torch.manual_seed(args.seed)",
+    "training_scripts/validate_best_models.py:362: generator=torch.Generator().manual_seed(42)  # For reproducibility",
+    "training_scripts/train_best_models.py:760: generator=torch.Generator().manual_seed(42)  # For reproducibility",
+    "training_scripts/train_best_models.py:794: torch.manual_seed(42)",
+    "training_scripts/train_best_models.py:795: np.random.seed(42)",
+    "training_scripts/train_best_models.py:815: generator=torch.Generator().manual_seed(42)",
+    "training_scripts/analytical_analysis/nlls_baseline_and_sensitivity_experiments.py:273: np.random.seed(seed)",
+    "training_scripts/analytical_analysis/nlls_baseline_and_sensitivity_experiments.py:1138: np.random.seed(42)"
+   ]
+  },
+  {
+   "attempt_order": "17",
+   "own_paper_doi": "10.1007/s42417-026-02626-1",
+   "full_name": "viet2715/Multi-Layer-Spatial-Channel-MLSC-",
+   "commit": "a7992bf192a78b29167cc78fc4a272bdcd6fbeb2",
+   "framework": "pytorch",
+   "public_data": "CWRU; PU",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/17_viet2715__Multi-Layer-Spatial-Channel-MLSC-",
+   "head": "a7992bf192a78b29167cc78fc4a272bdcd6fbeb2",
+   "size_mb": 3.6,
+   "entry_candidates": [
+    "train_1shot.py",
+    "train_5shot.py"
+   ],
+   "epoch_loop": [
+    "train_5shot.py:137: num_epochs = args.num_epochs,",
+    "train_5shot.py:152: for epoch in range(1, num_epochs + 1):",
+    "train_5shot.py:211: num_epochs = args.num_epochs,",
+    "train_5shot.py:221: num_epochs = args.num_epochs,",
+    "train_1shot.py:135: num_epochs = args.num_epochs,",
+    "train_1shot.py:150: for epoch in range(1, num_epochs + 1):",
+    "train_1shot.py:209: num_epochs = args.num_epochs,",
+    "train_1shot.py:219: num_epochs = args.num_epochs,"
+   ],
+   "save": [
+    "train_5shot.py:195: torch.save(net, path_weight + model_name)",
+    "train_1shot.py:192: torch.save(net, path_weight + model_name)"
+   ],
+   "select": [],
+   "seed": [
+    "Function/function.py:10: random.seed(42)",
+    "Function/function.py:11: np.random.seed(42)",
+    "Function/function.py:12: torch.manual_seed(42)"
+   ]
+  },
+  {
+   "attempt_order": "18",
+   "own_paper_doi": "10.1016/j.eswa.2025.127248",
+   "full_name": "Onward-AI/torch_isonet",
+   "commit": "af5037e6025e2bd38e3db9684894c5e0eef7cbcd",
+   "framework": "pytorch",
+   "public_data": "HIT aero-engine inter-shaft bearing",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/18_Onward-AI__torch_isonet",
+   "head": "af5037e6025e2bd38e3db9684894c5e0eef7cbcd",
+   "size_mb": 107.5,
+   "entry_candidates": [
+    "isonet_run.py"
+   ],
+   "epoch_loop": [
+    "isonet_run.py:59: net.fit(data=data, epochs=200, device=device, verbose=2, use_compile=False, use_amp=False,",
+    "ljp/engine.py:272: self.trainOneEpoch = None",
+    "ljp/engine.py:273: self.testOneEpoch = None",
+    "ljp/engine.py:327: def fit(self, data, epochs=200, device='cpu', save_dir='./', logger=True, use_compile=False, use_amp=False,",
+    "ljp/engine.py:354: best_epoch = 0",
+    "ljp/engine.py:362: for epoch in tqdm_iterator:",
+    "ljp/engine.py:409: best_epoch = epoch",
+    "ljp/engine.py:535: self.trainOneEpoch = trainOneEpoch",
+    "ljp/engine.py:536: self.testOneEpoch = testOneEpoch"
+   ],
+   "save": [
+    "ljp/engine.py:351: best_net_state = copy.deepcopy(self.net.state_dict())",
+    "ljp/engine.py:407: best_net_state = copy.deepcopy(self.net.state_dict())",
+    "ljp/engine.py:451: 'final_net_state': copy.deepcopy(self.net.state_dict()),",
+    "ljp/engine.py:457: torch.save(results_dict, results_path)",
+    "ljp/engine.py:458: torch.save(statedt_dict, statedt_path)"
+   ],
+   "select": [
+    "isonet_run.py:57: monitor='val_acc',",
+    "ljp/engine.py:354: best_epoch = 0",
+    "ljp/engine.py:409: best_epoch = epoch",
+    "ljp/engine.py:421: infos.update({'best_epoch': best_epoch})",
+    "ljp/engine.py:441: 'best_epoch': best_epoch,"
+   ],
+   "seed": []
+  },
+  {
+   "attempt_order": "19",
+   "own_paper_doi": "10.1109/icspis54653.2021.9729385",
+   "full_name": "kavianpour/Bearing-Fault-Diagnosis-DTCNN",
+   "commit": "502effedc7fc50b2dea76c03cee9da1bc41ca7db",
+   "framework": "tensorflow",
+   "public_data": "CWRU",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/19_kavianpour__Bearing-Fault-Diagnosis-DTCNN",
+   "head": "502effedc7fc50b2dea76c03cee9da1bc41ca7db",
+   "size_mb": 0.6,
+   "entry_candidates": [
+    "train.py"
+   ],
+   "epoch_loop": [
+    "classic.py:50: scaler = StandardScaler().fit(X_train)",
+    "classic.py:52: clf.fit(scaler.transform(X_train), y_train)",
+    "classic.py:87: scaler = StandardScaler().fit(X_train)",
+    "classic.py:90: clf.fit(scaler.transform(X_train), y_train)",
+    "train.py:51: head.fit(features_train, y_train, epochs=cfg.epochs,",
+    "tsne.py:89: head.fit(gap, y, epochs=cfg.epochs, batch_size=cfg.batch_size, verbose=0)",
+    "tsne.py:135: cfg.epochs = args.epochs"
+   ],
+   "save": [],
+   "select": [],
+   "seed": [
+    "train.py:39: def set_seed(seed):",
+    "train.py:40: np.random.seed(seed)",
+    "train.py:41: tf.random.set_seed(seed)",
+    "train.py:57: set_seed(seed)",
+    "tsne.py:141: np.random.seed(cfg.seed)",
+    "tsne.py:142: tf.random.set_seed(cfg.seed)"
+   ]
+  },
+  {
+   "attempt_order": "20",
+   "own_paper_doi": "10.1088/1361-6501/ac8303",
+   "full_name": "Littleor/MLDSO",
+   "commit": "6819ac3371fdbc42d98217a3fb555895bb996704",
+   "framework": "pytorch",
+   "public_data": "CWRU",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/20_Littleor__MLDSO",
+   "head": "6819ac3371fdbc42d98217a3fb555895bb996704",
+   "size_mb": 133.9,
+   "entry_candidates": [
+    "train.py",
+    "utils/main.py"
+   ],
+   "epoch_loop": [
+    "config.py:61: self.epoch = -1"
+   ],
+   "save": [
+    "train.py:52: torch.save(local_network.state_dict(), f'{run_dir}/{\"best_model\" if is_pretrain else \"eval_model\"}.pt')"
+   ],
+   "select": [
+    "train.py:30: max_acc = 0",
+    "train.py:31: min_loss = 10000",
+    "train.py:51: if max_acc <= res['acc'] and min_loss >= res['loss']:",
+    "train.py:52: torch.save(local_network.state_dict(), f'{run_dir}/{\"best_model\" if is_pretrain else \"eval_model\"}.pt')",
+    "train.py:53: max_acc = res['acc']",
+    "train.py:54: min_loss = res['loss']",
+    "train.py:58: print(f\"{'PreTrain' if is_pretrain else 'FineTune'} Train Max Accuracy: {max_acc} Train Min Loss: {min_loss}\")",
+    "train.py:80: network.load_state_dict(torch.load(f'{run_dir}/best_model.pt'))",
+    "config.py:11: \"path\": './result/MLDSO/best_model.pt',  # path",
+    "config.py:20: \"path\": './result/MLDSO/best_model.pt',"
+   ],
+   "seed": [
+    "utils/main.py:26: torch.manual_seed(seed)",
+    "utils/main.py:27: np.random.seed(seed)",
+    "utils/main.py:28: random.seed(seed)",
+    "utils/main.py:29: torch.cuda.manual_seed_all(seed)"
+   ]
+  },
+  {
+   "attempt_order": "21",
+   "own_paper_doi": "10.1016/j.ymssp.2024.111750",
+   "full_name": "asdvfghg/ClassBD",
+   "commit": "08530497e388ed691936f15d6c55267f277ed270",
+   "framework": "pytorch",
+   "public_data": "PU; JNU",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/21_asdvfghg__ClassBD",
+   "head": "08530497e388ed691936f15d6c55267f277ed270",
+   "size_mb": 79.5,
+   "entry_candidates": [
+    "train_local.py",
+    "train_wandb.py"
+   ],
+   "epoch_loop": [
+    "train_wandb.py:237: config.epochs = 100  # number of epochs to train (default: 10)",
+    "utils/JNUProcessing.py:130: scalar = preprocessing.StandardScaler().fit(Train_X)",
+    "utils/PUProcessing.py:154: scalar = preprocessing.StandardScaler().fit(Train_X)"
+   ],
+   "save": [
+    "train_local.py:126: torch.save(net.state_dict(), f'Models/{config[\"dataset\"]}_best_checkpoint_{config[\"chosen_model\"]}.pth')",
+    "train_wandb.py:148: torch.save(net.state_dict(), f'Models/{config.path}_best_checkpoint_{config.chosen_model}.pth')",
+    "train_wandb.py:150: # torch.save(net.state_dict(), f'Models/{config.path}_best_checkpoint_{config.chosen_model}.pth')",
+    "utils/JNUProcessing.py:185: # torch.save(data, train_path + 'testdataset.pth')",
+    "utils/JNUProcessing.py:190: # torch.save(train_dataset, train_path + 'traindataset.pth')"
+   ],
+   "select": [
+    "train_local.py:62: max_acc = 0",
+    "train_local.py:121: if acc > max_acc:",
+    "train_local.py:122: max_acc = acc",
+    "train_wandb.py:80: max_acc = 0",
+    "train_wandb.py:143: if acc > max_acc:",
+    "train_wandb.py:144: max_acc = acc"
+   ],
+   "seed": [
+    "train_local.py:32: torch.manual_seed(seed)",
+    "train_local.py:33: torch.cuda.manual_seed(seed)",
+    "train_local.py:34: torch.cuda.manual_seed_all(seed)  # if you are using multi-GPU.",
+    "train_local.py:35: np.random.seed(seed)  # Numpy module.",
+    "train_local.py:36: random.seed(seed)  # Python random module.",
+    "train_wandb.py:33: torch.manual_seed(seed)",
+    "train_wandb.py:34: torch.cuda.manual_seed(seed)",
+    "train_wandb.py:35: torch.cuda.manual_seed_all(seed)  # if you are using multi-GPU.",
+    "train_wandb.py:36: np.random.seed(seed)  # Numpy module.",
+    "train_wandb.py:37: random.seed(seed)  # Python random module."
+   ]
+  },
+  {
+   "attempt_order": "22",
+   "own_paper_doi": "10.1016/j.knosys.2025.114944",
+   "full_name": "amstlldj/DLRSD-SMOTE",
+   "commit": "b9970548bac540122a5afb8481fe7721b27da23f",
+   "framework": "pytorch",
+   "public_data": "CWRU; SEU",
+   "status_note": "confirmed from dossier",
+   "status": "fetch_failed",
+   "error": "error: RPC failed; curl 56 GnuTLS recv error (-9): Error decoding the received TLS packet.\nerror: 160 bytes of body are still expected\nfetch-pack: unexpected disconnect while reading sideband packet\nfatal: early EOF\nfatal: unpack-objects failed"
+  },
+  {
+   "attempt_order": "23",
+   "own_paper_doi": "10.1109/tim.2024.3502884",
+   "full_name": "DABINB/CSST-Net",
+   "commit": "b445512383d3f511c02dae2a5a2756a82eb5c73b",
+   "framework": "pytorch",
+   "public_data": "HIT aero-engine inter-shaft bearing",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/23_DABINB__CSST-Net",
+   "head": "b445512383d3f511c02dae2a5a2756a82eb5c73b",
+   "size_mb": 29.6,
+   "entry_candidates": [
+    "CSST_Net/train.py"
+   ],
+   "epoch_loop": [
+    "CSST_Net/train.py:51: beat_epoch = 0",
+    "CSST_Net/train.py:62: for epoch in range(1,EPOCH+1):",
+    "CSST_Net/train.py:108: beat_epoch = epoch",
+    "CSST_Net/train.py:201: EPOCH = opt.epoch"
+   ],
+   "save": [
+    "CSST_Net/dataset.py:57: np.save(f'predata\\data_{SNR[j]}.npy', alldata)",
+    "CSST_Net/dataset.py:58: np.save(f'predata\\label_{SNR[j]}.npy', alllabel)",
+    "CSST_Net/process.py:31: np.save('Loss_Acc/Tr_loss.npy', Tr_loss)",
+    "CSST_Net/process.py:32: np.save('Loss_Acc/Te_loss.npy', Te_loss)",
+    "CSST_Net/process.py:33: np.save('Loss_Acc/Tr_acc.npy', Tr_acc)",
+    "CSST_Net/process.py:34: np.save('Loss_Acc/Te_acc.npy', Te_acc)",
+    "CSST_Net/train.py:107: best_model_weights = Model.state_dict()  # Data loading saves the weight of the model with the highest accuracy",
+    "CSST_Net/train.py:142: torch.save(best_model_weights, Data_path)"
+   ],
+   "select": [
+    "CSST_Net/train.py:48: best_accuracy = 0.0",
+    "CSST_Net/train.py:49: best_loss = 1",
+    "CSST_Net/train.py:50: best_model_weights = None",
+    "CSST_Net/train.py:104: if Te_acc >= best_accuracy and Te_loss.item() <= best_loss:",
+    "CSST_Net/train.py:105: best_accuracy = Te_acc",
+    "CSST_Net/train.py:106: best_loss = Te_loss.item()",
+    "CSST_Net/train.py:107: best_model_weights = Model.state_dict()  # Data loading saves the weight of the model with the highest accuracy",
+    "CSST_Net/train.py:142: torch.save(best_model_weights, Data_path)"
+   ],
+   "seed": []
+  },
+  {
+   "attempt_order": "24",
+   "own_paper_doi": "10.1109/mcte62505.2024.11117663",
+   "full_name": "Erikdai/Fault-Diagnosis-of-Aero-engine-Inter-shaft-Bearings",
+   "commit": "658c64286fdd547d577437f2ad5280585aa22e68",
+   "framework": "pytorch",
+   "public_data": "CWRU",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/24_Erikdai__Fault-Diagnosis-of-Aero-engine-Inter-shaft-Bearings",
+   "head": "658c64286fdd547d577437f2ad5280585aa22e68",
+   "size_mb": 31.0,
+   "entry_candidates": [],
+   "epoch_loop": [
+    "SEDSCN-TRANS.ipynb:621: \"    for epoch in range(epochs):\\n\",",
+    "SEDSCN-TRANS.ipynb:625: \"        loss_epoch = 0.\\n\",",
+    "SEDSCN-TRANS.ipynb:626: \"        correct_epoch = 0\\n\",",
+    "SEDSCN-TRANS.ipynb:681: \"epochs = 30\\n\","
+   ],
+   "save": [
+    "SEDSCN-TRANS.ipynb:666: \"    # torch.save(model, 'final_model_cnn_transformer_catt.pt')\\n\",",
+    "SEDSCN-TRANS.ipynb:668: \"    torch.save(best_model, 'best_model_cnn_transformer_catt3ORI.pt')\\n\","
+   ],
+   "select": [
+    "SEDSCN-TRANS.ipynb:593: \"best_accuracy : 1.0\\n\"",
+    "SEDSCN-TRANS.ipynb:612: \"    best_accuracy = 0.0\\n\",",
+    "SEDSCN-TRANS.ipynb:613: \"    best_model = model\\n\",",
+    "SEDSCN-TRANS.ipynb:658: \"            val_accuracy = correct_validate/val_size \\n\",",
+    "SEDSCN-TRANS.ipynb:659: \"            print(f'Epoch: {epoch+1:2} val_Loss:{loss_validate/val_size:10.8f},  validate_Acc:{val_accuracy:4.4f}')\\n\",",
+    "SEDSCN-TRANS.ipynb:661: \"            validate_acc.append(val_accuracy)\\n\",",
+    "SEDSCN-TRANS.ipynb:662: \"            if val_accuracy > best_accuracy:\\n\",",
+    "SEDSCN-TRANS.ipynb:663: \"                best_accuracy = val_accuracy\\n\",",
+    "SEDSCN-TRANS.ipynb:664: \"                best_model = model\\n\",",
+    "SEDSCN-TRANS.ipynb:668: \"    torch.save(best_model, 'best_model_cnn_transformer_catt3ORI.pt')\\n\",",
+    "SEDSCN-TRANS.ipynb:677: \"    print(\\\"best_accuracy :\\\", best_accuracy)\\n\",",
+    "SEDSCN-TRANS.ipynb:721: \"model = torch.load('best_model_cnn_transformer_catt3ORI.pt')\\n\","
+   ],
+   "seed": [
+    "SEDSCN-TRANS.ipynb:18: \"torch.manual_seed(100)  # fixed seed for reproducibility\\n\","
+   ]
+  },
+  {
+   "attempt_order": "25",
+   "own_paper_doi": "10.1016/j.measurement.2022.111536",
+   "full_name": "kavianpour/CARMA-DACA-fault-diagnosis",
+   "commit": "602f43e9bd0cf711211251902176b4b33ccd04b8",
+   "framework": "pytorch",
+   "public_data": "CWRU",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/25_kavianpour__CARMA-DACA-fault-diagnosis",
+   "head": "602f43e9bd0cf711211251902176b4b33ccd04b8",
+   "size_mb": 1.8,
+   "entry_candidates": [
+    "run_on_colab.ipynb",
+    "train.py"
+   ],
+   "epoch_loop": [
+    "confusion.py:78: args.epochs = args.epochs if args.epochs is not None else cfg.epochs",
+    "ablation.py:71: eps = 1.0 - LinearSVC(max_iter=5000).fit(X, dom).score(X, dom)",
+    "ablation.py:81: eps_c = 1.0 - LinearSVC(max_iter=5000).fit(Xc, dc).score(Xc, dc)",
+    "ablation.py:123: args.epochs = args.epochs if args.epochs is not None else cfg.epochs",
+    "train.py:101: for epoch in range(epochs):",
+    "train.py:172: if args.epochs is not None: cfg.epochs = args.epochs",
+    "train.py:173: epochs = cfg.epochs",
+    "tsne.py:91: args.epochs = args.epochs if args.epochs is not None else cfg.epochs"
+   ],
+   "save": [],
+   "select": [
+    "train.py:87: \"\"\"Train one model; return (model, loaders, device, final_acc, best_acc).\"\"\"",
+    "train.py:100: iter_num, best_acc = 0, 0.0",
+    "train.py:139: best_acc = max(best_acc, acc)",
+    "train.py:141: print(f\"  epoch {epoch + 1:3d}/{epochs}  target_acc={acc:6.2f}  best={best_acc:6.2f}\")",
+    "train.py:144: return model, loaders, device, final_acc, best_acc"
+   ],
+   "seed": [
+    "train.py:42: def set_seed(seed):",
+    "train.py:43: np.random.seed(seed)",
+    "train.py:44: torch.manual_seed(seed)",
+    "train.py:45: torch.cuda.manual_seed_all(seed)",
+    "train.py:89: set_seed(seed)"
+   ]
+  },
+  {
+   "attempt_order": "26",
+   "own_paper_doi": "10.1016/j.ymssp.2026.114640",
+   "full_name": "gama-ufsc/bearing-data-leakage",
+   "commit": "4c9fd8cb3cf9d5aa4ef2b653cb314a0727e12f3d",
+   "framework": "pytorch",
+   "public_data": "CWRU; PU; Ottawa; HUST",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/26_gama-ufsc__bearing-data-leakage",
+   "head": "4c9fd8cb3cf9d5aa4ef2b653cb314a0727e12f3d",
+   "size_mb": 48.8,
+   "entry_candidates": [
+    "src/train.py"
+   ],
+   "epoch_loop": [
+    "notebooks/ottawa/shallow_models.ipynb:1990: \"random_search.fit(X, y)\"",
+    "notebooks/ottawa/shallow_models.ipynb:2607: \"    model.fit(X_train, y_train)\\n\",",
+    "notebooks/ottawa/shallow_models.ipynb:4431: \"random_search.fit(X, y)\"",
+    "notebooks/ottawa/shallow_models.ipynb:4693: \"    model.fit(X_train, y_train)\\n\",",
+    "notebooks/toy_problem/bearings.ipynb:517: \"            model.fit(X_train, y_train)\\n\",",
+    "notebooks/toy_problem/bearings.ipynb:519: \"            model2.fit(X_train, y_train)\\n\",",
+    "notebooks/toy_problem/bearings.ipynb:623: \"            model.fit(X_train, y_train)\\n\",",
+    "notebooks/toy_problem/bearings.ipynb:625: \"            model2.fit(X_train, y_train)\\n\",",
+    "notebooks/paderborn/shallow_models.ipynb:2084: \"random_search.fit(X, y)\"",
+    "notebooks/paderborn/shallow_models.ipynb:2764: \"    model.fit(X_train, y_train)\\n\",",
+    "notebooks/paderborn/shallow_models.ipynb:4601: \"random_search.fit(X, y)\"",
+    "notebooks/paderborn/shallow_models.ipynb:5075: \"    model.fit(X_train, y_train)\\n\",",
+    "notebooks/cwru/diversity_1x2.ipynb:531: \"    model.fit(X_train, y_train)\\n\",",
+    "notebooks/cwru/diversity_1x2.ipynb:590: \"model.fit(np.array(x).reshape(-1, 1), y)\\n\",",
+    "notebooks/cwru/shallow_models.ipynb:2523: \"random_search.fit(X, y)\"",
+    "notebooks/cwru/shallow_models.ipynb:3169: \"    model.fit(X_train, y_train)\\n\",",
+    "notebooks/cwru/shallow_models.ipynb:5259: \"random_search.fit(X, y)\"",
+    "notebooks/cwru/shallow_models.ipynb:5554: \"    model.fit(X_train, y_train)\\n\",",
+    "src/models/modelmodule.py:49: self.pretrain_epochs = pretrain_epochs",
+    "src/models/modelmodule.py:130: self.log(f\"{stage}/lr\", current_lr, on_epoch=True, prog_bar=False)",
+    "src/models/modelmodule.py:132: self.log(f\"{stage}/loss\", loss, on_step=True, on_epoch=True, prog_bar=True)",
+    "src/models/modelmodule.py:148: self.log(\"val/loss\", loss, on_step=True, on_epoch=True, prog_bar=True)",
+    "src/models/modelmodule.py:169: on_epoch=True,",
+    "src/models/modelmodule.py:341: on_epoch=True,",
+    "src/models/modelmodule.py:378: on_epoch=True,",
+    "src/models/modelmodule.py:383: f\"{stage}/{metric_name}\", metric, on_epoch=True, prog_bar=True",
+    "src/models/model_pipeline.py:50: model.fit(X_train, y_train)",
+    "src/models/model_pipeline.py:114: trainer.fit(modelmodule, train_dataloader, validation_dataloader)",
+    "src/models/model_pipeline.py:116: trainer.fit(modelmodule, train_dataloader)",
+    "src/models/components/callbacks/decay_lr.py:15: epoch = trainer.current_epoch",
+    "src/models/components/callbacks/warmup.py:6: self.warmup_epochs = warmup_epochs",
+    "src/models/components/callbacks/warmup.py:9: current_epoch = trainer.current_epoch",
+    "src/data/feature_engineering/wavelet_denoise.py:32: df = df.assign(denoised_signal=df[signal_column].apply(lambda x: denoiser.fit(x)))"
+   ],
+   "save": [
+    "notebooks/cwru/shallow_models.ipynb:3217: \"#np.save(\\\"data/saved_logits/cwru/preds.npy\\\", np.array(all_preds))\"",
+    "src/models/modelmodule.py:183: self.model.source_feature_extractor.state_dict()",
+    "src/models/modelmodule.py:202: torch.save(",
+    "src/models/modelmodule.py:235: torch.save(",
+    "src/models/components/callbacks/model_checkpoint.py:5: class CustomCheckpoint(L.pytorch.callbacks.ModelCheckpoint):"
+   ],
+   "select": [],
+   "seed": [
+    "notebooks/create_splits_for_all_datasets.ipynb:188: \"        random.seed(random_seed)\\n\",",
+    "notebooks/feature_visualizations.ipynb:184: \"np.random.seed(42)\\n\",",
+    "notebooks/paderborn/shallow_models.ipynb:60: \"        random.seed(random_seed)\\n\",",
+    "src/data/data_splits.py:314: #         random.seed(random_state)",
+    "src/data/data_splits.py:441: random.seed(random_state)",
+    "src/data/data_splits.py:619: random.seed(random_seed)",
+    "src/data/data_splits.py:973: random.seed(42)"
+   ]
+  },
+  {
+   "attempt_order": "27",
+   "own_paper_doi": "10.1007/s10845-020-01600-2",
+   "full_name": "Xiaohan-Chen/bear_fault_diagnosis",
+   "commit": "51f11ddedbce6bb86e163e88963faf3e92244fc8",
+   "framework": "pytorch",
+   "public_data": "CWRU",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/27_Xiaohan-Chen__bear_fault_diagnosis",
+   "head": "51f11ddedbce6bb86e163e88963faf3e92244fc8",
+   "size_mb": 0.2,
+   "entry_candidates": [],
+   "epoch_loop": [
+    "cnn_lstm_model.ipynb:1129: \"history = model.fit(x=X_train, y=y_train, batch_size = 100, epochs=400, \\n\",",
+    "cnn_lstm_model.ipynb:1131: \"                    shuffle=True, initial_epoch=0)\"",
+    "cnn_lstm_model.py:24: EPOCHS = 400",
+    "cnn_lstm_model.py:171: def train_model(model, train_loader, val_loader, epochs=EPOCHS, lr=LEARNING_RATE, device=DEVICE):",
+    "cnn_lstm_model.py:179: for epoch in range(epochs):",
+    "cnn_lstm_model.py:299: print(f\"\\nStart training (epochs={EPOCHS}, batch_size={BATCH_SIZE}, lr={LEARNING_RATE})...\")"
+   ],
+   "save": [
+    "cnn_lstm_model.ipynb:48: \"from keras.callbacks import ModelCheckpoint\"",
+    "cnn_lstm_model.py:306: torch.save(model.state_dict(), 'cnn_lstm_model.pth')"
+   ],
+   "select": [
+    "cnn_lstm_model.ipynb:302: \" - 6s - loss: 0.0898 - acc: 0.1542 - val_loss: 0.0890 - val_acc: 0.0861\\n\",",
+    "cnn_lstm_model.ipynb:304: \" - 2s - loss: 0.0857 - acc: 0.1202 - val_loss: 0.0839 - val_acc: 0.2014\\n\",",
+    "cnn_lstm_model.ipynb:306: \" - 2s - loss: 0.0803 - acc: 0.2226 - val_loss: 0.0806 - val_acc: 0.1903\\n\",",
+    "cnn_lstm_model.ipynb:308: \" - 2s - loss: 0.0779 - acc: 0.2470 - val_loss: 0.0767 - val_acc: 0.2806\\n\",",
+    "cnn_lstm_model.ipynb:310: \" - 2s - loss: 0.0735 - acc: 0.3107 - val_loss: 0.0749 - val_acc: 0.2667\\n\",",
+    "cnn_lstm_model.ipynb:312: \" - 2s - loss: 0.0716 - acc: 0.3226 - val_loss: 0.0768 - val_acc: 0.2750\\n\",",
+    "cnn_lstm_model.ipynb:314: \" - 2s - loss: 0.0712 - acc: 0.3643 - val_loss: 0.0706 - val_acc: 0.3431\\n\",",
+    "cnn_lstm_model.ipynb:316: \" - 2s - loss: 0.0672 - acc: 0.3929 - val_loss: 0.0683 - val_acc: 0.3569\\n\",",
+    "cnn_lstm_model.ipynb:318: \" - 2s - loss: 0.0654 - acc: 0.3976 - val_loss: 0.0668 - val_acc: 0.4736\\n\",",
+    "cnn_lstm_model.ipynb:320: \" - 2s - loss: 0.0639 - acc: 0.4185 - val_loss: 0.0680 - val_acc: 0.3764\\n\",",
+    "cnn_lstm_model.ipynb:322: \" - 2s - loss: 0.0671 - acc: 0.3976 - val_loss: 0.0678 - val_acc: 0.3833\\n\",",
+    "cnn_lstm_model.ipynb:324: \" - 2s - loss: 0.0624 - acc: 0.4512 - val_loss: 0.0636 - val_acc: 0.4444\\n\",",
+    "cnn_lstm_model.ipynb:326: \" - 2s - loss: 0.0594 - acc: 0.4923 - val_loss: 0.0616 - val_acc: 0.4472\\n\",",
+    "cnn_lstm_model.ipynb:328: \" - 2s - loss: 0.0572 - acc: 0.5298 - val_loss: 0.0580 - val_acc: 0.4750\\n\",",
+    "cnn_lstm_model.ipynb:330: \" - 2s - loss: 0.0548 - acc: 0.5464 - val_loss: 0.0559 - val_acc: 0.5292\\n\",",
+    "cnn_lstm_model.ipynb:332: \" - 2s - loss: 0.0524 - acc: 0.5815 - val_loss: 0.0528 - val_acc: 0.5556\\n\",",
+    "cnn_lstm_model.ipynb:334: \" - 2s - loss: 0.0505 - acc: 0.6071 - val_loss: 0.0518 - val_acc: 0.5806\\n\",",
+    "cnn_lstm_model.ipynb:336: \" - 2s - loss: 0.0516 - acc: 0.5762 - val_loss: 0.0511 - val_acc: 0.5736\\n\",",
+    "cnn_lstm_model.ipynb:338: \" - 2s - loss: 0.0476 - acc: 0.6202 - val_loss: 0.0494 - val_acc: 0.5833\\n\",",
+    "cnn_lstm_model.ipynb:340: \" - 2s - loss: 0.0482 - acc: 0.6185 - val_loss: 0.0489 - val_acc: 0.5861\\n\",",
+    "cnn_lstm_model.ipynb:342: \" - 2s - loss: 0.0462 - acc: 0.6310 - val_loss: 0.0482 - val_acc: 0.6028\\n\",",
+    "cnn_lstm_model.ipynb:344: \" - 2s - loss: 0.0454 - acc: 0.6375 - val_loss: 0.0471 - val_acc: 0.6167\\n\",",
+    "cnn_lstm_model.ipynb:346: \" - 2s - loss: 0.0444 - acc: 0.6435 - val_loss: 0.0482 - val_acc: 0.5847\\n\",",
+    "cnn_lstm_model.ipynb:348: \" - 2s - loss: 0.0441 - acc: 0.6482 - val_loss: 0.0460 - val_acc: 0.6125\\n\",",
+    "cnn_lstm_model.ipynb:350: \" - 2s - loss: 0.0436 - acc: 0.6500 - val_loss: 0.0479 - val_acc: 0.5986\\n\",",
+    "cnn_lstm_model.ipynb:352: \" - 2s - loss: 0.0449 - acc: 0.6369 - val_loss: 0.0468 - val_acc: 0.6000\\n\",",
+    "cnn_lstm_model.ipynb:354: \" - 2s - loss: 0.0431 - acc: 0.6601 - val_loss: 0.0487 - val_acc: 0.5806\\n\",",
+    "cnn_lstm_model.ipynb:356: \" - 2s - loss: 0.0429 - acc: 0.6571 - val_loss: 0.0456 - val_acc: 0.6333\\n\",",
+    "cnn_lstm_model.ipynb:358: \" - 2s - loss: 0.0417 - acc: 0.6768 - val_loss: 0.0452 - val_acc: 0.6236\\n\",",
+    "cnn_lstm_model.ipynb:360: \" - 2s - loss: 0.0410 - acc: 0.6833 - val_loss: 0.0454 - val_acc: 0.6417\\n\",",
+    "cnn_lstm_model.ipynb:362: \" - 2s - loss: 0.0404 - acc: 0.6935 - val_loss: 0.0456 - val_acc: 0.6292\\n\",",
+    "cnn_lstm_model.ipynb:364: \" - 2s - loss: 0.0402 - acc: 0.6970 - val_loss: 0.0445 - val_acc: 0.6417\\n\",",
+    "cnn_lstm_model.ipynb:366: \" - 2s - loss: 0.0394 - acc: 0.7107 - val_loss: 0.0458 - val_acc: 0.6167\\n\",",
+    "cnn_lstm_model.ipynb:368: \" - 2s - loss: 0.0393 - acc: 0.7077 - val_loss: 0.0435 - val_acc: 0.6528\\n\",",
+    "cnn_lstm_model.ipynb:370: \" - 2s - loss: 0.0378 - acc: 0.7113 - val_loss: 0.0448 - val_acc: 0.6389\\n\",",
+    "cnn_lstm_model.ipynb:372: \" - 2s - loss: 0.0398 - acc: 0.7048 - val_loss: 0.0639 - val_acc: 0.4875\\n\",",
+    "cnn_lstm_model.ipynb:374: \" - 2s - loss: 0.0483 - acc: 0.6530 - val_loss: 0.0405 - val_acc: 0.7014\\n\",",
+    "cnn_lstm_model.ipynb:376: \" - 2s - loss: 0.0360 - acc: 0.7470 - val_loss: 0.0355 - val_acc: 0.7500\\n\",",
+    "cnn_lstm_model.ipynb:378: \" - 2s - loss: 0.0323 - acc: 0.7780 - val_loss: 0.0382 - val_acc: 0.7486\\n\",",
+    "cnn_lstm_model.ipynb:380: \" - 2s - loss: 0.0326 - acc: 0.7810 - val_loss: 0.0381 - val_acc: 0.6944\\n\","
+   ],
+   "seed": []
+  },
+  {
+   "attempt_order": "28",
+   "own_paper_doi": "10.1007/978-3-031-76197-3_14",
+   "full_name": "giabao804/few-shot-structural-rep",
+   "commit": "094a9ec613b1eef7513f3841cda50992b60fee7b",
+   "framework": "pytorch",
+   "public_data": "CWRU",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/28_giabao804__few-shot-structural-rep",
+   "head": "094a9ec613b1eef7513f3841cda50992b60fee7b",
+   "size_mb": 0.5,
+   "entry_candidates": [
+    "train_1shot.py",
+    "train_5shot.py"
+   ],
+   "epoch_loop": [
+    "train_5shot.py:153: for epoch in range(1, num_epochs + 1):",
+    "train_5shot.py:232: num_epochs=args.num_epochs,",
+    "train_1shot.py:151: for epoch in range(1, num_epochs + 1):",
+    "train_1shot.py:327: num_epochs=args.num_epochs,"
+   ],
+   "save": [
+    "train_5shot.py:204: torch.save(net.state_dict(), best_model_path)",
+    "train_1shot.py:211: torch.save(net.state_dict(), best_model_path)"
+   ],
+   "select": [
+    "train_5shot.py:150: best_model_path = None",
+    "train_5shot.py:196: if epoch >= 2 and best_model_path:",
+    "train_5shot.py:197: if os.path.exists(best_model_path):",
+    "train_5shot.py:198: os.remove(best_model_path)",
+    "train_5shot.py:203: best_model_path = os.path.join(path_weight, model_name)",
+    "train_5shot.py:204: torch.save(net.state_dict(), best_model_path)",
+    "train_1shot.py:149: best_model_path = None",
+    "train_1shot.py:203: if epoch >= 2 and best_model_path:",
+    "train_1shot.py:204: if os.path.exists(best_model_path):",
+    "train_1shot.py:205: os.remove(best_model_path)",
+    "train_1shot.py:210: best_model_path = os.path.join(path_weight, model_name_updated)",
+    "train_1shot.py:211: torch.save(net.state_dict(), best_model_path)",
+    "train_1shot.py:216: return full_loss, full_metric, os.path.basename(best_model_path), pred_metric['pred_acc'], pred_metric['pred_f1'], pred_metric['pred_recall']",
+    "train_1shot.py:322: full_loss, full_metric, best_model_name, best_acc, best_f1, best_recall = train_and_test_model(",
+    "train_1shot.py:355: best_model_path = os.path.join(args.path_weights, best_model_name)",
+    "train_1shot.py:356: if not os.path.exists(best_model_path):",
+    "train_1shot.py:357: logging.error(f'Best model file {best_model_path} does not exist.')",
+    "train_1shot.py:360: net.load_state_dict(torch.load(best_model_path))",
+    "train_1shot.py:363: logging.info(f'Best model {best_model_name} loaded for validation.')",
+    "train_1shot.py:376: cfs_save_path = os.path.join(args.path_weights, f'cfs_{args.training_samples_CWRU}_{best_acc:.4f}.png')",
+    "train_1shot.py:379: tsne_save_path = os.path.join(args.path_weights, f'tsne_{args.training_samples_CWRU}_{best_acc:.4f}.png')"
+   ],
+   "seed": [
+    "function/function.py:12: random.seed(42)",
+    "function/function.py:13: np.random.seed(42)",
+    "function/function.py:14: torch.manual_seed(42)"
+   ]
+  },
+  {
+   "attempt_order": "29",
+   "own_paper_doi": "10.1109/tpami.2025.3588894",
+   "full_name": "asdvfghg/quadratic_efficiency",
+   "commit": "8a16d3bcf77b2083e8673a279b265ece9c274890",
+   "framework": "pytorch",
+   "public_data": "CWRU",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/29_asdvfghg__quadratic_efficiency",
+   "head": "8a16d3bcf77b2083e8673a279b265ece9c274890",
+   "size_mb": 42.7,
+   "entry_candidates": [
+    "bearing_experiment/train.py",
+    "bearing_experiment/utils/train_function.py",
+    "car_experiment/train.py",
+    "cell_experiment/main.py",
+    "synthetic_experiment/main.py",
+    "synthetic_experiment/train_function.py"
+   ],
+   "epoch_loop": [
+    "synthetic_experiment/main.py:222: epochs = 50",
+    "bearing_experiment/train.py:245: config.epochs = 50  # number of epochs to train (default: 10)",
+    "bearing_experiment/utils/Preprocess.py:82: Encoder.fit(Train_Y)",
+    "bearing_experiment/utils/Preprocess.py:89: scalar = preprocessing.StandardScaler().fit(Train_X)",
+    "car_experiment/train.py:91: experiment.config.update(dict(epochs=epochs, batch_size=batch_size, learning_rate=learning_rate,",
+    "car_experiment/train.py:133: for epoch in range(1, epochs+1):",
+    "car_experiment/train.py:266: epochs=args.epochs,",
+    "cell_experiment/main.py:214: num_epochs = args.epoch",
+    "cell_experiment/main.py:221: for epoch in range(num_epochs):"
+   ],
+   "save": [
+    "synthetic_experiment/main.py:103: torch.save(net.state_dict(), os.path.join(\"models\", \"checkpoint.pth\"))",
+    "bearing_experiment/train.py:179: torch.save(net.state_dict(), os.path.join(wandb.run.dir, \"checkpoint.pth\"))",
+    "bearing_experiment/train.py:180: wandb.save('*.pth')",
+    "car_experiment/evaluate.py:86: m_true.save(os.path.join(outfilepath, 'true_masks\\\\%d.png' % (i)))",
+    "car_experiment/evaluate.py:88: m_pred.save(os.path.join(outfilepath, 'pred_masks\\\\%d.png' % (i)))",
+    "car_experiment/evaluate.py:90: img.save(os.path.join(outfilepath, 'raw_image/%d.jpg' % (i)))",
+    "car_experiment/train.py:208: torch.save(net.state_dict(), os.path.join(dir_checkpoint, 'checkpoint_epoch{}.pth'.format(epoch)))",
+    "car_experiment/train.py:209: wandb.save('*.pth')",
+    "car_experiment/train.py:278: torch.save(net.state_dict(), 'INTERRUPTED.pth')",
+    "car_experiment/predict.py:128: #     result.save(out_filename)",
+    "cell_experiment/main.py:209: torch.save(model.state_dict(), r'./saved_model/'+str(args.arch)+'_'+str(args.batch_size)+'_'+str(args.dataset)+'_'+str(args.epoch)+'.pth')",
+    "cell_experiment/main.py:349: raw_img.save(os.path.join(dir, 'raw_img\\\\%s' % (pic_path[0].split('\\\\')[-1])))",
+    "cell_experiment/main.py:350: pred_mask.save(os.path.join(dir, 'pred_masks\\\\%s' % (mask_path[0].split('\\\\')[-1])))",
+    "cell_experiment/main.py:351: true_mask.save(os.path.join(dir, 'true_masks\\\\%s' % (mask_path[0].split('\\\\')[-1])))"
+   ],
+   "select": [
+    "synthetic_experiment/main.py:114: best_model_dict = torch.load(os.path.join(\"models\", 'checkpoint.pth'))",
+    "synthetic_experiment/main.py:115: net.load_state_dict(best_model_dict)",
+    "synthetic_experiment/main.py:155: best_model_dict = torch.load(os.path.join(\"models\", 'checkpoint.pth'))",
+    "synthetic_experiment/main.py:156: model.load_state_dict(best_model_dict)"
+   ],
+   "seed": [
+    "synthetic_experiment/main.py:137: torch.manual_seed(seed)",
+    "synthetic_experiment/main.py:138: torch.cuda.manual_seed(seed)",
+    "synthetic_experiment/main.py:139: torch.cuda.manual_seed_all(seed)  # if you are using multi-GPU.",
+    "synthetic_experiment/main.py:140: np.random.seed(seed)  # Numpy module.",
+    "synthetic_experiment/main.py:141: random.seed(seed)  # Python random module.",
+    "bearing_experiment/train.py:27: torch.manual_seed(seed)",
+    "bearing_experiment/train.py:28: torch.cuda.manual_seed(seed)",
+    "bearing_experiment/train.py:29: torch.cuda.manual_seed_all(seed)  # if you are using multi-GPU.",
+    "bearing_experiment/train.py:30: np.random.seed(seed)  # Numpy module.",
+    "bearing_experiment/train.py:31: random.seed(seed)  # Python random module.",
+    "car_experiment/train.py:82: train_set, val_set = random_split(dataset, [n_train, n_val], generator=torch.Generator().manual_seed(0))",
+    "car_experiment/predict.py:96: train_set, val_set = random_split(dataset, [n_train, n_val], generator=torch.Generator().manual_seed(0))",
+    "cell_experiment/main.py:169: train_set, val_set = random_split(dataset, [n_train, n_val], generator=torch.Generator().manual_seed(0))"
+   ]
+  },
+  {
+   "attempt_order": "30",
+   "own_paper_doi": "10.1038/s41598-026-61710-4",
+   "full_name": "zzzbbl/-HIT-CT-BiGRU-Fault-Diagnosis",
+   "commit": "767edb0d9298d5417cfed44b36793d8d4ec9c1f2",
+   "framework": "pytorch",
+   "public_data": "HIT",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/30_zzzbbl__-HIT-CT-BiGRU-Fault-Diagnosis",
+   "head": "767edb0d9298d5417cfed44b36793d8d4ec9c1f2",
+   "size_mb": 0.1,
+   "entry_candidates": [
+    "src/hit_ct_bigru/training.py",
+    "src/train.py"
+   ],
+   "epoch_loop": [
+    "src/prepare_hit_dataset.py:83: scaler.fit(x_train.transpose(0, 2, 1).reshape(-1, x_train.shape[1]))",
+    "src/train.py:54: epochs=int(train_cfg.get(\"epochs\", 50)),",
+    "src/train.py:55: min_epochs=int(train_cfg.get(\"min_epochs\", 0)),",
+    "src/hit_ct_bigru/training.py:66: best_epoch = 0",
+    "src/hit_ct_bigru/training.py:67: stale_epochs = 0",
+    "src/hit_ct_bigru/training.py:71: for epoch in range(1, epochs + 1):",
+    "src/hit_ct_bigru/training.py:84: best_epoch = epoch",
+    "src/hit_ct_bigru/training.py:85: stale_epochs = 0",
+    "src/hit_ct_bigru/plotting.py:14: epochs = [row[\"epoch\"] for row in history]"
+   ],
+   "save": [
+    "src/hit_ct_bigru/training.py:86: torch.save(model.state_dict(), output_dir / \"best_model.pth\")"
+   ],
+   "select": [
+    "src/train.py:56: early_stop_patience=train_cfg.get(\"early_stop_patience\"),",
+    "src/train.py:60: best_path = output_dir / \"best_model.pth\"",
+    "src/hit_ct_bigru/training.py:62: early_stop_patience: int | None = None,",
+    "src/hit_ct_bigru/training.py:65: best_acc = -1.0",
+    "src/hit_ct_bigru/training.py:66: best_epoch = 0",
+    "src/hit_ct_bigru/training.py:79: f\"val_loss={val_metrics['loss']:.6f} val_acc={val_metrics['accuracy']:.4f}\"",
+    "src/hit_ct_bigru/training.py:82: if val_metrics[\"accuracy\"] > best_acc:",
+    "src/hit_ct_bigru/training.py:83: best_acc = val_metrics[\"accuracy\"]",
+    "src/hit_ct_bigru/training.py:84: best_epoch = epoch",
+    "src/hit_ct_bigru/training.py:86: torch.save(model.state_dict(), output_dir / \"best_model.pth\")",
+    "src/hit_ct_bigru/training.py:90: if early_stop_patience and epoch >= min_epochs and stale_epochs >= early_stop_patience:",
+    "src/hit_ct_bigru/training.py:91: print(f\"Early stopping at epoch {epoch}; best epoch was {best_epoch}.\")",
+    "src/hit_ct_bigru/training.py:95: {\"best_val_accuracy\": best_acc, \"best_epoch\": best_epoch, \"seconds\": time.time() - start, \"history\": history},",
+    "src/hit_ct_bigru/plotting.py:18: val_acc = [row[\"val\"][\"accuracy\"] for row in history]",
+    "src/hit_ct_bigru/plotting.py:28: axes[1].plot(epochs, val_acc, label=\"Validation\")"
+   ],
+   "seed": [
+    "src/visualize_features.py:14: from hit_ct_bigru.utils import ensure_dir, get_device, set_seed",
+    "src/visualize_features.py:42: set_seed(int(cfg.get(\"seed\", 42)))",
+    "src/evaluate.py:12: from hit_ct_bigru.utils import ensure_dir, get_device, save_json, set_seed",
+    "src/evaluate.py:24: set_seed(int(cfg.get(\"seed\", 42)))",
+    "src/noise_robustness.py:12: from hit_ct_bigru.utils import ensure_dir, get_device, model_output, save_json, set_seed",
+    "src/noise_robustness.py:42: set_seed(int(cfg.get(\"seed\", 42)))",
+    "src/train.py:13: from hit_ct_bigru.utils import ensure_dir, get_device, save_json, set_seed",
+    "src/train.py:24: set_seed(int(cfg.get(\"seed\", 42)))",
+    "src/hit_ct_bigru/utils.py:12: def set_seed(seed: int = 42) -> None:",
+    "src/hit_ct_bigru/utils.py:13: random.seed(seed)",
+    "src/hit_ct_bigru/utils.py:14: np.random.seed(seed)",
+    "src/hit_ct_bigru/utils.py:15: torch.manual_seed(seed)",
+    "src/hit_ct_bigru/utils.py:17: torch.cuda.manual_seed_all(seed)"
+   ]
+  },
+  {
+   "attempt_order": "31",
+   "own_paper_doi": "10.3390/pr11051527",
+   "full_name": "Ye-0413/RollingBearingFaultDiagnosis",
+   "commit": "33faf40f0246947cd858bb0b6b660d2766cb4202",
+   "framework": "pytorch",
+   "public_data": "CWRU",
+   "status_note": "authorship of 10.3390/pr11051527 to verify at attempt; not author -> E1",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/31_Ye-0413__RollingBearingFaultDiagnosis",
+   "head": "33faf40f0246947cd858bb0b6b660d2766cb4202",
+   "size_mb": 787.9,
+   "entry_candidates": [
+    "tools/train.py",
+    "utils/train_utils.py"
+   ],
+   "epoch_loop": [
+    "tools/train.py:107: epoch             = 0,",
+    "tools/train.py:108: max_epochs       = data_cfg.get('train').get('epoches'),",
+    "tools/train.py:136: for epoch in range(runner.get('epoch'),runner.get('max_epochs')):",
+    "tools/vis_lr.py:71: def plot_curve(lr_list, args, iters_per_epoch, by_epoch=True):",
+    "tools/vis_lr.py:124: epoch             = 0,",
+    "tools/vis_lr.py:125: max_epochs       = data_cfg.get('train').get('epoches'),",
+    "tools/vis_lr.py:132: for epoch in range(data_cfg.get('train').get('epoches')):",
+    "tools/vis_lr.py:156: by_epoch = True",
+    "utils/history.py:13: self.losses_epoch = []",
+    "utils/history.py:14: self.acc_epoch = []",
+    "utils/history.py:31: acc_epoch = []",
+    "utils/history.py:44: total_epoch = range(1,len(meta['train_info']['train_loss'])+1)",
+    "core/optimizers/lr_update.py:14: warmup_by_epoch (bool): When warmup_by_epoch == True, warmup_iters",
+    "core/optimizers/lr_update.py:20: by_epoch=True,",
+    "core/optimizers/lr_update.py:24: warmup_by_epoch=False):",
+    "core/optimizers/lr_update.py:37: self.by_epoch = by_epoch",
+    "core/optimizers/lr_update.py:41: self.warmup_by_epoch = warmup_by_epoch",
+    "core/optimizers/lr_update.py:44: self.warmup_epochs = self.warmup_iters",
+    "core/optimizers/lr_update.py:47: self.warmup_epochs = None",
+    "core/optimizers/lr_update.py:103: if self.warmup_iters is None: # 即self.warmup_by_epoch为True，warmup_epochs = warmup_iters"
+   ],
+   "save": [
+    "utils/checkpoint.py:134: # below is the same as torch.nn.Module.state_dict()",
+    "utils/checkpoint.py:184: checkpoint['optimizer'] = optimizer.state_dict()",
+    "utils/checkpoint.py:188: checkpoint['optimizer'][name] = optim.state_dict()",
+    "utils/checkpoint.py:192: torch.save(checkpoint, filename)",
+    "Process Scripts/CWT.py:24: new_im.save('data_2.bmp')"
+   ],
+   "select": [
+    "tools/train.py:111: best_val_acc     = float(0),",
+    "tools/train.py:113: best_val_weight   = '',",
+    "tools/train.py:119: val_acc = [])",
+    "utils/train_utils.py:162: runner['best_val_weight'] = checkpoint['meta']['best_val_weight']",
+    "utils/train_utils.py:164: runner['best_val_acc'] = checkpoint['meta']['best_val_acc']",
+    "utils/train_utils.py:253: meta['train_info']['val_acc'].append(eval_results)",
+    "utils/train_utils.py:267: if eval_results.get('accuracy_top-1') > runner.get('best_val_acc'):",
+    "utils/train_utils.py:268: runner['best_val_acc'] = eval_results.get('accuracy_top-1')",
+    "utils/train_utils.py:269: meta['best_val_acc'] = runner['best_val_acc']",
+    "utils/train_utils.py:270: if epoch > 0 and os.path.isfile(runner['best_val_weight']):",
+    "utils/train_utils.py:271: os.remove(runner['best_val_weight'])",
+    "utils/train_utils.py:272: runner['best_val_weight'] = os.path.join(meta['save_dir'],'Val_Epoch{:03}-Acc{:.3f}.pth'.format(epoch+1,eval_results.get('accuracy_top-1')))",
+    "utils/train_utils.py:273: meta['best_val_weight'] = runner['best_val_weight']",
+    "utils/train_utils.py:274: save_checkpoint(model,runner.get('best_val_weight'),runner.get('optimizer'),meta)",
+    "utils/history.py:36: temp_data = [i+1, meta['train_info']['train_loss'][i], meta['train_info']['val_acc'][i].get('accuracy_top-1'),mean(meta['train_info']['val_acc'][i].get('precisi",
+    "utils/history.py:37: acc_epoch.append(meta['train_info']['val_acc'][i].get('accuracy_top-1'))"
+   ],
+   "seed": [
+    "tools/split_data.py:21: random.seed(0)",
+    "utils/train_utils.py:61: random.seed(seed)",
+    "utils/train_utils.py:62: np.random.seed(seed)",
+    "utils/train_utils.py:63: torch.manual_seed(seed)",
+    "utils/train_utils.py:64: torch.cuda.manual_seed_all(seed)"
+   ]
+  },
+  {
+   "attempt_order": "32",
+   "own_paper_doi": "10.1109/tetci.2026.3654383",
+   "full_name": "Xiaohan-Chen/CoWS",
+   "commit": "63faaf52de990f481c7844cc13302e42b0beb167",
+   "framework": "pytorch",
+   "public_data": "HUST; XJTU-SY; HIT",
+   "status_note": "confirmed from dossier",
+   "status": "ok",
+   "path": "/home/jeffwork/audit_ext/main_objects/32_Xiaohan-Chen__CoWS",
+   "head": "63faaf52de990f481c7844cc13302e42b0beb167",
+   "size_mb": 178.9,
+   "entry_candidates": [
+    "Configs/train.py"
+   ],
+   "epoch_loop": [
+    "CoWS.py:111: for epoch in range(args.max_epochs):",
+    "Evaluation.py:123: for epoch in range(args.max_epochs):",
+    "Transfer.py:119: for epoch in range(args.max_epochs):"
+   ],
+   "save": [
+    "Utils/tools.py:76: torch.save(model.state_dict(), path)"
+   ],
+   "select": [
+    "CoWS.py:109: early_stopping = tools.EarlyStopping(args.patience)",
+    "CoWS.py:121: early_stopping(train_loss, model.backbone_wave, path)",
+    "CoWS.py:122: if early_stopping.early_stop:",
+    "Evaluation.py:122: best_acc = 0.0",
+    "Evaluation.py:125: val_acc, val_loss = evaluate(model, val_loader, criterion, device)",
+    "Evaluation.py:129: if val_acc >= best_acc:",
+    "Evaluation.py:130: best_acc = val_acc",
+    "Evaluation.py:135: f\"train_loss: {train_loss:.4f}, val_acc: {val_acc:6.2f}%, val_loss: {val_loss:.4f}\")",
+    "Transfer.py:118: best_acc = 0.0",
+    "Transfer.py:121: val_acc, val_loss = evaluate(model, val_loader, criterion, device)",
+    "Transfer.py:125: if val_acc >= best_acc:",
+    "Transfer.py:126: best_acc = val_acc",
+    "Transfer.py:131: f\"train_loss: {train_loss:.4f}, val_acc: {val_acc:6.2f}%, val_loss: {val_loss:.4f}\")",
+    "Utils/tools.py:48: class EarlyStopping:",
+    "Utils/tools.py:54: self.early_stop = False",
+    "Utils/tools.py:65: logging.info(f'EarlyStopping counter: {self.counter} out of {self.patience}')",
+    "Utils/tools.py:67: self.early_stop = True"
+   ],
+   "seed": []
+  }
+ ]
+}
