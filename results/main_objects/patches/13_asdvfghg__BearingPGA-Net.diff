@@ -1,0 +1,186 @@
+diff --git a/audit_run13.py b/audit_run13.py
+new file mode 100644
+index 0000000..ab66766
+--- /dev/null
++++ b/audit_run13.py
+@@ -0,0 +1,96 @@
++"""[audit] Driver for object 13 (registry: results/main_objects/registry/13_*.md).
++Runs the authors' main(config) of train_dkd.py / train_single.py with their __main__ defaults (wandb offline),
++seed from 42..51, snr -6, data 0HP. Per-epoch hook records the authors' validation acc/loss and, isolated,
++test acc/loss/macro-F1 on the same 10 test samplings that inference10 uses (seeds seed-5 .. seed+4).
++Run with cwd = a work dir containing a 'data' symlink to the repo's data/. Needs PYTHONPATH=~/audit_cns/code,
++AUDIT_RECORD_DIR, WANDB_MODE=offline."""
++import argparse, json, math, os, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, REPO)
++import numpy as np, torch, wandb
++from sklearn.metrics import f1_score
++from utils.Preprocess import prepro
++from audit.main.epoch_record import Recorder
++from audit.torch_utils import isolate
++import train_dkd, train_single
++
++p = argparse.ArgumentParser()
++p.add_argument("--groups", default="dkd,single")
++p.add_argument("--seeds", default="42-51")
++p.add_argument("--epochs", type=int, default=75)
++a = p.parse_args()
++lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds),) * 2
++dev = torch.device("cuda")
++GROUP = {"dkd": ("BearingPGA-Net (DKD)|CWRU-0HP -6dB", train_dkd), "single": ("Student w/o KD|CWRU-0HP -6dB", train_single)}
++
++
++def defaults(cfg, g, seed):
++    cfg.no_cuda = False; cfg.log_interval = 200; cfg.seed = seed; cfg.batch_size = 64; cfg.epochs = a.epochs
++    cfg.add_noise = True; cfg.snr = -6; cfg.chosen_data = "0HP"
++    if g == "dkd":   # train_dkd.py __main__
++        cfg.tlr = 0.1; cfg.slr = 0.1; cfg.alpha = 0.2; cfg.beta = 5; cfg.gammar = 1; cfg.warmup = 5; cfg.temperature = 2.5
++        cfg.chosen_model = "DKD"
++    else:            # train_single.py __main__ (snr set to -6, see registry); chosen_model is read by its inference10 but never set
++        cfg.lr = 0.5; cfg.chosen_model = "SCNN"
++
++
++def test_sets(mod, seed):
++    sets = []
++    with isolate([], dev):
++        for sd in range(seed - 5, seed + 5):     # exactly as inference10
++            mod.random_seed(sd)
++            X, Y = prepro(d_path=os.path.join("data", "0HP"), length=2048, number=250, normal=True, enc=True, enc_step=28,
++                          snr=-6, property="Test", noise=True)
++            sets.append((torch.tensor(np.asarray(X)[:, None, :], dtype=torch.float), torch.tensor(np.asarray(Y)).long().view(-1)))
++    return sets
++
++
++@torch.no_grad()
++def eval_sets(model, sets, bs=500):
++    accs, losses, f1s = [], [], []
++    for X, Y in sets:
++        out = torch.cat([model(X[i:i + bs].to(dev)) for i in range(0, len(X), bs)]).cpu()
++        pred = out.argmax(1)
++        accs.append((pred == Y).float().mean().item())
++        losses.append(torch.nn.functional.cross_entropy(out, Y).item())
++        f1s.append(f1_score(Y.numpy(), pred.numpy(), average="macro"))
++    return float(np.mean(accs)), float(np.mean(losses)), float(np.mean(f1s))
++
++
++for g in a.groups.split(","):
++    name, mod = GROUP[g]
++    for s in range(lo, hi + 1):
++        run = wandb.init(project="audit13", mode="offline", reinit=True, dir=os.getcwd())
++        cfg = wandb.config
++        defaults(cfg, g, s)
++        rec = Recorder(obj="13", group=name, seed=s, select_split="val", report_split="test",
++                       note=f"epochs={a.epochs}; test = mean over the 10 inference10 samplings; acc/loss there, macro-F1 in test_f1")
++        rec.d["test_f1"] = {}
++        sets = test_sets(mod, s)
++
++        def hook(epoch, model, val_acc, val_loss):
++            rec.log(epoch, "val", val_acc, val_loss)
++            with isolate([model], dev):
++                model.eval()
++                acc, loss, f1 = eval_sets(model, sets)
++            rec.log(epoch, "test", acc, loss)
++            rec.d["test_f1"][str(epoch)] = f1
++            if epoch == a.epochs:   # authors' reported epoch: also evaluate at batch size 1, as their inference() does
++                with isolate([model], dev):
++                    model.eval()
++                    rec.d["final_bs1"] = dict(zip(("acc", "loss", "f1"), eval_sets(model, sets, bs=1)))
++
++        mod.AUDIT_HOOK = hook
++        t0 = time.time()
++        reported_f1 = mod.main(cfg)
++        mod.AUDIT_HOOK = None
++        rec.author_pick(a.epochs)   # net_best is a reference to the trained model -> last epoch
++        rec.finish(None)            # author reports macro-F1, not accuracy
++        last_f1 = rec.d["final_bs1"]["f1"]
++        rec.d["author_reported_f1"] = reported_f1
++        rec.d["author_check_f1"] = dict(recorded=last_f1, reported=reported_f1, abs_diff=abs(last_f1 - reported_f1),
++                                        matches=math.isclose(last_f1, reported_f1, abs_tol=1e-6))
++        rec._dump()
++        run.finish()
++        print(json.dumps(dict(group=g, seed=s, seconds=round(time.time() - t0, 1), reported_f1=reported_f1,
++                              check_f1=rec.d["author_check_f1"], last_test_acc=rec.d["epochs"][str(a.epochs)]["test"]["acc"])), flush=True)
+diff --git a/train_dkd.py b/train_dkd.py
+index 16fd39b..21bfe88 100644
+--- a/train_dkd.py
++++ b/train_dkd.py
+@@ -23,6 +23,7 @@ from utils.loss_fun import *
+ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+ use_gpu = torch.cuda.is_available()
+ print(torch.cuda.is_available())
++AUDIT_HOOK = None  # [audit] called after each student validation: (epoch, model, val_acc, val_loss)
+ 
+ 
+ 
+@@ -231,6 +232,8 @@ def train_student(config, dataloader, tnet_best):
+                     acc_max = acc
+                     net_best = student_model
+             print('%s ACC:%.4f' % (phase, acc))
++            if phase == 'validation' and AUDIT_HOOK is not None:  # [audit]
++                AUDIT_HOOK(e + 1, student_model, float(acc), float(loss_total))
+ 
+ 
+     return net_best
+@@ -295,6 +298,7 @@ def inference10(net0,config):
+                                 property='Test',
+                                 noise=config.add_noise
+                                 )
++        test_X =  test_X[:, np.newaxis, :]  # [audit] one-line fix copied from the authors' train_single.py (rule 5d67d8d)
+         test_dataset = CustomTensorDataset(torch.tensor(test_X, dtype=torch.float), torch.tensor(test_Y))
+         test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, drop_last=False)
+         f1, FPR, recall, precision = inference(test_loader, net0)
+@@ -321,6 +325,7 @@ def inference10(net0,config):
+     torch.save(net0.state_dict(), file)
+     wandb.save('*.pth')
+     print('model saved')
++    return float(np.mean(test_f1))  # [audit] author's reported value
+ 
+ 
+ def main(config):
+@@ -359,7 +364,7 @@ def main(config):
+     # tnet.load_state_dict(ckpt)
+     # Stage 2: Training Student model
+     snet = train_student(config, data_loaders, tnet)
+-    inference10(snet,config)
++    return inference10(snet,config)  # [audit] return author's reported value
+ 
+ 
+ 
+diff --git a/train_single.py b/train_single.py
+index d68e0a6..38bee4a 100644
+--- a/train_single.py
++++ b/train_single.py
+@@ -23,6 +23,7 @@ from utils.loss_fun import *
+ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+ use_gpu = torch.cuda.is_available()
+ print(torch.cuda.is_available())
++AUDIT_HOOK = None  # [audit] called after each validation: (epoch, model, val_acc, val_loss)
+ 
+ 
+ 
+@@ -120,6 +121,8 @@ def train(config, dataloader):
+                     acc_max = acc
+                     tnet_best = model
+             print('%s ACC:%.4f' % (phase, acc))
++            if phase == 'validation' and AUDIT_HOOK is not None:  # [audit]
++                AUDIT_HOOK(e + 1, model, float(acc), float(loss_total))
+     if not os.path.exists('Pth'):
+         os.mkdir('Pth')
+     return tnet_best
+@@ -210,6 +213,7 @@ def inference10(net0,config):
+     torch.save(net0.state_dict(), file)
+     wandb.save('*.pth')
+     print('model saved')
++    return float(np.mean(test_f1))  # [audit] author's reported value
+ 
+ 
+ def main(config):
+@@ -244,7 +248,7 @@ def main(config):
+     }
+ 
+     snet = train(config, data_loaders)
+-    inference10(snet,config)
++    return inference10(snet,config)  # [audit] return author's reported value
+ 
+ 
+ 
