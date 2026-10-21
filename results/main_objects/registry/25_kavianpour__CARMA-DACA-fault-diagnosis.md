@@ -11,9 +11,11 @@
 
 - 论文全文不可得，**论文表格数值无法登记**。README “Headline results” 以任务 **D1→D2、10% 目标域标签** 的混淆矩阵为头条（1170 个样本中 1164 个正确），并称闭合工况任务（C1→C2、D1→D2）10% 标签时 CARMA-DACA 达 99.78%。S6 以 README 数值作参考对照。
 
-## 方法组（9 个）
+## 方法组（4 个；2026-10-21 更正登记，任何正式运行之前）
 
-- 论文 Table 3 / Fig. 7 的 9 个方法在仓库中全部实现为同一骨干上的开关（`methods.py`，顺序同 `ALL_METHODS`）：WDCNN、CARMA、DTLCNN、DSACNN、HDAN、DAGCN、CARMA-M、CARMA-C、CARMA-DACA（提出的方法）。9 个方法组，组名 `<方法>|CWRU D1->D2 10%`。
+- 论文 Table 3 / Fig. 7 的 9 个方法在仓库中全部实现为同一骨干上的开关（`methods.py`）：WDCNN、CARMA、DTLCNN、DSACNN、HDAN、DAGCN、CARMA-M、CARMA-C、CARMA-DACA（提出的方法）。
+- 预注册 §3.1 规定每个对象最多 4 个方法组（超过时取论文正文强调的 4 个，跑之前写入登记）。本登记初版（d05e088）误列 9 组，现更正为 **4 组**（jeff 2026-10-21 裁定）：**CARMA-DACA**（提出的方法）、**CARMA-M** 与 **CARMA-C**（README 强调的类对齐消融：MK-MMD、CORAL）、**WDCNN**（README 对照的普通 CNN）。组名 `<方法>|CWRU D1->D2 10%`。
+- 更正前只做过冒烟（9 组 × 种子 0，2 / 6 / 20 轮，记录在 `main_records_smoke`），没有正式运行。
 
 ## 配置（作者代码默认，`config.py`）
 
