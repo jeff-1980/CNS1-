@@ -16,7 +16,7 @@ QUERY = '"bearing fault diagnosis" in:name,description,readme'
 DOI_RE = re.compile(r"\b(10\.\d{4,9}/[^\s\"'<>\]\)\},;]+)", re.I)
 
 
-def gh(path, params=None, retries=4):
+def gh(path, params=None, retries=8):
     cmd = ["gh", "api", "-X", "GET", path, "-H", "Accept: application/vnd.github+json"]
     for k, v in (params or {}).items(): cmd += ["-f", f"{k}={v}"]
     i = limited = 0
@@ -27,7 +27,7 @@ def gh(path, params=None, retries=4):
         if ("rate limit" in p.stderr.lower() or "403" in p.stderr) and limited < 90:   # 限流等待不算重试次数，最多约 90 分钟
             limited += 1; wait = 60
         else:
-            i += 1; wait = 2 ** i
+            i += 1; wait = min(2 ** i, 120)   # 网络 / TLS 超时：最多 8 次，等待封顶 2 分钟
         print(f"gh error ({p.stderr.strip()[:120]}); retry in {wait}s", file=sys.stderr); time.sleep(wait)
     raise RuntimeError(f"gh api {path} failed: {p.stderr.strip()[:300]}")
 
@@ -79,19 +79,23 @@ def search(out):
 
 def screen(out):
     raw = json.load(open(os.path.join(out, "search_raw.json")))
-    keep = []
-    for r in raw["repos"]:
+    part = os.path.join(out, "screen_doi.partial.json")   # 断点：中途失败后重跑从这里接着筛
+    done = json.load(open(part)) if os.path.exists(part) else {}
+    for n, r in enumerate(raw["repos"]):
+        if r["full_name"] in done: continue
         rd = gh(f"repos/{r['full_name']}/readme")
         text = base64.b64decode(rd["content"]).decode("utf-8", "replace") if rd and rd.get("content") else ""
         text += "\n" + (r.get("description") or "") + "\n" + (r.get("homepage") or "")
-        dois = sorted({d.rstrip(".").lower() for d in DOI_RE.findall(text)})
-        if dois: keep.append(dict(r, dois=dois))
+        done[r["full_name"]] = sorted({d.rstrip(".").lower() for d in DOI_RE.findall(text)})
+        if n % 50 == 0: json.dump(done, open(part, "w")); print(f"screened {len(done)}/{len(raw['repos'])}", flush=True)
+    keep = [dict(r, dois=done[r["full_name"]]) for r in raw["repos"] if done[r["full_name"]]]
     json.dump(dict(meta=dict(raw["meta"], screened_at_utc=dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
                              n_screened=len(raw["repos"]), n_with_doi=len(keep)), repos=keep),
               open(os.path.join(out, "screen_doi.json"), "w"), indent=1, ensure_ascii=False)
     with open(os.path.join(out, "screen_doi.csv"), "w", newline="") as f:
         w = csv.writer(f); w.writerow(["full_name", "head_commit", "stars", "dois"])
         for r in keep: w.writerow([r["full_name"], r["head_commit"], r["stars"], " ".join(r["dois"])])
+    if os.path.exists(part): os.remove(part)
     print(f"screened {len(raw['repos'])}, with DOI {len(keep)}")
 
 
