@@ -1,0 +1,89 @@
+diff --git a/audit_run15.py b/audit_run15.py
+new file mode 100644
+index 0000000..f155447
+--- /dev/null
++++ b/audit_run15.py
+@@ -0,0 +1,27 @@
++"""[audit] Driver for object 15 (registry: results/main_objects/registry/15_*.md).
++Calls the authors' train.main(snr=-10, ..., 'white', device) as their __main__ does, 10 unseeded repeats.
++Run with cwd = a work dir containing AWTL-DDFN1/N15_M07_F10 (symlink). Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR."""
++import argparse, json, os, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, REPO)
++import torch
++import train as T
++from audit.main.epoch_record import Recorder
++
++p = argparse.ArgumentParser()
++p.add_argument("--repeats", default="0-9")
++p.add_argument("--epochs", type=int, default=None)
++a = p.parse_args()
++lo, hi = map(int, a.repeats.split("-")) if "-" in a.repeats else (int(a.repeats),) * 2
++dev = torch.device("cuda")
++for r in range(lo, hi + 1):
++    rec = Recorder(obj="15", group="AWT-DDFN|PU N15_M07_F10 white -10dB", seed=r, select_split="val", report_split="test",
++                   note=f"unseeded repeat {r}")
++    T.AUDIT_REC = rec
++    if a.epochs:   # smoke only: shorten the authors' 300 epochs via the config dict literal is not possible -> patch range
++        T.AUDIT_EPOCHS = a.epochs
++    t0 = time.time()
++    T.main(-10, f"AWTL-DDFN1/result/white/-10/{r}/", "white", dev)
++    T.AUDIT_REC = None
++    print(json.dumps(dict(repeat=r, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                          check=rec.d.get("author_check"), f1=rec.d.get("author_reported_f1"))), flush=True)
+diff --git a/train.py b/train.py
+index 4de17e6..5a18083 100644
+--- a/train.py
++++ b/train.py
+@@ -28,6 +28,10 @@ class Logger(object):
+         self.terminal.flush()
+         self.log.flush() 
+ 
++AUDIT_REC = None  # [audit] epoch_record.Recorder set by the audit driver
++AUDIT_EPOCHS = None  # [audit] smoke test only; None keeps the authors' 300
++
++
+ def main(snr,save_path,noise_type,device):
+     fig_path=save_path+'fig/'
+     if not os.path.exists(fig_path):
+@@ -58,7 +62,7 @@ def main(snr,save_path,noise_type,device):
+     config = {
+         'batch_size': 128,
+         'lr': 3e-4,
+-        'epochs': 300,
++        'epochs': AUDIT_EPOCHS or 300,  # [audit] smoke override only
+     }
+ 
+     train_dataset = VibrationDataset(train_x,train_y)
+@@ -120,14 +124,21 @@ def main(snr,save_path,noise_type,device):
+         train()
+         valid_labels,valid_predicted,valid_loss = evaluate(valid_loader,valid_dataset)
+         valid_accuracy=accuracy_score(valid_labels,valid_predicted)
++        _audit_saved = False
+         if (len(valid_accuracies) == 0 or valid_accuracy>=max(valid_accuracies)):
+             best_checkpoint = {
+                     'epoch': epoch,
+                     'model_state_dict': model.state_dict(),
+             }
+             torch.save(best_checkpoint, save_model_path+'model_best_weights.pth')
++            _audit_saved = True
+         test_labels,test_predicted,test_loss = evaluate(test_loader,test_dataset)
+         test_accuracy=accuracy_score(test_labels,test_predicted)
++        if AUDIT_REC is not None:  # [audit] the authors' own per-epoch validation and test numbers
++            AUDIT_REC.log(epoch + 1, "val", float(valid_accuracy), float(valid_loss))
++            AUDIT_REC.log(epoch + 1, "test", float(test_accuracy), float(test_loss))
++            if _audit_saved:
++                AUDIT_REC.author_pick(epoch + 1)
+         valid_accuracies.append(valid_accuracy)
+         valid_losses.append(valid_loss)
+         labels,predicted,train_loss = evaluate(train_loader,train_dataset)
+@@ -147,6 +158,9 @@ def main(snr,save_path,noise_type,device):
+     precision,recall,f1,_=precision_recall_fscore_support(test_labels,test_predicted,average='macro')
+     print("best_model test result:")
+     print(f"Acc: {accuracy:.2%},Pre: {precision:.2%},Rec: {recall:.2%},F1: {f1:.2%}")
++    if AUDIT_REC is not None:  # [audit] authors' reported best-model test accuracy
++        AUDIT_REC.d["author_reported_f1"] = float(f1)
++        AUDIT_REC.finish(float(accuracy))
+     dataload.plot_confusion_matrix(test_labels,test_predicted,save_path=fig_path+'con_best.png')
+     print(f"best model epoch:{best_checkpoint['epoch']}")
+     last_checkpoint = torch.load(save_model_path+'model_last_weights.pth')
