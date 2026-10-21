@@ -36,12 +36,13 @@ def run_query(q):
     items, page = [], 1
     first = gh("search/repositories", dict(q=q, per_page=100, page=1, sort="updated", order="desc"))
     total = first["total_count"]; items += first["items"]
-    while len(items) < min(total, 1000) and first["items"]:
+    # GitHub 只给前 1000 条（10 页 × 100）；实际返回常少于 total_count，所以按页数而不是按条数停
+    while page < 10 and len(items) < total and first["items"]:
         page += 1; time.sleep(2.5)   # search API：认证后 30 次/分钟
         r = gh("search/repositories", dict(q=q, per_page=100, page=page, sort="updated", order="desc"))
         if not r["items"]: break
         items += r["items"]
-    return total, items, bool(first.get("incomplete_results"))
+    return total, items, bool(first.get("incomplete_results")) or len(items) < min(total, 1000)
 
 
 def search(out):
