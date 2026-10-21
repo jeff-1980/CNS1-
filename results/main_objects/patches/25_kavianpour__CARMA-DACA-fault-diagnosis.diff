@@ -1,0 +1,61 @@
+# [audit] object 25: author source unmodified; driver below
+"""[audit] Driver for object 25 (registry: results/main_objects/registry/25_*.md).
+Calls the authors' train.fit_model(cfg, DEEP_METHODS[m], 'D1', 'D2', epochs, seed) with config defaults
+(label 0.10), seeds 0..9 as their run_method does (seed0 + r). train.evaluate is wrapped: the authors' accuracy is
+kept, and the cross-entropy on the same target_test set is added inside isolate. Calls 1..E = epochs, call E+1 is the
+authors' final_acc. No source change. Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR."""
+import argparse, json, math, os, sys, time
+REPO = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, REPO)
+import torch
+import torch.nn.functional as F
+import train as T
+from config import cfg
+from methods import DEEP_METHODS, ALL_METHODS
+from audit.main.epoch_record import Recorder
+from audit.torch_utils import isolate
+
+p = argparse.ArgumentParser()
+p.add_argument("--methods", default=",".join(ALL_METHODS))
+p.add_argument("--seeds", default="0-9")
+p.add_argument("--epochs", type=int, default=None)
+p.add_argument("--data_root", required=True)
+a = p.parse_args()
+lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds),) * 2
+cfg.data_root = a.data_root
+E = a.epochs or cfg.epochs
+_eval = T.evaluate
+STATE = {}
+
+
+def evaluate(model, loader, device):   # wrapper: authors' accuracy (percent) + isolated CE on the same set
+    acc = _eval(model, loader, device)
+    STATE["n"] += 1
+    if STATE["n"] <= E:
+        with isolate([model], device):
+            model.eval()
+            tot, n = 0.0, 0
+            with torch.no_grad():
+                for x, y in loader:
+                    x, y = x.to(device), y.to(device)
+                    tot += F.cross_entropy(model(x)["logits"], y, reduction="sum").item(); n += y.size(0)
+        STATE["rec"].log(STATE["n"], "test", acc / 100, tot / n)
+    else:
+        STATE["final"] = acc
+    return acc
+
+
+T.evaluate = evaluate
+for m in a.methods.split(","):
+    for s in range(lo, hi + 1):
+        rec = Recorder(obj="25", group=f"{m}|CWRU D1->D2 10%", seed=s, select_split=None, report_split="test",
+                       note=f"epochs={E}; label_fraction={cfg.label_fraction}; test = target_test (unlabelled target)")
+        STATE.update(rec=rec, n=0, final=None)
+        t0 = time.time()
+        _, _, _, final_acc, best_acc = T.fit_model(cfg, DEEP_METHODS[m], "D1", "D2", E, cfg.seed + s)
+        rec.author_pick(E)
+        rec.finish(final_acc / 100)
+        rec.d["author_best_acc_printed"] = best_acc / 100
+        rec._dump()
+        print(json.dumps(dict(method=m, seed=s, seconds=round(time.time() - t0, 1), final_acc=final_acc,
+                              check=rec.d["author_check"])), flush=True)
