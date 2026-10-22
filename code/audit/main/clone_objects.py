@@ -29,7 +29,7 @@ def scan(root):
     for d, _, fs in os.walk(root):
         if "/.git" in d: continue
         for f in fs:
-            p = os.path.join(d, f); size += os.path.getsize(p); rel = os.path.relpath(p, root)
+            p = os.path.join(d, f); size += os.lstat(p).st_size; rel = os.path.relpath(p, root)  # lstat: repos may hold dangling symlinks
             if not f.endswith((".py", ".ipynb")): continue
             if re.search(r"train|main|run", f, re.I): train.append(rel)
             try: lines = open(p, encoding="utf-8", errors="replace").read().splitlines()
