@@ -1,0 +1,79 @@
+diff --git a/audit_run42.py b/audit_run42.py
+new file mode 100755
+index 0000000..2b7bf35
+--- /dev/null
++++ b/audit_run42.py
+@@ -0,0 +1,53 @@
++"""[audit] Driver for object 42 (registry: results/main_objects/registry/42_*.md).
++Paper Table 6 PU task T3 (code config 1: PU3200data14.mat, sources load0-2 -> target load3), groups Ours-A..D
++mapped to the authors' run_ablation_variant switches (paper Sec. 4.2), seeds 0..9 replace the authors' 42+rep.
++The hook in run_ablation_variant records the authors' own per-epoch test accuracy; the test cross-entropy is
++computed isolated. reported = the authors' returned best_acc. Run with cwd = a work dir holding PU3200data14.mat.
++Needs PYTHONPATH=~/audit_cns/code and AUDIT_RECORD_DIR."""
++import argparse, json, os, sys, time
++import torch, torch.nn.functional as F
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, REPO)
++import main as M
++from audit.main.epoch_record import Recorder
++from audit.torch_utils import isolate
++
++GROUPS = {  # paper Sec. 4.2
++    "D": dict(use_transformer=True, use_llu=True, use_pam=True),     # complete model
++    "C": dict(use_transformer=True, use_llu=False, use_pam=True),    # B + PAM
++    "B": dict(use_transformer=True, use_llu=False, use_pam=False),   # A + standard Transformer encoder
++    "A": dict(use_transformer=False, use_llu=False, use_pam=False),  # multi-scale CNN + GAP
++}
++p = argparse.ArgumentParser()
++p.add_argument("--seeds", default="0-9")
++p.add_argument("--groups", default="DCBA")
++p.add_argument("--max_epochs", type=int, default=None)
++a = p.parse_args()
++lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds),) * 2
++cfg = M.ALL_CONFIGS[1]
++
++for g in a.groups:
++    for s in range(lo, hi + 1):
++        rec = Recorder(obj="42", group=f"Ours-{g}|PU T3", seed=s, select_split=None, report_split="test",
++                       note="epoch = training epoch; acc = authors' target(load3) test accuracy; loss = isolated test CE")
++        st = {"best": 0.0}
++
++        def hook(ep, acc, model, loader):
++            dev = next(model.parameters()).device
++            with isolate([model], dev):
++                model.eval(); tot, n = 0.0, 0
++                with torch.no_grad():
++                    for x, y in loader:
++                        x, y = x.to(dev), y.to(dev)
++                        tot += F.cross_entropy(model(x), y, reduction="sum").item(); n += y.numel()
++            rec.log(ep, "test", acc, tot / n)
++            if acc > st["best"]:   # authors' rule (strict >, first max)
++                st["best"] = acc; rec.author_pick(ep)
++
++        M.AUDIT_HOOK = hook
++        t0 = time.time()
++        out = M.run_ablation_variant(seed=s, cfg=cfg, max_epochs=a.max_epochs, **GROUPS[g])
++        M.AUDIT_HOOK = None
++        rec.finish(float(out[0]))
++        print(json.dumps(dict(group=g, seed=s, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                              reported=float(out[0]), check=rec.d["author_check"])), flush=True)
+diff --git a/main.py b/main.py
+index d7174b4..f3a3eee 100644
+--- a/main.py
++++ b/main.py
+@@ -38,6 +38,7 @@ PAM_TIME_KERNEL = 7
+ PAM_TIME_PADDING = 3
+ LLU_KERNEL = 7
+ LLU_PADDING = 3
++AUDIT_HOOK = None  # [audit] per-epoch hook, see audit_run42.py
+ 
+ # ==========================
+ # Configuration
+@@ -553,6 +554,7 @@ def run_ablation_variant(seed, cfg, use_transformer=True, use_llu=True, use_pam=
+ 
+         train_acc_history.append(train_acc)
+         val_acc_history.append(test_acc)
++        if AUDIT_HOOK: AUDIT_HOOK(epoch + 1, test_acc, model, test_loader)  # [audit]
+ 
+         if test_acc > best_acc:
+             best_acc = test_acc
