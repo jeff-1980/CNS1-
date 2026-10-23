@@ -1,9 +1,9 @@
 diff --git a/audit_run37.py b/audit_run37.py
 new file mode 100644
-index 0000000..a0df8cd
+index 0000000..a486106
 --- /dev/null
 +++ b/audit_run37.py
-@@ -0,0 +1,64 @@
+@@ -0,0 +1,68 @@
 +"""[audit] Driver for object 37 (registry: results/main_objects/registry/37_*.md).
 +Calls the authors' main.main(data=3, loop=r, fisl=1.5, fccm=0.005) (setting 3: HUST bearing + CWRU9, best_args) once
 +per unseeded repeat (sys.argv reset to the bare script name; parse_args reads only defaults + best_args).
@@ -61,6 +61,10 @@ index 0000000..a0df8cd
 +        if acc > st["best"]:          # authors' rule: first maximum of mean_inter_acc_list
 +            st["best"] = acc; rec.author_pick(ep)
 +
++    # fresh log root per repeat: the authors' CsvWriter re-reads its own args.csv assuming Windows csv output
++    # (blank row between rows) and fails on Linux when a folder from an earlier run exists; logs only, never read back
++    import utils.logger as LG
++    LG.base_path = lambda r=r: f'./ruslt_audit/{os.getpid()}_rep{r}/'
 +    TR.AUDIT_HOOK = hook
 +    t0 = time.time()
 +    M.main(data=3, loop=r, fisl=1.5, fccm=0.005)
