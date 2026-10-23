@@ -1,0 +1,91 @@
+diff --git a/audit_run37.py b/audit_run37.py
+new file mode 100644
+index 0000000..a0df8cd
+--- /dev/null
++++ b/audit_run37.py
+@@ -0,0 +1,64 @@
++"""[audit] Driver for object 37 (registry: results/main_objects/registry/37_*.md).
++Calls the authors' main.main(data=3, loop=r, fisl=1.5, fccm=0.005) (setting 3: HUST bearing + CWRU9, best_args) once
++per unseeded repeat (sys.argv reset to the bare script name; parse_args reads only defaults + best_args).
++The hook in utils.training records the authors' mean inter-domain accuracy per communication round and, isolated,
++the matching cross-entropy. Run with cwd = repo. Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR."""
++import argparse, json, os, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, REPO)
++import numpy as np, torch
++import torch.nn.functional as F
++import main as M
++import utils.training as TR
++from audit.main.epoch_record import Recorder
++from audit.torch_utils import isolate
++
++p = argparse.ArgumentParser()
++p.add_argument("--repeats", default="0-9")
++p.add_argument("--rounds", type=int, default=None)
++a = p.parse_args()
++lo, hi = map(int, a.repeats.split("-")) if "-" in a.repeats else (int(a.repeats),) * 2
++sys.argv = ["main.py"]
++if a.rounds:   # smoke only: shorten communication rounds via best_args
++    import utils.best_args as BA
++    BA.best_args["bearing-hust"]["p2pchf"][-1]["communication_epoch"] = a.rounds
++
++
++@torch.no_grad()
++def inter_ce(model, test_loaders):
++    vals = []
++    n_dom = len(test_loaders)
++    for i, net in enumerate(model.nets_list):
++        for j, dl in enumerate(test_loaders):
++            if i % n_dom == j:
++                continue
++            tot, n = 0.0, 0
++            for x, y, _ in dl:
++                x, y = x.to(model.device), y.to(model.device)
++                tot += F.cross_entropy(net(x), y, reduction="sum").item(); n += y.size(0)
++            vals.append(tot / n)
++    return float(np.mean(vals))
++
++
++for r in range(lo, hi + 1):
++    rec = Recorder(obj="37", group="P2PCHF|HUST bearing + CWRU9", seed=r, select_split=None, report_split="test",
++                   note="epoch = communication round; acc = authors' mean inter-domain accuracy over clients")
++    st = {"best": -1.0}
++
++    def hook(ep, model, test_loaders, intra, inter):
++        acc = float(round(np.mean(inter, axis=0), 3)) / 100
++        with isolate(model.nets_list, model.device):
++            for net in model.nets_list: net.eval()
++            loss = inter_ce(model, test_loaders)
++        rec.log(ep, "test", acc, loss)
++        rec.d.setdefault("intra", {})[str(ep)] = float(np.mean(intra)) / 100
++        if acc > st["best"]:          # authors' rule: first maximum of mean_inter_acc_list
++            st["best"] = acc; rec.author_pick(ep)
++
++    TR.AUDIT_HOOK = hook
++    t0 = time.time()
++    M.main(data=3, loop=r, fisl=1.5, fccm=0.005)
++    TR.AUDIT_HOOK = None
++    rec.finish(st["best"])
++    print(json.dumps(dict(repeat=r, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                          reported=st["best"], check=rec.d["author_check"])), flush=True)
+diff --git a/utils/training.py b/utils/training.py
+index 801a289..c1a87a7 100644
+--- a/utils/training.py
++++ b/utils/training.py
+@@ -5,6 +5,7 @@ from models.utils.federated_model import FederatedModel
+ from typing import Tuple
+ from utils.logger import CsvWriter
+ import numpy as np
++AUDIT_HOOK = None  # [audit]
+ def evaluate(model: FederatedModel, test_dl: FedLeaBearing_priv, setting: str) -> Tuple[list, list,dict]:
+     intra_accs = []
+     inter_accs = []
+@@ -98,6 +99,8 @@ def train(model: FederatedModel, public_dataset:  FedLeaBearing_publ, private_da
+             model.col_update(epoch_index, pub_loader)
+             model.public_lr = args.public_lr
+         intra_accs, inter_accs = evaluate(model, test_loaders, private_dataset.setting)
++        if AUDIT_HOOK is not None:  # [audit] per-round record (loss evaluated isolated in the hook)
++            AUDIT_HOOK(epoch_index + 1, model, test_loaders, intra_accs, inter_accs)
+         if hasattr(model, 'loc_update'):
+             #私有数据训练集
+             KL_list=model.loc_update(epoch_index,pri_train_loaders)
