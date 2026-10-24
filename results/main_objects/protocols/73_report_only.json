@@ -1,0 +1,142 @@
+[
+ {
+  "obj": "73",
+  "group": "Meta-transfer|PU N09M07F10 artificial->natural 5-way 1-shot",
+  "seed": 0,
+  "author_check": {
+   "recorded": 0.4072,
+   "reported": 0.4072,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "epochs": [
+   5
+  ]
+ },
+ {
+  "obj": "73",
+  "group": "Meta-transfer|PU N09M07F10 artificial->natural 5-way 1-shot",
+  "seed": 1,
+  "author_check": {
+   "recorded": 0.4656,
+   "reported": 0.4656,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "epochs": [
+   5
+  ]
+ },
+ {
+  "obj": "73",
+  "group": "Meta-transfer|PU N09M07F10 artificial->natural 5-way 1-shot",
+  "seed": 2,
+  "author_check": {
+   "recorded": 0.435,
+   "reported": 0.435,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "epochs": [
+   5
+  ]
+ },
+ {
+  "obj": "73",
+  "group": "Meta-transfer|PU N09M07F10 artificial->natural 5-way 1-shot",
+  "seed": 3,
+  "author_check": {
+   "recorded": 0.42160000000000003,
+   "reported": 0.42160000000000003,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "epochs": [
+   5
+  ]
+ },
+ {
+  "obj": "73",
+  "group": "Meta-transfer|PU N09M07F10 artificial->natural 5-way 1-shot",
+  "seed": 4,
+  "author_check": {
+   "recorded": 0.461,
+   "reported": 0.461,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "epochs": [
+   5
+  ]
+ },
+ {
+  "obj": "73",
+  "group": "Meta-transfer|PU N09M07F10 artificial->natural 5-way 1-shot",
+  "seed": 5,
+  "author_check": {
+   "recorded": 0.3462,
+   "reported": 0.3462,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "epochs": [
+   5
+  ]
+ },
+ {
+  "obj": "73",
+  "group": "Meta-transfer|PU N09M07F10 artificial->natural 5-way 1-shot",
+  "seed": 6,
+  "author_check": {
+   "recorded": 0.35960000000000003,
+   "reported": 0.35960000000000003,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "epochs": [
+   5
+  ]
+ },
+ {
+  "obj": "73",
+  "group": "Meta-transfer|PU N09M07F10 artificial->natural 5-way 1-shot",
+  "seed": 7,
+  "author_check": {
+   "recorded": 0.3336,
+   "reported": 0.3336,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "epochs": [
+   5
+  ]
+ },
+ {
+  "obj": "73",
+  "group": "Meta-transfer|PU N09M07F10 artificial->natural 5-way 1-shot",
+  "seed": 8,
+  "author_check": {
+   "recorded": 0.3468,
+   "reported": 0.3468,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "epochs": [
+   5
+  ]
+ },
+ {
+  "obj": "73",
+  "group": "Meta-transfer|PU N09M07F10 artificial->natural 5-way 1-shot",
+  "seed": 9,
+  "author_check": {
+   "recorded": 0.26139999999999997,
+   "reported": 0.26139999999999997,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "epochs": [
+   5
+  ]
+ }
+]
