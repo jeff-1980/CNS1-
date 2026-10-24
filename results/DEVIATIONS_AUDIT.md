@@ -132,3 +132,4 @@
 | 2026-10-24 | 对象 73 Few-shot Transfer（冒烟后补充） | 第一次冒烟：元迁移组通过，微调组报错 `Expected a 'cuda' device type for generator`——作者设置 `torch.set_default_tensor_type('torch.cuda.FloatTensor')`，当前 PyTorch 的 `RandomSampler` 因此需要 CUDA 随机数生成器。平台适配（第 6 处，同类依赖适配）：`utlis/finetune_generator.py` 中 3 个 `DataLoader(..., shuffle=True)` 各加 `generator=torch.Generator(device="cuda")`，打乱行为不变；作废第一次冒烟，重新冒烟 | 平台适配 | 不影响作者算法 |
 | 2026-10-24 | 通用规则：单个对象的时长预算 | jeff 2026-10-24 裁定：只要单次训练不超过 2 GPU 小时，单个对象总时长不超过 **6 小时**就直接跑完；超过 6 小时再停下汇报（原规则为总时长 3 小时）。从本条起适用于此后所有对象 | 预算规则变更 | 不影响任何对象的训练设置 |
 | 2026-10-24 | 对象 74 FDR（预算） | 种子 0 用时 1116 s，10 个种子估计约 3.1 h，超过当时的 3 h 预算，停下汇报；jeff 2026-10-24 批准跑完种子 1–9（约 2.8 h），排在对象 73 之后、对象 71 冒烟之前 | 预算批准 | 无 |
+| 2026-10-24 | 对象 71 ACWGAN-GP（冒烟） | 第一次冒烟在单元格 22 报 `load_generator` 未定义：该函数定义在登记中计划跳过的单元格 15。改为**执行 notebook 的全部代码单元格**（含 4、15、17，均为作图 / 相似度指标 / 写生成样本 CSV，不改变分类器的输入），比登记更贴近作者流程；作废第一次冒烟。冒烟测得 GAN 1 轮约 99 s → 50 轮约 83 min / 次重复 | driver 修正 | 无 |
