@@ -1,1 +1,10 @@
 {"seed": 0, "seconds": 1115.7, "reported": 0.8541000000000001, "check": {"recorded": 0.8541000000000001, "reported": 0.8541000000000001, "abs_diff": 0.0, "matches": true}}
+{"seed": 1, "seconds": 1228.3, "reported": 0.8015000000000001, "check": {"recorded": 0.8015000000000001, "reported": 0.8015000000000001, "abs_diff": 0.0, "matches": true}}
+{"seed": 2, "seconds": 1084.9, "reported": 0.8516000000000001, "check": {"recorded": 0.8516000000000001, "reported": 0.8516000000000001, "abs_diff": 0.0, "matches": true}}
+{"seed": 3, "seconds": 1087.0, "reported": 0.88705, "check": {"recorded": 0.88705, "reported": 0.88705, "abs_diff": 0.0, "matches": true}}
+{"seed": 4, "seconds": 1086.5, "reported": 0.8284499999999999, "check": {"recorded": 0.8284499999999999, "reported": 0.8284499999999999, "abs_diff": 0.0, "matches": true}}
+{"seed": 5, "seconds": 1092.9, "reported": 0.83995, "check": {"recorded": 0.83995, "reported": 0.83995, "abs_diff": 0.0, "matches": true}}
+{"seed": 6, "seconds": 1090.9, "reported": 0.8552, "check": {"recorded": 0.8552, "reported": 0.8552, "abs_diff": 0.0, "matches": true}}
+{"seed": 7, "seconds": 1207.4, "reported": 0.8877, "check": {"recorded": 0.8877, "reported": 0.8877, "abs_diff": 0.0, "matches": true}}
+{"seed": 8, "seconds": 1265.7, "reported": 0.8834500000000001, "check": {"recorded": 0.8834500000000001, "reported": 0.8834500000000001, "abs_diff": 0.0, "matches": true}}
+{"seed": 9, "seconds": 1092.1, "reported": 0.8543999999999999, "check": {"recorded": 0.8543999999999999, "reported": 0.8543999999999999, "abs_diff": 0.0, "matches": true}}
