@@ -1,0 +1,57 @@
+diff --git a/CSST_Net/audit_run23.py b/CSST_Net/audit_run23.py
+new file mode 100644
+index 0000000..748e0a3
+--- /dev/null
++++ b/CSST_Net/audit_run23.py
+@@ -0,0 +1,31 @@
++"""[audit] Driver for object 23 (registry: results/main_objects/registry/23_*.md).
++Runs the authors' train.py as __main__ (runpy, defaults: data_6.npy, 30 epochs) once per unseeded repeat, with
++AUDIT_HOOK recording the authors' own per-epoch test accuracy/loss and AUDIT_FINAL receiving their printed Accuracy.
++Run with cwd = a work dir containing predata/, Loss_Acc/, results/, weights/. Needs PYTHONPATH=~/audit_cns/code and
++AUDIT_RECORD_DIR."""
++import argparse, json, os, runpy, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, REPO)
++import matplotlib
++matplotlib.use("Agg")
++from audit.main.epoch_record import Recorder
++
++p = argparse.ArgumentParser()
++p.add_argument("--repeats", default="0-9")
++p.add_argument("--epochs", type=int, default=None)
++a = p.parse_args()
++lo, hi = map(int, a.repeats.split("-")) if "-" in a.repeats else (int(a.repeats),) * 2
++
++for r in range(lo, hi + 1):
++    rec = Recorder(obj="23", group="CSST-Net|HIT SNR 6dB", seed=r, select_split=None, report_split="test",
++                   note=f"unseeded repeat {r}; test = authors' per-epoch evaluation on all 240 test samples")
++    final = {}
++    g = dict(AUDIT_HOOK=lambda ep, acc, loss: rec.log(ep, "test", acc, loss), AUDIT_FINAL=lambda acc: final.update(acc=acc))
++    sys.argv = [os.path.join(REPO, "train.py")] + (["--epoch", str(a.epochs)] if a.epochs else [])
++    t0 = time.time()
++    runpy.run_path(os.path.join(REPO, "train.py"), init_globals=g, run_name="__main__")
++    n = max(map(int, rec.d["epochs"]))
++    rec.author_pick(n)
++    rec.finish(final.get("acc"))
++    print(json.dumps(dict(repeat=r, seconds=round(time.time() - t0, 1), reported=final.get("acc"),
++                          check=rec.d["author_check"])), flush=True)
+diff --git a/CSST_Net/train.py b/CSST_Net/train.py
+index 14d6336..ae2c9a7 100644
+--- a/CSST_Net/train.py
++++ b/CSST_Net/train.py
+@@ -97,6 +97,7 @@ def train(Model,Tr_data,Tr_label,Te_data,Te_label):
+ 
+                     Tr_Accuracy.append(Tr_acc)
+                     Te_Accuracy.append(Te_acc)
++                    if globals().get('AUDIT_HOOK'): AUDIT_HOOK(epoch, Te_acc, Te_loss.item())  # [audit] per-epoch record
+ 
+                     tqdm_loader.set_postfix(Tr_loss = Tr_loss.item(),Te_loss = Te_loss.item(),Tr_acc = Tr_acc,Te_acc = Te_acc)
+ 
+@@ -125,6 +126,7 @@ def train(Model,Tr_data,Tr_label,Te_data,Te_label):
+     total = label_true.size(0)
+     accuracy = correct / total
+     print("Accuracy：", accuracy)
++    if globals().get('AUDIT_FINAL'): AUDIT_FINAL(accuracy)  # [audit] authors' reported value
+     MLP_T_SNE(Te_output, sampled_Te_label)
+ 
+     "==================Matrix============================="

@@ -1,0 +1,102 @@
+diff --git a/audit_run20.py b/audit_run20.py
+new file mode 100644
+index 0000000..d8b9b97
+--- /dev/null
++++ b/audit_run20.py
+@@ -0,0 +1,73 @@
++"""[audit] Driver for object 20 (registry: results/main_objects/registry/20_*.md).
++Runs the authors' train.main(Config(), tag) with config seed 43..52 (all else default). Per fine-tune episode the
++hook evaluates, isolated, the authors' calculate_accuracy on the final test sets (no t-SNE) and a prototype
++softmax cross-entropy from the same features as test loss. The authors' final 'Test Acc' is captured from their
++own calculate_accuracy(point_latitude=2) call. Run with cwd = a work dir containing a 'data' symlink to the repo's
++data/. Needs PYTHONPATH=~/audit_cns/code and AUDIT_RECORD_DIR."""
++import argparse, json, os, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, REPO)
++import torch
++import torch.nn.functional as F
++import train as T
++from config import Config
++from utils.main import get_all_example, euclidean_dist
++from audit.main.epoch_record import Recorder
++from audit.torch_utils import isolate
++
++p = argparse.ArgumentParser()
++p.add_argument("--seeds", default="43-52")
++p.add_argument("--episodes", type=int, default=None)
++a = p.parse_args()
++lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds),) * 2
++
++_calc = T.calculate_accuracy
++FINAL = {}
++
++
++def calc_capture(net, s, q, point_latitude=False, use_triple=True):   # authors' final test passes point_latitude=2
++    res = _calc(net, s, q, point_latitude=point_latitude, use_triple=use_triple)
++    if point_latitude == 2:
++        FINAL["acc"] = res["acc"]
++    return res
++
++
++T.calculate_accuracy = calc_capture
++
++for s in range(lo, hi + 1):
++    cfg = Config()
++    d = dict(cfg.data); d["seed"] = s
++    if a.episodes is not None:
++        d["train_episode"] = a.episodes
++    cfg.data = d
++    n_ep = cfg.train_episode
++    rec = Recorder(obj="20", group="MLDSO|CWRU 1730->1750 5-shot", seed=s, select_split=None, report_split="test",
++                   note=f"episodes={n_ep}; unit = fine-tune episode; test acc = authors' calculate_accuracy on eval sets; "
++                        f"test loss = prototype softmax CE (authors' code returns -1 in eval)")
++    FINAL.clear()
++
++    def hook(ep, net):
++        dev = next(net.parameters()).device
++        with isolate([net], dev):
++            acc = _calc(net, T.eval_support_set, T.eval_query_set, point_latitude=False)["acc"]
++            net.eval()
++            with torch.no_grad():
++                sup, qry = T.eval_support_set, T.eval_query_set
++                n, ns, nq = sup.size(0), sup.size(1), qry.size(1)
++                feat = net(get_all_example(sup, qry))
++                proto = feat[:n * ns].view(n, ns, -1).mean(1)
++                logp = F.log_softmax(-euclidean_dist(feat[n * ns:], proto), dim=1)
++                y = torch.arange(n, device=logp.device).repeat_interleave(nq)
++                loss = F.nll_loss(logp, y).item()
++                acc2 = (logp.argmax(1) == y).float().mean().item()   # label-order check against the authors' acc
++        rec.d["max_acc_diff_loss_path"] = max(rec.d.get("max_acc_diff_loss_path", 0.0), abs(acc - acc2))
++        rec.log(ep, "test", acc, loss)
++
++    T.AUDIT_HOOK = hook
++    t0 = time.time()
++    T.main(cfg, tag=f"audit_seed{s}")
++    T.AUDIT_HOOK = None
++    rec.author_pick(n_ep)
++    rec.finish(FINAL.get("acc"))
++    print(json.dumps(dict(seed=s, seconds=round(time.time() - t0, 1), reported=FINAL.get("acc"),
++                          check=rec.d.get("author_check"))), flush=True)
+diff --git a/train.py b/train.py
+index 0f039fc..7abbdf5 100644
+--- a/train.py
++++ b/train.py
+@@ -16,6 +16,9 @@ from dataset import DataSet, DataConf, DataLoaderConf
+ from utils.main import draw_tsne, get_loss, calculate_accuracy, config_init
+ 
+ 
++AUDIT_HOOK = None  # [audit]
++
++
+ def train_network(local_network: nn.Module, local_dataset: DataSet, episode: int, tag: str = '',
+                   is_pretrain=True):
+     global source_dataset
+@@ -55,6 +58,8 @@ def train_network(local_network: nn.Module, local_dataset: DataSet, episode: int
+ 
+         writer.add_scalar(f"{'PreTrain' if is_pretrain else 'FineTune'}/Loss", res['loss'], turn)
+         writer.add_scalar(f"{'PreTrain' if is_pretrain else 'FineTune'}/Accuracy", res['acc'], turn)
++        if AUDIT_HOOK is not None and not is_pretrain:  # [audit] per-episode test record (fine-tune only)
++            AUDIT_HOOK(turn + 1, local_network)
+     print(f"{'PreTrain' if is_pretrain else 'FineTune'} Train Max Accuracy: {max_acc} Train Min Loss: {min_loss}")
+ 
+ 

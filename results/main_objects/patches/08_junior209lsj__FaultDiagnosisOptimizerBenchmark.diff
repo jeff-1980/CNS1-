@@ -1,0 +1,127 @@
+diff --git a/audit_run08.py b/audit_run08.py
+new file mode 100644
+index 0000000..4a899c8
+--- /dev/null
++++ b/audit_run08.py
+@@ -0,0 +1,121 @@
++"""[audit] Driver for object 08 (registry: results/main_objects/registry/08_*.md).
++Follows tutorial.ipynb: CWRU 12k, drop label 999 and 0 hp, 60/20/20 split, 4096/2048 slicing, WDCNN, batch 64,
++4 optimizers at the first quasi-random sample of Table 6 (lower bounds), 100 epochs, seeds 0-9.
++Author code is not modified: a recorder callback is injected into benchmark's pl.Trainer.
++Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR, CUBLAS_WORKSPACE_CONFIG=:4096:8."""
++import argparse, json, os, sys, time
++sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
++import torch
++import pytorch_lightning as pl
++from torchvision import transforms
++import fdob, fdob.processing as processing, info, benchmark
++from audit.main.epoch_record import Recorder
++from audit.torch_utils import isolate
++
++GROUPS = {
++    "SGD": (torch.optim.SGD, {"lr": 1e-2}),
++    "Momentum": (torch.optim.SGD, {"lr": 1e-3, "momentum": 0.9}),
++    "RMSProp": (torch.optim.RMSprop, {"lr": 1e-4, "momentum": 0.9, "alpha": 0.99, "eps": 1e-8}),
++    "Adam": (torch.optim.Adam, {"lr": 1e-4, "betas": (0.9, 0.999), "eps": 1e-8}),
++}
++
++p = argparse.ArgumentParser()
++p.add_argument("--groups", default="SGD,Momentum,RMSProp,Adam")
++p.add_argument("--seeds", default="0-9")
++p.add_argument("--epochs", type=int, default=100)
++p.add_argument("--data_root", required=True)
++p.add_argument("--work", required=True)
++a = p.parse_args()
++lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds),) * 2
++
++# ---- data exactly as in tutorial.ipynb ----
++df = fdob.download_cwru(a.data_root)
++df = df[(df["label"] != 999) & (df["load"] != 0)]
++train_df, val_df, test_df = fdob.split_dataframe(df, 0.6, 0.2)
++X_train, y_train = fdob.build_from_dataframe(train_df, 4096, 2048, False)
++X_val, y_val = fdob.build_from_dataframe(val_df, 4096, 2048, False)
++X_test, y_test = fdob.build_from_dataframe(test_df, 4096, 2048, False)
++m = info.model["wdcnn"]
++dmodule = fdob.DatasetHandler()
++dmodule.assign(X_train, y_train, X_val, y_val, X_test, y_test, m["sample_length"], "cwru",
++               transforms.Compose(m["tf"]), transforms.Compose([processing.NpToTensor()]), 64, 1)
++L = dmodule.dataloaders["cwru"]
++print(json.dumps(dict(n_train=len(L["train"].dataset), n_val=len(L["val"].dataset), n_test=len(L["test"].dataset))), flush=True)
++
++
++@torch.no_grad()
++def eval_loader(module, loader, device):
++    tot = cor = n = 0.0
++    for x, y in loader:
++        x, y = x.to(device), y.to(device)
++        out = module(x)
++        tot += torch.nn.functional.cross_entropy(out, y, reduction="sum").item()
++        cor += (out.argmax(1) == y).sum().item(); n += y.numel()
++    return cor / n, tot / n
++
++
++class AuditCB(pl.Callback):
++    def __init__(self, rec, test_loader):
++        self.rec, self.test_loader, self.k, self.best = rec, test_loader, 0, None
++
++    def on_validation_end(self, trainer, plm):  # runs after ModelCheckpoint (callback order), metrics aggregated
++        if trainer.sanity_checking:
++            return
++        self.k += 1
++        cm = trainer.callback_metrics
++        self.rec.log(self.k, "val", float(cm["val_acc"]), float(cm["val_loss"]))   # author's own validation numbers
++        with isolate([plm], plm.device):
++            plm.eval()
++            acc, loss = eval_loader(plm, self.test_loader, plm.device)
++        self.rec.log(self.k, "test", acc, loss)
++        ck = trainer.checkpoint_callback
++        s = None if ck.best_model_score is None else float(ck.best_model_score)
++        if s is not None and s != self.best:
++            self.best = s
++            self.rec.author_pick(self.k)
++
++
++_Trainer = pl.Trainer
++CURRENT = {}
++
++
++class AuditTrainer(_Trainer):
++    def __init__(self, *args, **kw):
++        if CURRENT.get("cb") is not None and kw.get("max_epochs") and "callbacks" in kw:
++            kw["callbacks"] = list(kw["callbacks"]) + [CURRENT["cb"]]
++        super().__init__(*args, **kw)
++
++
++benchmark.pl.Trainer = AuditTrainer
++
++for g in a.groups.split(","):
++    opt, okw = GROUPS[g]
++    for s in range(lo, hi + 1):
++        res_dir = os.path.join(a.work, f"{g}_s{s}")
++        rec = Recorder(obj="08", group=f"WDCNN|CWRU bs64|{g}", seed=s, select_split="val", report_split="test",
++                       note=f"epochs={a.epochs}; epoch = validation count")
++        CURRENT["cb"] = AuditCB(rec, L["test"])
++        t0 = time.time()
++        r_train = benchmark.train(L["train"], L["val"], m["model"], {"n_classes": 10}, opt, dict(okw),
++                                  torch.nn.CrossEntropyLoss, None, a.epochs, s, 0, res_dir)
++        CURRENT["cb"] = None   # benchmark.test builds its own Trainer: no recording there
++        r_test = benchmark.test(L["test"], m["model"], {"n_classes": 10}, opt, dict(okw),
++                                torch.nn.CrossEntropyLoss, None, a.epochs, s, 0, res_dir, "noise-free")
++        reported = float(r_test[0]["test_acc"])
++        # bug check (audit only, author code untouched): best checkpoint vs last epoch vs untrained model
++        dev = torch.device("cuda")
++        with isolate([], dev):
++            best = fdob.PlModule.load_from_checkpoint(os.path.join(res_dir, "best_model", "model.ckpt"),
++                                                      model=m["model"](n_classes=10), optimizer=None, loss_fn=None).to(dev)
++            best_acc = eval_loader(best.eval(), L["test"], dev)[0]
++            torch.manual_seed(s)
++            fresh = m["model"](n_classes=10).to(dev).eval()
++            fresh_acc = eval_loader(fresh, L["test"], dev)[0]
++        last_k = max(map(int, rec.d["epochs"]))
++        rec.d["bugcheck"] = dict(author_train_returned_on_val=r_train, author_test_reported=reported,
++                                 best_ckpt_test_acc=best_acc, last_epoch_test_acc=rec.d["epochs"][str(last_k)]["test"]["acc"],
++                                 untrained_seeded_test_acc=fresh_acc)
++        rec.finish(reported)
++        print(json.dumps(dict(group=g, seed=s, epochs=a.epochs, seconds=round(time.time() - t0, 1),
++                              author_epoch=rec.d["author_epoch"], check=rec.d["author_check"], bugcheck=rec.d["bugcheck"])),
++              flush=True)

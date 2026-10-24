@@ -1,0 +1,1 @@
+PCA-CNN|NREL 5MW A1A+A3A 10 author 98.82 +- 2.60; last 97.39 +- 4.60; best_rep 99.61 +- 0.76; minloss 98.82 +- 2.60; budget50 92.36 +- 7.04 checks 10

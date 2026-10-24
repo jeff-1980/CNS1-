@@ -1,0 +1,107 @@
+diff --git a/HUST_bearing/__pycache__/HUST_dataset.cpython-310.pyc b/HUST_bearing/__pycache__/HUST_dataset.cpython-310.pyc
+index 64a1064..5b6e808 100644
+Binary files a/HUST_bearing/__pycache__/HUST_dataset.cpython-310.pyc and b/HUST_bearing/__pycache__/HUST_dataset.cpython-310.pyc differ
+diff --git a/dataloader/__pycache__/dataloader.cpython-310.pyc b/dataloader/__pycache__/dataloader.cpython-310.pyc
+index bedb14d..b36b2d7 100644
+Binary files a/dataloader/__pycache__/dataloader.cpython-310.pyc and b/dataloader/__pycache__/dataloader.cpython-310.pyc differ
+diff --git a/function/__pycache__/function.cpython-310.pyc b/function/__pycache__/function.cpython-310.pyc
+index 1b07d8f..2dbe88d 100644
+Binary files a/function/__pycache__/function.cpython-310.pyc and b/function/__pycache__/function.cpython-310.pyc differ
+diff --git a/function/function.py b/function/function.py
+index fa417c5..5062f58 100644
+--- a/function/function.py
++++ b/function/function.py
+@@ -13,10 +13,10 @@ import torch.optim as optim
+ import pandas as pd
+ 
+ #-------------SEED--------------------------------------#
+-def seed_func():
+-    random.seed(42)
+-    np.random.seed(42)
+-    torch.manual_seed(42)
++def seed_func(seed=42):  # [audit] seed was hard-coded 42; default unchanged
++    random.seed(seed)
++    np.random.seed(seed)
++    torch.manual_seed(seed)
+     torch.backends.cudnn.deterministic = True
+     torch.backends.cudnn.benchmark = False
+ 
+diff --git a/net/__pycache__/new_proposed.cpython-310.pyc b/net/__pycache__/new_proposed.cpython-310.pyc
+index 8a1845d..eb8a5a9 100644
+Binary files a/net/__pycache__/new_proposed.cpython-310.pyc and b/net/__pycache__/new_proposed.cpython-310.pyc differ
+diff --git a/train_1shot.py b/train_1shot.py
+index 2c0ca34..8368fe0 100644
+--- a/train_1shot.py
++++ b/train_1shot.py
+@@ -64,6 +64,32 @@ parser.add_argument('--shot_num', type=int, default=1, help='Number of samples p
+ args = parser.parse_args()
+ 
+ print(args)
++
++# [audit] per-epoch recorder (only when AUDIT_RECORD_DIR is set)
++_audit_rec = None
++if os.environ.get("AUDIT_RECORD_DIR"):
++    from audit.main.epoch_record import Recorder
++    from audit.torch_utils import isolate
++    _n = args.training_samples_CWRU if args.dataset == 'CWRU' else args.training_samples_HUST
++    _audit_rec = Recorder(obj="02", group=f"SCMamba|{args.dataset} {args.shot_num}-shot {_n}", seed=args.seed,
++                          select_split=None, report_split="test", note="author selects on test")
++    _audit_rec.d["shadow_acc"] = {}
++
++
++def _audit_test_pass(loader, net, device, loss_fn):
++    # [audit] same episodes, same mode as cal_metrics_fewshot; returns (mean loss, acc)
++    tot = correct = n = 0
++    for query_images, query_targets, support_images, support_targets in loader:
++        q = query_images.permute(1, 0, 2, 3, 4).to(device)
++        s = support_images.permute(1, 0, 2, 3, 4).to(device)
++        targets = query_targets.to(device).permute(1, 0)
++        for i in range(len(q)):
++            scores, _, _ = net(q[i], s)
++            target = targets[i].long()
++            tot += loss_fn(scores.float(), target).sum().item()
++            correct += int(torch.argmax(scores) == target)
++            n += 1
++    return tot / max(n, 1), correct / max(n, 1)
+ #---------------------------------------------------Load dataset-----------------------------------------------------------------------------------------:
+ if args.dataset == 'CWRU':
+     window_size = 2048
+@@ -254,7 +280,18 @@ def train_and_test_model(net,
+             total_loss = running_loss / num_batches
+             full_loss.append(total_loss)
+             print('------------Testing on the test set-------------')
++            if _audit_rec is not None:  # [audit] RNG, modes and BN buffers restored afterwards
++                _state = {k: v.detach().clone() for k, v in net.state_dict().items()}
++                _modes = {m: m.training for m in net.modules()}  # per-submodule modes (isolate restores top level only)
++                with isolate([net], torch.device(device)):
++                    _tl, _sacc = _audit_test_pass(test_loader, net, device, loss1)
++                net.load_state_dict(_state)
++                for _m, _t in _modes.items():
++                    _m.training = _t
+             acc, f1, recall = cal_metrics_fewshot(test_loader, net, device, num_classes)
++            if _audit_rec is not None:
++                _audit_rec.d["shadow_acc"][str(epoch)] = _sacc
++                _audit_rec.log(epoch, "test", acc, _tl)
+             full_metric['full_acc'].append(acc)
+             full_metric['full_f1'].append(f1)
+             full_metric['full_recall'].append(recall)
+@@ -270,13 +307,18 @@ def train_and_test_model(net,
+                 model_name = f'{args.model_name}_1shot_recall_{recall:.4f}_{training_samples}samples.pth'
+                 torch.save(net, path_weight + model_name)
+                 print(f'=> Save the best model with accuracy: {acc:.4f}')
++                if _audit_rec is not None:
++                    _audit_rec.author_pick(epoch)
+         torch.cuda.empty_cache()
+ 
++    if _audit_rec is not None:  # [audit] author reports pred_metric['pred_acc']
++        _audit_rec.finish(pred_metric['pred_acc'])
++
+     return full_loss, full_metric, model_name, pred_metric['pred_acc'], pred_metric['pred_f1'], pred_metric['pred_recall']
+ 
+ 
+ #----------------------------------------------------Training phase--------------------------------------------------#
+-seed_func()
++seed_func(args.seed)  # [audit] wire the author's unused --seed argument
+ print("train or val:")
+ if args.train_mode:
+ #   net = MainNet()

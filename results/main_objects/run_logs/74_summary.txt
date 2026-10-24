@@ -1,0 +1,2 @@
+FDR-RelationNet|PU N09M07F10->N15M01F10 5-way 1-shot 10 author 85.48 +- 3.12; last 85.48 +- 3.12; best_rep 90.99 +- 1.47; minloss n/a; budget50 89.32 +- 1.60 checks 0
+# author check is stored as author_check_mean4 (10/10 match); 'checks 0' above only counts the plain author_check field. minloss n/a: the authors' test computes no loss
