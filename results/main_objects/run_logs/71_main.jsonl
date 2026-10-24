@@ -1,0 +1,15 @@
+{"repeat": 0, "group": "Real100+Gen0", "seconds": 5635.5, "author_epoch": 20, "intended": 20, "reported": 0.978, "check": {"recorded": 0.978, "reported": 0.978, "abs_diff": 0.0, "matches": true}}
+{"repeat": 0, "group": "Real100+Gen400", "seconds": 5635.5, "author_epoch": 20, "intended": 16, "reported": 0.98, "check": {"recorded": 0.98, "reported": 0.98, "abs_diff": 0.0, "matches": true}}
+{"repeat": 0, "group": "Real100+Gen900", "seconds": 5635.5, "author_epoch": 20, "intended": 19, "reported": 0.978, "check": {"recorded": 0.978, "reported": 0.978, "abs_diff": 0.0, "matches": true}}
+{"repeat": 1, "group": "Real100+Gen0", "seconds": 5811.5, "author_epoch": 20, "intended": 15, "reported": 0.9795, "check": {"recorded": 0.9795, "reported": 0.9795, "abs_diff": 0.0, "matches": true}}
+{"repeat": 1, "group": "Real100+Gen400", "seconds": 5811.5, "author_epoch": 20, "intended": 19, "reported": 0.9655, "check": {"recorded": 0.9655, "reported": 0.9655, "abs_diff": 0.0, "matches": true}}
+{"repeat": 1, "group": "Real100+Gen900", "seconds": 5811.5, "author_epoch": 20, "intended": 20, "reported": 0.9789999999999999, "check": {"recorded": 0.9789999999999999, "reported": 0.9789999999999999, "abs_diff": 0.0, "matches": true}}
+{"repeat": 2, "group": "Real100+Gen0", "seconds": 5630.1, "author_epoch": 20, "intended": 20, "reported": 0.977, "check": {"recorded": 0.977, "reported": 0.977, "abs_diff": 0.0, "matches": true}}
+{"repeat": 2, "group": "Real100+Gen400", "seconds": 5630.1, "author_epoch": 20, "intended": 19, "reported": 0.9620000000000001, "check": {"recorded": 0.9620000000000001, "reported": 0.9620000000000001, "abs_diff": 0.0, "matches": true}}
+{"repeat": 2, "group": "Real100+Gen900", "seconds": 5630.1, "author_epoch": 20, "intended": 19, "reported": 0.9804999999999999, "check": {"recorded": 0.9804999999999999, "reported": 0.9804999999999999, "abs_diff": 0.0, "matches": true}}
+{"repeat": 3, "group": "Real100+Gen0", "seconds": 5622.2, "author_epoch": 20, "intended": 20, "reported": 0.9895, "check": {"recorded": 0.9895, "reported": 0.9895, "abs_diff": 0.0, "matches": true}}
+{"repeat": 3, "group": "Real100+Gen400", "seconds": 5622.2, "author_epoch": 20, "intended": 20, "reported": 0.983, "check": {"recorded": 0.983, "reported": 0.983, "abs_diff": 0.0, "matches": true}}
+{"repeat": 3, "group": "Real100+Gen900", "seconds": 5622.2, "author_epoch": 20, "intended": 14, "reported": 0.9725, "check": {"recorded": 0.9725, "reported": 0.9725, "abs_diff": 0.0, "matches": true}}
+{"repeat": 4, "group": "Real100+Gen0", "seconds": 5626.5, "author_epoch": 20, "intended": 16, "reported": 0.907, "check": {"recorded": 0.907, "reported": 0.907, "abs_diff": 0.0, "matches": true}}
+{"repeat": 4, "group": "Real100+Gen400", "seconds": 5626.5, "author_epoch": 20, "intended": 16, "reported": 0.9695, "check": {"recorded": 0.9695, "reported": 0.9695, "abs_diff": 0.0, "matches": true}}
+{"repeat": 4, "group": "Real100+Gen900", "seconds": 5626.5, "author_epoch": 20, "intended": 20, "reported": 0.9875, "check": {"recorded": 0.9875, "reported": 0.9875, "abs_diff": 0.0, "matches": true}}
