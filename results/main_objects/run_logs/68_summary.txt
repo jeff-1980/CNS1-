@@ -1,0 +1,1 @@
+SuperGraph-ChebGCN|CWRU 11-class 10 author 99.48 +- 0.83; last 99.50 +- 0.78; best_rep 99.57 +- 0.80; minloss 99.57 +- 0.80; budget50 97.53 +- 2.57 checks 10
