@@ -1,0 +1,4 @@
+{"group": "DANN*", "seed": 0, "seconds": 1452.7, "author_epoch": null, "reported": 0.3588957190513611, "check": {"recorded": 0.3588957055214724, "reported": 0.3588957190513611, "abs_diff": 1.3529888709395976e-08, "matches": true}}
+{"group": "AT*", "seed": 0, "seconds": 994.4, "author_epoch": null, "reported": 0.493865042924881, "check": {"recorded": 0.4938650306748466, "reported": 0.493865042924881, "abs_diff": 1.2250034375771435e-08, "matches": true}}
+{"group": "CAT*-TempScaling", "seed": 0, "seconds": 1074.5, "author_epoch": null, "reported": 0.546012282371521, "check": {"recorded": 0.5460122699386503, "reported": 0.546012282371521, "abs_diff": 1.2432870732936863e-08, "matches": true}}
+{"group": "CAT*-CPCS", "seed": 0, "seconds": 1087.9, "author_epoch": null, "reported": 0.5, "check": {"recorded": 0.5, "reported": 0.5, "abs_diff": 0.0, "matches": true}}
