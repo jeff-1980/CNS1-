@@ -1,0 +1,105 @@
+diff --git a/GACNN/dataset/MFPT_data.py b/GACNN/dataset/MFPT_data.py
+index 5f6648b..176c41d 100644
+--- a/GACNN/dataset/MFPT_data.py
++++ b/GACNN/dataset/MFPT_data.py
+@@ -81,7 +81,7 @@ def data_preprocessing(dataset_path,sample_number,window_size,overlap,normalizat
+ 
+     return loader_train, loader_test
+ 
+-loader_train, loader_test = data_preprocessing(dataset_path=r"D:\Users\hcy\Desktop\故障诊断数据集\MFPT Fault Data Sets",
++loader_train, loader_test = data_preprocessing(dataset_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "MFPT Fault Data Sets"),
+                              sample_number=100,window_size=1024,overlap=1024,normalization='Max-Min Normalization',
+                              noise=0,snr=0,input_type='FD',graph_type='complete_graph',K=4,p=0.5, n=4,
+                              node_num=10,direction='undirected',
+diff --git a/GACNN/utils/train_utils.py b/GACNN/utils/train_utils.py
+index 4a4a95e..6cdda15 100644
+--- a/GACNN/utils/train_utils.py
++++ b/GACNN/utils/train_utils.py
+@@ -3,16 +3,15 @@ import numpy as np
+ import time
+ import torch.nn.functional as F
+ import matplotlib.pyplot as plt
+-from dataset import CWRU_data,MFPT_data,SEU_data,xjtu_data
++from dataset import CWRU_data,MFPT_data,SEU_data
+ from model.ChebyNet import ChebyNet
+ from model.GCN import GCN
+ from model.CNN import CNN_1D
+ from model.MRF_GCN import MRF_GCN
+-from model.GACNN import GACNN
+-from model.GACNN2 import GACNN2
+ from model.GACNN_2 import GACNN_2
+ from utils.visualization_confusion import visualization_confusion
+ from utils.visualization_tsne import visualization_tsne
++AUDIT_HOOK = None; AUDIT_FINAL = None  # [audit] set by audit_run77.py
+ 
+ 
+ def train_utils(args):
+@@ -150,6 +149,7 @@ def train_utils(args):
+               '| train accuracy：{}/{}({:.2f}) '
+               '| train time：{}(s/epoch)'.format(
+             epoch,train_loss,correct_train,len(loader_train.dataset) * loader_train.dataset[0].num_nodes,100*train_accuracy,end-start))
++        if AUDIT_HOOK: AUDIT_HOOK(epoch + 1, model, loader_test, device)  # [audit]
+ 
+ 
+     # ==============================================================5、测试===================================================
+@@ -171,6 +171,7 @@ def train_utils(args):
+ 
+     print('test accuracy：{}/{}({:.2f}%)'.format(correct_test,len(loader_test.dataset*loader_test.dataset[0].num_nodes),100*test_accuracy))
+     print('all train time：{}(s/100epoch)'.format(np.array(train_time).sum()))
++    if AUDIT_FINAL: AUDIT_FINAL(test_accuracy)  # [audit]
+ 
+     if args.visualization == True:
+ 
+diff --git a/audit_run77.py b/audit_run77.py
+new file mode 100755
+index 0000000..16adfe2
+--- /dev/null
++++ b/audit_run77.py
+@@ -0,0 +1,47 @@
++"""[audit] Driver for object 77 (registry: results/main_objects/registry/77_iridescentcloud__machine_fault_diagnosis.md).
++Runs the authors' GACNN/train.py (runpy, cwd = GACNN/) with defaults (SEU bearingset, channel 0, 50 samples per class,
++FD input, complete graph of 10 nodes, train_size 0.6, GACNN_2, 100 epochs, Adam 1e-3) 10 times unseeded (their
++train_test_split has no random_state). The authors test only once after the last epoch; the hook evaluates their test
++loader after every epoch inside isolate() with their own test computation (node accuracy) and NLL. AUDIT_FINAL
++receives their final test accuracy. Needs PYTHONPATH with ~/audit_cns/code, AUDIT_RECORD_DIR."""
++import argparse, json, os, runpy, sys, time
++import torch, torch.nn.functional as F
++REPO = os.path.dirname(os.path.abspath(__file__))
++SRC = os.path.join(REPO, "GACNN")
++p = argparse.ArgumentParser()
++p.add_argument("--repeats", default="0-9")
++p.add_argument("--epochs", type=int, default=None)   # smoke only
++a = p.parse_args()
++lo, hi = map(int, a.repeats.split("-")) if "-" in a.repeats else (int(a.repeats),) * 2
++os.chdir(SRC); sys.path.insert(0, SRC)
++from audit.main.epoch_record import Recorder
++from audit.torch_utils import isolate
++import utils.train_utils as TU
++DATA = os.path.join(REPO, "SEU", "Mechanical-datasets-master", "gearbox", "bearingset")
++
++for r in range(lo, hi + 1):
++    rec = Recorder(obj="77", group="GACNN_2|SEU bearingset ch0 10-class", seed=r, select_split=None, report_split="test",
++                   note="unseeded repeat; their test runs once after the last epoch; per-epoch test evaluated by the "
++                        "audit in isolate() with their node-accuracy computation")
++
++    def hook(ep, model, loader_test, device):
++        with isolate([model], device):
++            model.eval()
++            correct, n, nll = 0, 0, 0.0
++            with torch.no_grad():
++                for d in loader_test:
++                    d = d.to(device); out = model(d)
++                    correct += (out.argmax(1) == d.y).sum().item(); n += d.y.numel()
++                    nll += F.nll_loss(out, d.y, reduction="sum").item()
++        rec.log(ep, "test", correct / n, nll / n)
++
++    final = {}
++    TU.AUDIT_HOOK = hook
++    TU.AUDIT_FINAL = lambda v: final.update(v=float(v))
++    sys.argv = ["train.py", "--dataset_path", DATA]
++    if a.epochs: sys.argv += ["--epochs", str(a.epochs)]
++    t0 = time.time()
++    runpy.run_path(os.path.join(SRC, "train.py"), run_name="__main__")
++    rec.finish(final.get("v"))   # author pick = last epoch (default)
++    print(json.dumps(dict(repeat=r, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                          reported=final.get("v"), check=rec.d["author_check"])), flush=True)
