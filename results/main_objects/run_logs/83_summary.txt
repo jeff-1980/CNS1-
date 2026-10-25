@@ -1,0 +1,1 @@
+FLSHGAT|uOttawa time-varying 5-class 1 label/class 10 author 97.43 +- 0.50; last 96.90 +- 0.47; best_rep 97.43 +- 0.50; minloss 65.47 +- 13.17; budget50 58.10 +- 17.76 checks 10
