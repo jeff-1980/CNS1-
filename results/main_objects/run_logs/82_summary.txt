@@ -1,4 +1,4 @@
-AT*|PU TD 13-class N15M07F10->N09M07F10 5 author 46.75 +- 4.12; last 46.75 +- 4.12; best_rep 48.16 +- 3.74; minloss 35.71 +- 15.61; budget50 43.87 +- 4.75 checks 5
-CAT*-CPCS|PU TD 13-class N15M07F10->N09M07F10 5 author 52.02 +- 4.78; last 52.02 +- 4.78; best_rep 52.64 +- 4.60; minloss 35.71 +- 15.61; budget50 43.87 +- 4.75 checks 5
-CAT*-TempScaling|PU TD 13-class N15M07F10->N09M07F10 5 author 51.78 +- 4.70; last 51.78 +- 4.70; best_rep 52.36 +- 4.45; minloss 35.71 +- 15.61; budget50 43.87 +- 4.75 checks 5
-DANN*|PU TD 13-class N15M07F10->N09M07F10 5 author 35.98 +- 3.58; last 35.98 +- 3.58; best_rep 38.22 +- 3.06; minloss 13.96 +- 0.66; budget50 34.48 +- 2.87 checks 5
+AT*|PU TD 13-class N15M07F10->N09M07F10 10 author 47.41 +- 3.18; last 47.41 +- 3.18; best_rep 48.99 +- 3.00; minloss 36.32 +- 15.25; budget50 45.21 +- 3.89 checks 10
+CAT*-CPCS|PU TD 13-class N15M07F10->N09M07F10 10 author 52.52 +- 4.02; last 52.52 +- 4.02; best_rep 53.42 +- 3.72; minloss 36.32 +- 15.25; budget50 45.21 +- 3.89 checks 10
+CAT*-TempScaling|PU TD 13-class N15M07F10->N09M07F10 10 author 51.84 +- 3.87; last 51.84 +- 3.87; best_rep 52.78 +- 3.58; minloss 36.32 +- 15.25; budget50 45.21 +- 3.89 checks 10
+DANN*|PU TD 13-class N15M07F10->N09M07F10 10 author 37.07 +- 3.46; last 37.07 +- 3.46; best_rep 39.14 +- 3.18; minloss 13.50 +- 1.38; budget50 33.83 +- 2.28 checks 10
