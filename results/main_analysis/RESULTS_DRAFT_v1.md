@@ -59,7 +59,19 @@ Only H-B1 weakens further when objects are dropped:
 
 Seventeen objects (400 runs) have a selection split that is separate from the reported split. In 38 of these runs (9.5%), selection-split accuracy reached ≥ 0.999 within the first 5% of epochs, after which the selection criterion can no longer separate checkpoints. These runs are concentrated in two objects: 60 (27 of 40) and 51 (8 of 10). The reported split saturates this early in 35 of all 880 runs (4.0%). Script: `code/audit/main/s2_saturation.py`; output: `s2.json`.
 
-## 3.6 Cases worth reporting individually (descriptive, from attempts.csv)
+## 3.6 Agreement with reported values (S6)
+
+Seventeen objects publish a value for their headline method that we could compare with our author-protocol seed mean (`s6_paper_values.csv`). For each one we took the method the paper or README leads with and the metric it reports.
+- **All 17:** 11 lie within 2 pp of the reported value.
+- **Paper values only:** for the 14 objects where the value comes from the paper itself (dropping the three README-only values), 9 lie within 2 pp.
+- **The six misses:**
+  - two collapse-prone distillation students, 13 and 62 (17–19 pp below);
+  - one model that is far from reproduced, 25 (38 % against 99.5 % in its README);
+  - three gaps of 3.8–5.1 pp: 77, 21 and 14. In 14 the two methods also swap rank.
+
+In the other 21 objects the paper was closed, the table was not accessible, or the value was given only in a figure, so no comparison is possible. Each headline-group choice is our reading of the paper and is listed in the CSV.
+
+## 3.7 Cases worth reporting individually (descriptive, from attempts.csv)
 
 These cases are illustrations, not confirmatory evidence:
 - **25:** the last epoch reached about 38% against about 99.5% claimed in the README.
@@ -72,5 +84,4 @@ These cases are illustrations, not confirmatory evidence:
 
 - **S3:** static coding still needs a second coder.
 - **S4 and S5:** checkpoint provenance and code lineage.
-- **S6 (agreement within 2 pp of paper values):** needs a table of paper values, one per object; the attempts notes have them in free text only.
 - **Figure:** `fig_inflation.pdf` (a: I_o by object with seed-bootstrap 95% CI; b: best_rep − last against h, coloured by author rule) is done; captions still to write.
