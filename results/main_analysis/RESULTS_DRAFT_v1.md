@@ -55,7 +55,11 @@ Only H-B1 weakens further when objects are dropped:
 | 13, 42, 77, 82 | 0.010 | 0.76 | 0.093 | 5 / 6 |
 | both | 0.015 | 0.76 | 0.148 | 5 / 6 |
 
-## 3.5 Cases worth reporting individually (descriptive, from attempts.csv)
+## 3.5 Early saturation (S2)
+
+Seventeen objects (400 runs) have a selection split that is separate from the reported split. In 38 of these runs (9.5%), selection-split accuracy reached ≥ 0.999 within the first 5% of epochs, after which the selection criterion can no longer separate checkpoints. These runs are concentrated in two objects: 60 (27 of 40) and 51 (8 of 10). The reported split saturates this early in 35 of all 880 runs (4.0%). Script: `code/audit/main/s2_saturation.py`; output: `s2.json`.
+
+## 3.6 Cases worth reporting individually (descriptive, from attempts.csv)
 
 These cases are illustrations, not confirmatory evidence:
 - **25:** the last epoch reached about 38% against about 99.5% claimed in the README.
@@ -66,7 +70,6 @@ These cases are illustrations, not confirmatory evidence:
 
 ## Still open for this section
 
-- **S2 (early saturation):** needs selection-split curves from the raw records on the PC.
 - **S3:** static coding still needs a second coder.
 - **S4 and S5:** checkpoint provenance and code lineage.
 - **S6 (agreement within 2 pp of paper values):** needs a table of paper values, one per object; the attempts notes have them in free text only.
