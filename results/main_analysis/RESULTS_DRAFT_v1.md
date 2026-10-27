@@ -70,4 +70,4 @@ These cases are illustrations, not confirmatory evidence:
 - **S3:** static coding still needs a second coder.
 - **S4 and S5:** checkpoint provenance and code lineage.
 - **S6 (agreement within 2 pp of paper values):** needs a table of paper values, one per object; the attempts notes have them in free text only.
-- **Figures:** a forest plot of I_o by object, and a scatter of best_rep − last against h with the object-cluster fit.
+- **Figure:** `fig_inflation.pdf` (a: I_o by object with seed-bootstrap 95% CI; b: best_rep − last against h, coloured by author rule) is done; captions still to write.
