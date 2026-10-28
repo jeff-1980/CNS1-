@@ -1,0 +1,2 @@
+e6c4b453b07d3fd331ff6248c90eba80305dde1dbb24b0131da48d1b7b0b546e  results/static_coding/CODEBOOK_v1.md
+frozen 2026-10-28 15:41 UTC (jeff: "手册没问题，冻结"); later changes -> results/DEVIATIONS_AUDIT.md

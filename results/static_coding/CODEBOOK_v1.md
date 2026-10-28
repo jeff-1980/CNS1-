@@ -1,6 +1,6 @@
-# 静态编码手册 v1（草稿，待 jeff 确认）
+# 静态编码手册 v1（2026-10-28 jeff 确认冻结）
 
-依据：正式预注册 §6（`results/PREREG_AUDIT_main.md`）与试点 §3.1 的 S1–S8 条目。预注册只给了条目名，下面的类别是本手册补充的操作定义；jeff 确认后冻结，冻结前的修改不算偏离，冻结后的修改写入 `results/DEVIATIONS_AUDIT.md`。
+依据：正式预注册 §6（`results/PREREG_AUDIT_main.md`）与试点 §3.1 的 S1–S8 条目。预注册只给了条目名，下面的类别是本手册补充的操作定义；已于 2026-10-28 冻结，之后的任何修改都写入 `results/DEVIATIONS_AUDIT.md`。
 
 ## 怎么编
 
