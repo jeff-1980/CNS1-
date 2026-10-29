@@ -1,0 +1,1 @@
+GACNN_2|SEU bearingset ch0 10-class 10 author 89.00 +- 7.67; last 89.00 +- 7.67; best_rep 90.10 +- 7.86; minloss 82.10 +- 25.89; budget50 16.60 +- 11.29 checks 10

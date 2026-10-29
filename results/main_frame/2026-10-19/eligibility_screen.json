@@ -1,0 +1,2598 @@
+{
+ "meta": {
+  "n_candidates": 170,
+  "verdicts": {
+   "excluded": 138,
+   "eligible": 32
+  },
+  "reasons": {
+   "E0": 1,
+   "E1": 32,
+   "E2": 23,
+   "E3": 70,
+   "E4": 6,
+   "E5": 2,
+   "E6": 1,
+   "E7": 1,
+   "E8": 1,
+   "E9": 1
+  },
+  "n_eligible_confirmed": 25,
+  "n_eligible_pending": 7,
+  "reason_codes": {
+   "E0": "repo not found",
+   "E1": "not the paper authors own code",
+   "E2": "no peer-reviewed own paper",
+   "E3": "not PyTorch/TensorFlow (incl. no Python code)",
+   "E4": "no training script",
+   "E5": "needs non-public data",
+   "E6": ">2 GPU-h per run",
+   "E7": "pilot object",
+   "E8": "code differs from published version",
+   "E9": "no classification accuracy (out of scope)"
+  },
+  "ordering": "eligible sorted by own_paper_doi; numpy default_rng(20261017).permutation(n)",
+  "numpy": "2.5.3",
+  "screening": "LLM first pass on dossier (4 batches, one shared rubric); unclear cases adjudicated by the audit thread; pending = verified at attempt, failures logged as attempt outcomes",
+  "registration": "https://osf.io/2tqv6"
+ },
+ "screening": [
+  {
+   "full_name": "18609675325/beginner",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Copy of Xiaohan-Chen transfer-learning library (DDC/CORAL/DANN); cited DOI is a review paper.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "44afdc60956fe486d00659875fd173ef881c0450"
+  },
+  {
+   "full_name": "Aalto-Arotor/openConMo",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "other",
+   "has_training_script": false,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Library: \"Python library for vibration signal–based condition monitoring\"; numpy/scipy only, no DL training.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "d2924b6683f1ba49661fae63df963d71efa10c15"
+  },
+  {
+   "full_name": "abcardoso/vit-bearing-faults",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "PU",
+    "HUST",
+    "UORED-VAFCLS"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "Master's dissertation code; listed DOI is the 'UORED dataset paper', not own paper.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "0599344fd880bef8c3792cd09ca93b74f8995d05"
+  },
+  {
+   "full_name": "Afragrant/Bearing-fault-diagnosis-base-on-multi-scale-CNN-and-LSTM-model",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Third-party reimplementation; README says '参考论文' (reference paper) by Chen et al., official code is Xiaohan-Chen.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "afb44b1db639a9ba8123ae034e852d931df3868f"
+  },
+  {
+   "full_name": "ahcm/Tech-Ai-Math-VR-Robotics-Quantum",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "b730b84905ddb337e27e1024bbd7231c31a07f3e"
+  },
+  {
+   "full_name": "AhmetYasarKaplan/hybrid-mae-fewshot-bearing-diagnosis",
+   "own_paper_doi": "10.1109/siu71813.2026.11637089",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E8",
+   "note": "Bachelor thesis code; 'current, more advanced version of that work' than SIU paper.",
+   "screener": "llm",
+   "status_note": "README says method parts were added after the published paper; code is not the published version",
+   "adjudicated": true,
+   "commit": "c3d7a9e58cc8fef4e04b65788317fbb7985009ca"
+  },
+  {
+   "full_name": "AI-Efficiency/Awesome-Model-Quantization",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "70a54945c6604197e11b6bbdb4d19e4bd78289b5"
+  },
+  {
+   "full_name": "AliNaderiii/AliNaderiii",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "aab906326159faa07c85b8d39b316eefe75a926e"
+  },
+  {
+   "full_name": "AliNaderiii/AliNaderiii.github.io",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language HTML)",
+   "screener": "rule",
+   "commit": "b38cc4f1d09c6c21b8d57d26f71fbeea3fe37128"
+  },
+  {
+   "full_name": "alm-82/cwru-bearing-generalization",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "\"This undergraduate research project\"; DOI cited is Smith & Randall CWRU benchmark, not own paper.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "3dfa2fb7dd403bb5e672b392ee925eda80e14afe"
+  },
+  {
+   "full_name": "amstlldj/DLRSD-SMOTE",
+   "own_paper_doi": "10.1016/j.knosys.2025.114944",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "SEU"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "'This paper uses the CWRU and SEU public datasets'; DLRSD-SMOTE/main.py, Classfier/main.ipynb; PyTorch 2.3.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "b9970548bac540122a5afb8481fe7721b27da23f"
+  },
+  {
+   "full_name": "amstlldj/SCIF-CFGRF",
+   "own_paper_doi": "10.1109/tim.2025.3635328",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "SEU"
+   ],
+   "verdict": "excluded",
+   "reason": "E4",
+   "note": "Official code per description; train.ipynb trains generator, dataset/CWRU.py and dataset/SEU.py.",
+   "screener": "llm",
+   "status_note": "only generator training; no classifier training for the accuracy tables",
+   "adjudicated": true,
+   "commit": "e338158a4ee4546af12356a92078d8bc1113c44e"
+  },
+  {
+   "full_name": "ardentyang/dl-mvs",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "unclear",
+   "has_training_script": false,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Third-party reimplementations of others' models: 'I reproduced the deep learning models proposed in some literature'; models/ only.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "6658e7376645e8e1720897c33d4cef3f2c00b43b"
+  },
+  {
+   "full_name": "arnksh/GS-EvoN2N",
+   "own_paper_doi": "10.1016/j.engappai.2023.107498",
+   "peer_reviewed": "yes",
+   "framework": "other",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "PU"
+   ],
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "MATLAB code (GS_N2N_CWRU.m, softmaxTrain.m); EAAI 2024 own paper.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "70f5fa17bf2012cba83ce96550bbeebf7ca2d2c8"
+  },
+  {
+   "full_name": "arnksh/QuickN2N",
+   "own_paper_doi": "10.1109/tai.2021.3123935",
+   "peer_reviewed": "yes",
+   "framework": "other",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "PU"
+   ],
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "Proposed method in MATLAB (code/ReqFunc/*.m, .p); Python DANN folders are only comparison baselines.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "9f5f0a9883a7bcf5ec2a806043b7f3e98dc3a62a"
+  },
+  {
+   "full_name": "asdvfghg/asdvfghg",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "52e1f2a689fdbeeef0568feca10a216cf8923583"
+  },
+  {
+   "full_name": "asdvfghg/BearingPGA-Net",
+   "own_paper_doi": "10.1109/tim.2023.3346517",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "'official repository of the paper' in IEEE TIM; train_dkd.py, train_single.py; CWRU noised data.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "96392f3527498a38c8d2e00911deb810e168fb79"
+  },
+  {
+   "full_name": "asdvfghg/ClassBD",
+   "own_paper_doi": "10.1016/j.ymssp.2024.111750",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "PU",
+    "JNU"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "'official repository of the Mechanical Systems and Signal Processing paper'; train_local.py, PU/JNU loaders.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "08530497e388ed691936f15d6c55267f277ed270"
+  },
+  {
+   "full_name": "asdvfghg/MNNBD",
+   "own_paper_doi": "10.1088/1361-6501/accbdb",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "XJTU-SY"
+   ],
+   "verdict": "excluded",
+   "reason": "E9",
+   "note": "Blind-deconvolution feature extraction (main.py trains MNNBD), no classification accuracy table; fit with checkpoint-selection audit needs decision.",
+   "screener": "llm",
+   "status_note": "blind deconvolution feature extractor; no classification accuracy to select checkpoints on",
+   "adjudicated": true,
+   "commit": "fe66088a15c951d74f5cd8521e7734fc1e466c55"
+  },
+  {
+   "full_name": "asdvfghg/QCNN_for_bearing_diagnosis",
+   "own_paper_doi": "10.1109/tim.2023.3259031",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "'offical repository' of TIM paper; train.py trains QCNN and WDCNN; 'We use the CWRU dataset'.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "e325210b1ca19bdbfc731959685f6a2a2c9d7ddc"
+  },
+  {
+   "full_name": "asdvfghg/quadratic_efficiency",
+   "own_paper_doi": "10.1109/tpami.2025.3588894",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "Official TPAMI repo; bearing_experiment/train.py with QCNN vs WDCNN on CWRU 0HP data.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "8a16d3bcf77b2083e8673a279b265ece9c274890"
+  },
+  {
+   "full_name": "atik666/NEEEMD",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language MATLAB)",
+   "screener": "rule",
+   "commit": "4baf726ac9ac0faac3435d42bcce09d42a550c84"
+  },
+  {
+   "full_name": "autouch/AWT-DDFN",
+   "own_paper_doi": "10.1016/j.ymssp.2026.114827",
+   "peer_reviewed": "yes",
+   "framework": "unclear",
+   "has_training_script": true,
+   "public_data": [
+    "PU"
+   ],
+   "verdict": "eligible",
+   "reason": "",
+   "note": "'Open source code for the paper AWT-DDFN'; train.py; dataset N15_M07_F10 (Paderborn).",
+   "screener": "llm",
+   "status_note": "framework to verify at attempt",
+   "adjudicated": true,
+   "commit": "a77c7baffbe341dd446c33a5a572f64ba061b545"
+  },
+  {
+   "full_name": "brenndaude/elevator-predictive-maintenance",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "other",
+   "has_training_script": false,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "Portfolio proof-of-concept with XGBoost/scikit-learn; DOIs are a review and Zenodo dataset.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "33c291b75a84ec3a00c743698e6deec8c129621e"
+  },
+  {
+   "full_name": "CamilleQAQ/entropy-toolbox",
+   "own_paper_doi": null,
+   "peer_reviewed": "unclear",
+   "framework": "other",
+   "has_training_script": false,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "'Python toolbox for single-scale and multiscale entropy analysis'; NumPy/SciPy library, no DL.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "7caecbb83d0d1627d0839f52b043fc4896e70077"
+  },
+  {
+   "full_name": "cathysiyu/Mechanical-datasets",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "9732a2820f4cdf91fa7d1d0cc95442376660f5dd"
+  },
+  {
+   "full_name": "ccwang111/Fault_Dataset1",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "39ab4200d044dad66b5e4ea471948e0f882fbc34"
+  },
+  {
+   "full_name": "CHAOZHAO-1/Awsome-Multi-modal-based-PHM",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "8ff5596c504b03c35f25fe6aa99ae05675b51649"
+  },
+  {
+   "full_name": "CHAOZHAO-1/DG-PHM",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "ec2d667bf3cc60c2f0f1ec8f480eb0169dc4ba69"
+  },
+  {
+   "full_name": "CHAOZHAO-1/LLM-based-PHM",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "a5ba734773483525af4cca59f1da3a6638ca820e"
+  },
+  {
+   "full_name": "chenxiG/BI-MMGAN",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "cdb95b68b5812165151fbf9e82e2bdebb66002df"
+  },
+  {
+   "full_name": "chiduc2905/test",
+   "own_paper_doi": null,
+   "peer_reviewed": "unclear",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Copy of MixMamba-Fewshot code; README clones linhthan216/Mamba-Bearing, owner not among listed authors.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "a5f0aed54af989895f8b49adf9b69d9c9c455ca3"
+  },
+  {
+   "full_name": "cosword/meta-paper-daily",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "other",
+   "has_training_script": false,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Paper-feed aggregator: 'CV Papers Daily' scraping arXiv/Scholar; no fault-diagnosis model.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "3045885dad0c00e38ce49327c8987360756c5895"
+  },
+  {
+   "full_name": "DABINB/CSST-Net",
+   "own_paper_doi": "10.1109/tim.2024.3502884",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "HIT aero-engine inter-shaft bearing"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "\"official PyTorch codes\" for TIM 2025 paper; CSST_Net/train.py; data via Google Drive.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "b445512383d3f511c02dae2a5a2756a82eb5c73b"
+  },
+  {
+   "full_name": "dasolma/phmd",
+   "own_paper_doi": "10.1016/j.softx.2025.102039",
+   "peer_reviewed": "yes",
+   "framework": "other",
+   "has_training_script": false,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Dataset-access library: 'designed to facilitate access to datasets' for PHM.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "be3d95a57ad88465be37b546495d7eb664763c0c"
+  },
+  {
+   "full_name": "debug-xue/dscnn_plos-one",
+   "verdict": "excluded",
+   "reason": "E0",
+   "note": "repository not found on GitHub (deleted or private)",
+   "screener": "rule",
+   "commit": null
+  },
+  {
+   "full_name": "dhiyaeddine-tamine/moment-peft-bearing-lbf",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "Fraunhofer LBF wind-turbine"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "Article 'submitted to Mechanical Systems and Signal Processing' plus master's thesis; DOI is the dataset paper.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "7e38ae74bdf5fe47ff1d0e4498ba428fa90a82b7"
+  },
+  {
+   "full_name": "Dingding1996/bearing-fault-diagnosis",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "other",
+   "has_training_script": true,
+   "public_data": [
+    "PU"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "Portfolio 'predictive maintenance case study'; DOI is the Paderborn Zenodo dataset; classical sklearn/xgboost.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "4795ef5fb5f983540951dffcda76bb7e16b10d99"
+  },
+  {
+   "full_name": "DZZX007/bear_fault_diagnosis",
+   "own_paper_doi": "10.1007/s10845-020-01600-2",
+   "peer_reviewed": "yes",
+   "framework": "unclear",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "\"official baseline of paper\" (J Intell Manuf); framework of cnn_lstm_model.ipynb not identifiable, no deps.",
+   "screener": "llm",
+   "status_note": "copy of the author repo Xiaohan-Chen/bear_fault_diagnosis (same DOI), owner not an author",
+   "adjudicated": true,
+   "commit": "8a9f80c6ccff4ed71e54c9df2ce1e02c97984d0a"
+  },
+  {
+   "full_name": "e62505/fault_diognosis_dataset",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "94b427c17c9aec9471164719a57b4b4e15139e20"
+  },
+  {
+   "full_name": "enhansome/enhansome-Awesome-Model-Quantization",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "12e6ee7892cfea2bcea334f6f75405a72659de4c"
+  },
+  {
+   "full_name": "enhansome/enhansome-Awesome-Spiking-Neural-Networks",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "031b8b48ba33fb5a1afdea377d70b422affe4ecd"
+  },
+  {
+   "full_name": "enhansome/enhansome-Awesome-VAEs",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "2ae21d228e2f4f2cda72a8e9db2e871c102ac017"
+  },
+  {
+   "full_name": "enhansome/enhansome-nas-papers",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "bf1b8af5532271e57bac581f4d67e94c1a32f950"
+  },
+  {
+   "full_name": "enzoniko/LPFTDSPIPIFD",
+   "own_paper_doi": "10.1109/access.2026.3663988",
+   "peer_reviewed": "yes",
+   "framework": "unclear",
+   "has_training_script": true,
+   "public_data": [],
+   "verdict": "eligible",
+   "reason": "",
+   "note": "IEEE Access PINN code with training_scripts/; dataset is a 'ring bearing system' via LoadDatav3.py, provenance/public availability not stated; framework not shown in dossier.",
+   "screener": "llm",
+   "status_note": "ring-bearing dataset source and framework to verify at attempt",
+   "adjudicated": true,
+   "commit": "799bf2d5d602f52d13c514059aa1c01cc8e2b6c5"
+  },
+  {
+   "full_name": "Erikdai/Fault-Diagnosis-of-Aero-engine-Inter-shaft-Bearings",
+   "own_paper_doi": "10.1109/mcte62505.2024.11117663",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "PyTorch implementation of IEEE MCTE 2024 paper; SEDSCN-TRANS.ipynb trains '30 epochs in under a minute'.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "658c64286fdd547d577437f2ad5280585aa22e68"
+  },
+  {
+   "full_name": "ess-pee/motor-bearing-ifd",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "tensorflow",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "Flask IFD demo app with 1D-CNN; DOIs are cited references, no own paper claimed.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "d3081be886b41e7582afe9d4048a77c2037a7bdc"
+  },
+  {
+   "full_name": "FangBo-0219/MNAD",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "0001a2e7f8bee6d49ee4dd1dcc35b64b3fcf9e70"
+  },
+  {
+   "full_name": "Feaxure-fresh/TL-Fault-Diagnosis-Library",
+   "own_paper_doi": null,
+   "peer_reviewed": "unclear",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "PU",
+    "JNU",
+    "MFPT"
+   ],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "\"Transfer Learning Library for Fault Diagnosis\" reimplementing many methods; ADACL DOI is a featured model.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "7d3ab0b99be60c465572ea10a2108195035842d7"
+  },
+  {
+   "full_name": "FlaGer99/SLR-Spatio-Temporal-GNN",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language HTML)",
+   "screener": "rule",
+   "commit": "c41d390a9c2801808ed9f1879e96b6b0aedca414"
+  },
+  {
+   "full_name": "fsantibanezleal/CAOS_RotorVitals",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "XJTU-SY",
+    "Ottawa",
+    "MFPT"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "Web workbench; own write-up is a Zenodo 'Technical report', not peer-reviewed.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "771fd809716120c1fb9169070b9534e5c88dc173"
+  },
+  {
+   "full_name": "gama-ufsc/bearing-data-leakage",
+   "own_paper_doi": "10.1016/j.ymssp.2026.114640",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "PU",
+    "Ottawa",
+    "HUST"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "MSSP 2026 paper pipeline; src/train.py with Hydra configs, WDCNN/ResNet18 backbones, Lightning.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "4c9fd8cb3cf9d5aa4ef2b653cb314a0727e12f3d"
+  },
+  {
+   "full_name": "giabao804/few-shot-mamba",
+   "own_paper_doi": "10.1016/j.compeleceng.2024.110004",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "HUST"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "'official implementation of SC-MambaFew' (Computers and Electrical Engineering); train_1shot.py/train_5shot.py.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "41bd1757102d7a03f7750dc3d0fb0b95e8f9410d"
+  },
+  {
+   "full_name": "giabao804/few-shot-structural-rep",
+   "own_paper_doi": "10.1007/978-3-031-76197-3_14",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "\"our implemented source code for the paper\" (Springer GTSD 2024); train_1shot.py/train_5shot.py, torch.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "094a9ec613b1eef7513f3841cda50992b60fee7b"
+  },
+  {
+   "full_name": "guijiejie/Small-Sample-Imbalanced-Problem",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "4329e5e85b12f9b84680444020c4c17a991e55f4"
+  },
+  {
+   "full_name": "GuokaiLiu/Awesome-Graph-Neural-Network-for-PHM",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "4c26d9a4e15edd7a03b96964e3b142e4a749174d"
+  },
+  {
+   "full_name": "GyeongHoMin/TST-paper-Review",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "5b8d6714ade473eb9bf62e0dc2aa50d819c731ad"
+  },
+  {
+   "full_name": "Haha13145/-LLM-based-PHM",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "b27aaba89bd9563db4619c6f5b2980f791639bc2"
+  },
+  {
+   "full_name": "Haha13145/Awsome-Multi-modal-based-PHM",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "6b8d99a3320d6365927215e8737a20ea3025a06d"
+  },
+  {
+   "full_name": "Haha13145/Domain-generalization-for-fault-diagnosis-and-prognosis-",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "df3c93f896cbef781cf5ce7b14f042b69bd42736"
+  },
+  {
+   "full_name": "Haha13145/Domain-generalization-PHM",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "cb6c065839d0c1f70d0da0df3cc75f973c3693c8"
+  },
+  {
+   "full_name": "hectorLop/Conditional-Adversarial-Domain-Generalization-with-Single-Discriminator",
+   "own_paper_doi": "10.1109/tim.2021.3071350",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "'Pytorch implementation of' Q. Zhang et al. paper; owner not shown to be an author.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "e0f2cd042e2c124e73d2982af28fa270263180d8"
+  },
+  {
+   "full_name": "Hming6789/time-series-ca-tcc-bearing-fault",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Student adaptation of CA-TCC (TPAMI 2023, Eldele et al.) to CWRU; owner not an author.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "4f344830e0be4cb7237dace97ca62fe77cbac4ec"
+  },
+  {
+   "full_name": "HouLeiHIT/HIT-dataset",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "ef17655977519eda9463a3d060da9fb8b47fab6f"
+  },
+  {
+   "full_name": "hustcxl/Deep-learning-in-PHM",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "8bbacc781614a17380ca2a3edb5e4d96fb6fed25"
+  },
+  {
+   "full_name": "hustcxl/Rotating-machine-fault-data-set",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "ee9eae4629ec703f71374bd034fea7b000f41d00"
+  },
+  {
+   "full_name": "hxf1228/hfn-current-fd",
+   "own_paper_doi": "10.1088/1361-6501/ad099b",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [],
+   "verdict": "eligible",
+   "reason": "",
+   "note": "'source code for MST paper Three-Dimensional Hybrid Fusion Networks'; train.py, pytorch 1.11 badge.",
+   "screener": "llm",
+   "status_note": "current-signal dataset to verify as public (e.g. PU) at attempt",
+   "adjudicated": true,
+   "commit": "143828f06eb0b93eced6d94cf286d60484df1936"
+  },
+  {
+   "full_name": "hxx-a/SR-codes",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language MATLAB)",
+   "screener": "rule",
+   "commit": "84c997f2cb191c7d284fa419e0f7a49a6d2a9f35"
+  },
+  {
+   "full_name": "jackguagua/awesome-nas-papers",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "12e2321db170ac51d6b12124916094caa7329bc4"
+  },
+  {
+   "full_name": "jakubzitny/papers",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "39129ce75daf35c00e4419517c40cce3227e536d"
+  },
+  {
+   "full_name": "Jay0804/Multi-Condition-Fault-Diagnosis",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "f9e2c4f247230bb240fa9a099ddee02a6d53f9ec"
+  },
+  {
+   "full_name": "JiansheFengRe/industrial-ts-datasets",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "other",
+   "has_training_script": false,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "\"Curated catalog of high-quality industrial time-series datasets\"; no model code.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "cae6e82c806ca024e0f4f528a443edfc35a82707"
+  },
+  {
+   "full_name": "John-520/DMsrTTLN",
+   "own_paper_doi": "10.1109/tii.2024.3438229",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": "unclear",
+   "public_data": [
+    "CWRU",
+    "JNU",
+    "PU",
+    "SEU"
+   ],
+   "verdict": "eligible",
+   "reason": "",
+   "note": "Author's TII code (main.py, datasets/*.py) but paper's time-varying-speed cross-device data only 'in references [24-26]'; public availability and end-to-end script unconfirmed.",
+   "screener": "llm",
+   "status_note": "time-varying-speed datasets to verify as public at attempt",
+   "adjudicated": true,
+   "commit": "b770b535a26d4a5045394a1eb7573dc701fb9284"
+  },
+  {
+   "full_name": "John-520/ESNN",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "34071a2bb554ab3d14b76fdcc173358570f5bb1f"
+  },
+  {
+   "full_name": "John-520/Models-for-DPICEN",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "247dffc35e5c8cce0c529c17ac02047073eb52a0"
+  },
+  {
+   "full_name": "John-520/PKECA",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "5042c2f8514408ee11b72319f45ed6995b63c90b"
+  },
+  {
+   "full_name": "jon-chun/nafems-anomalous-time-series-augmentation",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "ce30f85383d3ffa2c7dbc19ee0d2482c02944005"
+  },
+  {
+   "full_name": "jsdaiustc/Multi_GAMP",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language MATLAB)",
+   "screener": "rule",
+   "commit": "7c222c430c4d3c66945a5f7f49bf58a644cefa7a"
+  },
+  {
+   "full_name": "junior209lsj/FaultDiagnosisOptimizerBenchmark",
+   "own_paper_doi": "10.1109/access.2023.3281910",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "public bearing datasets auto-downloaded (fdob/download.py); names not listed in dossier"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "IEEE Access benchmark by Lee & Kim; benchmark.py + fdob/trainmodule.py, WDCNN/TICNN etc.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "536b97040cfd66cee194c0376c475d3554d77f2e"
+  },
+  {
+   "full_name": "karabogaerdi/rulman-ariza-teshisi",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "other",
+   "has_training_script": false,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Data-mining course midterm ('Veri Madenciliği dersi vize çalışması') reproducing others' Random Forest paper.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "035a86198a3299d9d39ba802310c663de632802e"
+  },
+  {
+   "full_name": "kavianpour/Bearing-Fault-Diagnosis-DTCNN",
+   "own_paper_doi": "10.1109/icspis54653.2021.9729385",
+   "peer_reviewed": "yes",
+   "framework": "tensorflow",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "\"Official implementation of the IEEE ICSPIS 2021 paper\"; train.py reproduces Table III; tensorflow>=2.8.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "502effedc7fc50b2dea76c03cee9da1bc41ca7db"
+  },
+  {
+   "full_name": "kavianpour/CARMA-DACA-fault-diagnosis",
+   "own_paper_doi": "10.1016/j.measurement.2022.111536",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "train.py --benchmark gives 'full comparison table: every method x every task'; download_cwru.py.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "602f43e9bd0cf711211251902176b4b33ccd04b8"
+  },
+  {
+   "full_name": "kavianpour/DSAGCN-Bearing-Fault-Diagnosis",
+   "own_paper_doi": "10.1016/j.neucom.2022.10.057",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "PU",
+    "JNU"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "Neurocomputing 2023 DSAGCN, co-author Kavianpour; train.py, data_pu.py, data_jnu.py, 'compared against ten methods'.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "0ec074aa6af4e4a7e0070b90027fc184830f8057"
+  },
+  {
+   "full_name": "kavianpour/KAVI-resource-constrained-fault-diagnosis",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "176ba71e2beee35afb2e563d1433625e2c0172d7"
+  },
+  {
+   "full_name": "kavianpour/kavianpour",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "f77dbe9d167a3ab2defae8fe2492611800b01f2e"
+  },
+  {
+   "full_name": "kavianpour/PTPAI-bearing-fault-diagnosis",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "422d1f7afa20187a4ca43b60e6ce5415f1d9038a"
+  },
+  {
+   "full_name": "kavianpour/Synthetic-to-Real-Bearing-CMHA-HMLDA",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "f26621a45ddceb7bc9d3ddc690b92233d089e4b8"
+  },
+  {
+   "full_name": "kun55bao/bearing-trades-reproducibility",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "PU",
+    "MFPT"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "Reproducibility package for a 'manuscript'; only Zenodo DOIs, no published peer-reviewed paper identified.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "aca888e7a7cca1e9457b766e7ece4f2fbd82bf11"
+  },
+  {
+   "full_name": "kun55bao/open-set-bearing-ranking-benchmark",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "JNU",
+    "PU"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "\"Reproducibility package for the manuscript\"; only Zenodo DOI, no published paper DOI.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "e72c52095f63fc7609c6c3b8ed5b3bea65a03fe1"
+  },
+  {
+   "full_name": "Lab-of-AMFD/AHU-Parabolic-Acoustic-Mirror-Bearing-Dataset",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "23ab90ed8af559da146d62d5a5dc3b530855293b"
+  },
+  {
+   "full_name": "Lab-of-AMFD/ASFE-Transformer",
+   "own_paper_doi": "10.1016/j.ymssp.2026.114030",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": false,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E4",
+   "note": "Repo only has Models/*.py; train.py referenced in README is absent; acoustic dataset unspecified.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "3863493757cd4da4554bd985d303f909683dc408"
+  },
+  {
+   "full_name": "LGDiMaggio/Anomaly-detection-bearing-faults-PolitoTestRig",
+   "own_paper_doi": "10.1109/iccad64771.2025.11099203",
+   "peer_reviewed": "yes",
+   "framework": "other",
+   "has_training_script": false,
+   "public_data": [
+    "PoliTo spherical roller bearing dataset (Zenodo)"
+   ],
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "scikit-learn only (Isolation Forest, LOF, One-Class SVM); no PyTorch/TensorFlow in requirements.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "746f88ed439d339f55150895e0e3f4c35dd97bb7"
+  },
+  {
+   "full_name": "LGDiMaggio/few-shot-fault-diagnosis-multimodal-LLM",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "pytorch",
+   "has_training_script": false,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "Only Zenodo software DOI; LLM API evaluation, 'You must provide your own bearing vibration data'.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "e26c990192c48f877ac293513592209740f37769"
+  },
+  {
+   "full_name": "liguge/GTFENet_pytorch",
+   "own_paper_doi": "10.1016/j.engappai.2022.105794",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": false,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Third-party PyTorch port; official code is TF at ShaneSpace; contact Chao He not an author; no training script.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "71880bac11d96e1b6a0b500cb03b2a78b13e7160"
+  },
+  {
+   "full_name": "liguge/liguge",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "7b1a791db7da033be437102af01348d6770a6561"
+  },
+  {
+   "full_name": "liguge/MDPS_pytorch",
+   "own_paper_doi": "10.1109/icme52920.2022.9859658",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "README: '[Unofficial] [pytorch] the implementation'; official code is IWantBe/MDPS (TensorFlow).",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "3f6828d9ed8b10c782385dd0d5f3ac6e27e44212"
+  },
+  {
+   "full_name": "liguge/PGCNN",
+   "own_paper_doi": null,
+   "peer_reviewed": "yes",
+   "framework": "unclear",
+   "has_training_script": false,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Single sp.py; paper by Ruan et al., contact Chao He not an author; refers to another repo.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "4600b08ab88164aa6798804944881c650084c44d"
+  },
+  {
+   "full_name": "liguge/PyDSN",
+   "own_paper_doi": "10.1016/j.aei.2024.102568",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": false,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E4",
+   "note": "Repo contains only loss.py; 'Partial code is available'; freight-train target data.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "04f694995f5557acb9060b5d7af87f991e1e69e0"
+  },
+  {
+   "full_name": "lijun-deng0115/kan-dann-cross-condition-bearing",
+   "own_paper_doi": null,
+   "peer_reviewed": "unclear",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "PU",
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "\"Companion code for\" KAN-DANN manuscript with no venue/DOI; DOI listed is PHME dataset paper.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "c99cbd78d3403bb576d6edb4b7ca5edb57f32e82"
+  },
+  {
+   "full_name": "linhthan216/MixMamba-Fewshot",
+   "own_paper_doi": "10.1007/s10489-025-06361-0",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "'our implemented source code for the paper' (Applied Intelligence); train_1shot.py/train_5shot.py on CWRU.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "3b25f04020c07f7c566a13b08a9e86880e96f7a8"
+  },
+  {
+   "full_name": "liq22/ISFM_HSE",
+   "own_paper_doi": "10.1016/j.inffus.2025.103277",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": false,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E4",
+   "note": "Only E_01_HSE.py module; full ISFM framework is 'Private stage', no training script.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "b6998543f7feeb7ecae7877d823426d60c5fae13"
+  },
+  {
+   "full_name": "Littleor/MLDSO",
+   "own_paper_doi": "10.1088/1361-6501/ac8303",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "'condensed source codes for the paper ... published in Measurement Science and Technology'; train.py, CWRU included.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "6819ac3371fdbc42d98217a3fb555895bb996704"
+  },
+  {
+   "full_name": "liuzy0708/ILFD_Survey",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "459924fe1e455dc6250a947eece69f657da0de62"
+  },
+  {
+   "full_name": "lucaznguyen/Awesome-Federated-Domain-Generalization",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language JavaScript)",
+   "screener": "rule",
+   "commit": "56304ed47dafef54002b03b3bfb1d5e59c10bd4d"
+  },
+  {
+   "full_name": "mahdiemad/Static-Eccentricity-Fault-Location-Diagnosis-in-Resolvers-Using-Siamese-Based-Few-Shot-Learning",
+   "own_paper_doi": "10.1109/tim.2023.3298404",
+   "peer_reviewed": "yes",
+   "framework": "tensorflow",
+   "has_training_script": true,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Out of scope: resolver static eccentricity on own FEA simulation data, not bearing; Keras \"main _Code.ipynb\".",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "4ab38e2fc2a55c0cc1f721b7196eb31155eb978e"
+  },
+  {
+   "full_name": "mahmutkilicaslan-ankara/Margin_Structured_Representation_Learning",
+   "own_paper_doi": null,
+   "peer_reviewed": "unclear",
+   "framework": "unclear",
+   "has_training_script": true,
+   "public_data": [
+    "PU"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "Only DOIs are UCI gas dataset and PU dataset paper; no own publication cited.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "21c4eec675fa02f7a7da1eb830f43cae7b391e2b"
+  },
+  {
+   "full_name": "matthewvowels1/Awesome-VAEs",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "68e9db54b4b2684343550133fa3ce7436a71d779"
+  },
+  {
+   "full_name": "MengZ-tech/FDS-MOMEDA",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language MATLAB)",
+   "screener": "rule",
+   "commit": "85d68e03dc48059117069ce477db34ac22e6af54"
+  },
+  {
+   "full_name": "MengZ-tech/Virtual-Vibration-Lab",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language HTML)",
+   "screener": "rule",
+   "commit": "4f7cff95f43ac4d052ca972d3cc45c7fe810c94b"
+  },
+  {
+   "full_name": "mingzhangPHD/Transfer-Learning-for-Fault-Diagnosis",
+   "own_paper_doi": "10.1109/access.2019.2916935",
+   "peer_reviewed": "yes",
+   "framework": "tensorflow",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "Author's WDMAN code (IEEE Access 2019), TensorFlow 1.x; WDMAN/run_main_TAN.py, CaseDE12K results.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "90ff8fe55cc88f20b7eb95cebed1a5093f8c3b02"
+  },
+  {
+   "full_name": "Mohamedmassaoudi/DL-in-SG",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "67525fc5ba635a7c1ca12a165c27724b35327f91"
+  },
+  {
+   "full_name": "MohammadKhajuee/Static-Eccentricity-Fault-Location-Diagnosis-in-Resolvers-Using-Siamese-Based-Few-Shot-Learning",
+   "own_paper_doi": "10.1109/tim.2023.3298404",
+   "peer_reviewed": "yes",
+   "framework": "tensorflow",
+   "has_training_script": true,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Resolver static-eccentricity diagnosis on own FEA-simulated data, not bearing fault diagnosis (out of audit scope).",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "4ab38e2fc2a55c0cc1f721b7196eb31155eb978e"
+  },
+  {
+   "full_name": "mvlredes-boop/Knowledge-Transference-using-adaptative-REMB-",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "unclear",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "Master's thesis (TFM) building on REMB paper by other authors; own work not peer-reviewed.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "0dab83542714b0c0428fa3246d119f4b47f26a44"
+  },
+  {
+   "full_name": "nbeeeel/Improved-Oversampling-Density-Aware-Smote",
+   "own_paper_doi": "10.1109/access.2023.3332243",
+   "peer_reviewed": "unclear",
+   "framework": "other",
+   "has_training_script": false,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "pip package 'density-aware-smote', scikit-learn sampler; not bearing DL code.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "96f19702b8c8301c348e225a5d55d6f26986d02c"
+  },
+  {
+   "full_name": "NEUFS-MA/LSFMs-IM",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "ae9376b603cc240eab54563dc27daec003173ded"
+  },
+  {
+   "full_name": "nextcombo/high-innovation-model-bilstm-kan-network-for-bearing-life-prediction-python-code",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "82b1a57b3ee53d362a138d13c35b709158c65807"
+  },
+  {
+   "full_name": "niubisile-wq/HANOI-HUST-SCGP",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "other",
+   "has_training_script": true,
+   "public_data": [
+    "HUST",
+    "PU"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "Manuscript is a submission ('current Scientific Reports submission'); DOIs are Zenodo/Mendeley data.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "ed8a3d07b5b01ca82bdf9019791228aca9b24ed9"
+  },
+  {
+   "full_name": "Onward-AI/torch_adabob",
+   "own_paper_doi": "10.1016/j.patcog.2025.111819",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": false,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Optimizer paper (AdaBoB) with CIFAR/ImageNet runners; unrelated to bearing fault diagnosis.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "482d729739eaffa18d0d28c083a664ab89ccf411"
+  },
+  {
+   "full_name": "Onward-AI/torch_isonet",
+   "own_paper_doi": "10.1016/j.eswa.2025.127248",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "HIT aero-engine inter-shaft bearing"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "\"Code for Expert Systems with Applications Paper ISONet\"; isonet_run.py, hit_data/*.npy included; DOI inferred from 2025 ESWA entry.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "af5037e6025e2bd38e3db9684894c5e0eef7cbcd"
+  },
+  {
+   "full_name": "PD-Mera/efficient-bearing-fault-diagnosis",
+   "own_paper_doi": "10.1088/2631-8695/acd625",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E5",
+   "note": "NNI NAS main.py for IOP paper, but data 'Bearing-Dataset-16x16-noise' ('.mat is temperature generate with MATLAB') has no stated public source.",
+   "screener": "llm",
+   "status_note": "dataset generated by the authors in MATLAB, no public source",
+   "adjudicated": true,
+   "commit": "6715ac9ec0c4a1941e5dca2e76444221052743ce"
+  },
+  {
+   "full_name": "philolimpid/LLM-TSAD-Survey",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "81535e4035208a848562a15842a05db298f30a34"
+  },
+  {
+   "full_name": "PHMbench/Awesome-PHM-Paper-Agent",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "other",
+   "has_training_script": false,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Awesome list of PHM papers maintained by an agent; not a paper's code.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "182adb52fc0fe345c498d1fefbaa8bb747bb13ea"
+  },
+  {
+   "full_name": "picid-research/picid-phmd",
+   "own_paper_doi": null,
+   "peer_reviewed": "unclear",
+   "framework": "other",
+   "has_training_script": false,
+   "public_data": [
+    "CWRU",
+    "MFPT",
+    "JNU"
+   ],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Dataset access library: 'PHMD: Prognosis & Health Management Datasets tool'.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "512426b4cee87290fb2dfdd24918a438cb3f2f83"
+  },
+  {
+   "full_name": "PLOS/plos-thesaurus",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "0906edc58c4bd1f31d20a024475cefbd646f7c1c"
+  },
+  {
+   "full_name": "priyanshujiiii/awesome-TTA",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "a3f4de4e78ed44f07fb3283c2f7dc709a3ea5f49"
+  },
+  {
+   "full_name": "Rancho2050/PHM_LSF",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "77c348f234e8d2964dbbc3a5a8e9e8ffe8fdc950"
+  },
+  {
+   "full_name": "Ringdom2024/BearingRisk",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "JNU",
+    "PU"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "\"Official research code for\" unpublished manuscript; listed DOI is upstream TFN paper.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "1517f6f87022be3c87057c9b91dd6b586e55e968"
+  },
+  {
+   "full_name": "Sephiroth66616/CEPREI-6909-Dataset",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "f5eb88ca061ce3d7cc3d96e16d59f0773e3a66ba"
+  },
+  {
+   "full_name": "SFZ-Uni-Stuttgart/VibFM",
+   "own_paper_doi": "10.36001/phme.2026.v9i1.4912",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "PU",
+    "XJTU-SY"
+   ],
+   "verdict": "excluded",
+   "reason": "E6",
+   "note": "Foundation model 'pre-trains ... on approximately 400 hours of vibration recordings from 16 open datasets'.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "5b46cf13490c38e74f92e793e9e727251ae6b369"
+  },
+  {
+   "full_name": "ShaneSpace/MyResearchWorksPublic",
+   "own_paper_doi": "10.1109/tim.2022.3196742",
+   "peer_reviewed": "yes",
+   "framework": "unclear",
+   "has_training_script": "unclear",
+   "public_data": [],
+   "verdict": "eligible",
+   "reason": "",
+   "note": "Author's own MRA-CNN (TIM 2022) and GTFE-Net files plus reimplementations; no train files listed.",
+   "screener": "llm",
+   "status_note": "single-file scripts; training loop, data and framework to verify at attempt",
+   "adjudicated": true,
+   "commit": "3e26367dd8e66a8043ba0cc4b5fda188a5a7d92c"
+  },
+  {
+   "full_name": "SignalAnalysisLab/2024ecc_presentation",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "other",
+   "has_training_script": false,
+   "public_data": [
+    "HUST"
+   ],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Webinar demo of order spectrum analysis; no deep learning; DOI is the HUST dataset paper.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "98fbd502ef1106b4fb722f9375adb4a7736bb61d"
+  },
+  {
+   "full_name": "skcworld/Bearing-Fault-Diagnosis-WDCNN",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "unclear",
+   "has_training_script": true,
+   "public_data": [
+    "Data in Brief 2023 rotating-machine dataset"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "Code \"for the '2024 Militech Challenge'\"; DOI is the dataset paper only.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "f89267ff06447f5bd32e87f4459951d5a3925c1a"
+  },
+  {
+   "full_name": "sujin-1013/phm-korea-2026-quality-routing",
+   "own_paper_doi": null,
+   "peer_reviewed": "unclear",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "PU"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "'PHM Korea 2026 presentation'; no own paper DOI (listed DOI is PU dataset paper).",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "2274f078bb94849bb0859feac24fafd5825a5813"
+  },
+  {
+   "full_name": "tan-qiyu/mechanical_fault_diagnosis_dataset",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language MATLAB)",
+   "screener": "rule",
+   "commit": "3930951d358d81532f413566b6c5a6b0d520bb66"
+  },
+  {
+   "full_name": "TerenceXue-tech/industrial-mllm",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "008708cb99fb36dda613edbaffcaff1b46b88a97"
+  },
+  {
+   "full_name": "TheBrainLab/Awesome-Spiking-Neural-Networks",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "3695cf0e3d3d8b87a9468467ea8c2b289e033c0e"
+  },
+  {
+   "full_name": "thomastruong-ai/thomastruong-ai",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "6a70017134488250a91332e4efb3f4a4e499e8e7"
+  },
+  {
+   "full_name": "thzhere/MLFork",
+   "own_paper_doi": "10.1016/j.neucom.2025.131518",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "PU"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "Neurocomputing 2025 MLFork by first author Duy-Thai Nguyen; train_1shot.py, train_5shot.py on CWRU/PU.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "517e95f627ad370e427bcd82f525b945c121b976"
+  },
+  {
+   "full_name": "Tiny-Smile/RollingBearingFaultDiagnosis-test",
+   "own_paper_doi": null,
+   "peer_reviewed": "unclear",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "'-test' copy of Ye-0413/RollingBearingFaultDiagnosis (identical README); MDPI DOI only as badge.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "9881ea431fd337460e5aaccffa4951887c5811a5"
+  },
+  {
+   "full_name": "TuomasJalonen/motor-fault-icit2024",
+   "own_paper_doi": "10.48550/arxiv.2311.18547",
+   "peer_reviewed": "yes",
+   "framework": "tensorflow",
+   "has_training_script": true,
+   "public_data": [
+    "KAIST"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "Supplements IEEE ICIT 2024 paper (arXiv DOI given); Src/train.py with Keras generator; MATLAB preprocessing needed.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "2a1a5f98678d049e5235a4f75cf256a813802462"
+  },
+  {
+   "full_name": "uhub/awesome-matlab",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "5b5943693e4110ba64f217851085e329b78076c0"
+  },
+  {
+   "full_name": "Vaibhav8075/-Physics-Augmented-1D-CNN",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "PU"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "Manuscript in paper/ generated from results, unpublished; DOI is PU dataset paper.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "7e0b31e023d04fd1f32f74da52ab2d5f4a2fbb6f"
+  },
+  {
+   "full_name": "viet2715/Multi-Layer-Spatial-Channel-MLSC-",
+   "own_paper_doi": "10.1007/s42417-026-02626-1",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "PU"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "Official MLSC code by first author Nguyen Van-Quoc-Viet; train_1shot.py, train_5shot.py; data/CWRU, data/PU.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "a7992bf192a78b29167cc78fc4a272bdcd6fbeb2"
+  },
+  {
+   "full_name": "villo1991/Deep_Learning_Bearings",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "unclear",
+   "has_training_script": false,
+   "public_data": [
+    "PU"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "'Technical Portfolio | Personal Research'; DOI is Paderborn dataset; no paper.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "d75548dfc7c52a241e509ad4320bb190906cdbd2"
+  },
+  {
+   "full_name": "viniciuserra/Layer-Wise-CNN-Feature-Extraction-and-SVM-Classification-for-Ball-Bearing-Fault-Diagnosis",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "tensorflow",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "DOI is a master thesis; \"Paper: Loading\" - no peer-reviewed paper yet.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "44c6ae3488ff5be54a6db0af458b17da7141e422"
+  },
+  {
+   "full_name": "Vitoyoung/HETPM_intelligent_fault_diagnosis",
+   "own_paper_doi": "10.1109/tim.2025.3582302",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "JNU",
+    "HUST"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "'official implementation' (TIM 2025); run HETPM_auto.py with train_util_HETPM.py on JNU/HUST.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "51abc83dd3820297d66ad6db821d367b2aa65e0e"
+  },
+  {
+   "full_name": "weiren12/1DMRLAN",
+   "own_paper_doi": "10.1007/s40430-026-06771-2",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": false,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E4",
+   "note": "Only model definitions tf_MRLAN.py and torch_MRLAN.py; no training script or data pipeline.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "6b1bccd2395c7b381aceedec8a258ecf3a9f40b3"
+  },
+  {
+   "full_name": "xgli411/ParC-ReSMNet",
+   "own_paper_doi": "10.1016/j.engappai.2024.109986",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": false,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E4",
+   "note": "Only ParC_ResMNet.py and test.py; no training script; data 'self-made' idler dataset plus DCASE 2023.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "df12ff0e35e25d2f83f3718860351c2469d8e50b"
+  },
+  {
+   "full_name": "xhf6/GELRTLM-Semi-supervised-Tensor-Learning-Algorithm",
+   "own_paper_doi": "10.1016/j.inffus.2023.102222",
+   "peer_reviewed": "yes",
+   "framework": "other",
+   "has_training_script": false,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "Single GELRTLM_ADMM.py tensor learning machine (ADMM), not PyTorch/TensorFlow deep learning.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "1f0b57ad9b447b733e6779b76dc5e957dbe580b8"
+  },
+  {
+   "full_name": "xiangmianmian/PyMol-Bearing",
+   "own_paper_doi": null,
+   "peer_reviewed": "unclear",
+   "framework": "other",
+   "has_training_script": false,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "'virtual bearing test bench built by Modelica and Python' GUI simulator, not DL code.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "45dc18cef0e7932a34b8a217f190465d6995c704"
+  },
+  {
+   "full_name": "Xiaohan-Chen/bear_fault_diagnosis",
+   "own_paper_doi": "10.1007/s10845-020-01600-2",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "'official baseline of the paper' (J Intell Manuf); cnn_lstm_model.py PyTorch port, Keras notebook.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "51f11ddedbce6bb86e163e88963faf3e92244fc8"
+  },
+  {
+   "full_name": "Xiaohan-Chen/CoWS",
+   "own_paper_doi": "10.1109/tetci.2026.3654383",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "HUST",
+    "XJTU-SY",
+    "HIT"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "'officieal implementation ... published by IEEE TETCI'; CoWS.py pretraining, Configs/train.py, pkl data included.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "63faaf52de990f481c7844cc13302e42b0beb167"
+  },
+  {
+   "full_name": "Xiaohan-Chen/few-shot-fault-diagnosis",
+   "own_paper_doi": "10.1109/tim.2023.3244237",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Companion repo of a review paper implementing others' few-shot algorithms (Siamese, Prototypical, Matching).",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "793fb37ed09d5d5e8e03f0224c1ad7c62a715e36"
+  },
+  {
+   "full_name": "Xiaohan-Chen/transfer-learning-fault-diagnosis-pytorch",
+   "own_paper_doi": "10.1109/tim.2023.3244237",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Collection of 'popular deep transfer learning algorithms' (DDC, CORAL, DANN); own paper is a review.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "44afdc60956fe486d00659875fd173ef881c0450"
+  },
+  {
+   "full_name": "yangailin16-bot/MDPS",
+   "own_paper_doi": null,
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "unspecified"
+   ],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "'[Unofficial] [pytorch] the implementation of' Zheng et al. ICME 2022; official code elsewhere.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "ac0b72def60874217546ca8e1ca8f2fbf6fbaadb"
+  },
+  {
+   "full_name": "Ye-0413/RollingBearingFaultDiagnosis",
+   "own_paper_doi": "10.3390/pr11051527",
+   "peer_reviewed": "unclear",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "eligible",
+   "reason": "",
+   "note": "Generic ResNet/SE-ResNet/ViT spectrogram framework with tools/train.py on CWRU.",
+   "screener": "llm",
+   "status_note": "authorship of 10.3390/pr11051527 to verify at attempt; not author -> E1",
+   "adjudicated": true,
+   "commit": "33faf40f0246947cd858bb0b6b660d2766cb4202"
+  },
+  {
+   "full_name": "Yks151/Dynamic-CAME-TD",
+   "own_paper_doi": "10.1007/s11071-024-10157-1",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": "unclear",
+   "public_data": [],
+   "verdict": "eligible",
+   "reason": "",
+   "note": "Sound+vibration fusion (Nonlinear Dyn); dataset with sound not specified, train entry point and requirements.txt absent.",
+   "screener": "llm",
+   "status_note": "sound+vibration dataset and training entry to verify at attempt",
+   "adjudicated": true,
+   "commit": "f1fbd76cc33ac2e03b56b7d33c28fe09c0e161cd"
+  },
+  {
+   "full_name": "yolanda-w98/Knowledge-enhanced-AI-models-for-domain-specific-application-a-survey",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "2fe5e827d9904c964661f4404a141621ebfdcae5"
+  },
+  {
+   "full_name": "YOMMMO/mcc5-bearing-paper-review",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "MCC5"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "'Software supplement' for manuscript under review; DOIs are MCC5 data article/dataset.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "8a9ea8b2223d7aa2a893126868fc05429efb10f6"
+  },
+  {
+   "full_name": "yyysjz1997/Awesome-TimeSeries-SpatioTemporal-Diffusion-Model",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "400f64c424d1dcb3c2c1deeba56b7d1400d10faf"
+  },
+  {
+   "full_name": "zenodo/zenodo-rdm",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "other",
+   "has_training_script": false,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Zenodo InvenioRDM web platform; unrelated software.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "1fab575d6b7eea09e5ebef5329ee366efbddc802"
+  },
+  {
+   "full_name": "zerenzhou/WaveSpecNet",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "PU",
+    "HUST",
+    "DIRG"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "DOIs are dataset papers (DIRG, HUST); README names no own publication.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "47690152e59ec74b91796174db1ff7d876a476da"
+  },
+  {
+   "full_name": "Zhangyu657/MFSAN_BiMamba_CWRU1_v13_s-table_baseline_complete",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "PU"
+   ],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Fork of TL-Fault-Diagnosis-Library with personal experiment logs; no own paper.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "2ccd3f36858f4d153e103db27f5f35a0c0da15ae"
+  },
+  {
+   "full_name": "zhao62/Deep-Residual-Shrinkage-Networks",
+   "own_paper_doi": "10.1109/tii.2019.2942898",
+   "peer_reviewed": "yes",
+   "framework": "tensorflow",
+   "has_training_script": true,
+   "public_data": [],
+   "verdict": "excluded",
+   "reason": "E5",
+   "note": "DRSN_Keras.py/DRSN_TFLearn.py are 'applied for image classification'; paper's vibration data not provided/public.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "10753c227acd3e432971ff581f5dfacfaf16e009"
+  },
+  {
+   "full_name": "ZhaoZhibin/HHLP-for-weak-fault-feature-enhancement",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language MATLAB)",
+   "screener": "rule",
+   "commit": "37bd269c0ed5ce2d12ac2302014c4885c4696ad6"
+  },
+  {
+   "full_name": "ZhaoZhibin/UDTL",
+   "own_paper_doi": null,
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "PU",
+    "JNU",
+    "SEU",
+    "PHM2009"
+   ],
+   "verdict": "excluded",
+   "reason": "E7",
+   "note": "UDTL is a named pilot object; listed DOI is unrelated, own paper is TIM 2021 survey.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "6eefb28eb7ab142e4ca07b88073df579c5387f23"
+  },
+  {
+   "full_name": "zshuai8/Paper-for-Bearing-data-benchmarking",
+   "verdict": "excluded",
+   "reason": "E3",
+   "note": "no .py/.ipynb files (language None)",
+   "screener": "rule",
+   "commit": "0166aad4e64c8453c008b2555dc2451561dfcfac"
+  },
+  {
+   "full_name": "zy19969967/guzhangjiance",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU"
+   ],
+   "verdict": "excluded",
+   "reason": "E1",
+   "note": "Working copy of TL-Fault-Diagnosis-Library toolbox with added private robot-arm dataset.",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "f605655d0890aefac8af6500ffb8e0951301babe"
+  },
+  {
+   "full_name": "zzt-Cu/zzt",
+   "own_paper_doi": null,
+   "peer_reviewed": "no",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "CWRU",
+    "HUST",
+    "PHM09"
+   ],
+   "verdict": "excluded",
+   "reason": "E2",
+   "note": "Code for unpublished paper; only DOI is HUST dataset (Mendeley).",
+   "screener": "llm",
+   "status_note": "",
+   "commit": "b20daf06fd9e6bd34a834197740531ada9a0689e"
+  },
+  {
+   "full_name": "zzzbbl/-HIT-CT-BiGRU-Fault-Diagnosis",
+   "own_paper_doi": "10.1038/s41598-026-61710-4",
+   "peer_reviewed": "yes",
+   "framework": "pytorch",
+   "has_training_script": true,
+   "public_data": [
+    "HIT"
+   ],
+   "verdict": "eligible",
+   "reason": null,
+   "note": "'Official implementation' (Scientific Reports); src/train.py, baselines; HIT dataset from HouLeiHIT/HIT-dataset.",
+   "screener": "llm",
+   "status_note": "confirmed from dossier",
+   "commit": "767edb0d9298d5417cfed44b36793d8d4ec9c1f2"
+  }
+ ],
+ "attempt_order": [
+  {
+   "attempt_order": 1,
+   "own_paper_doi": "10.1016/j.neucom.2022.10.057",
+   "full_name": "kavianpour/DSAGCN-Bearing-Fault-Diagnosis",
+   "commit": "0ec074aa6af4e4a7e0070b90027fc184830f8057",
+   "framework": "pytorch",
+   "public_data": [
+    "CWRU",
+    "PU",
+    "JNU"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 2,
+   "own_paper_doi": "10.1016/j.compeleceng.2024.110004",
+   "full_name": "giabao804/few-shot-mamba",
+   "commit": "41bd1757102d7a03f7750dc3d0fb0b95e8f9410d",
+   "framework": "pytorch",
+   "public_data": [
+    "CWRU",
+    "HUST"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 3,
+   "own_paper_doi": "10.1007/s11071-024-10157-1",
+   "full_name": "Yks151/Dynamic-CAME-TD",
+   "commit": "f1fbd76cc33ac2e03b56b7d33c28fe09c0e161cd",
+   "framework": "pytorch",
+   "public_data": [],
+   "status_note": "sound+vibration dataset and training entry to verify at attempt"
+  },
+  {
+   "attempt_order": 4,
+   "own_paper_doi": "10.1109/access.2019.2916935",
+   "full_name": "mingzhangPHD/Transfer-Learning-for-Fault-Diagnosis",
+   "commit": "90ff8fe55cc88f20b7eb95cebed1a5093f8c3b02",
+   "framework": "tensorflow",
+   "public_data": [
+    "CWRU"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 5,
+   "own_paper_doi": "10.1088/1361-6501/ad099b",
+   "full_name": "hxf1228/hfn-current-fd",
+   "commit": "143828f06eb0b93eced6d94cf286d60484df1936",
+   "framework": "pytorch",
+   "public_data": [],
+   "status_note": "current-signal dataset to verify as public (e.g. PU) at attempt"
+  },
+  {
+   "attempt_order": 6,
+   "own_paper_doi": "10.48550/arxiv.2311.18547",
+   "full_name": "TuomasJalonen/motor-fault-icit2024",
+   "commit": "2a1a5f98678d049e5235a4f75cf256a813802462",
+   "framework": "tensorflow",
+   "public_data": [
+    "KAIST"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 7,
+   "own_paper_doi": "10.1109/tii.2024.3438229",
+   "full_name": "John-520/DMsrTTLN",
+   "commit": "b770b535a26d4a5045394a1eb7573dc701fb9284",
+   "framework": "pytorch",
+   "public_data": [
+    "CWRU",
+    "JNU",
+    "PU",
+    "SEU"
+   ],
+   "status_note": "time-varying-speed datasets to verify as public at attempt"
+  },
+  {
+   "attempt_order": 8,
+   "own_paper_doi": "10.1109/access.2023.3281910",
+   "full_name": "junior209lsj/FaultDiagnosisOptimizerBenchmark",
+   "commit": "536b97040cfd66cee194c0376c475d3554d77f2e",
+   "framework": "pytorch",
+   "public_data": [
+    "public bearing datasets auto-downloaded (fdob/download.py); names not listed in dossier"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 9,
+   "own_paper_doi": "10.1109/tim.2022.3196742",
+   "full_name": "ShaneSpace/MyResearchWorksPublic",
+   "commit": "3e26367dd8e66a8043ba0cc4b5fda188a5a7d92c",
+   "framework": "unclear",
+   "public_data": [],
+   "status_note": "single-file scripts; training loop, data and framework to verify at attempt"
+  },
+  {
+   "attempt_order": 10,
+   "own_paper_doi": "10.1007/s10489-025-06361-0",
+   "full_name": "linhthan216/MixMamba-Fewshot",
+   "commit": "3b25f04020c07f7c566a13b08a9e86880e96f7a8",
+   "framework": "pytorch",
+   "public_data": [
+    "CWRU"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 11,
+   "own_paper_doi": "10.1109/tim.2025.3582302",
+   "full_name": "Vitoyoung/HETPM_intelligent_fault_diagnosis",
+   "commit": "51abc83dd3820297d66ad6db821d367b2aa65e0e",
+   "framework": "pytorch",
+   "public_data": [
+    "JNU",
+    "HUST"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 12,
+   "own_paper_doi": "10.1016/j.neucom.2025.131518",
+   "full_name": "thzhere/MLFork",
+   "commit": "517e95f627ad370e427bcd82f525b945c121b976",
+   "framework": "pytorch",
+   "public_data": [
+    "CWRU",
+    "PU"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 13,
+   "own_paper_doi": "10.1109/tim.2023.3346517",
+   "full_name": "asdvfghg/BearingPGA-Net",
+   "commit": "96392f3527498a38c8d2e00911deb810e168fb79",
+   "framework": "pytorch",
+   "public_data": [
+    "CWRU"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 14,
+   "own_paper_doi": "10.1109/tim.2023.3259031",
+   "full_name": "asdvfghg/QCNN_for_bearing_diagnosis",
+   "commit": "e325210b1ca19bdbfc731959685f6a2a2c9d7ddc",
+   "framework": "pytorch",
+   "public_data": [
+    "CWRU"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 15,
+   "own_paper_doi": "10.1016/j.ymssp.2026.114827",
+   "full_name": "autouch/AWT-DDFN",
+   "commit": "a77c7baffbe341dd446c33a5a572f64ba061b545",
+   "framework": "unclear",
+   "public_data": [
+    "PU"
+   ],
+   "status_note": "framework to verify at attempt"
+  },
+  {
+   "attempt_order": 16,
+   "own_paper_doi": "10.1109/access.2026.3663988",
+   "full_name": "enzoniko/LPFTDSPIPIFD",
+   "commit": "799bf2d5d602f52d13c514059aa1c01cc8e2b6c5",
+   "framework": "unclear",
+   "public_data": [],
+   "status_note": "ring-bearing dataset source and framework to verify at attempt"
+  },
+  {
+   "attempt_order": 17,
+   "own_paper_doi": "10.1007/s42417-026-02626-1",
+   "full_name": "viet2715/Multi-Layer-Spatial-Channel-MLSC-",
+   "commit": "a7992bf192a78b29167cc78fc4a272bdcd6fbeb2",
+   "framework": "pytorch",
+   "public_data": [
+    "CWRU",
+    "PU"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 18,
+   "own_paper_doi": "10.1016/j.eswa.2025.127248",
+   "full_name": "Onward-AI/torch_isonet",
+   "commit": "af5037e6025e2bd38e3db9684894c5e0eef7cbcd",
+   "framework": "pytorch",
+   "public_data": [
+    "HIT aero-engine inter-shaft bearing"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 19,
+   "own_paper_doi": "10.1109/icspis54653.2021.9729385",
+   "full_name": "kavianpour/Bearing-Fault-Diagnosis-DTCNN",
+   "commit": "502effedc7fc50b2dea76c03cee9da1bc41ca7db",
+   "framework": "tensorflow",
+   "public_data": [
+    "CWRU"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 20,
+   "own_paper_doi": "10.1088/1361-6501/ac8303",
+   "full_name": "Littleor/MLDSO",
+   "commit": "6819ac3371fdbc42d98217a3fb555895bb996704",
+   "framework": "pytorch",
+   "public_data": [
+    "CWRU"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 21,
+   "own_paper_doi": "10.1016/j.ymssp.2024.111750",
+   "full_name": "asdvfghg/ClassBD",
+   "commit": "08530497e388ed691936f15d6c55267f277ed270",
+   "framework": "pytorch",
+   "public_data": [
+    "PU",
+    "JNU"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 22,
+   "own_paper_doi": "10.1016/j.knosys.2025.114944",
+   "full_name": "amstlldj/DLRSD-SMOTE",
+   "commit": "b9970548bac540122a5afb8481fe7721b27da23f",
+   "framework": "pytorch",
+   "public_data": [
+    "CWRU",
+    "SEU"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 23,
+   "own_paper_doi": "10.1109/tim.2024.3502884",
+   "full_name": "DABINB/CSST-Net",
+   "commit": "b445512383d3f511c02dae2a5a2756a82eb5c73b",
+   "framework": "pytorch",
+   "public_data": [
+    "HIT aero-engine inter-shaft bearing"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 24,
+   "own_paper_doi": "10.1109/mcte62505.2024.11117663",
+   "full_name": "Erikdai/Fault-Diagnosis-of-Aero-engine-Inter-shaft-Bearings",
+   "commit": "658c64286fdd547d577437f2ad5280585aa22e68",
+   "framework": "pytorch",
+   "public_data": [
+    "CWRU"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 25,
+   "own_paper_doi": "10.1016/j.measurement.2022.111536",
+   "full_name": "kavianpour/CARMA-DACA-fault-diagnosis",
+   "commit": "602f43e9bd0cf711211251902176b4b33ccd04b8",
+   "framework": "pytorch",
+   "public_data": [
+    "CWRU"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 26,
+   "own_paper_doi": "10.1016/j.ymssp.2026.114640",
+   "full_name": "gama-ufsc/bearing-data-leakage",
+   "commit": "4c9fd8cb3cf9d5aa4ef2b653cb314a0727e12f3d",
+   "framework": "pytorch",
+   "public_data": [
+    "CWRU",
+    "PU",
+    "Ottawa",
+    "HUST"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 27,
+   "own_paper_doi": "10.1007/s10845-020-01600-2",
+   "full_name": "Xiaohan-Chen/bear_fault_diagnosis",
+   "commit": "51f11ddedbce6bb86e163e88963faf3e92244fc8",
+   "framework": "pytorch",
+   "public_data": [
+    "CWRU"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 28,
+   "own_paper_doi": "10.1007/978-3-031-76197-3_14",
+   "full_name": "giabao804/few-shot-structural-rep",
+   "commit": "094a9ec613b1eef7513f3841cda50992b60fee7b",
+   "framework": "pytorch",
+   "public_data": [
+    "CWRU"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 29,
+   "own_paper_doi": "10.1109/tpami.2025.3588894",
+   "full_name": "asdvfghg/quadratic_efficiency",
+   "commit": "8a16d3bcf77b2083e8673a279b265ece9c274890",
+   "framework": "pytorch",
+   "public_data": [
+    "CWRU"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 30,
+   "own_paper_doi": "10.1038/s41598-026-61710-4",
+   "full_name": "zzzbbl/-HIT-CT-BiGRU-Fault-Diagnosis",
+   "commit": "767edb0d9298d5417cfed44b36793d8d4ec9c1f2",
+   "framework": "pytorch",
+   "public_data": [
+    "HIT"
+   ],
+   "status_note": "confirmed from dossier"
+  },
+  {
+   "attempt_order": 31,
+   "own_paper_doi": "10.3390/pr11051527",
+   "full_name": "Ye-0413/RollingBearingFaultDiagnosis",
+   "commit": "33faf40f0246947cd858bb0b6b660d2766cb4202",
+   "framework": "pytorch",
+   "public_data": [
+    "CWRU"
+   ],
+   "status_note": "authorship of 10.3390/pr11051527 to verify at attempt; not author -> E1"
+  },
+  {
+   "attempt_order": 32,
+   "own_paper_doi": "10.1109/tetci.2026.3654383",
+   "full_name": "Xiaohan-Chen/CoWS",
+   "commit": "63faaf52de990f481c7844cc13302e42b0beb167",
+   "framework": "pytorch",
+   "public_data": [
+    "HUST",
+    "XJTU-SY",
+    "HIT"
+   ],
+   "status_note": "confirmed from dossier"
+  }
+ ]
+}

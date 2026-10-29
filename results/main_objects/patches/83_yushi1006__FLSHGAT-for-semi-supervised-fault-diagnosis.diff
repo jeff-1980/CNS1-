@@ -1,0 +1,86 @@
+diff --git a/audit_run83.py b/audit_run83.py
+new file mode 100755
+index 0000000..a24b4a9
+--- /dev/null
++++ b/audit_run83.py
+@@ -0,0 +1,41 @@
++"""[audit] Driver for object 83 (registry: results/main_objects/registry/83_yushi1006__FLSHGAT-for-semi-supervised-fault-diagnosis.md).
++Runs the authors' "train hypergraph for UoO.py" (runpy, cwd = repo) with defaults (FD, 4096-point windows, 150 per
++class / 100 train, last class 300 / 200, 1 labelled sample per class, 200 full-batch epochs) 10 times unseeded (only
++random.seed(100) for the labelled-sample choice). Their test graph is evaluated after every epoch and selects their
++'best' model (strict >); the hook records their test accuracy and their test loss (sum of their three terms);
++AUDIT_FINAL receives the accuracy of their last strictly-better saved model. Needs PYTHONPATH with ~/audit_cns/code,
++AUDIT_RECORD_DIR."""
++import argparse, json, os, runpy, shutil, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++p = argparse.ArgumentParser()
++p.add_argument("--repeats", default="0-9")
++p.add_argument("--epochs", type=int, default=None)   # smoke only
++p.add_argument("--data_dir", required=True)
++p.add_argument("--work", required=True)
++a = p.parse_args()
++lo, hi = map(int, a.repeats.split("-")) if "-" in a.repeats else (int(a.repeats),) * 2
++os.chdir(REPO); sys.path.insert(0, REPO)
++from audit.main.epoch_record import Recorder
++import utils.train_hypergraph_utils as TU
++
++for r in range(lo, hi + 1):
++    ck = os.path.join(a.work, f"ckpt_r{r}"); shutil.rmtree(ck, ignore_errors=True)
++    rec = Recorder(obj="83", group="FLSHGAT|uOttawa time-varying 5-class 1 label/class", seed=r, select_split=None,
++                   report_split="test", note="unseeded repeat; test graph selects their best model; test loss = their "
++                                             "loss1+loss2+loss3 on the test graph")
++    final = {}
++
++    def hook(ep, acc, loss, strict_best):
++        rec.log(ep, "test", float(acc), loss)
++        if strict_best: rec.author_pick(ep)
++
++    TU.AUDIT_HOOK = hook
++    TU.AUDIT_FINAL = lambda v: final.update(v=float(v))
++    sys.argv = ["train hypergraph for UoO.py", "--data_dir", a.data_dir, "--checkpoint_dir", ck]
++    if a.epochs: sys.argv += ["--max_epoch", str(a.epochs)]
++    t0 = time.time()
++    runpy.run_path(os.path.join(REPO, "train hypergraph for UoO.py"), run_name="__main__")
++    rec.finish(final.get("v"))
++    shutil.rmtree(ck, ignore_errors=True)
++    print(json.dumps(dict(repeat=r, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                          reported=final.get("v"), check=rec.d["author_check"])), flush=True)
+diff --git a/datasets/UoO_hypergraph.py b/datasets/UoO_hypergraph.py
+index 457b51d..6d72019 100644
+--- a/datasets/UoO_hypergraph.py
++++ b/datasets/UoO_hypergraph.py
+@@ -23,7 +23,7 @@ def get_files(root, signal_length=4096, sample_size=150, train_size=100, InputTy
+     label_test = []
+ 
+     datasetname = ["H-A-1.mat", "I-A-1.mat", "O-A-1.mat", "B-A-1.mat", "C-A-1.mat"]
+-    file_name = os.listdir(root)  # all fault modes
++    file_name = sorted(os.listdir(root))  # all fault modes
+     for i in range(len(file_name)):
+         sub_dir.append(os.path.join(root, file_name[i], datasetname[i]))
+     sub_dir[4], sub_dir[0] = sub_dir[0], sub_dir[4]
+diff --git a/utils/train_hypergraph_utils.py b/utils/train_hypergraph_utils.py
+index d0edf61..0d96b71 100644
+--- a/utils/train_hypergraph_utils.py
++++ b/utils/train_hypergraph_utils.py
+@@ -15,6 +15,7 @@ import numpy as np
+ from datasets.UoO_hypergraph import get_files
+ from datasets.Label_mask import *
+ import models
++AUDIT_HOOK = None; AUDIT_FINAL = None  # [audit] set by audit_run83.py
+ 
+ 
+ class train_utils(object):
+@@ -134,11 +135,13 @@ class train_utils(object):
+ 
+             logging.info('Epoch: {} train-Loss: {:.6f} train-Acc: {:.4f} \n test-Loss: {:.6f} test-Acc: {:.4f}'.format(
+                 epoch, trian_loss, trian_acc, test_loss, test_acc))
++            if AUDIT_HOOK: AUDIT_HOOK(epoch + 1, test_acc, float(test_loss), test_acc > best_acc)  # [audit]
+ 
+             # save the checkpoint for other learning
+             model_state_dic = self.model.module.state_dict() if self.device_count > 1 else self.model.state_dict()
+             # save the best model according to the val accuracy
+             if test_acc > best_acc or epoch > args.max_epoch - 2:
++                if AUDIT_FINAL and test_acc > best_acc: AUDIT_FINAL(test_acc)  # [audit] their best saved model
+                 best_acc = test_acc
+                 logging.info("save best model epoch {}, acc {:.4f}".format(epoch, test_acc))
+                 torch.save(model_state_dic,

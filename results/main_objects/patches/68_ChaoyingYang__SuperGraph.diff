@@ -1,0 +1,86 @@
+diff --git a/audit_run68.py b/audit_run68.py
+new file mode 100755
+index 0000000..aac09c0
+--- /dev/null
++++ b/audit_run68.py
+@@ -0,0 +1,48 @@
++"""[audit] Driver for object 68 (registry: results/main_objects/registry/68_*.md).
++Runs the authors' 'code/Proposed method/CWRU-GCN.py' as __main__ (runpy, cwd = data/) 10 times unseeded (the script
++sets no seed; its random 30/35/35 node split and the weight init change per run). The hook after their per-epoch test()
++records their val and test accuracies and, isolated, the val / test NLL; AUDIT_FINAL receives their final printed test
++accuracy (test accuracy at the first epoch of best val accuracy). Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR."""
++import argparse, json, os, runpy, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++import torch, torch.nn.functional as F
++from audit.main.epoch_record import Recorder
++from audit.torch_utils import isolate
++
++p = argparse.ArgumentParser()
++p.add_argument("--repeats", default="0-9")
++p.add_argument("--epochs", type=int, default=None)
++a = p.parse_args()
++lo, hi = map(int, a.repeats.split("-")) if "-" in a.repeats else (int(a.repeats),) * 2
++SCRIPT = os.path.join(REPO, "code", "Proposed method", "CWRU-GCN.py")
++src = open(SCRIPT, encoding="utf-8").read()
++if a.epochs:   # smoke only
++    assert src.count("for epoch in range(1, 301):") == 1
++    src = src.replace("for epoch in range(1, 301):", f"for epoch in range(1, {a.epochs + 1}):")
++code = compile(src, SCRIPT, "exec")
++
++for r in range(lo, hi + 1):
++    rec = Recorder(obj="68", group="SuperGraph-ChebGCN|CWRU 11-class", seed=r, select_split="val", report_split="test",
++                   note="unseeded repeat; random 30/35/35 node split per run; acc = their masked accuracies")
++    st = {"best": 0.0}
++
++    def hook(ep, model, data, val_acc, test_acc):
++        dev = data.x.device
++        with isolate([model], dev):
++            model.eval()
++            with torch.no_grad():
++                out = model()
++                vl = F.nll_loss(out[data.val_mask], data.y[data.val_mask]).item()
++                tl = F.nll_loss(out[data.test_mask], data.y[data.test_mask]).item()
++        rec.log(ep, "val", float(val_acc), vl)
++        rec.log(ep, "test", float(test_acc), tl)
++        if val_acc > st["best"]:      # their rule: strict >, first best val epoch
++            st["best"] = val_acc; rec.author_pick(ep)
++
++    final = {}
++    g = {"__name__": "__main__", "__file__": SCRIPT, "AUDIT_HOOK": hook, "AUDIT_FINAL": lambda v: final.update(v=float(v))}
++    t0 = time.time()
++    exec(code, g)
++    rec.finish(final.get("v"))
++    print(json.dumps(dict(repeat=r, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                          reported=final.get("v"), check=rec.d["author_check"])), flush=True)
+diff --git a/code/Proposed method/CWRU-GCN.py b/code/Proposed method/CWRU-GCN.py
+index 3b3e489..fdc28de 100644
+--- a/code/Proposed method/CWRU-GCN.py	
++++ b/code/Proposed method/CWRU-GCN.py	
+@@ -17,6 +17,7 @@ import numpy as np
+ import scipy.signal as signal
+ import scipy
+ from matplotlib import cm
++AUDIT_HOOK = globals().get('AUDIT_HOOK'); AUDIT_FINAL = globals().get('AUDIT_FINAL')  # [audit] see audit_run68.py
+ 
+ 
+ 
+@@ -420,7 +421,7 @@ dataa = [data01,data02,data03,data04,data05,data06,data07,data08,data09,data010,
+ def cala(data1):  
+     def calpkm(data):
+         data = np.array(data)
+-        freqs, times, Sxx = signal.stft(data, fs=12000, window='hanning',
++        freqs, times, Sxx = signal.stft(data, fs=12000, window='hann',  # [audit] scipy removed the 'hanning' alias (same window)
+                                        nperseg=64, noverlap=0)
+         pkm = np.zeros((len(Sxx),len(Sxx[0]),len(Sxx[0][0])))
+         pkmn = np.zeros((len(Sxx),len(Sxx[0]),len(Sxx[0][0])))
+@@ -591,8 +592,10 @@ best_val_acc = test_acc = 0
+ for epoch in range(1, 301):     #output the results
+     train()
+     train_acc, val_acc, tmp_test_acc = test()
++    if AUDIT_HOOK: AUDIT_HOOK(epoch, model, data, val_acc, tmp_test_acc)  # [audit]
+     if val_acc > best_val_acc:
+         best_val_acc = val_acc
+         test_acc = tmp_test_acc
+     log = 'Epoch: {:03d}, Train: {:.4f}, Val: {:.4f}, Test: {:.4f}'
+     print(log.format(epoch, train_acc, best_val_acc, test_acc))
++if AUDIT_FINAL: AUDIT_FINAL(test_acc)  # [audit]

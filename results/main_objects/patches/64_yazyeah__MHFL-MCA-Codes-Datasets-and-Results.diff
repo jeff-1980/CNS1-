@@ -1,0 +1,4793 @@
+diff --git a/audit_CFFN_KAIST.py b/audit_CFFN_KAIST.py
+new file mode 100644
+index 00000000..7fe0f34f
+--- /dev/null
++++ b/audit_CFFN_KAIST.py
+@@ -0,0 +1,1318 @@
++"""
++CFFN (NO Optuna) — KAIST Load-Shift Case Study
++Vibration (.mat) + Current (.tdms) | Segment length L=2048
++
++[Task / Setting]
++- Train/Val: 0Nm only (hash-overlap leakage check enabled)
++- Test: 2Nm & 4Nm
++- Few-shot protocol: N = 5..30 samples/class, repeated runs = 10
++- Seed rule: seed = N*100 + run_idx
++- Segments per class cap: 400 (per load)
++
++[Network (paper-consistent, CFFN)]
++- Two-branch EDCN feature extractor (Vibration branch + Current branch)
++  - Conv1D blocks + BN+ReLU + Pooling -> GAP -> FC feature
++- Offline CCA fusion (fit on train features; transform train/val/test features)
++- Classifier head: Softmax on concatenated CCA-projected features
++
++[Baseline Mode]
++- EDCN_BASE_FILTERS = 16
++- EDCN_FEAT_DIM     = 64
++- EDCN_HEAD_DROPOUT = 0.35
++- EDCN_L2           = 5e-4
++- CCA_MAX_COMPONENTS= 32
++- CCA_REG           = 1e-2
++- Label smoothing   = 0.10
++- NOTE: Only the network-specific knobs differ; the COMMON protocol is unchanged.
++
++[Noise / Normalization Policy]
++- Baseline noise environment: 0 dB Gaussian applied to train/val/test (Stage2 baseline)
++- Robustness Stage3 (FAIR, SameModel): train ONE NoiseStudy_model once, then evaluate:
++  NoNoise + 0 + (-2,-4,-6,-8,-10), report mean±std over repeated noise draws
++- IMPORTANT: POST_ZSCORE_AFTER_NOISE MUST remain False to preserve SNR semantics.
++
++[Outputs]
++- log.txt (tee stdout/stderr)
++- curves.png per run (EDCN two-branch + CCA+Softmax)
++- Confusion matrix / t-SNE / ROC per test load (2Nm, 4Nm)
++- Final_Summary_Stats_raw.csv + Final_Summary_Stats_trimmed.csv
++- performance_trend.png
++- NoiseStudy_LoadShift_FAIR_SameModel/: CSV + radar plots + baseline plots
++
++[Open-source friendly paths]
++- This script does NOT assume any fixed folder structure.
++- Replace the placeholders in the PATHS section (YOUR_*) with your local absolute paths.
++"""
++
++import os
++import sys
++import gc
++import time
++import random
++import warnings
++from typing import Dict, Tuple, List, Any
++
++warnings.filterwarnings("ignore")
++
++# ---------------------------
++# Environment (open-source friendly placeholders)
++# NOTE: keep this BEFORE importing TensorFlow.
++# ---------------------------
++YOUR_TEMP_PATH = '/home/jeffwork/audit_ext/work64/out_CFFN/tmp'                 # e.g., r"D:\temp" (replace). Leave as-is to not override.
++YOUR_CUDA_VISIBLE_DEVICES = "0"                    # optional: "0"/"1"/"" (empty = default)
++YOUR_TF_CPP_MIN_LOG_LEVEL = "2"                    # optional: "2" suppress INFO/WARN
++
++# TEMP/TMP (optional)
++if "YOUR_TEMP_PATH" not in YOUR_TEMP_PATH:
++    os.environ["TEMP"] = YOUR_TEMP_PATH
++    os.environ["TMP"] = YOUR_TEMP_PATH
++    os.makedirs(YOUR_TEMP_PATH, exist_ok=True)
++
++# GPU selection (optional)
++if YOUR_CUDA_VISIBLE_DEVICES is not None:
++    os.environ["CUDA_VISIBLE_DEVICES"] = str(YOUR_CUDA_VISIBLE_DEVICES)
++
++# TensorFlow logging (optional)
++if YOUR_TF_CPP_MIN_LOG_LEVEL is not None:
++    os.environ["TF_CPP_MIN_LOG_LEVEL"] = str(YOUR_TF_CPP_MIN_LOG_LEVEL)
++
++import numpy as np
++import pandas as pd
++import matplotlib.pyplot as plt
++import seaborn as sns
++from scipy.io import loadmat
++from sklearn.metrics import (
++    accuracy_score, precision_score, recall_score, f1_score,
++    confusion_matrix, roc_curve, auc
++)
++from sklearn.preprocessing import label_binarize
++from sklearn.manifold import TSNE
++
++import tensorflow as tf
++from tensorflow.keras import Model
++from tensorflow.keras.layers import (
++    Input, Conv1D, MaxPooling1D, BatchNormalization, Activation,
++    GlobalAveragePooling1D, Dense, Dropout
++)
++from tensorflow.keras.regularizers import l2
++from tensorflow.keras.optimizers import Adamax
++
++try:
++    from nptdms import TdmsFile
++except Exception as e:
++    raise ImportError("Missing dependency: nptdms. Install via: pip install nptdms") from e
++
++
++# ============================================================
++# 0) GLOBAL VISUAL STYLE (must match COMMON)
++# ============================================================
++plt.rcParams["figure.dpi"] = 300
++plt.rcParams["savefig.dpi"] = 300
++plt.rcParams["font.family"] = "serif"
++plt.rcParams["font.serif"] = ["Times New Roman"]
++plt.rcParams["axes.unicode_minus"] = False
++
++
++# ---------------------------
++# Paths (OPEN-SOURCE friendly placeholders)
++# Replace the placeholders below with YOUR local absolute paths.
++# This script does NOT assume any fixed folder structure.
++# ---------------------------
++
++# Vibration .mat folders for 0Nm/2Nm/4Nm:
++# Must contain files like: "0Nm_<fault>.mat", "2Nm_<fault>.mat", "4Nm_<fault>.mat"
++VIB_MAT_DIR_0NM = '/home/jeffwork/audit_ext/data/kaist64/vibration'
++VIB_MAT_DIR_2NM = '/home/jeffwork/audit_ext/data/kaist64/vibration'
++VIB_MAT_DIR_4NM = '/home/jeffwork/audit_ext/data/kaist64/vibration'
++
++# Current .tdms folder:
++# Must contain files like: "0Nm_<fault>.tdms", "2Nm_<fault>.tdms", "4Nm_<fault>.tdms"
++CUR_TDMS_DIR = '/home/jeffwork/audit_ext/data/kaist64/current'
++
++# Output folder (all results will be saved here)
++# Recommended (benchmark-aligned): ...\KAIST\CFFN_Comparison_KAIST
++BASE_OUTPUT_DIR = '/home/jeffwork/audit_ext/work64/out_CFFN'
++os.makedirs(BASE_OUTPUT_DIR, exist_ok=True)
++
++FAULTS = [
++    ("NC-0", "Normal"),
++    ("IF-1", "BPFI_03"),
++    ("IF-2", "BPFI_10"),
++    ("OF-1", "BPFO_03"),
++    ("OF-2", "BPFO_10"),
++]
++NUM_CLASSES = len(FAULTS)
++
++SEG_LEN = 2048
++ENABLE_ZSCORE_PER_SEGMENT = True
++MAX_SEGMENTS_PER_CLASS = 400
++
++SAMPLE_RANGE = range(5, 6)  # [audit] N = 5 task only
++REPEAT_TIMES = 10
++VAL_PER_CLASS_MAIN = 50
++
++ENABLE_HASH_OVERLAP_CHECK = True
++
++EPOCHS_FULL = 80
++BATCH_SIZE = 16
++GRAD_CLIPNORM = 1.0
++BEST_LR = 0.0008468950740919305
++
++# --- Baseline knobs ---
++LABEL_SMOOTHING = 0.10
++EDCN_BASE_FILTERS = 16         
++EDCN_FEAT_DIM = 64              
++EDCN_HEAD_DROPOUT = 0.35        
++EDCN_L2 = 5e-4                  
++CCA_REG = 1e-2                  
++CCA_EPS = 1e-9
++CCA_MAX_COMPONENTS = 32         
++
++LOSS_FN = tf.keras.losses.CategoricalCrossentropy(label_smoothing=LABEL_SMOOTHING)
++METRIC_NAME = "accuracy"
++
++# --- Noise env (MHCNN-aligned) ---
++TRAIN_BASE_SNR_DB = 0.0
++
++NO_NOISE_DB = float("inf")                 # == "NoNoise"
++TEST_SNR_DB_LIST = [NO_NOISE_DB, 0, -2, -4, -6, -8, -10]
++
++EVAL_NOISE_REPEATS = 5
++POST_ZSCORE_AFTER_NOISE = False
++
++# --- Visualization fixed params (COMMON) ---
++FIGSIZE_CURVES = (10, 4)
++FIGSIZE_CM = (6, 5)
++FIGSIZE_TSNE = (6, 5)
++FIGSIZE_ROC = (8, 6)
++FIGSIZE_RADAR = (7, 7)
++
++CM_CMAP_2NM = "Blues"
++CM_CMAP_4NM = "Oranges"
++ROC_COLORS_2NM = ["aqua", "darkorange", "cornflowerblue", "green", "red", "purple", "brown"]
++ROC_COLORS_4NM = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2"]
++
++TSNE_MAX_POINTS = 2000
++TSNE_PERPLEXITY = 30
++TSNE_N_ITER = 1200
++
++
++# ============================================================
++# 2) LOG TEE
++# ============================================================
++class _Tee:
++    def __init__(self, *streams):
++        self.streams = streams
++
++    def write(self, data):
++        for s in self.streams:
++            s.write(data)
++            s.flush()
++
++    def flush(self):
++        for s in self.streams:
++            s.flush()
++
++
++# ============================================================
++# 3) SEED / UTILS
++# ============================================================
++def set_global_seed(seed: int):
++    random.seed(seed)
++    np.random.seed(seed)
++    tf.random.set_seed(seed)
++
++
++def trimmed_mean_std(values: List[float]) -> Tuple[float, float]:
++    v = [float(x) for x in values]
++    if len(v) < 3:
++        m = float(np.mean(v)) if len(v) else 0.0
++        s = float(np.std(v)) if len(v) else 0.0
++        return m, s
++    v_sorted = sorted(v)
++    core = v_sorted[1:-1]
++    return float(np.mean(core)), float(np.std(core))
++
++
++def zscore_per_segment(x: np.ndarray) -> np.ndarray:
++    mu = x.mean(axis=1, keepdims=True)
++    sd = x.std(axis=1, keepdims=True) + 1e-8
++    return (x - mu) / sd
++
++
++def add_noise_then_optional_post_zscore_np(x_clean: np.ndarray, snr_db: float, rng: np.random.RandomState) -> np.ndarray:
++    if snr_db is None or (np.isscalar(snr_db) and np.isinf(snr_db)):
++        return x_clean.astype(np.float32)
++
++    x = x_clean.astype(np.float32)
++    p_sig = np.mean(np.square(x), axis=1, keepdims=True) + 1e-12
++    snr_lin = 10.0 ** (float(snr_db) / 10.0)
++    p_noise = p_sig / snr_lin
++    noise = rng.normal(loc=0.0, scale=1.0, size=x.shape).astype(np.float32)
++    p_n0 = np.mean(np.square(noise), axis=1, keepdims=True) + 1e-12
++    noise = noise * np.sqrt(p_noise / p_n0)
++    x_noisy = x + noise
++
++    if POST_ZSCORE_AFTER_NOISE:
++        x_noisy = zscore_per_segment(x_noisy)
++
++    return x_noisy.astype(np.float32)
++
++
++# ============================================================
++# 4) HASH OVERLAP CHECK
++# ============================================================
++def _quick_hash_vec(vec: np.ndarray) -> int:
++    v = np.asarray(vec, dtype=np.float32).reshape(-1)
++    if v.size == 0:
++        return 0
++    idx = np.linspace(0, v.size - 1, num=min(64, v.size), dtype=int)
++    sub = v[idx]
++    h = 1469598103934665603
++    for f in sub:
++        u = np.float32(f).tobytes()
++        for b in u:
++            h ^= b
++            h *= 1099511628211
++            h &= 0xFFFFFFFFFFFFFFFF
++    return int(h)
++
++
++def hash_overlap_check(x_tr_a, x_tr_b, x_va_a, x_va_b, prefix=""):
++    if not ENABLE_HASH_OVERLAP_CHECK:
++        return
++    tr_hash = set()
++    for i in range(x_tr_a.shape[0]):
++        tr_hash.add((_quick_hash_vec(x_tr_a[i]), _quick_hash_vec(x_tr_b[i])))
++    ov = 0
++    for j in range(x_va_a.shape[0]):
++        key = (_quick_hash_vec(x_va_a[j]), _quick_hash_vec(x_va_b[j]))
++        if key in tr_hash:
++            ov += 1
++    if ov > 0:
++        print(f"[WARN][{prefix}] Hash overlap detected between train/val: {ov} samples")
++
++
++# ============================================================
++# 5) KAIST LOADING
++# ============================================================
++def _norm_name(s: str) -> str:
++    return str(s).strip().lower().replace(" ", "").replace("_", "")
++
++
++def _squeeze_mat_obj(obj: Any) -> Any:
++    if isinstance(obj, np.ndarray) and obj.size == 1:
++        try:
++            return obj.reshape(-1)[0]
++        except Exception:
++            return obj
++    return obj
++
++
++def _get_field(obj: Any, field: str) -> Any:
++    obj = _squeeze_mat_obj(obj)
++    if isinstance(obj, dict):
++        return obj[field]
++    if hasattr(obj, "dtype") and getattr(obj.dtype, "names", None):
++        return obj[field]
++    if isinstance(obj, np.ndarray) and getattr(obj.dtype, "names", None):
++        obj2 = _squeeze_mat_obj(obj)
++        if hasattr(obj2, "dtype") and getattr(obj2.dtype, "names", None):
++            return obj2[field]
++        return obj[field]
++    raise KeyError(f"Cannot access field '{field}' on type={type(obj)}")
++
++
++def _kaist_try_extract_values_matrix(mat_dict: Dict) -> np.ndarray:
++    if "Signal" not in mat_dict:
++        raise KeyError("Missing key 'Signal'")
++    sig = _squeeze_mat_obj(mat_dict["Signal"])
++    yv = _squeeze_mat_obj(_get_field(sig, "y_values"))
++    vals = _squeeze_mat_obj(_get_field(yv, "values"))
++    arr = np.asarray(vals)
++    if arr.ndim == 1:
++        arr = arr.reshape(-1, 1)
++    return arr
++
++
++def _pick_vib_1d_from_values_matrix(values: np.ndarray) -> np.ndarray:
++    v = np.asarray(values)
++    if v.ndim == 1:
++        v = v.reshape(-1, 1)
++    if v.ndim != 2:
++        v = v.reshape(-1, 1)
++    ncol = v.shape[1]
++    out = v[:, 1] if ncol >= 5 else v[:, 0]
++    out = np.asarray(out, dtype=np.float32).reshape(-1)
++    return out
++
++
++def _collect_numeric_arrays_recursive(obj: Any, path: str, out: List[Tuple[str, np.ndarray]]):
++    obj = _squeeze_mat_obj(obj)
++
++    if isinstance(obj, dict):
++        for k, v in obj.items():
++            if str(k).startswith("__"):
++                continue
++            _collect_numeric_arrays_recursive(v, f"{path}.{k}" if path else str(k), out)
++        return
++
++    if isinstance(obj, np.ndarray):
++        if np.issubdtype(obj.dtype, np.number):
++            out.append((path, obj))
++            return
++        if getattr(obj.dtype, "names", None):
++            for name in obj.dtype.names:
++                try:
++                    _collect_numeric_arrays_recursive(obj[name], f"{path}.{name}" if path else name, out)
++                except Exception:
++                    pass
++            return
++        if obj.dtype == object:
++            for idx, item in np.ndenumerate(obj):
++                _collect_numeric_arrays_recursive(item, f"{path}[{idx}]", out)
++            return
++        return
++
++    if hasattr(obj, "dtype") and getattr(obj.dtype, "names", None):
++        for name in obj.dtype.names:
++            try:
++                _collect_numeric_arrays_recursive(obj[name], f"{path}.{name}" if path else name, out)
++            except Exception:
++                pass
++        return
++
++
++def _pick_vib_1d_from_mat(mat: Dict) -> np.ndarray:
++    if "Signal" in mat:
++        try:
++            values = _kaist_try_extract_values_matrix(mat)
++            vib_1d = _pick_vib_1d_from_values_matrix(values)
++            if vib_1d.size > 1000 and np.std(vib_1d) > 1e-12:
++                return vib_1d.astype(np.float32)
++        except Exception:
++            pass
++
++    collected: List[Tuple[str, np.ndarray]] = []
++    _collect_numeric_arrays_recursive(mat, "", collected)
++
++    candidates = []
++    for p, arr in collected:
++        try:
++            a = np.asarray(arr)
++            if not np.issubdtype(a.dtype, np.number):
++                continue
++            a = a.squeeze()
++            if a.ndim == 2:
++                a1 = a[:, 0] if a.shape[0] >= a.shape[1] else a[0, :]
++            else:
++                a1 = a.reshape(-1)
++            a1 = np.asarray(a1, dtype=np.float32).reshape(-1)
++            if a1.size > 1000 and np.std(a1) > 1e-12:
++                candidates.append((p, a1))
++        except Exception:
++            pass
++
++    if not candidates:
++        keys = [k for k in mat.keys() if not str(k).startswith("__")]
++        raise ValueError(f"No usable numeric long vector found in .mat. Available keys: {keys[:20]}")
++
++    candidates.sort(key=lambda x: x[1].size, reverse=True)
++    return candidates[0][1].astype(np.float32)
++
++
++def segment_signal(x_1d: np.ndarray, seg_len=2048, max_segments=400) -> np.ndarray:
++    x = np.asarray(x_1d, dtype=np.float32).reshape(-1)
++    total = x.shape[0]
++    nseg = total // seg_len
++    nseg = min(nseg, int(max_segments))
++    if nseg <= 0:
++        raise ValueError("Signal too short for segmentation.")
++    x = x[: nseg * seg_len]
++    segs = x.reshape(nseg, seg_len, 1)
++    if ENABLE_ZSCORE_PER_SEGMENT:
++        segs = zscore_per_segment(segs)
++    return segs.astype(np.float32)
++
++
++def read_current_1d_from_tdms(tdms_path: str) -> np.ndarray:
++    tdms = TdmsFile.read(tdms_path)
++    for g in tdms.groups():
++        for ch in g.channels():
++            name = _norm_name(ch.name)
++            if "curr" in name or "current" in name or "ia" in name or "ib" in name or "ic" in name:
++                data = np.asarray(ch[:], dtype=np.float32).reshape(-1)
++                if data.size > 1000:
++                    return data
++    best = None
++    for g in tdms.groups():
++        for ch in g.channels():
++            data = np.asarray(ch[:], dtype=np.float32).reshape(-1)
++            if data.size > 1000 and (best is None or data.size > best.size):
++                best = data
++    if best is None:
++        raise ValueError(f"No usable channel found in tdms: {tdms_path}")
++    return best.astype(np.float32)
++
++
++def mat_path(load_nm: int, tag: str) -> str:
++    return f"{load_nm}Nm_{tag}.mat"
++
++
++def tdms_path(load_nm: int, tag: str) -> str:
++    return f"{load_nm}Nm_{tag}.tdms"
++
++
++def load_kaist_load(load_nm: int, vib_dir: str, cur_dir: str) -> Dict[str, Dict]:
++    data = {}
++    for cls, tag in FAULTS:
++        mpath = os.path.join(vib_dir, mat_path(load_nm, tag))
++        tpath = os.path.join(cur_dir, tdms_path(load_nm, tag))
++
++        mat = loadmat(mpath)
++        vib_1d = _pick_vib_1d_from_mat(mat)
++        cur_1d = read_current_1d_from_tdms(tpath)
++
++        vib_seg = segment_signal(vib_1d, SEG_LEN, MAX_SEGMENTS_PER_CLASS)
++        cur_seg = segment_signal(cur_1d, SEG_LEN, MAX_SEGMENTS_PER_CLASS)
++
++        n = min(vib_seg.shape[0], cur_seg.shape[0], MAX_SEGMENTS_PER_CLASS)
++        vib_seg = vib_seg[:n]
++        cur_seg = cur_seg[:n]
++
++        data[cls] = {"vib": vib_seg, "cur": cur_seg}
++        print(f"  Class {cls:5s} | {load_nm}Nm_{tag:<8s} : {n} segments")
++    return data
++
++
++def build_train_val_from_0Nm(
++    data0: Dict[str, Dict], seed: int, n_train: int, n_val: int
++) -> Tuple[Tuple[np.ndarray, np.ndarray, np.ndarray], Tuple[np.ndarray, np.ndarray, np.ndarray]]:
++    rng = np.random.RandomState(seed)
++
++    xtr_v_list, xtr_c_list, ytr_list = [], [], []
++    xva_v_list, xva_c_list, yva_list = [], [], []
++
++    for ci, (cls, _) in enumerate(FAULTS):
++        vib = data0[cls]["vib"]
++        cur = data0[cls]["cur"]
++        n_total = vib.shape[0]
++
++        need = n_train + n_val
++        if n_total < need:
++            raise ValueError(f"Not enough segments for {cls}: have {n_total}, need {need}")
++
++        idx = np.arange(n_total)
++        rng.shuffle(idx)
++        tr_idx = idx[:n_train]
++        va_idx = idx[n_train:n_train + n_val]
++
++        xtr_v_list.append(vib[tr_idx])
++        xtr_c_list.append(cur[tr_idx])
++        ytr_list.append(np.full((n_train,), ci, dtype=np.int64))
++
++        xva_v_list.append(vib[va_idx])
++        xva_c_list.append(cur[va_idx])
++        yva_list.append(np.full((n_val,), ci, dtype=np.int64))
++
++    xtr_v = np.concatenate(xtr_v_list, axis=0)
++    xtr_c = np.concatenate(xtr_c_list, axis=0)
++    ytr = np.concatenate(ytr_list, axis=0)
++
++    xva_v = np.concatenate(xva_v_list, axis=0)
++    xva_c = np.concatenate(xva_c_list, axis=0)
++    yva = np.concatenate(yva_list, axis=0)
++
++    hash_overlap_check(xtr_v, xtr_c, xva_v, xva_c, prefix=f"N{n_train}-seed{seed}")
++
++    ytr_oh = tf.keras.utils.to_categorical(ytr, NUM_CLASSES)
++    yva_oh = tf.keras.utils.to_categorical(yva, NUM_CLASSES)
++
++    return (xtr_v, xtr_c, ytr_oh), (xva_v, xva_c, yva_oh)
++
++
++def build_test_from_load(dataL: Dict[str, Dict]) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
++    xt_v_list, xt_c_list, yt_list = [], [], []
++    for ci, (cls, _) in enumerate(FAULTS):
++        vib = dataL[cls]["vib"][:MAX_SEGMENTS_PER_CLASS]
++        cur = dataL[cls]["cur"][:MAX_SEGMENTS_PER_CLASS]
++        n = min(vib.shape[0], cur.shape[0])
++        vib = vib[:n]
++        cur = cur[:n]
++        xt_v_list.append(vib)
++        xt_c_list.append(cur)
++        yt_list.append(np.full((n,), ci, dtype=np.int64))
++
++    xt_v = np.concatenate(xt_v_list, axis=0).astype(np.float32)
++    xt_c = np.concatenate(xt_c_list, axis=0).astype(np.float32)
++    yt = np.concatenate(yt_list, axis=0).astype(np.int64)
++    yt_oh = tf.keras.utils.to_categorical(yt, NUM_CLASSES)
++    return xt_v, xt_c, yt_oh
++
++
++# ============================================================
++# 6) CFFN MODEL (EDCN + Offline CCA + Softmax)
++# ============================================================
++def build_edcn_branch(input_shape=(2048, 1), num_classes=NUM_CLASSES, prefix="V") -> Model:
++    inp = Input(shape=input_shape, name=f"{prefix}_in")
++
++    x = Conv1D(EDCN_BASE_FILTERS, 64, padding="same", kernel_regularizer=l2(EDCN_L2), name=f"{prefix}_conv1")(inp)
++    x = BatchNormalization(name=f"{prefix}_bn1")(x)
++    x = Activation("relu", name=f"{prefix}_relu1")(x)
++    x = MaxPooling1D(pool_size=16, strides=16, padding="same", name=f"{prefix}_pool1")(x)
++
++    x = Conv1D(EDCN_BASE_FILTERS * 2, 32, padding="same", kernel_regularizer=l2(EDCN_L2), name=f"{prefix}_conv2")(x)
++    x = BatchNormalization(name=f"{prefix}_bn2")(x)
++    x = Activation("relu", name=f"{prefix}_relu2")(x)
++    x = MaxPooling1D(pool_size=2, strides=2, padding="same", name=f"{prefix}_pool2")(x)
++
++    x = Conv1D(EDCN_BASE_FILTERS * 4, 32, padding="same", kernel_regularizer=l2(EDCN_L2), name=f"{prefix}_conv3")(x)
++    x = BatchNormalization(name=f"{prefix}_bn3")(x)
++    x = Activation("relu", name=f"{prefix}_relu3")(x)
++    x = MaxPooling1D(pool_size=2, strides=2, padding="same", name=f"{prefix}_pool3")(x)
++
++    x = Conv1D(EDCN_BASE_FILTERS * 8, 16, padding="same", kernel_regularizer=l2(EDCN_L2), name=f"{prefix}_conv4")(x)
++    x = BatchNormalization(name=f"{prefix}_bn4")(x)
++    x = Activation("relu", name=f"{prefix}_relu4")(x)
++    x = MaxPooling1D(pool_size=2, strides=2, padding="same", name=f"{prefix}_pool4")(x)
++
++    x = GlobalAveragePooling1D(name=f"{prefix}_gap")(x)
++    feat = Dense(EDCN_FEAT_DIM, kernel_regularizer=l2(EDCN_L2), name=f"{prefix}_feat")(x)
++    feat = Activation("relu", name=f"{prefix}_feat_relu")(feat)
++
++    if EDCN_HEAD_DROPOUT > 0:
++        feat = Dropout(EDCN_HEAD_DROPOUT, name=f"{prefix}_drop")(feat)
++
++    out = Dense(num_classes, activation="softmax", name=f"{prefix}_out")(feat)
++    return Model(inp, out, name=f"EDCN_{prefix}")
++
++
++def build_two_branch_train_model() -> Tuple[Model, Model, Model]:
++    edcn_v = build_edcn_branch(prefix="V")
++    edcn_c = build_edcn_branch(prefix="C")
++
++    model_2b = Model([edcn_v.input, edcn_c.input], [edcn_v.output, edcn_c.output], name="CFFN_TwoBranch_EDCN")
++
++    feat_v = Model(edcn_v.input, edcn_v.get_layer("V_feat_relu").output, name="feat_V")
++    feat_c = Model(edcn_c.input, edcn_c.get_layer("C_feat_relu").output, name="feat_C")
++
++    return model_2b, feat_v, feat_c
++
++
++def cca_fit(X: np.ndarray, Y: np.ndarray, reg: float = 1e-3, max_components: int = 128) -> Dict:
++    X = np.asarray(X, dtype=np.float64)
++    Y = np.asarray(Y, dtype=np.float64)
++    mx = X.mean(axis=0, keepdims=True)
++    my = Y.mean(axis=0, keepdims=True)
++    X0 = X - mx
++    Y0 = Y - my
++    N = X0.shape[0]
++    d = X0.shape[1]
++
++    Cxx = (X0.T @ X0) / max(N - 1, 1) + reg * np.eye(d)
++    Cyy = (Y0.T @ Y0) / max(N - 1, 1) + reg * np.eye(d)
++    Cxy = (X0.T @ Y0) / max(N - 1, 1)
++    Cyx = Cxy.T
++
++    iCxx = np.linalg.pinv(Cxx)
++    iCyy = np.linalg.pinv(Cyy)
++
++    M = iCxx @ Cxy @ iCyy @ Cyx
++    eigvals, eigvecs = np.linalg.eigh(M)
++    idx = np.argsort(eigvals)[::-1]
++    eigvals = eigvals[idx]
++    Wx_all = eigvecs[:, idx]
++
++    k = min(d, max(N - 1, 1))
++    k = min(k, int(max_components))
++    k = max(int(k), 1)
++
++    eigvals_k = np.maximum(eigvals[:k], 0.0)
++    Wx = Wx_all[:, :k]
++    denom_sqrt = np.sqrt(eigvals_k + CCA_EPS)
++    Wy = (iCyy @ Cyx @ Wx) / denom_sqrt[np.newaxis, :]
++
++    return dict(mx=mx, my=my, Wx=Wx, Wy=Wy, k=k)
++
++
++def cca_transform(X: np.ndarray, Y: np.ndarray, params: Dict) -> np.ndarray:
++    X = np.asarray(X, dtype=np.float64)
++    Y = np.asarray(Y, dtype=np.float64)
++    mx, my, Wx, Wy = params["mx"], params["my"], params["Wx"], params["Wy"]
++    X0 = (X - mx) @ Wx
++    Y0 = (Y - my) @ Wy
++    return np.concatenate([X0, Y0], axis=1).astype(np.float32)
++
++
++def build_softmax_classifier(input_dim: int, num_classes: int) -> Model:
++    inp = Input(shape=(input_dim,), name="CCA_in")
++    out = Dense(num_classes, activation="softmax", name="Softmax")(inp)
++    return Model(inp, out, name="CCA_Softmax_Classifier")
++
++
++# ============================================================
++# 7) PLOTTING
++# ============================================================
++def save_curves(history, out_path, title_prefix, val_name="Val"):
++    plt.figure(figsize=FIGSIZE_CURVES)
++    plt.subplot(1, 2, 1)
++    plt.plot(history.history["loss"], label="Train")
++    plt.plot(history.history["val_loss"], label=val_name)
++    plt.title(f"Loss - {title_prefix}")
++    plt.legend()
++
++    plt.subplot(1, 2, 2)
++    plt.plot(history.history["accuracy"], label="Train")
++    plt.plot(history.history["val_accuracy"], label=val_name)
++    plt.title(f"Accuracy - {title_prefix}")
++    plt.legend()
++
++    plt.tight_layout()
++    plt.savefig(out_path, dpi=300, bbox_inches="tight")
++    plt.close()
++
++
++def save_confusion(y_true, y_pred, out_path, title, cmap):
++    cm = confusion_matrix(y_true, y_pred)
++    plt.figure(figsize=FIGSIZE_CM)
++    sns.heatmap(
++        cm, annot=True, fmt="d", cmap=cmap,
++        xticklabels=[c for c, _ in FAULTS],
++        yticklabels=[c for c, _ in FAULTS]
++    )
++    plt.xlabel("Predicted")
++    plt.ylabel("True")
++    plt.title(title)
++    plt.tight_layout()
++    plt.savefig(out_path, dpi=300, bbox_inches="tight")
++    plt.close()
++
++
++def save_tsne_from_features(features: np.ndarray, y_true: np.ndarray, out_path: str, title: str, seed: int):
++    feats = np.asarray(features, dtype=np.float32)
++    y = np.asarray(y_true, dtype=np.int64)
++
++    if feats.shape[0] > TSNE_MAX_POINTS:
++        rng = np.random.RandomState(seed)
++        idx = rng.choice(feats.shape[0], TSNE_MAX_POINTS, replace=False)
++        feats = feats[idx]
++        y = y[idx]
++
++    tsne = TSNE(
++        n_components=2,
++        perplexity=min(TSNE_PERPLEXITY, max(5, (feats.shape[0] // 10))),
++        n_iter=TSNE_N_ITER,
++        random_state=seed,
++        init="pca",
++        learning_rate="auto"
++    )
++    emb = tsne.fit_transform(feats)
++
++    plt.figure(figsize=FIGSIZE_TSNE)
++    for ci, (cls, _) in enumerate(FAULTS):
++        m = (y == ci)
++        plt.scatter(emb[m, 0], emb[m, 1], s=15, label=cls, alpha=0.85)
++    plt.legend()
++    plt.title(title)
++    plt.tight_layout()
++    plt.savefig(out_path, dpi=300, bbox_inches="tight")
++    plt.close()
++
++
++def save_roc_multiclass(y_true: np.ndarray, y_prob: np.ndarray, out_path: str, title: str, colors: List[str]):
++    y_true = np.asarray(y_true, dtype=np.int64)
++    y_prob = np.asarray(y_prob, dtype=np.float32)
++    y_bin = label_binarize(y_true, classes=list(range(NUM_CLASSES)))
++
++    plt.figure(figsize=FIGSIZE_ROC)
++    for i in range(NUM_CLASSES):
++        fpr, tpr, _ = roc_curve(y_bin[:, i], y_prob[:, i])
++        roc_auc = auc(fpr, tpr)
++        col = colors[i % len(colors)]
++        plt.plot(fpr, tpr, label=f"Class {i} AUC={roc_auc:.3f}", color=col)
++
++    plt.plot([0, 1], [0, 1], "k--", linewidth=1)
++    plt.xlabel("False Positive Rate")
++    plt.ylabel("True Positive Rate")
++    plt.title(title)
++    plt.legend(loc="lower right", fontsize=8)
++    plt.tight_layout()
++    plt.savefig(out_path, dpi=300, bbox_inches="tight")
++    plt.close()
++
++
++def plot_radar(snr_list: List[float], acc_list: List[float], f1_list: List[float], out_path: str, title: str):
++    def _lab(s):
++        if s is None:
++            return "NoNoise"
++        if np.isscalar(s) and np.isinf(s):
++            return "NoNoise"
++        try:
++            return str(int(s))
++        except Exception:
++            return str(s)
++
++    labels = [_lab(s) for s in snr_list]
++    n = len(labels)
++    angles = np.linspace(0, 2 * np.pi, n, endpoint=False).tolist()
++    angles += angles[:1]
++
++    acc = acc_list + acc_list[:1]
++    f1 = f1_list + f1_list[:1]
++
++    plt.figure(figsize=FIGSIZE_RADAR)
++    ax = plt.subplot(111, polar=True)
++    ax.plot(angles, acc, linewidth=2, label="Accuracy")
++    ax.fill(angles, acc, alpha=0.15)
++    ax.plot(angles, f1, linewidth=2, label="Macro-F1")
++    ax.fill(angles, f1, alpha=0.15)
++    ax.set_thetagrids(np.degrees(angles[:-1]), labels)
++    ax.set_ylim(0.0, 1.0)
++    plt.title(title)
++    plt.legend(loc="upper right", bbox_to_anchor=(1.25, 1.1))
++    plt.tight_layout()
++    plt.savefig(out_path, dpi=300, bbox_inches="tight")
++    plt.close()
++
++
++def plot_performance_trend(trimmed_df: pd.DataFrame, out_path: str):
++    plt.figure(figsize=(9, 5))
++    x = trimmed_df["n_train"].values
++    plt.plot(x, trimmed_df["Acc_2Nm_mean"].values, label="2Nm Acc")
++    plt.plot(x, trimmed_df["F1_2Nm_mean"].values, label="2Nm F1")
++    plt.plot(x, trimmed_df["Acc_4Nm_mean"].values, label="4Nm Acc")
++    plt.plot(x, trimmed_df["F1_4Nm_mean"].values, label="4Nm F1")
++    plt.ylim(0.0, 1.02)
++    plt.xlabel("N (train samples per class @0Nm)")
++    plt.ylabel("Score")
++    plt.title("Performance Trend (Trimmed Mean)")
++    plt.legend()
++    plt.tight_layout()
++    plt.savefig(out_path, dpi=300, bbox_inches="tight")
++    plt.close()
++
++
++# ============================================================
++# 8) EVAL
++# ============================================================
++def compute_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> Dict[str, float]:
++    return {
++        "acc": float(accuracy_score(y_true, y_pred)),
++        "prec": float(precision_score(y_true, y_pred, average="macro", zero_division=0)),
++        "rec": float(recall_score(y_true, y_pred, average="macro", zero_division=0)),
++        "f1": float(f1_score(y_true, y_pred, average="macro", zero_division=0)),
++    }
++
++
++def eval_on_test_cffn(
++    feat_v: Model, feat_c: Model,
++    cca_params: Dict, clf: Model,
++    x_v: np.ndarray, x_c: np.ndarray, y_onehot: np.ndarray,
++    out_dir: str, tag: str,
++    snr_db: float, seed: int,
++    roc_colors: List[str], cm_cmap: str
++) -> Dict[str, float]:
++    os.makedirs(out_dir, exist_ok=True)
++
++    rng = np.random.RandomState(seed)
++    x_vn = add_noise_then_optional_post_zscore_np(x_v, snr_db, rng)
++    x_cn = add_noise_then_optional_post_zscore_np(x_c, snr_db, rng)
++
++    y_true = np.argmax(y_onehot, axis=1)
++
++    t0_inf = time.perf_counter()
++    fv = feat_v.predict(x_vn, batch_size=256, verbose=0)
++    fc = feat_c.predict(x_cn, batch_size=256, verbose=0)
++    fused = cca_transform(fv, fc, cca_params)
++    y_prob = clf.predict(fused, batch_size=256, verbose=0)
++    t1_inf = time.perf_counter()
++
++    y_pred = np.argmax(y_prob, axis=1)
++    m = compute_metrics(y_true, y_pred)
++
++    t0_viz = time.perf_counter()
++    save_confusion(y_true, y_pred, os.path.join(out_dir, f"cm_{tag}.png"),
++                   title=f"Confusion Matrix ({tag})", cmap=cm_cmap)
++    save_tsne_from_features(fused, y_true, os.path.join(out_dir, f"tsne_{tag}.png"),
++                            title=f"t-SNE ({tag})", seed=seed + 123)
++    save_roc_multiclass(y_true, y_prob, os.path.join(out_dir, f"roc_{tag}.png"),
++                        title=f"ROC ({tag})", colors=roc_colors)
++    t1_viz = time.perf_counter()
++
++    m["infer_time"] = float(t1_inf - t0_inf)
++    m["viz_time"] = float(t1_viz - t0_viz)
++    return m
++
++
++# ============================================================
++# 9) best_parameters.txt
++# ============================================================
++def write_best_parameters_txt(out_dir: str):
++    p = os.path.join(out_dir, "best_parameters.txt")
++    with open(p, "w", encoding="utf-8") as f:
++        f.write("CFFN (KAIST Load-Shift) - FIXED TRAINING SETTINGS (Moderate Baseline)\n")
++        f.write("=" * 80 + "\n")
++        f.write(f"EPOCHS_FULL = {EPOCHS_FULL}\n")
++        f.write(f"OPTIMIZER   = Adamax(lr={BEST_LR}, clipnorm={GRAD_CLIPNORM})\n")
++        f.write(f"BATCH_SIZE  = {BATCH_SIZE}\n")
++        f.write(f"LOSS        = CategoricalCrossentropy(label_smoothing={LABEL_SMOOTHING})\n")
++        f.write(f"METRIC      = {METRIC_NAME}\n\n")
++
++        f.write("DATA SETTINGS\n")
++        f.write("-" * 80 + "\n")
++        f.write(f"SEG_LEN = {SEG_LEN}\n")
++        f.write(f"ENABLE_ZSCORE_PER_SEGMENT = {ENABLE_ZSCORE_PER_SEGMENT}\n")
++        f.write(f"MAX_SEGMENTS_PER_CLASS = {MAX_SEGMENTS_PER_CLASS}\n")
++        f.write(f"SAMPLE_RANGE = {SAMPLE_RANGE.start}..{SAMPLE_RANGE.stop-1}\n")
++        f.write(f"REPEAT_TIMES = {REPEAT_TIMES}\n")
++        f.write(f"VAL_PER_CLASS_MAIN = {VAL_PER_CLASS_MAIN}\n")
++        f.write(f"seed rule = n_train*100 + run_idx\n")
++        f.write(f"ENABLE_HASH_OVERLAP_CHECK = {ENABLE_HASH_OVERLAP_CHECK}\n\n")
++
++        f.write("NOISE SETTINGS (MHCNN-aligned)\n")
++        f.write("-" * 80 + "\n")
++        f.write(f"TRAIN_BASE_SNR_DB = {TRAIN_BASE_SNR_DB}\n")
++        f.write(f"TEST_SNR_DB_LIST  = {TEST_SNR_DB_LIST}\n")
++        f.write(f"EVAL_NOISE_REPEATS = {EVAL_NOISE_REPEATS}\n")
++        f.write(f"POST_ZSCORE_AFTER_NOISE = {POST_ZSCORE_AFTER_NOISE}\n\n")
++
++        f.write("MODEL (Moderate EDCN)\n")
++        f.write("-" * 80 + "\n")
++        f.write("EDCN blocks: base=24 -> 24/48/96/192, kernel 64/32/32/16, pool 16/2/2/2 + BN+ReLU + GAP + FC(96)\n")
++        f.write(f"EDCN_L2={EDCN_L2}, EDCN_HEAD_DROPOUT={EDCN_HEAD_DROPOUT}, LABEL_SMOOTHING={LABEL_SMOOTHING}\n")
++        f.write(f"CCA_REG={CCA_REG}, CCA_MAX_COMPONENTS={CCA_MAX_COMPONENTS}\n")
++
++
++# ============================================================
++# 10) TRAIN ONE RUN (CFFN two-stage)
++# ============================================================
++def train_one_run_cffn(
++    xtr_v, xtr_c, ytr,
++    xva_v, xva_c, yva,
++    seed: int,
++    run_dir: str
++) -> Tuple[Model, Model, Dict, Model, float, float]:
++    os.makedirs(run_dir, exist_ok=True)
++
++    rng_tr = np.random.RandomState(seed + 11)
++    rng_va = np.random.RandomState(seed + 22)
++    xtr_vn = add_noise_then_optional_post_zscore_np(xtr_v, TRAIN_BASE_SNR_DB, rng_tr)
++    xtr_cn = add_noise_then_optional_post_zscore_np(xtr_c, TRAIN_BASE_SNR_DB, rng_tr)
++    xva_vn = add_noise_then_optional_post_zscore_np(xva_v, TRAIN_BASE_SNR_DB, rng_va)
++    xva_cn = add_noise_then_optional_post_zscore_np(xva_c, TRAIN_BASE_SNR_DB, rng_va)
++
++    model_2b, feat_v, feat_c = build_two_branch_train_model()
++    opt = Adamax(learning_rate=BEST_LR, clipnorm=GRAD_CLIPNORM)
++
++    model_2b.compile(
++        optimizer=opt,
++        loss={"V_out": LOSS_FN, "C_out": LOSS_FN},
++        metrics={"V_out": [METRIC_NAME], "C_out": [METRIC_NAME]},
++    )
++
++    t0 = time.perf_counter()
++    hist_edcn = model_2b.fit(
++        [xtr_vn, xtr_cn], {"V_out": ytr, "C_out": ytr},
++        validation_data=([xva_vn, xva_cn], {"V_out": yva, "C_out": yva}),
++        epochs=EPOCHS_FULL,
++        batch_size=BATCH_SIZE,
++        verbose=0
++    )
++    t1 = time.perf_counter()
++
++    # curves_edcn.png
++    try:
++        avg_acc = (np.array(hist_edcn.history["V_out_accuracy"]) + np.array(hist_edcn.history["C_out_accuracy"])) / 2.0
++        avg_vacc = (np.array(hist_edcn.history["val_V_out_accuracy"]) + np.array(hist_edcn.history["val_C_out_accuracy"])) / 2.0
++        tmp_hist = type("H", (), {})()
++        tmp_hist.history = {
++            "loss": hist_edcn.history["loss"],
++            "val_loss": hist_edcn.history["val_loss"],
++            "accuracy": avg_acc.tolist(),
++            "val_accuracy": avg_vacc.tolist(),
++        }
++        save_curves(tmp_hist, os.path.join(run_dir, "curves_edcn.png"), title_prefix="EDCN(two-branch)")
++    except Exception:
++        pass
++
++    # offline CCA
++    fv_tr = feat_v.predict(xtr_vn, batch_size=256, verbose=0)
++    fc_tr = feat_c.predict(xtr_cn, batch_size=256, verbose=0)
++    cca_params = cca_fit(fv_tr, fc_tr, reg=CCA_REG, max_components=CCA_MAX_COMPONENTS)
++
++    fused_tr = cca_transform(fv_tr, fc_tr, cca_params)
++
++    fv_va = feat_v.predict(xva_vn, batch_size=256, verbose=0)
++    fc_va = feat_c.predict(xva_cn, batch_size=256, verbose=0)
++    fused_va = cca_transform(fv_va, fc_va, cca_params)
++
++    clf = build_softmax_classifier(fused_tr.shape[1], NUM_CLASSES)
++    opt2 = Adamax(learning_rate=BEST_LR, clipnorm=GRAD_CLIPNORM)
++    clf.compile(optimizer=opt2, loss=LOSS_FN, metrics=[METRIC_NAME])
++
++    hist_clf = clf.fit(
++        fused_tr, ytr,
++        callbacks=([AUDIT_CB(feat_v, feat_c, cca_params)] if (AUDIT_CB and AUDIT_CTX) else None),  # [audit]
++        validation_data=(fused_va, yva),
++        epochs=EPOCHS_FULL,
++        batch_size=BATCH_SIZE,
++        verbose=0
++    )
++
++    save_curves(hist_clf, os.path.join(run_dir, "curves.png"), title_prefix="CCA+Softmax")
++
++    t2 = time.perf_counter()
++    train_time_total = float(t2 - t0)
++    return feat_v, feat_c, cca_params, clf, train_time_total, float(t2 - t1)
++
++
++# ============================================================
++# 11) STEP3: NoiseStudy (FAIR SameModel) - MHCNN aligned
++# ============================================================
++def run_noise_study_same_model(data0, x2_v, x2_c, y2, x4_v, x4_c, y4):
++    noise_dir = os.path.join(BASE_OUTPUT_DIR, "NoiseStudy_LoadShift_FAIR_SameModel")
++    os.makedirs(noise_dir, exist_ok=True)
++
++    seed = 2026
++    set_global_seed(seed)
++
++    n_train = 30
++    n_val = min(VAL_PER_CLASS_MAIN, MAX_SEGMENTS_PER_CLASS - n_train - 1)
++    (xtr_v, xtr_c, ytr), (xva_v, xva_c, yva) = build_train_val_from_0Nm(
++        data0, seed=seed, n_train=n_train, n_val=n_val
++    )
++
++    tf.keras.backend.clear_session()
++    gc.collect()
++
++    print("\n>>> Step3 (NoiseStudy FAIR SameModel): Train once @0dB, eval multi-SNR ...")
++    feat_v, feat_c, cca_params, clf, train_time_total, _ = train_one_run_cffn(
++        xtr_v, xtr_c, ytr, xva_v, xva_c, yva, seed=seed, run_dir=noise_dir
++    )
++    print(f"[Step3] TrainTime={train_time_total:.2f}s")
++
++    rows = []
++    acc2_mean_list, f12_mean_list = [], []
++    acc4_mean_list, f14_mean_list = [], []
++
++    def _is_nonoise(s):
++        try:
++            return np.isscalar(s) and np.isinf(s)
++        except Exception:
++            return False
++
++    for snr_db in TEST_SNR_DB_LIST:
++        is_nonoise = _is_nonoise(snr_db)
++        label = "NoNoise" if is_nonoise else str(int(snr_db))
++        repeats = 1 if is_nonoise else EVAL_NOISE_REPEATS
++
++        acc2_list, f12_list = [], []
++        acc4_list, f14_list = [], []
++
++        for r in range(repeats):
++            s = seed + 1000 + r * 17
++            m2 = eval_on_test_cffn(
++                feat_v, feat_c, cca_params, clf,
++                x2_v, x2_c, y2,
++                out_dir=os.path.join(noise_dir, "_tmp2"), tag="2Nm",
++                snr_db=snr_db, seed=s,
++                roc_colors=ROC_COLORS_2NM, cm_cmap=CM_CMAP_2NM
++            )
++            m4 = eval_on_test_cffn(
++                feat_v, feat_c, cca_params, clf,
++                x4_v, x4_c, y4,
++                out_dir=os.path.join(noise_dir, "_tmp4"), tag="4Nm",
++                snr_db=snr_db, seed=s + 9,
++                roc_colors=ROC_COLORS_4NM, cm_cmap=CM_CMAP_4NM
++            )
++            acc2_list.append(m2["acc"]); f12_list.append(m2["f1"])
++            acc4_list.append(m4["acc"]); f14_list.append(m4["f1"])
++
++        acc2_m, acc2_s = float(np.mean(acc2_list)), float(np.std(acc2_list))
++        f12_m, f12_s = float(np.mean(f12_list)), float(np.std(f12_list))
++        acc4_m, acc4_s = float(np.mean(acc4_list)), float(np.std(acc4_list))
++        f14_m, f14_s = float(np.mean(f14_list)), float(np.std(f14_list))
++
++        rows.append([
++            label,
++            (np.nan if is_nonoise else float(snr_db)),
++            acc2_m, acc2_s, f12_m, f12_s,
++            acc4_m, acc4_s, f14_m, f14_s,
++            repeats
++        ])
++
++        acc2_mean_list.append(acc2_m); f12_mean_list.append(f12_m)
++        acc4_mean_list.append(acc4_m); f14_mean_list.append(f14_m)
++
++        print(f"[Step3] {label:>7s} | 2Nm Acc={acc2_m:.4f}±{acc2_s:.4f} F1={f12_m:.4f}±{f12_s:.4f} | "
++              f"4Nm Acc={acc4_m:.4f}±{acc4_s:.4f} F1={f14_m:.4f}±{f14_s:.4f}")
++
++    # cleanup tmp dirs
++    for d in [os.path.join(noise_dir, "_tmp2"), os.path.join(noise_dir, "_tmp4")]:
++        if os.path.isdir(d):
++            try:
++                for fn in os.listdir(d):
++                    os.remove(os.path.join(d, fn))
++                os.rmdir(d)
++            except Exception:
++                pass
++
++    out_csv = os.path.join(noise_dir, "Noise_Robustness_LoadShift_SameModel_FAIR.csv")
++    pd.DataFrame(rows, columns=[
++        "label", "SNR_dB",
++        "Acc_2Nm_mean", "Acc_2Nm_std", "F1_2Nm_mean", "F1_2Nm_std",
++        "Acc_4Nm_mean", "Acc_4Nm_std", "F1_4Nm_mean", "F1_4Nm_std",
++        "eval_repeats"
++    ]).to_csv(out_csv, index=False, encoding="utf-8-sig")
++    print("[Step3] Saved:", out_csv)
++
++    plot_radar(
++        TEST_SNR_DB_LIST, acc2_mean_list, f12_mean_list,
++        os.path.join(noise_dir, "radar_2Nm.png"),
++        title="2Nm Robustness (FAIR, SameModel)  NoNoise/0/-2/-4/-6/-8/-10 dB"
++    )
++    plot_radar(
++        TEST_SNR_DB_LIST, acc4_mean_list, f14_mean_list,
++        os.path.join(noise_dir, "radar_4Nm.png"),
++        title="4Nm Robustness (FAIR, SameModel)  NoNoise/0/-2/-4/-6/-8/-10 dB"
++    )
++
++    # baseline plots @0dB (must output CM/tSNE/ROC)
++    base_dir = os.path.join(noise_dir, "BaselineSNR_0dB")
++    out2 = os.path.join(base_dir, "Test_2Nm")
++    out4 = os.path.join(base_dir, "Test_4Nm")
++    _ = eval_on_test_cffn(
++        feat_v, feat_c, cca_params, clf,
++        x2_v, x2_c, y2,
++        out_dir=out2, tag="2Nm",
++        snr_db=0, seed=seed + 10,
++        roc_colors=ROC_COLORS_2NM, cm_cmap=CM_CMAP_2NM
++    )
++    _ = eval_on_test_cffn(
++        feat_v, feat_c, cca_params, clf,
++        x4_v, x4_c, y4,
++        out_dir=out4, tag="4Nm",
++        snr_db=0, seed=seed + 20,
++        roc_colors=ROC_COLORS_4NM, cm_cmap=CM_CMAP_4NM
++    )
++
++    del feat_v, feat_c, clf
++    tf.keras.backend.clear_session()
++    gc.collect()
++
++
++# ============================================================
++# 12) MAIN
++# ============================================================
++def main():
++    os.makedirs(BASE_OUTPUT_DIR, exist_ok=True)
++    write_best_parameters_txt(BASE_OUTPUT_DIR)
++
++    log_path = os.path.join(BASE_OUTPUT_DIR, "log.txt")
++    f_log = open(log_path, "w", encoding="utf-8")
++    old_out, old_err = sys.stdout, sys.stderr
++    sys.stdout = _Tee(old_out, f_log)
++    sys.stderr = _Tee(old_err, f_log)
++
++    t_all0 = time.perf_counter()
++
++    try:
++        print("========== CFFN (NO Optuna) Load Shift | Vib(.mat)+Current(.tdms) ==========")
++        print("VIB_MAT_DIR_0NM:", VIB_MAT_DIR_0NM)
++        print("VIB_MAT_DIR_2NM:", VIB_MAT_DIR_2NM)
++        print("VIB_MAT_DIR_4NM:", VIB_MAT_DIR_4NM)
++        print("CUR_TDMS_DIR   :", CUR_TDMS_DIR)
++        print("OUTPUT_DIR     :", BASE_OUTPUT_DIR)
++        print(f"Base noise: {TRAIN_BASE_SNR_DB} dB | Robust envs={TEST_SNR_DB_LIST}")
++        print(f"[FIX] post-zscore(after noise)={POST_ZSCORE_AFTER_NOISE}")
++        print(f"[Protocol] N={SAMPLE_RANGE.start}..{SAMPLE_RANGE.stop-1}, runs={REPEAT_TIMES}, seed=n_train*100+run_idx")
++        print(f"[Train] epochs={EPOCHS_FULL}, bs={BATCH_SIZE}, opt=Adamax(lr={BEST_LR}, clipnorm={GRAD_CLIPNORM})")
++        print(f"[Moderate] filters={EDCN_BASE_FILTERS}, feat_dim={EDCN_FEAT_DIM}, drop={EDCN_HEAD_DROPOUT}, l2={EDCN_L2}, "
++              f"cca_k<= {CCA_MAX_COMPONENTS}, cca_reg={CCA_REG}, label_smooth={LABEL_SMOOTHING}")
++        print("============================================================\n")
++
++        print(">>> Pre-loading KAIST data into memory...")
++        print("Loading 0Nm ...")
++        data0 = load_kaist_load(0, VIB_MAT_DIR_0NM, CUR_TDMS_DIR)
++        print("Loading 2Nm ...")
++        data2 = load_kaist_load(2, VIB_MAT_DIR_2NM, CUR_TDMS_DIR)
++        print("Loading 4Nm ...")
++        data4 = load_kaist_load(4, VIB_MAT_DIR_4NM, CUR_TDMS_DIR)
++
++        x2_v, x2_c, y2 = build_test_from_load(data2)
++        x4_v, x4_c, y4 = build_test_from_load(data4)
++        print(f"[TestSet] 2Nm: {x2_v.shape} | 4Nm: {x4_v.shape}\n")
++
++        tf.keras.backend.clear_session()
++        model_2b, feat_v_tmp, feat_c_tmp = build_two_branch_train_model()
++        print(">>> CFFN Two-Branch EDCN Summary:")
++        model_2b.summary()
++        del model_2b, feat_v_tmp, feat_c_tmp
++        tf.keras.backend.clear_session()
++        gc.collect()
++
++        raw_rows = []
++        trimmed_rows = []
++
++        t_stage2_0 = time.perf_counter()
++        for n_train in SAMPLE_RANGE:
++            print(f"\n======== Train(0Nm) N={n_train} (Run 1-{REPEAT_TIMES}) ========")
++            sample_dir = os.path.join(BASE_OUTPUT_DIR, f"Samples_{n_train:02d}")
++            os.makedirs(sample_dir, exist_ok=True)
++
++            acc2_list, f12_list, p2_list, r2_list = [], [], [], []
++            acc4_list, f14_list, p4_list, r4_list = [], [], [], []
++            train_time_list, infer2_list, viz2_list, infer4_list, viz4_list = [], [], [], [], []
++
++            n_val = min(VAL_PER_CLASS_MAIN, MAX_SEGMENTS_PER_CLASS - n_train - 1)
++
++            for run_idx in range(1, REPEAT_TIMES + 1):
++                seed = run_idx - 1  # [audit] seeds 0..9
++                set_global_seed(seed)
++
++                run_dir = os.path.join(sample_dir, f"Run_{run_idx:02d}")
++                os.makedirs(run_dir, exist_ok=True)
++
++                (xtr_v, xtr_c, ytr), (xva_v, xva_c, yva) = build_train_val_from_0Nm(
++                    data0, seed=seed, n_train=n_train, n_val=n_val
++                )
++
++                tf.keras.backend.clear_session()
++                gc.collect()
++
++                AUDIT_CTX.update(run_idx=run_idx, seed=seed, x2=(x2_v, x2_c, y2), x4=(x4_v, x4_c, y4))  # [audit]
++                feat_v, feat_c, cca_params, clf, train_time, _ = train_one_run_cffn(
++                    xtr_v, xtr_c, ytr, xva_v, xva_c, yva, seed=seed, run_dir=run_dir
++                )
++
++                out2 = os.path.join(run_dir, "Test_2Nm")
++                out4 = os.path.join(run_dir, "Test_4Nm")
++
++                m2 = eval_on_test_cffn(
++                    feat_v, feat_c, cca_params, clf,
++                    x2_v, x2_c, y2,
++                    out_dir=out2, tag="2Nm",
++                    snr_db=TRAIN_BASE_SNR_DB, seed=seed + 10,
++                    roc_colors=ROC_COLORS_2NM, cm_cmap=CM_CMAP_2NM
++                )
++                m4 = eval_on_test_cffn(
++                    feat_v, feat_c, cca_params, clf,
++                    x4_v, x4_c, y4,
++                    out_dir=out4, tag="4Nm",
++                    snr_db=TRAIN_BASE_SNR_DB, seed=seed + 20,
++                    roc_colors=ROC_COLORS_4NM, cm_cmap=CM_CMAP_4NM
++                )
++
++                acc2_list.append(m2["acc"]); f12_list.append(m2["f1"]); p2_list.append(m2["prec"]); r2_list.append(m2["rec"])
++                if AUDIT_FINAL: AUDIT_FINAL(run_idx, seed, m2["acc"], m4["acc"])  # [audit]
++                acc4_list.append(m4["acc"]); f14_list.append(m4["f1"]); p4_list.append(m4["prec"]); r4_list.append(m4["rec"])
++
++                train_time_list.append(train_time)
++                infer2_list.append(m2["infer_time"]); viz2_list.append(m2["viz_time"])
++                infer4_list.append(m4["infer_time"]); viz4_list.append(m4["viz_time"])
++
++                t2_total = float(m2["infer_time"] + m2["viz_time"])
++                t4_total = float(m4["infer_time"] + m4["viz_time"])
++
++                print(
++                    f"  [N{n_train}-R{run_idx}] "
++                    f"Train={train_time:.2f}s | "
++                    f"2Nm Acc={m2['acc']:.4f} F1={m2['f1']:.4f} "
++                    f"(Infer={m2['infer_time']:.2f}s, Viz={m2['viz_time']:.2f}s, Total={t2_total:.2f}s) | "
++                    f"4Nm Acc={m4['acc']:.4f} F1={m4['f1']:.4f} "
++                    f"(Infer={m4['infer_time']:.2f}s, Viz={m4['viz_time']:.2f}s, Total={t4_total:.2f}s)",
++                    flush=True
++                )
++
++                del feat_v, feat_c, clf
++                tf.keras.backend.clear_session()
++                gc.collect()
++
++            raw_rows.append([
++                n_train,
++                float(np.mean(acc2_list)), float(np.std(acc2_list)),
++                float(np.mean(f12_list)), float(np.std(f12_list)),
++                float(np.mean(p2_list)), float(np.std(p2_list)),
++                float(np.mean(r2_list)), float(np.std(r2_list)),
++                float(np.mean(acc4_list)), float(np.std(acc4_list)),
++                float(np.mean(f14_list)), float(np.std(f14_list)),
++                float(np.mean(p4_list)), float(np.std(p4_list)),
++                float(np.mean(r4_list)), float(np.std(r4_list)),
++                float(np.mean(train_time_list)), float(np.mean(infer2_list)), float(np.mean(viz2_list)),
++                float(np.mean(infer4_list)), float(np.mean(viz4_list)),
++            ])
++
++            acc2_m, acc2_s = trimmed_mean_std(acc2_list)
++            f12_m, f12_s = trimmed_mean_std(f12_list)
++            p2_m, p2_s = trimmed_mean_std(p2_list)
++            r2_m, r2_s = trimmed_mean_std(r2_list)
++
++            acc4_m, acc4_s = trimmed_mean_std(acc4_list)
++            f14_m, f14_s = trimmed_mean_std(f14_list)
++            p4_m, p4_s = trimmed_mean_std(p4_list)
++            r4_m, r4_s = trimmed_mean_std(r4_list)
++
++            trimmed_rows.append([
++                n_train,
++                acc2_m, acc2_s, f12_m, f12_s, p2_m, p2_s, r2_m, r2_s,
++                acc4_m, acc4_s, f14_m, f14_s, p4_m, p4_s, r4_m, r4_s
++            ])
++
++            print(f"  >>> Trimmed N={n_train}: "
++                  f"2Nm Acc={acc2_m:.4f}±{acc2_s:.4f} F1={f12_m:.4f}±{f12_s:.4f} | "
++                  f"4Nm Acc={acc4_m:.4f}±{acc4_s:.4f} F1={f14_m:.4f}±{f14_s:.4f}")
++
++        t_stage2_1 = time.perf_counter()
++
++        raw_csv = os.path.join(BASE_OUTPUT_DIR, "Final_Summary_Stats_raw.csv")
++        raw_cols = [
++            "n_train",
++            "Acc_2Nm_mean", "Acc_2Nm_std", "F1_2Nm_mean", "F1_2Nm_std",
++            "Prec_2Nm_mean", "Prec_2Nm_std", "Recall_2Nm_mean", "Recall_2Nm_std",
++            "Acc_4Nm_mean", "Acc_4Nm_std", "F1_4Nm_mean", "F1_4Nm_std",
++            "Prec_4Nm_mean", "Prec_4Nm_std", "Recall_4Nm_mean", "Recall_4Nm_std",
++            "Train_time_mean", "Infer_time_2Nm_mean", "Viz_time_2Nm_mean",
++            "Infer_time_4Nm_mean", "Viz_time_4Nm_mean"
++        ]
++        pd.DataFrame(raw_rows, columns=raw_cols).to_csv(raw_csv, index=False, encoding="utf-8-sig")
++
++        trimmed_csv = os.path.join(BASE_OUTPUT_DIR, "Final_Summary_Stats_trimmed.csv")
++        trimmed_cols = [
++            "n_train",
++            "Acc_2Nm_mean", "Acc_2Nm_std", "F1_2Nm_mean", "F1_2Nm_std",
++            "Prec_2Nm_mean", "Prec_2Nm_std", "Recall_2Nm_mean", "Recall_2Nm_std",
++            "Acc_4Nm_mean", "Acc_4Nm_std", "F1_4Nm_mean", "F1_4Nm_std",
++            "Prec_4Nm_mean", "Prec_4Nm_std", "Recall_4Nm_mean", "Recall_4Nm_std",
++        ]
++        trimmed_df = pd.DataFrame(trimmed_rows, columns=trimmed_cols)
++        trimmed_df.to_csv(trimmed_csv, index=False, encoding="utf-8-sig")
++
++        plot_performance_trend(trimmed_df, os.path.join(BASE_OUTPUT_DIR, "performance_trend.png"))
++
++        print("\n[Saved] ", raw_csv)
++        print("[Saved] ", trimmed_csv)
++        print("[Saved] performance_trend.png")
++
++        # Step3 NoiseStudy
++        t_stage3_0 = time.perf_counter()
++        pass  # [audit] Stage 3 not run
++        t_stage3_1 = time.perf_counter()
++
++        t_all1 = time.perf_counter()
++        with open(os.path.join(BASE_OUTPUT_DIR, "Time_Summary.txt"), "w", encoding="utf-8") as f:
++            f.write(f"Stage2(full N=5..30 x10 runs) = {t_stage2_1 - t_stage2_0:.2f} s\n")
++            f.write(f"Stage3(NoiseStudy same model) = {t_stage3_1 - t_stage3_0:.2f} s\n")
++            f.write(f"TOTAL = {t_all1 - t_all0:.2f} s\n")
++
++        print("\n[Time] Stage2 =", f"{t_stage2_1 - t_stage2_0:.2f}s")
++        print("[Time] Stage3 =", f"{t_stage3_1 - t_stage3_0:.2f}s")
++        print("[Time] TOTAL  =", f"{t_all1 - t_all0:.2f}s")
++
++    finally:
++        sys.stdout = old_out
++        sys.stderr = old_err
++        f_log.close()
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/audit_MHCNN_KAIST.py b/audit_MHCNN_KAIST.py
+new file mode 100644
+index 00000000..3ea2524e
+--- /dev/null
++++ b/audit_MHCNN_KAIST.py
+@@ -0,0 +1,1654 @@
++"""
++MHCNN (Optuna) — KAIST Load-Shift Case Study
++===========================================
++
++Overview 
++---------------------------
++This script implements the MHCNN framework for multimodal fault diagnosis with limited samples.
++MHCNN consists of four key modules trained end-to-end with categorical cross-entropy:
++  1) MSHEM: Modality-Specific Heterogeneous Encoder Module
++     - Two 1-D CNN encoders process raw vibration and current/acoustic-like time series separately.
++     - Heterogeneous design: vibration branch uses LeakyReLU + AveragePooling; acoustic/current branch uses GELU + MaxPooling.
++     - This respects distinct statistical characteristics across modalities.  (MSHEM; Fig.1)  [Paper]
++  2) CAIM: Cross-Attention Interaction Module (bidirectional)
++     - Two cross-attention blocks perform V→A and A→V interactions to obtain cross-enhanced representations.
++     - Intuition: each modality attends to informative patterns in the other modality to improve robustness. (CAIM; Fig.1) [Paper]
++  3) AMRM: Adaptive Modality Re-Weighting Module
++     - Estimates sample-wise reliability weights for each modality and re-weights features before fusion. (AMRM; Fig.1) [Paper]
++  4) FCB: Fusion Classification Block
++     - A compact fusion head maps the fused representation to posterior probabilities over K health states. (FCB) [Paper]
++
++Architecture notes
++-------------------------------------------------------------------
++- Segment length L = 2048 points per sample.
++- Vibration encoder (MSHEM-v): 4 Conv1D blocks, kernel size=16, LeakyReLU, AveragePooling, dropout≈0.422 at last block.
++- Acoustic/current encoder (MSHEM-a): 5 Conv1D blocks, kernel size=8, GELU, MaxPooling, dropout≈0.350 at last block.
++- Attention embedding dimension: 256.
++- These settings are selected via Optuna-based hyperparameter optimization in the paper. 
++
++Task: KAIST Load-Shift protocol
++----------------------------------------
++Train/Val:
++  - 0Nm only (few-shot N = 5..30, repeated runs)
++  - optional hash-overlap leakage check between train and val segments
++Test:
++  - 2Nm and 4Nm only
++
++Normalization & noise policy
++----------------------------
++- Per-segment z-score normalization at load time (ENABLE_ZSCORE_PER_SEGMENT=True).
++- IMPORTANT: By default, DO NOT apply post-zscore after adding noise
++  (ENABLE_POST_ZSCORE_AFTER_NOISE=False), to preserve meaningful SNR differences.
++
++Baseline environment:
++  - 0 dB Gaussian noise for train/val/test baseline evaluation (TRAIN_BASE_SNR_DB=0).
++
++Robustness study (FAIR, SameModel)
++----------------------------------
++- Train ONE NoiseStudy_model ONCE (fixed N=30 and fixed seed).
++- Evaluate ALL SNR points using the SAME trained model:
++    NoNoise + 0 + (-2, -4, -6, -8, -10) dB
++- For each noisy SNR point, repeat multiple noise realizations and report mean ± std.
++
++Outputs
++-------
++- log.txt (tee terminal output)
++- learning curves, confusion matrix, t-SNE, ROC
++- CSV summaries: raw + trimmed mean ± std
++
++Path placeholders (OPEN-SOURCE friendly)
++----------------------------------------
++All absolute local paths must be replaced by placeholders (YOUR_PATH_*) or environment variables.
++See the "PATH CONFIG" section below and the README "Path Configuration".
++"""
++
++
++import os
++import gc
++import random
++import hashlib
++import warnings
++import traceback
++from itertools import cycle
++import sys
++import time
++
++warnings.filterwarnings("ignore")
++
++# ---------------------------
++# Environment
++# ---------------------------
++# TEMP/TMP: set a writable temporary folder (ANY location you like).
++# Replace YOUR_TEMP_PATH with your local temp directory, e.g. r"D:\temp"
++os.environ["TEMP"] = '/home/jeffwork/audit_ext/work64/out_MHFL-MCA/tmp'   # <-- replace with your temp folder path
++os.environ["TMP"]  = '/home/jeffwork/audit_ext/work64/out_MHFL-MCA/tmp'   # <-- replace with your temp folder path
++
++# GPU selection (optional): keep default "0" or replace as needed
++os.environ["CUDA_VISIBLE_DEVICES"] = "0"
++
++# TensorFlow logging (optional): "2" to suppress INFO/WARNING
++os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
++
++
++import numpy as np
++import pandas as pd
++import matplotlib.pyplot as plt
++import seaborn as sns
++from scipy.io import loadmat
++
++import tensorflow as tf
++import keras
++from keras.models import Model
++from keras.layers import (
++    Dense, Input, Dropout, Flatten, Conv1D,
++    MaxPooling1D, AveragePooling1D,
++    Lambda, Concatenate, Activation, LeakyReLU
++)
++import keras.backend as K
++from keras.utils import np_utils
++
++from sklearn.metrics import (
++    confusion_matrix, f1_score, precision_score, recall_score,
++    roc_curve, auc, accuracy_score
++)
++from sklearn.manifold import TSNE
++from sklearn.preprocessing import label_binarize
++
++import optuna
++
++# TDMS reader
++try:
++    from nptdms import TdmsFile
++except ImportError as e:
++    raise ImportError("Missing dependency: nptdms. Please run: pip install nptdms") from e
++
++# Optuna pruning callback (compat)
++try:
++    from optuna_integration import TFKerasPruningCallback
++except ImportError:
++    try:
++        from optuna.integration import TFKerasPruningCallback
++    except ImportError:
++        TFKerasPruningCallback = None
++
++
++def _fmt_sec(sec: float) -> str:
++    sec = float(sec)
++    if sec < 60:
++        return f"{sec:.2f}s"
++    m, s = divmod(sec, 60)
++    if m < 60:
++        return f"{int(m)}m{s:05.2f}s"
++    h, m = divmod(m, 60)
++    return f"{int(h)}h{int(m):02d}m{s:05.2f}s"
++
++
++class _Tee:
++    def __init__(self, *streams):
++        self.streams = streams
++
++    def write(self, data):
++        for s in self.streams:
++            s.write(data)
++
++    def flush(self):
++        for s in self.streams:
++            s.flush()
++
++
++# ---------------------------
++# Global plot style
++# ---------------------------
++plt.rcParams["figure.dpi"] = 300
++plt.rcParams["savefig.dpi"] = 300
++plt.rcParams["font.family"] = "serif"
++plt.rcParams["font.serif"] = ["Times New Roman"]
++plt.rcParams["axes.unicode_minus"] = False
++
++
++# ============================================================
++# 1) Config
++# ============================================================
++CUR_MODE = "U"  # "U","V","W","MAG"
++DEBUG_PRINT_TDMS_CHANNELS = False
++
++SEARCH_TRIALS = 30
++SAMPLE_RANGE = range(5, 6)  # [audit] N = 5 task only
++REPEAT_TIMES = 10
++EPOCHS = 80
++DATA_POINTS = 2048
++MAX_SEGMENTS_PER_CLASS = 400  # cap per class per load
++
++TRAIN_LOAD = "0Nm"
++TEST_LOADS = ["2Nm", "4Nm"]
++
++FAULTS = [
++    ("NC-0", "Normal"),
++    ("IF-1", "BPFI_03"),
++    ("IF-2", "BPFI_10"),
++    ("OF-1", "BPFO_03"),
++    ("OF-2", "BPFO_10"),
++]
++NUM_CLASSES = len(FAULTS)
++
++# ---------------------------
++# Paths
++# ---------------------------
++# Replace the placeholders below with YOUR own local absolute paths.
++# You can put data/output ANYWHERE; this script does NOT assume any fixed folder structure.
++
++# Vibration .mat folder for 0Nm/2Nm/4Nm (KAIST format):
++# This folder must contain files like: "0Nm_*.mat", "2Nm_*.mat", "4Nm_*.mat"
++VIB_MAT_DIR_0NM = '/home/jeffwork/audit_ext/data/kaist64/vibration'   # <-- replace with vibration .mat folder path for 0Nm
++VIB_MAT_DIR_2NM = '/home/jeffwork/audit_ext/data/kaist64/vibration'   # <-- replace with vibration .mat folder path for 2Nm
++VIB_MAT_DIR_4NM = '/home/jeffwork/audit_ext/data/kaist64/vibration'   # <-- replace with vibration .mat folder path for 4Nm
++
++# Current .tdms folder:
++# This folder must contain files like: "0Nm_*.tdms", "2Nm_*.tdms", "4Nm_*.tdms"
++CUR_TDMS_DIR = '/home/jeffwork/audit_ext/data/kaist64/current'         # <-- replace with current .tdms folder path
++
++# Output folder (where ALL results/logs/plots/csv will be saved):
++# Replace with any folder you want, e.g. r"D:\KAIST\MHCNN_Results"
++BASE_OUTPUT_DIR = '/home/jeffwork/audit_ext/work64/out_MHFL-MCA'        # <-- replace with output folder path
++os.makedirs(BASE_OUTPUT_DIR, exist_ok=True)
++
++TSNE_MAX_POINTS = 2000
++
++ENABLE_HASH_OVERLAP_CHECK = True
++VAL_PER_CLASS_MAIN = 50
++
++# -------- Noise settings --------
++TRAIN_BASE_SNR_DB = 0  # baseline environment: 0dB
++
++NO_NOISE_DB = float("inf")
++TEST_SNR_DB_LIST = [NO_NOISE_DB, 0, -2, -4, -6, -8, -10]
++
++# ===== FIX(A): do NOT post-zscore AFTER adding noise (default False) =====
++ENABLE_ZSCORE_PER_SEGMENT = True         # pre z-score at load-time
++ENABLE_POST_ZSCORE_AFTER_NOISE = False   # ===== FIX =====
++POST_ZSCORE_EPS = 1e-8
++
++# -------- Stage3 NoiseStudy_model training (tuned to be strong but not saturate) --------
++STEP3_BASE_SNR_DB = 0.0
++STEP3_NOISY_LOW_DB = -10.0
++STEP3_NOISY_HIGH_DB = 0.0
++
++# bias toward low SNR (but not too extreme)
++STEP3_SNR_BIAS_P = 3.0
++
++# ===== FIX(B): reduce robust supervision strength to avoid "all 1.0" =====
++STEP3_NOISY_CE_WEIGHT = 0.35
++STEP3_CONSIST_MAX_LAMBDA = 0.10
++STEP3_CONSIST_WARMUP_EPOCHS = 15
++
++# hard-view at fixed -10dB (keep, but weaken)
++STEP3_HARD_SNR_DB = -10.0
++STEP3_HARD_CE_WEIGHT = 0.25
++STEP3_HARD_KL_WEIGHT = 0.50
++STEP3_EPOCHS = 70  # shorter than 120
++
++# -------- TTA (FAIR) --------
++# ===== FIX(B): disable by default; if you insist, set ENABLE_TTA=True and K<=3 =====
++ENABLE_TTA = False
++TTA_K = 3
++
++# ===== FIX(C): repeat evaluation per SNR with different noise seeds, report mean±std =====
++EVAL_NOISE_REPEATS = 5   # each SNR point: 5 different noise realizations
++EVAL_TTA_PER_REPEAT = 1  # keep 1; do not use TTA inside repeat by default
++
++# -------- Optuna tuning split (0Nm only) --------
++TUNE_SEED = 42
++TUNE_TRAIN_PER_CLASS = 15
++TUNE_VAL_PER_CLASS = 50
++
++# -------- Stability improvements --------
++GRAD_CLIPNORM = 1.0
++LR_LOW = 1e-4
++LR_HIGH = 2e-3
++
++# -------- Consistency regularization (Stage2) --------
++ENABLE_CONSISTENCY = True
++CONSIST_MAX_LAMBDA = 0.12
++CONSIST_WARMUP_EPOCHS = 15
++CONSIST_SNR_LOW_DB = -10.0
++CONSIST_SNR_HIGH_DB = 0.0
++CONSIST_SNR_BIAS_P = 2.0
++CONSIST_USE_PER_SAMPLE_SNR = True
++
++# -------- Modality Drop/Corrupt (only for noisy-view) --------
++ENABLE_MODALITY_CORRUPT = True
++MOD_CORRUPT_PROB = 0.08
++MOD_CORRUPT_MODE = "extra_noise"          # "zero" or "extra_noise"
++MOD_CORRUPT_EXTRA_SNR_DB = -12.0
++
++# -------- Visualization control --------
++CM_CMAP_2NM = "Blues"
++CM_CMAP_4NM = "Oranges"
++ROC_COLORS_2NM = ["aqua", "darkorange", "cornflowerblue", "green", "red", "purple", "brown"]
++ROC_COLORS_4NM = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#17becf"]
++
++
++# ============================================================
++# 2) Reproducibility
++# ============================================================
++def set_global_seed(seed: int):
++    random.seed(seed)
++    np.random.seed(seed)
++    tf.random.set_seed(seed)
++
++
++# ============================================================
++# 3) Helpers: hash / normalize (numpy side)
++# ============================================================
++def _hash_sample(vib_1x2048: np.ndarray, cur_1x2048: np.ndarray) -> str:
++    b = vib_1x2048.astype(np.float32).tobytes() + cur_1x2048.astype(np.float32).tobytes()
++    return hashlib.sha1(b).hexdigest()
++
++
++def zscore_per_segment_np(segs: np.ndarray, eps: float = POST_ZSCORE_EPS) -> np.ndarray:
++    segs = np.asarray(segs, dtype=np.float32)
++    mu = np.mean(segs, axis=1, keepdims=True)
++    sd = np.std(segs, axis=1, keepdims=True) + eps
++    return (segs - mu) / sd
++
++
++def add_gaussian_noise_np(x, snr_db, rng: np.random.RandomState):
++    """
++    x: (N, 2048, 1)
++    noise_power = signal_power / 10^(snr/10)   (power definition)
++    """
++    if np.isinf(snr_db):
++        return x
++    x2 = x.astype(np.float32)
++    sig_power = np.mean(np.square(x2), axis=(1, 2), keepdims=True) + 1e-12
++    snr_lin = 10.0 ** (float(snr_db) / 10.0)
++    noise_power = sig_power / snr_lin
++    noise = rng.normal(loc=0.0, scale=np.sqrt(noise_power), size=x2.shape).astype(np.float32)
++    return x2 + noise
++
++
++def add_noise_then_optional_post_zscore_np(x, snr_db, rng: np.random.RandomState):
++    x_n = add_gaussian_noise_np(x, snr_db, rng)
++    # ===== FIX(A): default False. if True, it weakens SNR meaning. =====
++    if ENABLE_POST_ZSCORE_AFTER_NOISE and ENABLE_ZSCORE_PER_SEGMENT:
++        x_n = zscore_per_segment_np(x_n.squeeze(-1))[:, :, None]
++    return x_n
++
++
++def estimate_empirical_snr_db(x_clean, x_noisy) -> float:
++    """
++    Empirical SNR = 10*log10( E[x^2] / E[(x_noisy-x)^2] )
++    """
++    x_clean = np.asarray(x_clean, dtype=np.float32)
++    x_noisy = np.asarray(x_noisy, dtype=np.float32)
++    n = x_noisy - x_clean
++    ps = float(np.mean(x_clean**2) + 1e-12)
++    pn = float(np.mean(n**2) + 1e-12)
++    return 10.0 * np.log10(ps / pn)
++
++
++# ============================================================
++# 3.1) TF noise + optional post-zscore
++# ============================================================
++def _tf_zscore_per_segment(x, eps=POST_ZSCORE_EPS):
++    mu = tf.reduce_mean(x, axis=1, keepdims=True)
++    sd = tf.math.reduce_std(x, axis=1, keepdims=True) + eps
++    return (x - mu) / sd
++
++
++def _tf_add_gaussian_noise_snr(x, snr_db):
++    x = tf.cast(x, tf.float32)
++    sig_power = tf.reduce_mean(tf.square(x), axis=[1, 2], keepdims=True) + 1e-12
++    snr_lin = tf.pow(10.0, snr_db / 10.0)
++    noise_power = sig_power / snr_lin
++    noise = tf.random.normal(tf.shape(x), mean=0.0, stddev=tf.sqrt(noise_power), dtype=tf.float32)
++    return x + noise
++
++
++def _tf_add_noise_then_optional_post_zscore(x, snr_db):
++    x_n = _tf_add_gaussian_noise_snr(x, snr_db)
++    if ENABLE_POST_ZSCORE_AFTER_NOISE and ENABLE_ZSCORE_PER_SEGMENT:
++        x_n = _tf_zscore_per_segment(x_n, eps=POST_ZSCORE_EPS)
++    return x_n
++
++
++def _tf_sample_snr_db_custom(batch_size,
++                             low_db: float,
++                             high_db: float,
++                             bias_p: float,
++                             per_sample: bool = True):
++    low_db = float(low_db)
++    high_db = float(high_db)
++    p = float(bias_p)
++
++    if per_sample:
++        u = tf.random.uniform([batch_size, 1, 1], 0.0, 1.0, dtype=tf.float32)
++        u_b = tf.pow(u, p)  # bias toward low SNR
++        return low_db + (high_db - low_db) * u_b
++
++    u = tf.random.uniform([], 0.0, 1.0, dtype=tf.float32)
++    u_b = tf.pow(u, p)
++    return low_db + (high_db - low_db) * u_b
++
++
++def _tf_sample_snr_db(batch_size):
++    return _tf_sample_snr_db_custom(
++        batch_size,
++        low_db=CONSIST_SNR_LOW_DB,
++        high_db=CONSIST_SNR_HIGH_DB,
++        bias_p=CONSIST_SNR_BIAS_P,
++        per_sample=CONSIST_USE_PER_SAMPLE_SNR
++    )
++
++
++def _tf_modality_corrupt(xv, xc):
++    if (not ENABLE_MODALITY_CORRUPT) or (MOD_CORRUPT_PROB <= 0.0):
++        return xv, xc
++
++    B = tf.shape(xv)[0]
++    trigger = tf.random.uniform([B, 1, 1], 0.0, 1.0, dtype=tf.float32) < float(MOD_CORRUPT_PROB)
++    choose_v = tf.random.uniform([B, 1, 1], 0.0, 1.0, dtype=tf.float32) < 0.5
++
++    drop_v = tf.logical_and(trigger, choose_v)
++    drop_c = tf.logical_and(trigger, tf.logical_not(choose_v))
++
++    if MOD_CORRUPT_MODE.lower() == "zero":
++        xv2 = tf.where(drop_v, tf.zeros_like(xv), xv)
++        xc2 = tf.where(drop_c, tf.zeros_like(xc), xc)
++        return xv2, xc2
++
++    if MOD_CORRUPT_MODE.lower() == "extra_noise":
++        extra_snr = tf.constant(float(MOD_CORRUPT_EXTRA_SNR_DB), dtype=tf.float32)
++        xv_extra = _tf_add_gaussian_noise_snr(xv, extra_snr)
++        xc_extra = _tf_add_gaussian_noise_snr(xc, extra_snr)
++
++        if ENABLE_POST_ZSCORE_AFTER_NOISE and ENABLE_ZSCORE_PER_SEGMENT:
++            xv_extra = _tf_zscore_per_segment(xv_extra, eps=POST_ZSCORE_EPS)
++            xc_extra = _tf_zscore_per_segment(xc_extra, eps=POST_ZSCORE_EPS)
++
++        xv2 = tf.where(drop_v, xv_extra, xv)
++        xc2 = tf.where(drop_c, xc_extra, xc)
++        return xv2, xc2
++
++    return xv, xc
++
++
++# ============================================================
++# 4) Vibration .mat parsing (KAIST style)
++# ============================================================
++def _extract_values_matrix(mat_dict: dict) -> np.ndarray:
++    if "Signal" not in mat_dict:
++        keys = [k for k in mat_dict.keys() if not k.startswith("__")]
++        raise KeyError(f"Missing 'Signal'. Available keys: {keys[:10]}")
++    sig = mat_dict["Signal"]
++    try:
++        yv = sig["y_values"][0, 0]
++        vals = yv["values"][0, 0]
++        vals = np.asarray(vals)
++        if vals.ndim == 1:
++            vals = vals.reshape(-1, 1)
++        return vals
++    except Exception as e:
++        raise RuntimeError(f"Failed to parse 'Signal.y_values.values': {e}")
++
++
++def _pick_vib_1d(values: np.ndarray) -> np.ndarray:
++    values = np.asarray(values)
++    if values.ndim != 2:
++        values = values.reshape(-1, 1)
++    ncol = values.shape[1]
++    if ncol >= 5:
++        return values[:, 1].astype(np.float32)  # xA
++    if ncol == 4:
++        return values[:, 0].astype(np.float32)
++    return values[:, 0].astype(np.float32)
++
++
++# ============================================================
++# 5) Current TDMS parsing
++# ============================================================
++def _norm_name(name: str) -> str:
++    return (name or "").strip().lower().replace("_", "").replace("-", "").replace(" ", "")
++
++def _is_time_channel(name: str) -> bool:
++    n = _norm_name(name)
++    return ("time" in n) or ("timestamp" in n) or ("timestmp" in n)
++
++def _is_temp_channel(name: str) -> bool:
++    n = _norm_name(name)
++    return ("temp" in n) or ("temperature" in n) or ("housing" in n)
++
++def _is_phase_u(name: str) -> bool:
++    n = _norm_name(name)
++    return ("uphase" in n) or (n == "u") or n.endswith("uphase")
++
++def _is_phase_v(name: str) -> bool:
++    n = _norm_name(name)
++    return ("vphase" in n) or (n == "v") or n.endswith("vphase")
++
++def _is_phase_w(name: str) -> bool:
++    n = _norm_name(name)
++    return ("wphase" in n) or (n == "w") or n.endswith("wphase")
++
++
++def read_current_1d_from_tdms(tdms_path: str, mode: str = "U", min_len: int = DATA_POINTS * 2) -> np.ndarray:
++    tdms = TdmsFile.read(tdms_path)
++
++    channels = []
++    for g in tdms.groups():
++        for ch in g.channels():
++            name = ch.name or ""
++            try:
++                x = np.asarray(ch[:], dtype=np.float32).squeeze()
++            except Exception:
++                continue
++            if x.ndim != 1:
++                if x.ndim == 2 and x.shape[1] >= 1:
++                    x = x[:, 0]
++                else:
++                    continue
++            if x.size < min_len:
++                continue
++            channels.append((name, x.astype(np.float32)))
++
++    if DEBUG_PRINT_TDMS_CHANNELS:
++        print(f"[TDMS] {os.path.basename(tdms_path)} channels:")
++        for name, x in channels:
++            print(f"  - {name:30s} | len={len(x)} | std={np.std(x):.6f}")
++
++    if len(channels) == 0:
++        raise RuntimeError(f"[TDMS ERROR] No valid channels found in: {tdms_path}")
++
++    u = v = w = None
++    pool = []
++    for name, x in channels:
++        if _is_time_channel(name) or _is_temp_channel(name):
++            continue
++        if _is_phase_u(name):
++            u = x
++        elif _is_phase_v(name):
++            v = x
++        elif _is_phase_w(name):
++            w = x
++        pool.append((name, x))
++
++    def _max_var(arr_list):
++        best_x, best_var = None, -1.0
++        for nm, xx in arr_list:
++            vv = float(np.var(xx))
++            if vv > best_var:
++                best_var = vv
++                best_x = xx
++        if best_x is None:
++            raise RuntimeError(f"[TDMS ERROR] No non-time/temp channels left in: {tdms_path}")
++        return best_x
++
++    mode = (mode or "U").upper()
++
++    if mode == "U":
++        return u if u is not None else _max_var(pool)
++    if mode == "V":
++        return v if v is not None else _max_var(pool)
++    if mode == "W":
++        return w if w is not None else _max_var(pool)
++    if mode == "MAG":
++        if (u is None) or (v is None) or (w is None):
++            if len(pool) >= 3:
++                pool_sorted = sorted(pool, key=lambda t: float(np.var(t[1])), reverse=True)
++                u_, v_, w_ = pool_sorted[0][1], pool_sorted[1][1], pool_sorted[2][1]
++                L = min(len(u_), len(v_), len(w_))
++                return np.sqrt(u_[:L]**2 + v_[:L]**2 + w_[:L]**2).astype(np.float32)
++            raise RuntimeError(f"[TDMS ERROR] MAG mode needs 3 channels, but not found in: {tdms_path}")
++        L = min(len(u), len(v), len(w))
++        return np.sqrt(u[:L]**2 + v[:L]**2 + w[:L]**2).astype(np.float32)
++
++    raise ValueError(f"Unknown CUR_MODE={mode}. Use 'U','V','W','MAG'.")
++
++
++# ============================================================
++# 6) Segmentation
++# ============================================================
++def segment_2048(x_1d: np.ndarray, max_segments: int) -> np.ndarray:
++    x_1d = np.asarray(x_1d, dtype=np.float32).flatten()
++    n_total = len(x_1d) // DATA_POINTS
++    n_use = min(n_total, max_segments)
++    if n_use <= 0:
++        raise ValueError(f"Signal too short for segmentation: len={len(x_1d)}")
++    segs = np.zeros((n_use, DATA_POINTS), dtype=np.float32)
++    for i in range(n_use):
++        segs[i, :] = x_1d[i * DATA_POINTS:(i + 1) * DATA_POINTS]
++    return segs
++
++
++# ============================================================
++# 7) Load datasets: vib(.mat) + current(.tdms)
++# ============================================================
++def _mat_path(vib_dir: str, load_tag: str, fault: str) -> str:
++    p = os.path.join(vib_dir, f"{load_tag}_{fault}.mat")
++    if not os.path.exists(p):
++        raise FileNotFoundError(f"[VIB MAT MISSING] {p}")
++    return p
++
++def _tdms_path(cur_dir: str, load_tag: str, fault: str) -> str:
++    for ext in [".tdms", ".TDMS"]:
++        p = os.path.join(cur_dir, f"{load_tag}_{fault}{ext}")
++        if os.path.exists(p):
++            return p
++    raise FileNotFoundError(f"[CUR TDMS MISSING] Tried {load_tag}_{fault}.tdms/.TDMS in {cur_dir}")
++
++def load_dataset_for_load(load_tag: str, vib_dir: str):
++    datasets = []
++    for cls_name, fault in FAULTS:
++        vib_file = _mat_path(vib_dir, load_tag, fault)
++        cur_file = _tdms_path(CUR_TDMS_DIR, load_tag, fault)
++
++        vib_mat = loadmat(vib_file)
++        vib_vals = _extract_values_matrix(vib_mat)
++        vib_1d = _pick_vib_1d(vib_vals)
++
++        cur_1d = read_current_1d_from_tdms(cur_file, mode=CUR_MODE)
++
++        vib_segs = segment_2048(vib_1d, MAX_SEGMENTS_PER_CLASS)
++        cur_segs = segment_2048(cur_1d, MAX_SEGMENTS_PER_CLASS)
++
++        n_use = min(len(vib_segs), len(cur_segs))
++        vib_segs = vib_segs[:n_use]
++        cur_segs = cur_segs[:n_use]
++
++        if np.std(vib_segs) < 1e-8:
++            raise RuntimeError(f"[DATA ERROR] vib near-constant: {vib_file}")
++        if np.std(cur_segs) < 1e-8:
++            raise RuntimeError(f"[DATA ERROR] current near-constant: {cur_file}")
++
++        # pre z-score
++        if ENABLE_ZSCORE_PER_SEGMENT:
++            vib_segs = zscore_per_segment_np(vib_segs)
++            cur_segs = zscore_per_segment_np(cur_segs)
++
++        datasets.append((vib_segs, cur_segs))
++    return datasets
++
++def print_dataset_stats(load_tag: str, datasets):
++    print(f"Load {load_tag}:")
++    for i, (cls_name, fault) in enumerate(FAULTS):
++        vib_segs, cur_segs = datasets[i]
++        print(f"  Class {cls_name:<4} | {load_tag}_{fault:<8} : {vib_segs.shape[0]} segments")
++
++
++print("Loading Vibration(.mat)+Current(.tdms) ...")
++DATA_0 = load_dataset_for_load("0Nm", VIB_MAT_DIR_0NM)
++DATA_2 = load_dataset_for_load("2Nm", VIB_MAT_DIR_2NM)
++DATA_4 = load_dataset_for_load("4Nm", VIB_MAT_DIR_4NM)
++print_dataset_stats("0Nm", DATA_0)
++print_dataset_stats("2Nm", DATA_2)
++print_dataset_stats("4Nm", DATA_4)
++print("Data loaded.\n")
++
++
++# ============================================================
++# 8) Split: 0Nm train/val; 2Nm/4Nm test
++# ============================================================
++def build_train_val_from_0Nm(datasets_0, seed: int, n_train: int, n_val: int):
++    rng = np.random.RandomState(seed)
++    tr_list, va_list = [], []
++    tr_hash, va_hash = set(), set()
++
++    for label, (vib, cur) in enumerate(datasets_0):
++        M = vib.shape[0]
++        need = n_train + n_val + 1
++        assert M >= need, f"[DATA ERROR] class {label} has {M} segments, need >= {need}"
++
++        combined = np.hstack([vib, cur])  # (M, 4096)
++        rng.shuffle(combined)
++
++        tr = combined[:n_train]
++        va = combined[n_train:n_train + n_val]
++
++        y_tr = np.full((len(tr), 1), label)
++        y_va = np.full((len(va), 1), label)
++
++        if ENABLE_HASH_OVERLAP_CHECK:
++            for i in range(len(tr)):
++                tr_hash.add(_hash_sample(tr[i, :2048], tr[i, 2048:]))
++            for i in range(len(va)):
++                va_hash.add(_hash_sample(va[i, :2048], va[i, 2048:]))
++
++        tr_list.append(np.hstack([tr, y_tr]))
++        va_list.append(np.hstack([va, y_va]))
++
++    if ENABLE_HASH_OVERLAP_CHECK:
++        assert len(tr_hash.intersection(va_hash)) == 0, "[LEAKAGE ERROR] 0Nm train/val overlap!"
++
++    tr_all = np.vstack(tr_list)
++    va_all = np.vstack(va_list)
++    rng.shuffle(tr_all)
++    rng.shuffle(va_all)
++
++    def pack(arr):
++        xv = arr[:, 0:2048][:, :, np.newaxis].astype(np.float32)
++        xc = arr[:, 2048:4096][:, :, np.newaxis].astype(np.float32)
++        y = np_utils.to_categorical(arr[:, 4096], NUM_CLASSES).astype(np.float32)
++        return xv, xc, y
++
++    return pack(tr_all), pack(va_all)
++
++def build_test_from_load(datasets_load, seed: int = 0):
++    rng = np.random.RandomState(seed)
++    te_list = []
++    for label, (vib, cur) in enumerate(datasets_load):
++        combined = np.hstack([vib, cur])
++        y = np.full((len(combined), 1), label)
++        te_list.append(np.hstack([combined, y]))
++    te_all = np.vstack(te_list)
++    rng.shuffle(te_all)
++
++    xv = te_all[:, 0:2048][:, :, np.newaxis].astype(np.float32)
++    xc = te_all[:, 2048:4096][:, :, np.newaxis].astype(np.float32)
++    y = np_utils.to_categorical(te_all[:, 4096], NUM_CLASSES).astype(np.float32)
++    return xv, xc, y
++
++
++# ============================================================
++# 9) MHCNN model
++# ============================================================
++class CrossAttention(keras.layers.Layer):
++    def __init__(self, output_dim, **kwargs):
++        self.output_dim = output_dim
++        super(CrossAttention, self).__init__(**kwargs)
++
++    def build(self, input_shape):
++        self.W_q = self.add_weight(
++            name="W_q", shape=(input_shape[0][-1], self.output_dim),
++            initializer="uniform", trainable=True
++        )
++        self.W_k = self.add_weight(
++            name="W_k", shape=(input_shape[1][-1], self.output_dim),
++            initializer="uniform", trainable=True
++        )
++        self.W_v = self.add_weight(
++            name="W_v", shape=(input_shape[1][-1], self.output_dim),
++            initializer="uniform", trainable=True
++        )
++        super(CrossAttention, self).build(input_shape)
++
++    def call(self, inputs):
++        query, key = inputs
++        query_proj = K.dot(query, self.W_q)
++        key_proj = K.dot(key, self.W_k)
++        value_proj = K.dot(key, self.W_v)
++        attention_scores = K.batch_dot(query_proj, key_proj, axes=[2, 2])
++        attention_scores = K.softmax(attention_scores, axis=-1)
++        return K.batch_dot(attention_scores, value_proj)
++
++
++def weighted_features(inputs):
++    features, weights = inputs
++    return features * weights
++
++
++def create_model(trial=None):
++    if trial is not None:
++        dropout_vib = trial.suggest_float("dropout_vib", 0.1, 0.5)
++        dropout_cur = trial.suggest_float("dropout_cur", 0.1, 0.5)
++        atten_dim = trial.suggest_categorical("atten_dim", [128, 256])
++        n_layers_vib = trial.suggest_int("n_layers_vib", 3, 5)
++        n_layers_cur = trial.suggest_int("n_layers_cur", 3, 5)
++    else:
++        dropout_vib = 0.2
++        dropout_cur = 0.3
++        atten_dim = 256
++        n_layers_vib = 4
++        n_layers_cur = 4
++
++    alpha = 0.2
++
++    input_v = Input(shape=(DATA_POINTS, 1))
++    x = input_v
++    filters_vib = [32, 64, 128, 256, 256]
++    for i in range(n_layers_vib):
++        f = filters_vib[i] if i < len(filters_vib) else 256
++        stride = 2 if i < 2 else 1
++        kernel = 16
++        x = Conv1D(f, kernel, strides=stride, padding="same")(x)
++        x = LeakyReLU(alpha=alpha)(x)
++        if i == n_layers_vib - 1:
++            x = Dropout(dropout_vib)(x)
++            feat_v = AveragePooling1D(2, strides=2, padding="same")(x)
++        else:
++            x = AveragePooling1D(2, strides=2, padding="same")(x)
++
++    input_c = Input(shape=(DATA_POINTS, 1))
++    y = input_c
++    filters_cur = [32, 64, 128, 256, 256]
++    for i in range(n_layers_cur):
++        f = filters_cur[i] if i < len(filters_cur) else 256
++        stride = 2 if i < 2 else 1
++        kernel = 8
++        y = Conv1D(f, kernel, strides=stride, padding="same")(y)
++        y = Activation("gelu")(y)
++        if i == n_layers_cur - 1:
++            y = Dropout(dropout_cur)(y)
++            feat_c = MaxPooling1D(2, strides=2, padding="same")(y)
++        else:
++            y = MaxPooling1D(2, strides=2, padding="same")(y)
++
++    cross_1 = CrossAttention(output_dim=atten_dim)
++    c_att = cross_1([feat_v, feat_c])
++
++    cross_2 = CrossAttention(output_dim=atten_dim)
++    v_att = cross_2([feat_c, feat_v])
++
++    flat_v = Flatten()(v_att)
++    flat_c = Flatten()(c_att)
++
++    w_final = Dense(2, activation="softmax")(
++        Concatenate()([
++            Dense(1, activation="sigmoid")(flat_v),
++            Dense(1, activation="sigmoid")(flat_c)
++        ])
++    )
++
++    fused = Concatenate()([
++        Lambda(weighted_features)([flat_v, w_final[:, 0:1]]),
++        Lambda(weighted_features)([flat_c, w_final[:, 1:2]])
++    ])
++
++    fused = LeakyReLU(alpha=0.2)(Dense(256)(fused))
++    out = Dense(NUM_CLASSES, activation="softmax")(fused)
++
++    base_model = Model(inputs=[input_v, input_c], outputs=out, name="MHCNN")
++    feat_model = Model(inputs=[input_v, input_c], outputs=fused, name="MHCNN_feat")
++    return base_model, feat_model
++
++
++# ============================================================
++# 9.1) Trainer: CE(base) + CE(noisy) + KL(base||noisy)
++# ============================================================
++class NoiseStableTrainer(tf.keras.Model):
++    def __init__(self,
++                 base_model: tf.keras.Model,
++                 base_snr_db: float,
++                 noisy_low_db: float = CONSIST_SNR_LOW_DB,
++                 noisy_high_db: float = CONSIST_SNR_HIGH_DB,
++                 bias_p: float = CONSIST_SNR_BIAS_P,
++                 per_sample_snr: bool = CONSIST_USE_PER_SAMPLE_SNR,
++                 noisy_ce_weight: float = 0.0,
++                 hard_snr_db: float = None,
++                 hard_ce_weight: float = 0.0,
++                 hard_kl_weight: float = 1.0,
++                 **kwargs):
++        super().__init__(**kwargs)
++        self.base_model = base_model
++        self.base_snr_db = tf.constant(float(base_snr_db), dtype=tf.float32)
++
++        self.noisy_low_db = float(noisy_low_db)
++        self.noisy_high_db = float(noisy_high_db)
++        self.bias_p = float(bias_p)
++        self.per_sample_snr = bool(per_sample_snr)
++
++        self.noisy_ce_weight = tf.constant(float(noisy_ce_weight), dtype=tf.float32)
++        self.use_noisy_ce = (float(noisy_ce_weight) > 0.0)
++
++        self.use_hard = (hard_snr_db is not None) and ((float(hard_ce_weight) > 0.0) or ENABLE_CONSISTENCY)
++        self.hard_snr_db = tf.constant(float(hard_snr_db), dtype=tf.float32) if (hard_snr_db is not None) else None
++        self.hard_ce_weight = tf.constant(float(hard_ce_weight), dtype=tf.float32)
++        self.hard_kl_weight = tf.constant(float(hard_kl_weight), dtype=tf.float32)
++
++        self.cons_lambda = tf.Variable(0.0, dtype=tf.float32, trainable=False)
++
++        self._ce_metric = tf.keras.metrics.Mean(name="ce_loss")
++        self._noisy_ce_metric = tf.keras.metrics.Mean(name="noisy_ce_loss")
++        self._hard_ce_metric = tf.keras.metrics.Mean(name="hard_ce_loss")
++        self._kl_metric = tf.keras.metrics.Mean(name="kl_loss")
++        self._kl_hard_metric = tf.keras.metrics.Mean(name="kl_hard_loss")
++
++    @property
++    def metrics(self):
++        return [self._ce_metric, self._noisy_ce_metric, self._hard_ce_metric, self._kl_metric, self._kl_hard_metric] + super().metrics
++
++    def call(self, inputs, training=False):
++        return self.base_model(inputs, training=training)
++
++    @staticmethod
++    def _kl_stopgrad_teacher(p_teacher, p_student):
++        eps = 1e-7
++        p_t = tf.stop_gradient(tf.clip_by_value(p_teacher, eps, 1.0 - eps))
++        p_s = tf.clip_by_value(p_student, eps, 1.0 - eps)
++        kl_vec = tf.keras.losses.KLDivergence(reduction=tf.keras.losses.Reduction.NONE)(p_t, p_s)
++        return tf.reduce_mean(kl_vec)
++
++    def train_step(self, data):
++        (xv, xc), y = data
++        y = tf.cast(y, tf.float32)
++        B = tf.shape(xv)[0]
++
++        # base-view (anchor)
++        xv_base = _tf_add_noise_then_optional_post_zscore(xv, self.base_snr_db)
++        xc_base = _tf_add_noise_then_optional_post_zscore(xc, self.base_snr_db)
++
++        need_rand = bool(ENABLE_CONSISTENCY) or self.use_noisy_ce
++        if need_rand:
++            snr_rnd = _tf_sample_snr_db_custom(
++                B,
++                low_db=self.noisy_low_db,
++                high_db=self.noisy_high_db,
++                bias_p=self.bias_p,
++                per_sample=self.per_sample_snr
++            )
++            xv_noisy = _tf_add_gaussian_noise_snr(tf.cast(xv, tf.float32), snr_rnd)
++            xc_noisy = _tf_add_gaussian_noise_snr(tf.cast(xc, tf.float32), snr_rnd)
++            if ENABLE_POST_ZSCORE_AFTER_NOISE and ENABLE_ZSCORE_PER_SEGMENT:
++                xv_noisy = _tf_zscore_per_segment(xv_noisy, eps=POST_ZSCORE_EPS)
++                xc_noisy = _tf_zscore_per_segment(xc_noisy, eps=POST_ZSCORE_EPS)
++            xv_noisy, xc_noisy = _tf_modality_corrupt(xv_noisy, xc_noisy)
++        else:
++            xv_noisy, xc_noisy = None, None
++
++        if self.use_hard:
++            xv_hard = _tf_add_noise_then_optional_post_zscore(xv, self.hard_snr_db)
++            xc_hard = _tf_add_noise_then_optional_post_zscore(xc, self.hard_snr_db)
++            xv_hard, xc_hard = _tf_modality_corrupt(xv_hard, xc_hard)
++        else:
++            xv_hard, xc_hard = None, None
++
++        with tf.GradientTape() as tape:
++            p_base = self.base_model([xv_base, xc_base], training=True)
++            ce = tf.reduce_mean(tf.keras.losses.categorical_crossentropy(y, p_base))
++            reg = tf.add_n(self.base_model.losses) if self.base_model.losses else 0.0
++
++            total_loss = ce + reg
++
++            noisy_ce = tf.constant(0.0, dtype=tf.float32)
++            hard_ce = tf.constant(0.0, dtype=tf.float32)
++            kl = tf.constant(0.0, dtype=tf.float32)
++            kl_hard = tf.constant(0.0, dtype=tf.float32)
++
++            if (xv_noisy is not None) and (xc_noisy is not None):
++                p_noisy = self.base_model([xv_noisy, xc_noisy], training=True)
++                noisy_ce = tf.reduce_mean(tf.keras.losses.categorical_crossentropy(y, p_noisy))
++                total_loss = total_loss + tf.cast(self.noisy_ce_weight, tf.float32) * noisy_ce
++                if ENABLE_CONSISTENCY:
++                    kl = self._kl_stopgrad_teacher(p_base, p_noisy)
++                    total_loss = total_loss + self.cons_lambda * kl
++
++            if (xv_hard is not None) and (xc_hard is not None):
++                p_hard = self.base_model([xv_hard, xc_hard], training=True)
++                hard_ce = tf.reduce_mean(tf.keras.losses.categorical_crossentropy(y, p_hard))
++                total_loss = total_loss + tf.cast(self.hard_ce_weight, tf.float32) * hard_ce
++                if ENABLE_CONSISTENCY:
++                    kl_hard = self._kl_stopgrad_teacher(p_base, p_hard)
++                    total_loss = total_loss + self.cons_lambda * tf.cast(self.hard_kl_weight, tf.float32) * kl_hard
++
++            loss = total_loss
++
++        grads = tape.gradient(loss, self.base_model.trainable_variables)
++        self.optimizer.apply_gradients(zip(grads, self.base_model.trainable_variables))
++
++        self.compiled_metrics.update_state(y, p_base)
++
++        self._ce_metric.update_state(ce)
++        self._noisy_ce_metric.update_state(noisy_ce)
++        self._hard_ce_metric.update_state(hard_ce)
++        self._kl_metric.update_state(kl)
++        self._kl_hard_metric.update_state(kl_hard)
++
++        out = {m.name: m.result() for m in self.metrics}
++        out["loss"] = loss
++        out["cons_lambda"] = self.cons_lambda
++        return out
++
++    def test_step(self, data):
++        (xv, xc), y = data
++        y = tf.cast(y, tf.float32)
++
++        xv_base = _tf_add_noise_then_optional_post_zscore(xv, self.base_snr_db)
++        xc_base = _tf_add_noise_then_optional_post_zscore(xc, self.base_snr_db)
++
++        p = self.base_model([xv_base, xc_base], training=False)
++        ce = tf.reduce_mean(tf.keras.losses.categorical_crossentropy(y, p))
++        reg = tf.add_n(self.base_model.losses) if self.base_model.losses else 0.0
++        loss = ce + reg
++
++        self.compiled_metrics.update_state(y, p)
++        self._ce_metric.update_state(ce)
++        self._noisy_ce_metric.update_state(tf.constant(0.0, dtype=tf.float32))
++        self._hard_ce_metric.update_state(tf.constant(0.0, dtype=tf.float32))
++        self._kl_metric.update_state(tf.constant(0.0, dtype=tf.float32))
++        self._kl_hard_metric.update_state(tf.constant(0.0, dtype=tf.float32))
++
++        out = {m.name: m.result() for m in self.metrics}
++        out["loss"] = loss
++        out["cons_lambda"] = self.cons_lambda
++        return out
++
++
++class ConsistencyLambdaScheduler(tf.keras.callbacks.Callback):
++    def __init__(self, max_lambda: float, warmup_epochs: int):
++        super().__init__()
++        self.max_lambda = float(max_lambda)
++        self.warmup_epochs = int(max(1, warmup_epochs))
++
++    def on_epoch_begin(self, epoch, logs=None):
++        if not hasattr(self.model, "cons_lambda"):
++            return
++        if (not ENABLE_CONSISTENCY) or (self.max_lambda <= 0.0):
++            self.model.cons_lambda.assign(0.0)
++            return
++        if epoch < self.warmup_epochs:
++            lam = self.max_lambda * (float(epoch + 1) / float(self.warmup_epochs))
++        else:
++            lam = self.max_lambda
++        self.model.cons_lambda.assign(lam)
++
++
++# ============================================================
++# 10) Optuna objective (val_accuracy on base(0dB))
++# ============================================================
++def objective(trial):
++    lr = trial.suggest_float("lr", LR_LOW, LR_HIGH, log=True)
++    batch_size = trial.suggest_categorical("batch_size", [16, 32])
++
++    try:
++        (x_tr_v, x_tr_c, y_tr), (x_va_v, x_va_c, y_va) = build_train_val_from_0Nm(
++            DATA_0, seed=TUNE_SEED, n_train=TUNE_TRAIN_PER_CLASS, n_val=TUNE_VAL_PER_CLASS
++        )
++
++        tf.keras.backend.clear_session()
++        gc.collect()
++
++        base_model, _ = create_model(trial)
++        trainer = NoiseStableTrainer(base_model, base_snr_db=TRAIN_BASE_SNR_DB, name="NoiseStableTrainer")
++
++        opt = tf.keras.optimizers.Adamax(learning_rate=lr, clipnorm=GRAD_CLIPNORM)
++        trainer.compile(optimizer=opt, metrics=["accuracy"])
++
++        callbacks = [ConsistencyLambdaScheduler(CONSIST_MAX_LAMBDA, CONSIST_WARMUP_EPOCHS)]
++        if TFKerasPruningCallback:
++            callbacks.append(TFKerasPruningCallback(trial, "val_accuracy"))
++
++        hist = trainer.fit(
++            [x_tr_v, x_tr_c], y_tr,
++            epochs=30,
++            batch_size=batch_size,
++            validation_data=([x_va_v, x_va_c], y_va),
++            verbose=0,
++            callbacks=callbacks
++        )
++
++        val_acc = float(hist.history["val_accuracy"][-1])
++
++        del trainer, base_model
++        tf.keras.backend.clear_session()
++        gc.collect()
++
++        return val_acc
++
++    except optuna.exceptions.TrialPruned:
++        raise
++    except Exception as e:
++        print(f"\n[Trial {trial.number}] FAILED: {type(e).__name__}: {e}")
++        traceback.print_exc()
++        return 0.0
++
++
++# ============================================================
++# 11) Visualization
++# ============================================================
++def save_curves(history, out_path, title_prefix, val_name="Val"):
++    plt.figure(figsize=(10, 4))
++    plt.subplot(1, 2, 1)
++    plt.plot(history.history["loss"], label="Train")
++    plt.plot(history.history["val_loss"], label=val_name)
++    plt.title(f"Loss - {title_prefix}")
++    plt.legend()
++
++    plt.subplot(1, 2, 2)
++    plt.plot(history.history["accuracy"], label="Train")
++    plt.plot(history.history["val_accuracy"], label=val_name)
++    plt.title(f"Accuracy - {title_prefix}")
++    plt.legend()
++
++    plt.tight_layout()
++    plt.savefig(out_path, dpi=300)
++    plt.close()
++
++def save_cm(y_true, y_pred, out_path, title_prefix, cmap="Blues"):
++    cm = confusion_matrix(y_true, y_pred)
++    plt.figure(figsize=(6, 5))
++    sns.heatmap(cm, annot=True, fmt="d", cmap=cmap, cbar=True)
++    plt.title(f"Confusion Matrix - {title_prefix}")
++    plt.tight_layout()
++    plt.savefig(out_path, dpi=300)
++    plt.close()
++
++def save_tsne(feat_model, x_te_v, x_te_c, y_true, out_path, title_prefix, seed=42):
++    feats = feat_model.predict([x_te_v, x_te_c], verbose=0)
++    n = len(feats)
++    if n > TSNE_MAX_POINTS:
++        rng = np.random.RandomState(seed)
++        idx = rng.choice(n, size=TSNE_MAX_POINTS, replace=False)
++        feats = feats[idx]
++        y_vis = y_true[idx]
++    else:
++        y_vis = y_true
++
++    tsne = TSNE(n_components=2, random_state=seed).fit_transform(feats)
++    plt.figure(figsize=(6, 5))
++    sns.scatterplot(x=tsne[:, 0], y=tsne[:, 1], hue=y_vis, palette="tab10", legend="full", s=15)
++    plt.title(f"t-SNE - {title_prefix}")
++    plt.tight_layout()
++    plt.savefig(out_path, dpi=300)
++    plt.close()
++
++def save_roc(y_true, y_prob, out_path, title_prefix, class_colors=None):
++    y_test_bin = label_binarize(y_true, classes=np.arange(NUM_CLASSES))
++
++    fpr, tpr, roc_auc = {}, {}, {}
++    for i in range(NUM_CLASSES):
++        fpr[i], tpr[i], _ = roc_curve(y_test_bin[:, i], y_prob[:, i])
++        roc_auc[i] = auc(fpr[i], tpr[i])
++
++    fpr["micro"], tpr["micro"], _ = roc_curve(y_test_bin.ravel(), y_prob.ravel())
++    roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
++
++    all_fpr = np.unique(np.concatenate([fpr[i] for i in range(NUM_CLASSES)]))
++    mean_tpr = np.zeros_like(all_fpr)
++    for i in range(NUM_CLASSES):
++        mean_tpr += np.interp(all_fpr, fpr[i], tpr[i])
++    mean_tpr /= NUM_CLASSES
++    fpr["macro"], tpr["macro"] = all_fpr, mean_tpr
++    roc_auc["macro"] = auc(fpr["macro"], tpr["macro"])
++
++    plt.figure(figsize=(8, 6))
++    plt.plot(fpr["micro"], tpr["micro"], label=f"Micro-avg (AUC={roc_auc['micro']:.4f})", linestyle=":", lw=3)
++    plt.plot(fpr["macro"], tpr["macro"], label=f"Macro-avg (AUC={roc_auc['macro']:.4f})", linestyle=":", lw=3)
++
++    if class_colors is None:
++        class_colors = ROC_COLORS_2NM
++
++    colors = cycle(class_colors)
++    for i, c in zip(range(NUM_CLASSES), colors):
++        plt.plot(fpr[i], tpr[i], color=c, lw=2, label=f"Class {i} (AUC={roc_auc[i]:.4f})")
++
++    plt.plot([0, 1], [0, 1], "k--", lw=2)
++    plt.xlabel("False Positive Rate")
++    plt.ylabel("True Positive Rate")
++    plt.title(f"ROC Curve - {title_prefix}")
++    plt.legend(loc="lower right", fontsize="small")
++    plt.tight_layout()
++    plt.savefig(out_path, dpi=300)
++    plt.close()
++
++
++# ============================================================
++# 12) Trimmed stats + radar
++# ============================================================
++def trimmed_mean_std(values):
++    v = sorted(list(values))
++    if len(v) > 2:
++        v = v[1:-1]
++    return float(np.mean(v)), float(np.std(v))
++
++def plot_radar(snr_or_labels, acc_list, f1_list, out_path, title):
++    def _lab(s):
++        if isinstance(s, str):
++            return s
++        if np.isinf(s):
++            return "NoNoise"
++        return str(int(s))
++
++    labels = [_lab(s) for s in snr_or_labels]
++    n = len(labels)
++    angles = np.linspace(0, 2 * np.pi, n, endpoint=False).tolist()
++    angles += angles[:1]
++
++    acc = list(acc_list) + [acc_list[0]]
++    f1 = list(f1_list) + [f1_list[0]]
++
++    fig = plt.figure(figsize=(7, 7))
++    ax = plt.subplot(111, polar=True)
++    ax.set_theta_offset(np.pi / 2)
++    ax.set_theta_direction(-1)
++
++    ax.set_thetagrids(np.degrees(angles[:-1]), labels)
++    ax.plot(angles, acc, linewidth=2, label="Accuracy")
++    ax.fill(angles, acc, alpha=0.10)
++    ax.plot(angles, f1, linewidth=2, label="Macro-F1")
++    ax.fill(angles, f1, alpha=0.10)
++
++    ax.set_ylim(0.0, 1.05)
++    ax.set_title(title, y=1.08)
++    ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.15), ncol=2)
++
++    plt.tight_layout()
++    plt.savefig(out_path, dpi=300)
++    plt.close()
++
++
++# ============================================================
++# 13) Evaluate helper
++# ============================================================
++def eval_on_test(model, feat_model, x_te_v, x_te_c, y_te,
++                out_dir, tag, snr_db, seed, tta_k=1,
++                roc_colors=None, cm_cmap="Blues"):
++    """
++    Evaluate with optional TTA:
++    - snr_db=inf: no noise
++    - else: add noise (and optional post-zscore depending on flag)
++    """
++    y_true = np.argmax(y_te, axis=1)
++
++    use_tta = (tta_k is not None and int(tta_k) > 1 and (snr_db is not None)
++               and (not (np.isscalar(snr_db) and np.isinf(snr_db))))
++
++    t_inf0 = time.perf_counter()
++
++    if not use_tta:
++        rng = np.random.RandomState(seed + 999)
++        x_tv = add_noise_then_optional_post_zscore_np(x_te_v, snr_db, rng)
++        x_tc = add_noise_then_optional_post_zscore_np(x_te_c, snr_db, rng)
++        y_prob = model.predict([x_tv, x_tc], verbose=0)
++    else:
++        Kk = int(tta_k)
++        prob_sum = None
++        for kk in range(Kk):
++            rng = np.random.RandomState(seed + 999 + kk * 131)
++            x_tv = add_noise_then_optional_post_zscore_np(x_te_v, snr_db, rng)
++            x_tc = add_noise_then_optional_post_zscore_np(x_te_c, snr_db, rng)
++            p = model.predict([x_tv, x_tc], verbose=0)
++            prob_sum = p.astype(np.float64) if prob_sum is None else (prob_sum + p.astype(np.float64))
++        y_prob = (prob_sum / float(Kk)).astype(np.float32)
++
++    y_pred = np.argmax(y_prob, axis=1)
++    t_inf1 = time.perf_counter()
++    infer_time_s = float(t_inf1 - t_inf0)
++
++    acc = accuracy_score(y_true, y_pred)
++    f1 = f1_score(y_true, y_pred, average="macro")
++    prec = precision_score(y_true, y_pred, average="macro")
++    rec = recall_score(y_true, y_pred, average="macro")
++
++    viz_time_s = 0.0
++    if out_dir is not None:
++        os.makedirs(out_dir, exist_ok=True)
++        t_viz0 = time.perf_counter()
++
++        title_snr = "NoNoise" if (snr_db is None or (np.isscalar(snr_db) and np.isinf(snr_db))) else f"{snr_db}dB"
++        save_cm(y_true, y_pred, os.path.join(out_dir, f"cm_{tag}.png"),
++                f"{tag} | SNR={title_snr}", cmap=cm_cmap)
++        save_tsne(feat_model, x_tv, x_tc, y_true, os.path.join(out_dir, f"tsne_{tag}.png"),
++                  f"{tag} | SNR={title_snr}")
++        save_roc(y_true, y_prob, os.path.join(out_dir, f"roc_{tag}.png"),
++                 f"{tag} | SNR={title_snr}", class_colors=roc_colors)
++
++        t_viz1 = time.perf_counter()
++        viz_time_s = float(t_viz1 - t_viz0)
++
++    return acc, f1, prec, rec, infer_time_s, viz_time_s
++
++
++# ============================================================
++# 14) Full experiment (Stage2)
++# ============================================================
++def run_full_experiment(best_params):
++    from optuna.trial import FixedTrial
++    best_trial_context = FixedTrial(best_params)
++    best_lr = best_params["lr"]
++    best_bs = best_params["batch_size"]
++
++    x2_v, x2_c, y2 = build_test_from_load(DATA_2, seed=123)
++    x4_v, x4_c, y4 = build_test_from_load(DATA_4, seed=456)
++
++    print("\n>>> Best MHCNN Model Architecture Summary:")
++    print("=" * 60)
++    tmp_model, _ = create_model(best_trial_context)
++    tmp_model.summary()
++    del tmp_model
++    print("=" * 60 + "\n")
++
++    raw_rows = []
++    trim_rows = []
++
++    for n_train in SAMPLE_RANGE:
++        sample_dir = os.path.join(BASE_OUTPUT_DIR, f"Samples_{n_train:02d}")
++        os.makedirs(sample_dir, exist_ok=True)
++        print(f"\n======== Train(0Nm) N={n_train} (Run 1-{REPEAT_TIMES}) ========")
++
++        buf = {
++            "acc_2": [], "f1_2": [], "prec_2": [], "rec_2": [],
++            "acc_4": [], "f1_4": [], "prec_4": [], "rec_4": [],
++            "train_s": [],
++            "t2_inf_s": [], "t2_viz_s": [],
++            "t4_inf_s": [], "t4_viz_s": [],
++        }
++
++        for run_idx in range(1, REPEAT_TIMES + 1):
++            run_dir = os.path.join(sample_dir, f"Run_{run_idx:02d}")
++            os.makedirs(run_dir, exist_ok=True)
++
++            seed = run_idx - 1  # [audit] seeds 0..9
++            set_global_seed(seed)
++
++            n_val = min(VAL_PER_CLASS_MAIN, MAX_SEGMENTS_PER_CLASS - n_train - 1)
++            (x_tr_v, x_tr_c, y_tr), (x_va_v, x_va_c, y_va) = build_train_val_from_0Nm(
++                DATA_0, seed=seed, n_train=n_train, n_val=n_val
++            )
++
++            tf.keras.backend.clear_session()
++            gc.collect()
++
++            base_model, feat_model = create_model(best_trial_context)
++            trainer = NoiseStableTrainer(base_model, base_snr_db=TRAIN_BASE_SNR_DB, name="NoiseStableTrainer")
++
++            opt = tf.keras.optimizers.Adamax(learning_rate=best_lr, clipnorm=GRAD_CLIPNORM)
++            trainer.compile(optimizer=opt, metrics=["accuracy"])
++
++            callbacks = [ConsistencyLambdaScheduler(CONSIST_MAX_LAMBDA, CONSIST_WARMUP_EPOCHS)]
++
++            if AUDIT_CB: callbacks.append(AUDIT_CB(run_idx, seed, base_model, x2_v, x2_c, y2, x4_v, x4_c, y4))  # [audit]
++            t_fit0 = time.perf_counter()
++            history = trainer.fit(
++                [x_tr_v, x_tr_c], y_tr,
++                epochs=EPOCHS,
++                batch_size=best_bs,
++                validation_data=([x_va_v, x_va_c], y_va),
++                verbose=0,
++                callbacks=callbacks
++            )
++            t_fit1 = time.perf_counter()
++            train_time_s = float(t_fit1 - t_fit0)
++
++            save_curves(history, os.path.join(run_dir, "curves.png"),
++                        f"Train0Nm N={n_train} Run={run_idx}", val_name="Val(0Nm)")
++
++            out2 = os.path.join(run_dir, "Test_2Nm")
++            out4 = os.path.join(run_dir, "Test_4Nm")
++
++            acc2, f12, p2, r2, t2_inf_s, t2_viz_s = eval_on_test(
++                base_model, feat_model, x2_v, x2_c, y2, out2, "2Nm", TRAIN_BASE_SNR_DB, seed,
++                tta_k=1, roc_colors=ROC_COLORS_2NM, cm_cmap=CM_CMAP_2NM
++            )
++            acc4, f14, p4, r4, t4_inf_s, t4_viz_s = eval_on_test(
++                base_model, feat_model, x4_v, x4_c, y4, out4, "4Nm", TRAIN_BASE_SNR_DB, seed,
++                tta_k=1, roc_colors=ROC_COLORS_4NM, cm_cmap=CM_CMAP_4NM
++            )
++
++            buf["acc_2"].append(acc2); buf["f1_2"].append(f12); buf["prec_2"].append(p2); buf["rec_2"].append(r2)
++            if AUDIT_FINAL: AUDIT_FINAL(run_idx, seed, acc2, acc4)  # [audit]
++            buf["acc_4"].append(acc4); buf["f1_4"].append(f14); buf["prec_4"].append(p4); buf["rec_4"].append(r4)
++
++            buf["train_s"].append(train_time_s)
++            buf["t2_inf_s"].append(t2_inf_s); buf["t2_viz_s"].append(t2_viz_s)
++            buf["t4_inf_s"].append(t4_inf_s); buf["t4_viz_s"].append(t4_viz_s)
++
++            raw_rows.append([
++                n_train, run_idx,
++                acc2, f12, p2, r2,
++                acc4, f14, p4, r4,
++                train_time_s, t2_inf_s, t2_viz_s, t4_inf_s, t4_viz_s
++            ])
++
++            print(
++                f"  [N{n_train}-R{run_idx}] "
++                f"Train={_fmt_sec(train_time_s)} | "
++                f"2Nm Acc={acc2:.4f} F1={f12:.4f} | "
++                f"4Nm Acc={acc4:.4f} F1={f14:.4f}"
++            )
++
++            del trainer, base_model, feat_model
++            tf.keras.backend.clear_session()
++            gc.collect()
++
++        acc2_m, acc2_s = trimmed_mean_std(buf["acc_2"])
++        f12_m, f12_s = trimmed_mean_std(buf["f1_2"])
++        p2_m, p2_s = trimmed_mean_std(buf["prec_2"])
++        r2_m, r2_s = trimmed_mean_std(buf["rec_2"])
++
++        acc4_m, acc4_s = trimmed_mean_std(buf["acc_4"])
++        f14_m, f14_s = trimmed_mean_std(buf["f1_4"])
++        p4_m, p4_s = trimmed_mean_std(buf["prec_4"])
++        r4_m, r4_s = trimmed_mean_std(buf["rec_4"])
++
++        tr_m, tr_s = trimmed_mean_std(buf["train_s"])
++        t2i_m, t2i_s = trimmed_mean_std(buf["t2_inf_s"])
++        t2v_m, t2v_s = trimmed_mean_std(buf["t2_viz_s"])
++        t4i_m, t4i_s = trimmed_mean_std(buf["t4_inf_s"])
++        t4v_m, t4v_s = trimmed_mean_std(buf["t4_viz_s"])
++
++        trim_rows.append([
++            n_train,
++            acc2_m, acc2_s, f12_m, f12_s, p2_m, p2_s, r2_m, r2_s,
++            acc4_m, acc4_s, f14_m, f14_s, p4_m, p4_s, r4_m, r4_s,
++            tr_m, tr_s,
++            t2i_m, t2i_s, t2v_m, t2v_s,
++            t4i_m, t4i_s, t4v_m, t4v_s
++        ])
++
++        print(f"  >>> Trimmed N={n_train}: 2Nm Acc={acc2_m:.4f}±{acc2_s:.4f} F1={f12_m:.4f}±{f12_s:.4f} | "
++              f"4Nm Acc={acc4_m:.4f}±{acc4_s:.4f} F1={f14_m:.4f}±{f14_s:.4f}")
++
++    raw_df = pd.DataFrame(
++        raw_rows,
++        columns=[
++            "N", "Run",
++            "Acc_2Nm", "F1_2Nm", "Prec_2Nm", "Recall_2Nm",
++            "Acc_4Nm", "F1_4Nm", "Prec_4Nm", "Recall_4Nm",
++            "TrainTime_s",
++            "Test2_Infer_s", "Test2_Viz_s",
++            "Test4_Infer_s", "Test4_Viz_s",
++        ]
++    )
++    trim_df = pd.DataFrame(
++        trim_rows,
++        columns=[
++            "N",
++            "Acc2_Mean", "Acc2_Std", "F12_Mean", "F12_Std", "Prec2_Mean", "Prec2_Std", "Rec2_Mean", "Rec2_Std",
++            "Acc4_Mean", "Acc4_Std", "F14_Mean", "F14_Std", "Prec4_Mean", "Prec4_Std", "Rec4_Mean", "Rec4_Std",
++            "TrainTime_Mean_s", "TrainTime_Std_s",
++            "Test2_Infer_Mean_s", "Test2_Infer_Std_s",
++            "Test2_Viz_Mean_s", "Test2_Viz_Std_s",
++            "Test4_Infer_Mean_s", "Test4_Infer_Std_s",
++            "Test4_Viz_Mean_s", "Test4_Viz_Std_s",
++        ]
++    )
++
++    raw_df.to_csv(os.path.join(BASE_OUTPUT_DIR, "Final_Summary_Stats_raw.csv"), index=False, encoding="utf-8-sig")
++    trim_df.to_csv(os.path.join(BASE_OUTPUT_DIR, "Final_Summary_Stats_trimmed.csv"), index=False, encoding="utf-8-sig")
++
++    return best_trial_context
++
++
++# ============================================================
++# 15) Noise robustness study (Stage3) - FAIR VERSION (SameModel)
++# ============================================================
++def run_noise_study(best_trial_context, best_params):
++    """
++    FAIR Noise robustness under load shift.
++
++    ===== FIX(C) =====
++    For each SNR point:
++      - repeat EVAL_NOISE_REPEATS times with different noise seeds
++      - report mean±std (more credible than a single draw)
++    """
++    noise_dir = os.path.join(BASE_OUTPUT_DIR, "NoiseStudy_LoadShift_FAIR_SameModel")
++    os.makedirs(noise_dir, exist_ok=True)
++
++    best_lr = best_params["lr"]
++    best_bs = best_params["batch_size"]
++
++    x2_v, x2_c, y2 = build_test_from_load(DATA_2, seed=123)
++    x4_v, x4_c, y4 = build_test_from_load(DATA_4, seed=456)
++
++    # Train NoiseStudy model ONCE (N=30, fixed seed)
++    seed = 2026
++    set_global_seed(seed)
++
++    n_train = 30
++    n_val = min(VAL_PER_CLASS_MAIN, MAX_SEGMENTS_PER_CLASS - n_train - 1)
++    (x_tr_v, x_tr_c, y_tr), (x_va_v, x_va_c, y_va) = build_train_val_from_0Nm(
++        DATA_0, seed=seed, n_train=n_train, n_val=n_val
++    )
++
++    tf.keras.backend.clear_session()
++    gc.collect()
++
++    base_model, feat_model = create_model(best_trial_context)
++
++    trainer = NoiseStableTrainer(
++        base_model,
++        base_snr_db=STEP3_BASE_SNR_DB,
++        noisy_low_db=STEP3_NOISY_LOW_DB,
++        noisy_high_db=STEP3_NOISY_HIGH_DB,
++        bias_p=STEP3_SNR_BIAS_P,
++        per_sample_snr=True,
++        noisy_ce_weight=STEP3_NOISY_CE_WEIGHT,
++        hard_snr_db=STEP3_HARD_SNR_DB,
++        hard_ce_weight=STEP3_HARD_CE_WEIGHT,
++        hard_kl_weight=STEP3_HARD_KL_WEIGHT,
++        name="NoiseStableTrainer_NoiseStudyModel_FAIR"
++    )
++
++    opt = tf.keras.optimizers.Adamax(learning_rate=best_lr, clipnorm=GRAD_CLIPNORM)
++    trainer.compile(optimizer=opt, metrics=["accuracy"])
++    callbacks = [ConsistencyLambdaScheduler(STEP3_CONSIST_MAX_LAMBDA, STEP3_CONSIST_WARMUP_EPOCHS)]
++
++    t_fit0 = time.perf_counter()
++    _ = trainer.fit(
++        [x_tr_v, x_tr_c], y_tr,
++        epochs=STEP3_EPOCHS,
++        batch_size=best_bs,
++        validation_data=([x_va_v, x_va_c], y_va),
++        verbose=0,
++        callbacks=callbacks
++    )
++    t_fit1 = time.perf_counter()
++    print(f"[Step3-FAIR] NoiseStudy_model trained ONCE. time={_fmt_sec(t_fit1 - t_fit0)}")
++
++    # Decide TTA policy
++    unified_tta_k = (int(TTA_K) if ENABLE_TTA else 1)
++
++    rows = []
++    acc2_mean_list, f12_mean_list, acc4_mean_list, f14_mean_list = [], [], [], []
++
++    for snr_db in TEST_SNR_DB_LIST:
++        label = "NoNoise" if (np.isscalar(snr_db) and np.isinf(snr_db)) else str(int(snr_db))
++
++        # NoNoise has no randomness
++        tta_k = 1 if (np.isscalar(snr_db) and np.isinf(snr_db)) else unified_tta_k
++
++        # ===== FIX(C): multi-realization evaluation =====
++        acc2_buf, f12_buf = [], []
++        acc4_buf, f14_buf = [], []
++
++        for rep in range(EVAL_NOISE_REPEATS if not (np.isscalar(snr_db) and np.isinf(snr_db)) else 1):
++            rep_seed2 = seed + 1000 + rep * 17
++            rep_seed4 = seed + 2000 + rep * 17
++
++            # keep TTA inside repeat minimal
++            k_inside = EVAL_TTA_PER_REPEAT if tta_k > 1 else 1
++
++            a2, f2, _, _, _, _ = eval_on_test(
++                base_model, feat_model, x2_v, x2_c, y2,
++                out_dir=None, tag="2Nm", snr_db=snr_db, seed=rep_seed2,
++                tta_k=k_inside, roc_colors=ROC_COLORS_2NM, cm_cmap=CM_CMAP_2NM
++            )
++            a4, f4, _, _, _, _ = eval_on_test(
++                base_model, feat_model, x4_v, x4_c, y4,
++                out_dir=None, tag="4Nm", snr_db=snr_db, seed=rep_seed4,
++                tta_k=k_inside, roc_colors=ROC_COLORS_4NM, cm_cmap=CM_CMAP_4NM
++            )
++
++            acc2_buf.append(a2); f12_buf.append(f2)
++            acc4_buf.append(a4); f14_buf.append(f4)
++
++        acc2_m, acc2_s = float(np.mean(acc2_buf)), float(np.std(acc2_buf))
++        f12_m, f12_s = float(np.mean(f12_buf)), float(np.std(f12_buf))
++        acc4_m, acc4_s = float(np.mean(acc4_buf)), float(np.std(acc4_buf))
++        f14_m, f14_s = float(np.mean(f14_buf)), float(np.std(f14_buf))
++
++        rows.append([
++            label, (np.nan if np.isinf(snr_db) else float(snr_db)),
++            acc2_m, acc2_s, f12_m, f12_s,
++            acc4_m, acc4_s, f14_m, f14_s,
++            tta_k, EVAL_NOISE_REPEATS
++        ])
++
++        acc2_mean_list.append(acc2_m); f12_mean_list.append(f12_m)
++        acc4_mean_list.append(acc4_m); f14_mean_list.append(f14_m)
++
++        print(f"[Step3-FAIR] SNR={label} | 2Nm Acc={acc2_m:.4f}±{acc2_s:.4f} F1={f12_m:.4f}±{f12_s:.4f} | "
++              f"4Nm Acc={acc4_m:.4f}±{acc4_s:.4f} F1={f14_m:.4f}±{f14_s:.4f} | tta={tta_k}")
++
++        # optional sanity check: empirical SNR on a small subset
++        if not (np.isscalar(snr_db) and np.isinf(snr_db)):
++            rng = np.random.RandomState(seed + 555)
++            subset = slice(0, min(256, x2_v.shape[0]))
++            x_clean = x2_v[subset]
++            x_noisy = add_noise_then_optional_post_zscore_np(x_clean, snr_db, rng)
++            emp = estimate_empirical_snr_db(x_clean, x_noisy)
++            print(f"    [Sanity] empirical SNR≈{emp:.2f} dB (vib subset, after your current pipeline)")
++
++    # Save CSV
++    out_csv = os.path.join(noise_dir, "Noise_Robustness_LoadShift_SameModel_FAIR.csv")
++    pd.DataFrame(rows, columns=[
++        "label", "SNR_dB",
++        "Acc_2Nm_mean", "Acc_2Nm_std", "F1_2Nm_mean", "F1_2Nm_std",
++        "Acc_4Nm_mean", "Acc_4Nm_std", "F1_4Nm_mean", "F1_4Nm_std",
++        "tta_k_reported", "eval_repeats"
++    ]).to_csv(out_csv, index=False, encoding="utf-8-sig")
++    print("[Step3-FAIR] Saved:", out_csv)
++
++    # Radar uses MEAN
++    plot_radar(TEST_SNR_DB_LIST, acc2_mean_list, f12_mean_list, os.path.join(noise_dir, "radar_2Nm.png"),
++               title="2Nm Robustness (FAIR, SameModel)  NoNoise/0/-2..-10 (mean over noise draws)")
++    plot_radar(TEST_SNR_DB_LIST, acc4_mean_list, f14_mean_list, os.path.join(noise_dir, "radar_4Nm.png"),
++               title="4Nm Robustness (FAIR, SameModel)  NoNoise/0/-2..-10 (mean over noise draws)")
++
++    # Baseline plots only (0 dB, single draw)
++    base_plots_dir = os.path.join(noise_dir, "BaselinePlots_SNR0dB")
++    os.makedirs(base_plots_dir, exist_ok=True)
++    _ = eval_on_test(base_model, feat_model, x2_v, x2_c, y2, base_plots_dir, "2Nm", 0, seed + 10, tta_k=1,
++                     roc_colors=ROC_COLORS_2NM, cm_cmap=CM_CMAP_2NM)
++    _ = eval_on_test(base_model, feat_model, x4_v, x4_c, y4, base_plots_dir, "4Nm", 0, seed + 20, tta_k=1,
++                     roc_colors=ROC_COLORS_4NM, cm_cmap=CM_CMAP_4NM)
++
++    del trainer, base_model, feat_model
++    tf.keras.backend.clear_session()
++    gc.collect()
++
++
++# ============================================================
++# 16) Main
++# ============================================================
++def main():
++    os.makedirs(BASE_OUTPUT_DIR, exist_ok=True)
++    log_path = os.path.join(BASE_OUTPUT_DIR, "log.txt")
++    f_log = open(log_path, "w", encoding="utf-8")
++    old_out, old_err = sys.stdout, sys.stderr
++    sys.stdout = _Tee(old_out, f_log)
++    sys.stderr = _Tee(old_err, f_log)
++
++    try:
++        t0_all = time.perf_counter()
++
++        print("========== MHCNN (Optuna) Load Shift | Vib(.mat)+Current(.tdms) ==========")
++        print("VIB_MAT_DIR_0NM:", VIB_MAT_DIR_0NM)
++        print("VIB_MAT_DIR_2NM:", VIB_MAT_DIR_2NM)
++        print("VIB_MAT_DIR_4NM:", VIB_MAT_DIR_4NM)
++        print("CUR_TDMS_DIR   :", CUR_TDMS_DIR)
++        print("OUTPUT_DIR     :", BASE_OUTPUT_DIR)
++
++        robust_envs = ["NoNoise" if np.isinf(s) else int(s) for s in TEST_SNR_DB_LIST]
++        print(f"Base noise: {TRAIN_BASE_SNR_DB}dB | Robust envs={robust_envs}")
++        print(f"[FIX(A)] post-zscore(after noise)={ENABLE_POST_ZSCORE_AFTER_NOISE}  (should be False for meaningful SNR sweep)")
++        print(f"[TTA] ENABLE_TTA={ENABLE_TTA} | TTA_K={TTA_K}")
++        print(f"[EVAL] repeats per SNR={EVAL_NOISE_REPEATS} | tta per repeat={EVAL_TTA_PER_REPEAT}")
++        print(f"[STEP3] epochs={STEP3_EPOCHS} noisy_ce_w={STEP3_NOISY_CE_WEIGHT} hard_ce_w={STEP3_HARD_CE_WEIGHT} "
++              f"lambda_max={STEP3_CONSIST_MAX_LAMBDA} warmup={STEP3_CONSIST_WARMUP_EPOCHS} bias_p={STEP3_SNR_BIAS_P}")
++        print("[LOG] Writing terminal output to:", log_path)
++
++        print("\n>>> Stage 1: Optuna search (0Nm train/val only, objective=val_accuracy@base(0dB)) ...")
++        t_s1_0 = time.perf_counter()
++        study = optuna.create_study(direction="maximize", pruner=optuna.pruners.MedianPruner())
++        study.optimize(objective, n_trials=SEARCH_TRIALS)
++        t_s1_1 = time.perf_counter()
++        stage1_s = float(t_s1_1 - t_s1_0)
++        print("Best params:", study.best_params)
++        print(f"[Time] Stage1(Optuna) = {_fmt_sec(stage1_s)}")
++
++        print("\n>>> Stage 2: Full experiment (Train 0Nm@base | Test 2Nm&4Nm@base) ...")
++        t_s2_0 = time.perf_counter()
++        best_trial_context = run_full_experiment(study.best_params)
++        t_s2_1 = time.perf_counter()
++        stage2_s = float(t_s2_1 - t_s2_0)
++        print(f"[Time] Stage2(FullExp) = {_fmt_sec(stage2_s)}")
++
++        print("\n>>> Stage 3: Noise robustness study (FAIR, SameModel, mean±std over noise draws) ...")
++        t_s3_0 = time.perf_counter()
++        pass  # [audit] Stage 3 not run
++        t_s3_1 = time.perf_counter()
++        stage3_s = float(t_s3_1 - t_s3_0)
++        print(f"[Time] Stage3(NoiseStudy) = {_fmt_sec(stage3_s)}")
++
++        total_s = float(time.perf_counter() - t0_all)
++        print(f"[Time] TOTAL = {_fmt_sec(total_s)}")
++
++        time_txt = os.path.join(BASE_OUTPUT_DIR, "Time_Summary.txt")
++        with open(time_txt, "w", encoding="utf-8") as f:
++            f.write(f"Stage1_Optuna_s: {stage1_s:.6f}\n")
++            f.write(f"Stage2_FullExp_s: {stage2_s:.6f}\n")
++            f.write(f"Stage3_NoiseStudy_s: {stage3_s:.6f}\n")
++            f.write(f"TOTAL_s: {total_s:.6f}\n")
++        print("[Time] Saved:", time_txt)
++
++        print("\nALL DONE. Outputs saved to:", BASE_OUTPUT_DIR)
++        print("[LOG] Saved:", log_path)
++
++    finally:
++        sys.stdout = old_out
++        sys.stderr = old_err
++        f_log.close()
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/audit_MSF-DFormer_KAIST.py b/audit_MSF-DFormer_KAIST.py
+new file mode 100644
+index 00000000..b45c1da1
+--- /dev/null
++++ b/audit_MSF-DFormer_KAIST.py
+@@ -0,0 +1,1638 @@
++"""
++MSF-DFormer (NO Optuna) — KAIST Load-Shift Case Study (Benchmark-aligned)
++Vibration (.mat) + Current (.tdms) | Segment length L=2048
++
++[Task / Setting]
++- Train/Val: 0Nm only (hash-overlap leakage check enabled)
++- Test: 2Nm & 4Nm
++- Few-shot protocol: N = 5..30 samples/class, repeated runs = 10
++- Seed rule: seed = N*100 + run_idx
++- Segments per class cap: 400 (per load)
++
++[Network (paper-consistent, MSF-DFormer)]
++- Two-branch encoder (Vibration branch + Current branch)
++  - MSF: multi-scale Conv1D feature blocks (parallel kernels/dilations + residual)
++  - DFormer: token projection + Transformer encoder blocks (MHA + FFN)
++- Fusion: concat(v_vec, c_vec) -> MLP -> Softmax(NUM_CLASSES)
++- NOTE: Only create_model() / network structure is the baseline-specific part.
++  All other protocol components stay aligned to the benchmark conventions.
++
++[Noise / Normalization Policy]
++- Baseline noise environment: 0 dB Gaussian applied to train/val/test (Stage2 baseline)
++- Robustness Stage3 (FAIR, SameModel): train ONE NoiseStudy_model once, then evaluate:
++  NoNoise + 0 + (-2,-4,-6,-8,-10), report mean±std over repeated noise draws
++- IMPORTANT: ENABLE_POST_ZSCORE_AFTER_NOISE MUST remain False to preserve SNR semantics.
++
++[Outputs]
++- log.txt (tee stdout/stderr)
++- curves.png per run
++- Confusion matrix / t-SNE / ROC per test load (2Nm, 4Nm)
++- Final_Summary_Stats_raw.csv + Final_Summary_Stats_trimmed.csv
++- performance_trend.png
++- NoiseStudy_LoadShift_FAIR_SameModel/: CSV + radar plots + baseline plots
++
++[Open-source friendly paths]
++- This script does NOT assume any fixed folder structure.
++- Replace the placeholders in the PATHS section (YOUR_*) with your local absolute paths.
++"""
++
++import os
++import gc
++import sys
++import time
++import math
++import random
++import hashlib
++import warnings
++import traceback
++from itertools import cycle
++
++warnings.filterwarnings("ignore")
++
++# ---------------------------
++# Environment (open-source friendly placeholders)
++# NOTE: keep this BEFORE importing TensorFlow.
++# ---------------------------
++YOUR_TEMP_PATH = '/home/jeffwork/audit_ext/work64/out_MSF-DFormer/tmp'                 # e.g., r"D:\temp" (replace). Leave as-is to not override.
++YOUR_CUDA_VISIBLE_DEVICES = "0"                    # optional: "0"/"1"/"" (empty = default)
++YOUR_TF_CPP_MIN_LOG_LEVEL = "2"                    # optional: "2" suppress INFO/WARN
++
++# TEMP/TMP (optional)
++if "YOUR_TEMP_PATH" not in YOUR_TEMP_PATH:
++    os.environ["TEMP"] = YOUR_TEMP_PATH
++    os.environ["TMP"] = YOUR_TEMP_PATH
++    os.makedirs(YOUR_TEMP_PATH, exist_ok=True)
++
++# GPU selection (optional)
++if YOUR_CUDA_VISIBLE_DEVICES is not None:
++    os.environ["CUDA_VISIBLE_DEVICES"] = str(YOUR_CUDA_VISIBLE_DEVICES)
++
++# TensorFlow logging (optional)
++if YOUR_TF_CPP_MIN_LOG_LEVEL is not None:
++    os.environ["TF_CPP_MIN_LOG_LEVEL"] = str(YOUR_TF_CPP_MIN_LOG_LEVEL)
++
++import numpy as np
++import pandas as pd
++import matplotlib.pyplot as plt
++import seaborn as sns
++from scipy.io import loadmat
++
++import tensorflow as tf
++import keras
++from keras.models import Model
++from keras.layers import (
++    Dense, Input, Dropout, Flatten, Conv1D,
++    MaxPooling1D, AveragePooling1D, GlobalAveragePooling1D,
++    LayerNormalization, MultiHeadAttention,
++    Concatenate, Activation, LeakyReLU, Add
++)
++import keras.backend as K
++from keras.utils import np_utils
++
++from sklearn.metrics import (
++    confusion_matrix, f1_score, precision_score, recall_score,
++    roc_curve, auc, accuracy_score
++)
++from sklearn.manifold import TSNE
++from sklearn.preprocessing import label_binarize
++
++# TDMS reader
++try:
++    from nptdms import TdmsFile
++except ImportError as e:
++    raise ImportError("Missing dependency: nptdms. Please run: pip install nptdms") from e
++
++
++# ---------------------------
++# GPU memory growth (safe)
++# ---------------------------
++try:
++    gpus = tf.config.list_physical_devices("GPU")
++    for g in gpus:
++        tf.config.experimental.set_memory_growth(g, True)
++except Exception:
++    pass
++
++
++def _fmt_sec(sec: float) -> str:
++    sec = float(sec)
++    if sec < 60:
++        return f"{sec:.2f}s"
++    m, s = divmod(sec, 60)
++    if m < 60:
++        return f"{int(m)}m{s:05.2f}s"
++    h, m = divmod(m, 60)
++    return f"{int(h)}h{int(m):02d}m{s:05.2f}s"
++
++
++class _Tee:
++    def __init__(self, *streams):
++        self.streams = streams
++
++    def write(self, data):
++        for s in self.streams:
++            s.write(data)
++
++    def flush(self):
++        for s in self.streams:
++            s.flush()
++
++
++# ---------------------------
++# Global plot style (match benchmark)
++# ---------------------------
++plt.rcParams["figure.dpi"] = 300
++plt.rcParams["savefig.dpi"] = 300
++plt.rcParams["font.family"] = "serif"
++plt.rcParams["font.serif"] = ["Times New Roman"]
++plt.rcParams["axes.unicode_minus"] = False
++
++
++# ============================================================
++# 1) Config (aligned)
++# ============================================================
++CUR_MODE = "U"  # "U","V","W","MAG"
++DEBUG_PRINT_TDMS_CHANNELS = False
++
++SAMPLE_RANGE = range(5, 6)  # [audit] N = 5 task only
++REPEAT_TIMES = 10
++
++# --- Training hyperparams (fixed, NO Optuna) ---
++EPOCHS = 70
++BATCH_SIZE = 16
++LR = 4.0e-4
++GRAD_CLIPNORM = 1.0
++
++DATA_POINTS = 2048
++MAX_SEGMENTS_PER_CLASS = 400  # cap per class per load
++
++TRAIN_LOAD = "0Nm"
++TEST_LOADS = ["2Nm", "4Nm"]
++
++FAULTS = [
++    ("NC-0", "Normal"),
++    ("IF-1", "BPFI_03"),
++    ("IF-2", "BPFI_10"),
++    ("OF-1", "BPFO_03"),
++    ("OF-2", "BPFO_10"),
++]
++NUM_CLASSES = len(FAULTS)
++
++# ---------------------------
++# Paths (OPEN-SOURCE friendly placeholders)
++# Replace the placeholders below with YOUR local absolute paths.
++# This script does NOT assume any fixed folder structure.
++# ---------------------------
++
++# Vibration .mat folders for 0Nm/2Nm/4Nm:
++# Must contain files like: "0Nm_<fault>.mat", "2Nm_<fault>.mat", "4Nm_<fault>.mat"
++VIB_MAT_DIR_0NM = '/home/jeffwork/audit_ext/data/kaist64/vibration'
++VIB_MAT_DIR_2NM = '/home/jeffwork/audit_ext/data/kaist64/vibration'
++VIB_MAT_DIR_4NM = '/home/jeffwork/audit_ext/data/kaist64/vibration'
++
++# Current .tdms folder:
++# Must contain files like: "0Nm_<fault>.tdms", "2Nm_<fault>.tdms", "4Nm_<fault>.tdms"
++CUR_TDMS_DIR = '/home/jeffwork/audit_ext/data/kaist64/current'
++
++# Output folder (all results will be saved here)
++# Recommended (benchmark-aligned): ...\KAIST\MSF-DFormer_Comparison_KAIST
++BASE_OUTPUT_DIR = '/home/jeffwork/audit_ext/work64/out_MSF-DFormer'
++os.makedirs(BASE_OUTPUT_DIR, exist_ok=True)
++
++TSNE_MAX_POINTS = 2000
++
++ENABLE_HASH_OVERLAP_CHECK = True
++VAL_PER_CLASS_MAIN = 50
++
++# -------- Noise settings --------
++TRAIN_BASE_SNR_DB = 0  # baseline environment: 0dB
++
++NO_NOISE_DB = float("inf")
++TEST_SNR_DB_LIST = [NO_NOISE_DB, 0, -2, -4, -6, -8, -10]
++
++# ===== IMPORTANT (aligned): do NOT post-zscore AFTER adding noise =====
++ENABLE_ZSCORE_PER_SEGMENT = True         # pre z-score at load-time
++ENABLE_POST_ZSCORE_AFTER_NOISE = False   # MUST stay False for meaningful SNR sweep
++POST_ZSCORE_EPS = 1e-8
++
++# -------- Stage3 NoiseStudy_model training (aligned) --------
++STEP3_BASE_SNR_DB = 0.0
++STEP3_NOISY_LOW_DB = -10.0
++STEP3_NOISY_HIGH_DB = 0.0
++STEP3_SNR_BIAS_P = 3.0
++
++STEP3_NOISY_CE_WEIGHT = 0.35
++STEP3_CONSIST_MAX_LAMBDA = 0.10
++STEP3_CONSIST_WARMUP_EPOCHS = 15
++
++STEP3_HARD_SNR_DB = -10.0
++STEP3_HARD_CE_WEIGHT = 0.25
++STEP3_HARD_KL_WEIGHT = 0.50
++STEP3_EPOCHS = 70
++
++# -------- TTA (FAIR) --------
++ENABLE_TTA = False
++TTA_K = 3
++
++# ===== evaluation repeats per SNR =====
++EVAL_NOISE_REPEATS = 5
++EVAL_TTA_PER_REPEAT = 1
++
++# -------- Consistency regularization (Stage2) --------
++ENABLE_CONSISTENCY = True
++CONSIST_MAX_LAMBDA = 0.12
++CONSIST_WARMUP_EPOCHS = 15
++CONSIST_SNR_LOW_DB = -10.0
++CONSIST_SNR_HIGH_DB = 0.0
++CONSIST_SNR_BIAS_P = 2.0
++CONSIST_USE_PER_SAMPLE_SNR = True
++
++# -------- Modality Drop/Corrupt (noisy-view) --------
++ENABLE_MODALITY_CORRUPT = True
++MOD_CORRUPT_PROB = 0.08
++MOD_CORRUPT_MODE = "extra_noise"          # "zero" or "extra_noise"
++MOD_CORRUPT_EXTRA_SNR_DB = -12.0
++
++# -------- Visualization control --------
++CM_CMAP_2NM = "Blues"
++CM_CMAP_4NM = "Oranges"
++ROC_COLORS_2NM = ["aqua", "darkorange", "cornflowerblue", "green", "red", "purple", "brown"]
++ROC_COLORS_4NM = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#17becf"]
++
++
++# ============================================================
++# 2) Reproducibility
++# ============================================================
++def set_global_seed(seed: int):
++    random.seed(seed)
++    np.random.seed(seed)
++    tf.random.set_seed(seed)
++
++
++# ============================================================
++# 3) Helpers: hash / normalize (numpy side)
++# ============================================================
++def _hash_sample(vib_1x2048: np.ndarray, cur_1x2048: np.ndarray) -> str:
++    b = vib_1x2048.astype(np.float32).tobytes() + cur_1x2048.astype(np.float32).tobytes()
++    return hashlib.sha1(b).hexdigest()
++
++
++def zscore_per_segment_np(segs: np.ndarray, eps: float = POST_ZSCORE_EPS) -> np.ndarray:
++    segs = np.asarray(segs, dtype=np.float32)
++    mu = np.mean(segs, axis=1, keepdims=True)
++    sd = np.std(segs, axis=1, keepdims=True) + eps
++    return (segs - mu) / sd
++
++
++def add_gaussian_noise_np(x, snr_db, rng: np.random.RandomState):
++    """
++    x: (N, 2048, 1)
++    noise_power = signal_power / 10^(snr/10)
++    """
++    if np.isinf(snr_db):
++        return x
++    x2 = x.astype(np.float32)
++    sig_power = np.mean(np.square(x2), axis=(1, 2), keepdims=True) + 1e-12
++    snr_lin = 10.0 ** (float(snr_db) / 10.0)
++    noise_power = sig_power / snr_lin
++    noise = rng.normal(loc=0.0, scale=np.sqrt(noise_power), size=x2.shape).astype(np.float32)
++    return x2 + noise
++
++
++def add_noise_then_optional_post_zscore_np(x, snr_db, rng: np.random.RandomState):
++    x_n = add_gaussian_noise_np(x, snr_db, rng)
++    if ENABLE_POST_ZSCORE_AFTER_NOISE and ENABLE_ZSCORE_PER_SEGMENT:
++        x_n = zscore_per_segment_np(x_n.squeeze(-1))[:, :, None]
++    return x_n
++
++
++def estimate_empirical_snr_db(x_clean, x_noisy) -> float:
++    x_clean = np.asarray(x_clean, dtype=np.float32)
++    x_noisy = np.asarray(x_noisy, dtype=np.float32)
++    n = x_noisy - x_clean
++    ps = float(np.mean(x_clean**2) + 1e-12)
++    pn = float(np.mean(n**2) + 1e-12)
++    return 10.0 * np.log10(ps / pn)
++
++
++# ============================================================
++# 3.1) TF noise + optional post-zscore
++# ============================================================
++def _tf_zscore_per_segment(x, eps=POST_ZSCORE_EPS):
++    mu = tf.reduce_mean(x, axis=1, keepdims=True)
++    sd = tf.math.reduce_std(x, axis=1, keepdims=True) + eps
++    return (x - mu) / sd
++
++
++def _tf_add_gaussian_noise_snr(x, snr_db):
++    x = tf.cast(x, tf.float32)
++    sig_power = tf.reduce_mean(tf.square(x), axis=[1, 2], keepdims=True) + 1e-12
++    snr_lin = tf.pow(10.0, snr_db / 10.0)
++    noise_power = sig_power / snr_lin
++    noise = tf.random.normal(tf.shape(x), mean=0.0, stddev=tf.sqrt(noise_power), dtype=tf.float32)
++    return x + noise
++
++
++def _tf_add_noise_then_optional_post_zscore(x, snr_db):
++    x_n = _tf_add_gaussian_noise_snr(x, snr_db)
++    if ENABLE_POST_ZSCORE_AFTER_NOISE and ENABLE_ZSCORE_PER_SEGMENT:
++        x_n = _tf_zscore_per_segment(x_n, eps=POST_ZSCORE_EPS)
++    return x_n
++
++
++def _tf_sample_snr_db_custom(batch_size,
++                             low_db: float,
++                             high_db: float,
++                             bias_p: float,
++                             per_sample: bool = True):
++    low_db = float(low_db)
++    high_db = float(high_db)
++    p = float(bias_p)
++
++    if per_sample:
++        u = tf.random.uniform([batch_size, 1, 1], 0.0, 1.0, dtype=tf.float32)
++        u_b = tf.pow(u, p)  # bias toward low SNR
++        return low_db + (high_db - low_db) * u_b
++
++    u = tf.random.uniform([], 0.0, 1.0, dtype=tf.float32)
++    u_b = tf.pow(u, p)
++    return low_db + (high_db - low_db) * u_b
++
++
++def _tf_sample_snr_db(batch_size):
++    return _tf_sample_snr_db_custom(
++        batch_size,
++        low_db=CONSIST_SNR_LOW_DB,
++        high_db=CONSIST_SNR_HIGH_DB,
++        bias_p=CONSIST_SNR_BIAS_P,
++        per_sample=CONSIST_USE_PER_SAMPLE_SNR
++    )
++
++
++def _tf_modality_corrupt(xv, xc):
++    if (not ENABLE_MODALITY_CORRUPT) or (MOD_CORRUPT_PROB <= 0.0):
++        return xv, xc
++
++    B = tf.shape(xv)[0]
++    trigger = tf.random.uniform([B, 1, 1], 0.0, 1.0, dtype=tf.float32) < float(MOD_CORRUPT_PROB)
++    choose_v = tf.random.uniform([B, 1, 1], 0.0, 1.0, dtype=tf.float32) < 0.5
++
++    drop_v = tf.logical_and(trigger, choose_v)
++    drop_c = tf.logical_and(trigger, tf.logical_not(choose_v))
++
++    if MOD_CORRUPT_MODE.lower() == "zero":
++        xv2 = tf.where(drop_v, tf.zeros_like(xv), xv)
++        xc2 = tf.where(drop_c, tf.zeros_like(xc), xc)
++        return xv2, xc2
++
++    if MOD_CORRUPT_MODE.lower() == "extra_noise":
++        extra_snr = tf.constant(float(MOD_CORRUPT_EXTRA_SNR_DB), dtype=tf.float32)
++        xv_extra = _tf_add_gaussian_noise_snr(xv, extra_snr)
++        xc_extra = _tf_add_gaussian_noise_snr(xc, extra_snr)
++
++        if ENABLE_POST_ZSCORE_AFTER_NOISE and ENABLE_ZSCORE_PER_SEGMENT:
++            xv_extra = _tf_zscore_per_segment(xv_extra, eps=POST_ZSCORE_EPS)
++            xc_extra = _tf_zscore_per_segment(xc_extra, eps=POST_ZSCORE_EPS)
++
++        xv2 = tf.where(drop_v, xv_extra, xv)
++        xc2 = tf.where(drop_c, xc_extra, xc)
++        return xv2, xc2
++
++    return xv, xc
++
++
++# ============================================================
++# 4) Vibration .mat parsing (KAIST style)  [FIXED HERE]
++# ============================================================
++def _extract_values_matrix_kaist(mat_dict: dict) -> np.ndarray:
++    """
++    Benchmark-consistent KAIST parsing:
++      mat['Signal']['y_values']['values']
++    """
++    if "Signal" not in mat_dict:
++        raise KeyError("Missing 'Signal' key.")
++    sig = mat_dict["Signal"]
++    yv = sig["y_values"][0, 0]
++    vals = yv["values"][0, 0]
++    vals = np.asarray(vals)
++    if vals.ndim == 1:
++        vals = vals.reshape(-1, 1)
++    return vals
++
++
++def _fallback_find_numeric_array(mat_dict: dict) -> np.ndarray:
++    """
++    Fallback: search for the first 1D/2D numeric ndarray not in __ keys.
++    """
++    keys = [k for k in mat_dict.keys() if not k.startswith("__")]
++    for k in keys:
++        v = mat_dict.get(k, None)
++        if isinstance(v, np.ndarray) and np.issubdtype(v.dtype, np.number):
++            if v.ndim == 1:
++                return v.reshape(-1, 1)
++            if v.ndim == 2:
++                return v
++    raise RuntimeError(f"[MAT] No numeric array found in keys={keys[:20]}")
++
++
++def load_mat_values(mat_path: str) -> np.ndarray:
++    md = loadmat(mat_path)
++    # try KAIST structure first (this is the FIX)
++    try:
++        return _extract_values_matrix_kaist(md)
++    except Exception:
++        # fallback
++        try:
++            return _fallback_find_numeric_array(md)
++        except Exception as e2:
++            keys = [k for k in md.keys() if not k.startswith("__")]
++            raise RuntimeError(f"[MAT] Parse failed for: {mat_path}\n"
++                               f"Available keys: {keys[:30]}\n"
++                               f"Fallback error: {e2}") from e2
++
++
++def _pick_vib_1d(values: np.ndarray) -> np.ndarray:
++    """
++    Match your benchmark policy:
++    - if >=5 cols: use col 1 (xA)
++    - else use col 0
++    """
++    values = np.asarray(values)
++    if values.ndim != 2:
++        values = values.reshape(-1, 1)
++    ncol = values.shape[1]
++    if ncol >= 5:
++        return values[:, 1].astype(np.float32)
++    if ncol == 4:
++        return values[:, 0].astype(np.float32)
++    return values[:, 0].astype(np.float32)
++
++
++# ============================================================
++# 5) Current TDMS parsing (aligned)
++# ============================================================
++def _norm_name(name: str) -> str:
++    return (name or "").strip().lower().replace("_", "").replace("-", "").replace(" ", "")
++
++def _is_time_channel(name: str) -> bool:
++    n = _norm_name(name)
++    return ("time" in n) or ("timestamp" in n) or ("timestmp" in n)
++
++def _is_temp_channel(name: str) -> bool:
++    n = _norm_name(name)
++    return ("temp" in n) or ("temperature" in n) or ("housing" in n)
++
++def _is_phase_u(name: str) -> bool:
++    n = _norm_name(name)
++    return ("uphase" in n) or (n == "u") or n.endswith("uphase")
++
++def _is_phase_v(name: str) -> bool:
++    n = _norm_name(name)
++    return ("vphase" in n) or (n == "v") or n.endswith("vphase")
++
++def _is_phase_w(name: str) -> bool:
++    n = _norm_name(name)
++    return ("wphase" in n) or (n == "w") or n.endswith("wphase")
++
++
++def read_current_1d_from_tdms(tdms_path: str, mode: str = "U", min_len: int = DATA_POINTS * 2) -> np.ndarray:
++    tdms = TdmsFile.read(tdms_path)
++
++    channels = []
++    for g in tdms.groups():
++        for ch in g.channels():
++            name = ch.name or ""
++            try:
++                x = np.asarray(ch[:], dtype=np.float32).squeeze()
++            except Exception:
++                continue
++            if x.ndim != 1:
++                if x.ndim == 2 and x.shape[1] >= 1:
++                    x = x[:, 0]
++                else:
++                    continue
++            if x.size < min_len:
++                continue
++            channels.append((name, x.astype(np.float32)))
++
++    if DEBUG_PRINT_TDMS_CHANNELS:
++        print(f"[TDMS] {os.path.basename(tdms_path)} channels:")
++        for name, x in channels:
++            print(f"  - {name:30s} | len={len(x)} | std={np.std(x):.6f}")
++
++    if len(channels) == 0:
++        raise RuntimeError(f"[TDMS ERROR] No valid channels found in: {tdms_path}")
++
++    u = v = w = None
++    pool = []
++    for name, x in channels:
++        if _is_time_channel(name) or _is_temp_channel(name):
++            continue
++        if _is_phase_u(name):
++            u = x
++        elif _is_phase_v(name):
++            v = x
++        elif _is_phase_w(name):
++            w = x
++        pool.append((name, x))
++
++    def _max_var(arr_list):
++        best_x, best_var = None, -1.0
++        for nm, xx in arr_list:
++            vv = float(np.var(xx))
++            if vv > best_var:
++                best_var = vv
++                best_x = xx
++        if best_x is None:
++            raise RuntimeError(f"[TDMS ERROR] No non-time/temp channels left in: {tdms_path}")
++        return best_x
++
++    mode = (mode or "U").upper()
++
++    if mode == "U":
++        return u if u is not None else _max_var(pool)
++    if mode == "V":
++        return v if v is not None else _max_var(pool)
++    if mode == "W":
++        return w if w is not None else _max_var(pool)
++    if mode == "MAG":
++        if (u is None) or (v is None) or (w is None):
++            if len(pool) >= 3:
++                pool_sorted = sorted(pool, key=lambda t: float(np.var(t[1])), reverse=True)
++                u_, v_, w_ = pool_sorted[0][1], pool_sorted[1][1], pool_sorted[2][1]
++                L = min(len(u_), len(v_), len(w_))
++                return np.sqrt(u_[:L]**2 + v_[:L]**2 + w_[:L]**2).astype(np.float32)
++            raise RuntimeError(f"[TDMS ERROR] MAG mode needs 3 channels, but not found in: {tdms_path}")
++        L = min(len(u), len(v), len(w))
++        return np.sqrt(u[:L]**2 + v[:L]**2 + w[:L]**2).astype(np.float32)
++
++    raise ValueError(f"Unknown CUR_MODE={mode}. Use 'U','V','W','MAG'.")
++
++
++# ============================================================
++# 6) Segmentation (aligned)
++# ============================================================
++def segment_2048(x_1d: np.ndarray, max_segments: int) -> np.ndarray:
++    x_1d = np.asarray(x_1d, dtype=np.float32).flatten()
++    n_total = len(x_1d) // DATA_POINTS
++    n_use = min(n_total, max_segments)
++    if n_use <= 0:
++        raise ValueError(f"Signal too short for segmentation: len={len(x_1d)}")
++    segs = np.zeros((n_use, DATA_POINTS), dtype=np.float32)
++    for i in range(n_use):
++        segs[i, :] = x_1d[i * DATA_POINTS:(i + 1) * DATA_POINTS]
++    return segs
++
++
++# ============================================================
++# 7) Load datasets: vib(.mat) + current(.tdms)  (aligned)
++# ============================================================
++def _mat_path(vib_dir: str, load_tag: str, fault: str) -> str:
++    p = os.path.join(vib_dir, f"{load_tag}_{fault}.mat")
++    if not os.path.exists(p):
++        raise FileNotFoundError(f"[VIB MAT MISSING] {p}")
++    return p
++
++def _tdms_path(cur_dir: str, load_tag: str, fault: str) -> str:
++    for ext in [".tdms", ".TDMS"]:
++        p = os.path.join(cur_dir, f"{load_tag}_{fault}{ext}")
++        if os.path.exists(p):
++            return p
++    raise FileNotFoundError(f"[CUR TDMS MISSING] Tried {load_tag}_{fault}.tdms/.TDMS in {cur_dir}")
++
++def load_dataset_for_load(load_tag: str, vib_dir: str):
++    datasets = []
++    for cls_name, fault in FAULTS:
++        vib_file = _mat_path(vib_dir, load_tag, fault)
++        cur_file = _tdms_path(CUR_TDMS_DIR, load_tag, fault)
++
++        vib_vals = load_mat_values(vib_file)     # <-- FIXED MAT parsing
++        vib_1d = _pick_vib_1d(vib_vals)
++
++        cur_1d = read_current_1d_from_tdms(cur_file, mode=CUR_MODE)
++
++        vib_segs = segment_2048(vib_1d, MAX_SEGMENTS_PER_CLASS)
++        cur_segs = segment_2048(cur_1d, MAX_SEGMENTS_PER_CLASS)
++
++        n_use = min(len(vib_segs), len(cur_segs))
++        vib_segs = vib_segs[:n_use]
++        cur_segs = cur_segs[:n_use]
++
++        if np.std(vib_segs) < 1e-8:
++            raise RuntimeError(f"[DATA ERROR] vib near-constant: {vib_file}")
++        if np.std(cur_segs) < 1e-8:
++            raise RuntimeError(f"[DATA ERROR] current near-constant: {cur_file}")
++
++        # pre z-score
++        if ENABLE_ZSCORE_PER_SEGMENT:
++            vib_segs = zscore_per_segment_np(vib_segs)
++            cur_segs = zscore_per_segment_np(cur_segs)
++
++        datasets.append((vib_segs, cur_segs))
++    return datasets
++
++def print_dataset_stats(load_tag: str, datasets):
++    print(f"Load {load_tag}:")
++    for i, (cls_name, fault) in enumerate(FAULTS):
++        vib_segs, cur_segs = datasets[i]
++        print(f"  Class {cls_name:<4} | {load_tag}_{fault:<8} : {vib_segs.shape[0]} segments")
++
++
++def preload_kaist():
++    print(">>> Pre-loading KAIST loads into memory...")
++    print("Loading Vibration(.mat)+Current(.tdms) ...")
++    data_0 = load_dataset_for_load("0Nm", VIB_MAT_DIR_0NM)
++    data_2 = load_dataset_for_load("2Nm", VIB_MAT_DIR_2NM)
++    data_4 = load_dataset_for_load("4Nm", VIB_MAT_DIR_4NM)
++    print_dataset_stats("0Nm", data_0)
++    print_dataset_stats("2Nm", data_2)
++    print_dataset_stats("4Nm", data_4)
++    print("Data loaded.\n")
++    return {"0Nm": data_0, "2Nm": data_2, "4Nm": data_4}
++
++
++# ============================================================
++# 8) Split: 0Nm train/val; 2Nm/4Nm test  (aligned)
++# ============================================================
++def build_train_val_from_0Nm(datasets_0, seed: int, n_train: int, n_val: int):
++    rng = np.random.RandomState(seed)
++    tr_list, va_list = [], []
++    tr_hash, va_hash = set(), set()
++
++    for label, (vib, cur) in enumerate(datasets_0):
++        M = vib.shape[0]
++        need = n_train + n_val + 1
++        assert M >= need, f"[DATA ERROR] class {label} has {M} segments, need >= {need}"
++
++        combined = np.hstack([vib, cur])  # (M, 4096)
++        rng.shuffle(combined)
++
++        tr = combined[:n_train]
++        va = combined[n_train:n_train + n_val]
++
++        y_tr = np.full((len(tr), 1), label)
++        y_va = np.full((len(va), 1), label)
++
++        if ENABLE_HASH_OVERLAP_CHECK:
++            for i in range(len(tr)):
++                tr_hash.add(_hash_sample(tr[i, :2048], tr[i, 2048:]))
++            for i in range(len(va)):
++                va_hash.add(_hash_sample(va[i, :2048], va[i, 2048:]))
++
++        tr_list.append(np.hstack([tr, y_tr]))
++        va_list.append(np.hstack([va, y_va]))
++
++    if ENABLE_HASH_OVERLAP_CHECK:
++        assert len(tr_hash.intersection(va_hash)) == 0, "[LEAKAGE ERROR] 0Nm train/val overlap!"
++
++    tr_all = np.vstack(tr_list)
++    va_all = np.vstack(va_list)
++    rng.shuffle(tr_all)
++    rng.shuffle(va_all)
++
++    def pack(arr):
++        xv = arr[:, 0:2048][:, :, np.newaxis].astype(np.float32)
++        xc = arr[:, 2048:4096][:, :, np.newaxis].astype(np.float32)
++        y = np_utils.to_categorical(arr[:, 4096], NUM_CLASSES).astype(np.float32)
++        return xv, xc, y
++
++    return pack(tr_all), pack(va_all)
++
++def build_test_from_load(datasets_load, seed: int = 0):
++    rng = np.random.RandomState(seed)
++    te_list = []
++    for label, (vib, cur) in enumerate(datasets_load):
++        combined = np.hstack([vib, cur])
++        y = np.full((len(combined), 1), label)
++        te_list.append(np.hstack([combined, y]))
++    te_all = np.vstack(te_list)
++    rng.shuffle(te_all)
++
++    xv = te_all[:, 0:2048][:, :, np.newaxis].astype(np.float32)
++    xc = te_all[:, 2048:4096][:, :, np.newaxis].astype(np.float32)
++    y = np_utils.to_categorical(te_all[:, 4096], NUM_CLASSES).astype(np.float32)
++    return xv, xc, y
++
++
++# ============================================================
++# 9) MSF-DFormer model (ONLY PART allowed to differ)
++# ============================================================
++def _msf_block(x, filters: int, name: str, dropout: float = 0.10):
++    """
++    Multi-Scale Feature block (1D):
++    - parallel conv with different kernel sizes + dilations
++    - concat -> 1x1 fuse -> residual
++    """
++    shortcut = x
++
++    b1 = Conv1D(filters, kernel_size=3, padding="same", dilation_rate=1, name=f"{name}_k3_d1")(x)
++    b1 = Activation("gelu", name=f"{name}_b1_gelu")(b1)
++
++    b2 = Conv1D(filters, kernel_size=5, padding="same", dilation_rate=2, name=f"{name}_k5_d2")(x)
++    b2 = Activation("gelu", name=f"{name}_b2_gelu")(b2)
++
++    b3 = Conv1D(filters, kernel_size=7, padding="same", dilation_rate=4, name=f"{name}_k7_d4")(x)
++    b3 = Activation("gelu", name=f"{name}_b3_gelu")(b3)
++
++    m = Concatenate(name=f"{name}_concat")([b1, b2, b3])
++    m = Conv1D(filters, kernel_size=1, padding="same", name=f"{name}_fuse1x1")(m)
++    m = Dropout(dropout, name=f"{name}_drop")(m)
++
++    # residual (project if needed)
++    if int(shortcut.shape[-1]) != filters:
++        shortcut = Conv1D(filters, kernel_size=1, padding="same", name=f"{name}_proj")(shortcut)
++
++    out = Add(name=f"{name}_add")([shortcut, m])
++    out = Activation("gelu", name=f"{name}_out_gelu")(out)
++    return out
++
++
++def _dformer_block(x, embed_dim: int, num_heads: int, ff_dim: int, dropout: float, name: str):
++    """
++    Transformer encoder block for 1D tokens.
++    """
++    # LN + MHA
++    x1 = LayerNormalization(epsilon=1e-6, name=f"{name}_ln1")(x)
++    attn = MultiHeadAttention(num_heads=num_heads, key_dim=embed_dim // num_heads,
++                             dropout=dropout, name=f"{name}_mha")(x1, x1)
++    x2 = Add(name=f"{name}_add1")([x, attn])
++
++    # LN + FFN
++    x3 = LayerNormalization(epsilon=1e-6, name=f"{name}_ln2")(x2)
++    ff = Dense(ff_dim, activation="gelu", name=f"{name}_ff1")(x3)
++    ff = Dropout(dropout, name=f"{name}_ffdrop")(ff)
++    ff = Dense(embed_dim, name=f"{name}_ff2")(ff)
++    out = Add(name=f"{name}_add2")([x2, ff])
++    return out
++
++
++def _msf_dformer_encoder(inp, prefix: str,
++                         stem_filters: int = 64,
++                         msf_filters: int = 96,
++                         embed_dim: int = 128,
++                         num_heads: int = 4,
++                         ff_dim: int = 256,
++                         n_blocks: int = 2,
++                         dropout: float = 0.20):
++    """
++    1) stem downsample
++    2) MSF blocks
++    3) token projection + DFormer blocks
++    4) global pooling -> vector
++    """
++    x = Conv1D(stem_filters, kernel_size=9, strides=2, padding="same", name=f"{prefix}_stem_conv")(inp)
++    x = Activation("gelu", name=f"{prefix}_stem_gelu")(x)
++    x = MaxPooling1D(pool_size=2, strides=2, padding="same", name=f"{prefix}_stem_pool")(x)  # 2048 -> 512
++
++    x = _msf_block(x, msf_filters, name=f"{prefix}_msf1", dropout=0.10)
++    x = _msf_block(x, msf_filters, name=f"{prefix}_msf2", dropout=0.10)
++
++    # tokens: project to embed_dim and downsample to manageable length
++    # 512 -> 128 tokens
++    x = Conv1D(embed_dim, kernel_size=4, strides=4, padding="same", name=f"{prefix}_tokenize")(x)
++    x = Dropout(dropout, name=f"{prefix}_tok_drop")(x)
++
++    for i in range(n_blocks):
++        x = _dformer_block(x, embed_dim=embed_dim, num_heads=num_heads, ff_dim=ff_dim,
++                           dropout=dropout, name=f"{prefix}_dformer{i+1}")
++
++    x = LayerNormalization(epsilon=1e-6, name=f"{prefix}_ln_out")(x)
++    vec = GlobalAveragePooling1D(name=f"{prefix}_gap")(x)
++    vec = Dropout(dropout, name=f"{prefix}_vec_drop")(vec)
++    return vec
++
++
++def create_model():
++    """
++    Return:
++      - base_model: softmax classifier
++      - feat_model: fused feature vector (for t-SNE)
++    """
++    # modest capacity (avoid too high/too low; also closer to KAIST few-shot)
++    embed_dim = 128
++    num_heads = 4
++    ff_dim = 256
++    n_blocks = 2
++    dropout = 0.25
++
++    input_v = Input(shape=(DATA_POINTS, 1), name="vib_input")
++    input_c = Input(shape=(DATA_POINTS, 1), name="cur_input")
++
++    v_vec = _msf_dformer_encoder(
++        input_v, prefix="vib",
++        stem_filters=64, msf_filters=96,
++        embed_dim=embed_dim, num_heads=num_heads, ff_dim=ff_dim,
++        n_blocks=n_blocks, dropout=dropout
++    )
++    c_vec = _msf_dformer_encoder(
++        input_c, prefix="cur",
++        stem_filters=64, msf_filters=96,
++        embed_dim=embed_dim, num_heads=num_heads, ff_dim=ff_dim,
++        n_blocks=n_blocks, dropout=dropout
++    )
++
++    fused = Concatenate(name="fusion_concat")([v_vec, c_vec])
++    fused = Dense(256, activation="gelu", name="fusion_fc1")(fused)
++    fused = Dropout(0.30, name="fusion_drop")(fused)
++    fused = Dense(256, activation="gelu", name="fusion_fc2")(fused)
++    feat = Dropout(0.10, name="feat_drop")(fused)
++
++    out = Dense(NUM_CLASSES, activation="softmax", name="pred")(feat)
++
++    base_model = Model(inputs=[input_v, input_c], outputs=out, name="MSF_DFormer")
++    feat_model = Model(inputs=[input_v, input_c], outputs=feat, name="MSF_DFormer_feat")
++    return base_model, feat_model
++
++
++# ============================================================
++# 9.1) Trainer: CE(base) + CE(noisy) + KL(base||noisy)  (aligned)
++# ============================================================
++class NoiseStableTrainer(tf.keras.Model):
++    def __init__(self,
++                 base_model: tf.keras.Model,
++                 base_snr_db: float,
++                 noisy_low_db: float = CONSIST_SNR_LOW_DB,
++                 noisy_high_db: float = CONSIST_SNR_HIGH_DB,
++                 bias_p: float = CONSIST_SNR_BIAS_P,
++                 per_sample_snr: bool = CONSIST_USE_PER_SAMPLE_SNR,
++                 noisy_ce_weight: float = 0.0,
++                 hard_snr_db: float = None,
++                 hard_ce_weight: float = 0.0,
++                 hard_kl_weight: float = 1.0,
++                 **kwargs):
++        super().__init__(**kwargs)
++        self.base_model = base_model
++        self.base_snr_db = tf.constant(float(base_snr_db), dtype=tf.float32)
++
++        self.noisy_low_db = float(noisy_low_db)
++        self.noisy_high_db = float(noisy_high_db)
++        self.bias_p = float(bias_p)
++        self.per_sample_snr = bool(per_sample_snr)
++
++        self.noisy_ce_weight = tf.constant(float(noisy_ce_weight), dtype=tf.float32)
++        self.use_noisy_ce = (float(noisy_ce_weight) > 0.0)
++
++        self.use_hard = (hard_snr_db is not None) and ((float(hard_ce_weight) > 0.0) or ENABLE_CONSISTENCY)
++        self.hard_snr_db = tf.constant(float(hard_snr_db), dtype=tf.float32) if (hard_snr_db is not None) else None
++        self.hard_ce_weight = tf.constant(float(hard_ce_weight), dtype=tf.float32)
++        self.hard_kl_weight = tf.constant(float(hard_kl_weight), dtype=tf.float32)
++
++        self.cons_lambda = tf.Variable(0.0, dtype=tf.float32, trainable=False)
++
++        self._ce_metric = tf.keras.metrics.Mean(name="ce_loss")
++        self._noisy_ce_metric = tf.keras.metrics.Mean(name="noisy_ce_loss")
++        self._hard_ce_metric = tf.keras.metrics.Mean(name="hard_ce_loss")
++        self._kl_metric = tf.keras.metrics.Mean(name="kl_loss")
++        self._kl_hard_metric = tf.keras.metrics.Mean(name="kl_hard_loss")
++
++    @property
++    def metrics(self):
++        return [self._ce_metric, self._noisy_ce_metric, self._hard_ce_metric, self._kl_metric, self._kl_hard_metric] + super().metrics
++
++    def call(self, inputs, training=False):
++        return self.base_model(inputs, training=training)
++
++    @staticmethod
++    def _kl_stopgrad_teacher(p_teacher, p_student):
++        eps = 1e-7
++        p_t = tf.stop_gradient(tf.clip_by_value(p_teacher, eps, 1.0 - eps))
++        p_s = tf.clip_by_value(p_student, eps, 1.0 - eps)
++        kl_vec = tf.keras.losses.KLDivergence(reduction=tf.keras.losses.Reduction.NONE)(p_t, p_s)
++        return tf.reduce_mean(kl_vec)
++
++    def train_step(self, data):
++        (xv, xc), y = data
++        y = tf.cast(y, tf.float32)
++        B = tf.shape(xv)[0]
++
++        # base-view (anchor)
++        xv_base = _tf_add_noise_then_optional_post_zscore(xv, self.base_snr_db)
++        xc_base = _tf_add_noise_then_optional_post_zscore(xc, self.base_snr_db)
++
++        need_rand = bool(ENABLE_CONSISTENCY) or self.use_noisy_ce
++        if need_rand:
++            snr_rnd = _tf_sample_snr_db_custom(
++                B,
++                low_db=self.noisy_low_db,
++                high_db=self.noisy_high_db,
++                bias_p=self.bias_p,
++                per_sample=self.per_sample_snr
++            )
++            xv_noisy = _tf_add_gaussian_noise_snr(tf.cast(xv, tf.float32), snr_rnd)
++            xc_noisy = _tf_add_gaussian_noise_snr(tf.cast(xc, tf.float32), snr_rnd)
++            if ENABLE_POST_ZSCORE_AFTER_NOISE and ENABLE_ZSCORE_PER_SEGMENT:
++                xv_noisy = _tf_zscore_per_segment(xv_noisy, eps=POST_ZSCORE_EPS)
++                xc_noisy = _tf_zscore_per_segment(xc_noisy, eps=POST_ZSCORE_EPS)
++            xv_noisy, xc_noisy = _tf_modality_corrupt(xv_noisy, xc_noisy)
++        else:
++            xv_noisy, xc_noisy = None, None
++
++        if self.use_hard:
++            xv_hard = _tf_add_noise_then_optional_post_zscore(xv, self.hard_snr_db)
++            xc_hard = _tf_add_noise_then_optional_post_zscore(xc, self.hard_snr_db)
++            xv_hard, xc_hard = _tf_modality_corrupt(xv_hard, xc_hard)
++        else:
++            xv_hard, xc_hard = None, None
++
++        with tf.GradientTape() as tape:
++            p_base = self.base_model([xv_base, xc_base], training=True)
++            ce = tf.reduce_mean(tf.keras.losses.categorical_crossentropy(y, p_base))
++            reg = tf.add_n(self.base_model.losses) if self.base_model.losses else 0.0
++
++            total_loss = ce + reg
++
++            noisy_ce = tf.constant(0.0, dtype=tf.float32)
++            hard_ce = tf.constant(0.0, dtype=tf.float32)
++            kl = tf.constant(0.0, dtype=tf.float32)
++            kl_hard = tf.constant(0.0, dtype=tf.float32)
++
++            if (xv_noisy is not None) and (xc_noisy is not None):
++                p_noisy = self.base_model([xv_noisy, xc_noisy], training=True)
++                noisy_ce = tf.reduce_mean(tf.keras.losses.categorical_crossentropy(y, p_noisy))
++                total_loss = total_loss + tf.cast(self.noisy_ce_weight, tf.float32) * noisy_ce
++                if ENABLE_CONSISTENCY:
++                    kl = self._kl_stopgrad_teacher(p_base, p_noisy)
++                    total_loss = total_loss + self.cons_lambda * kl
++
++            if (xv_hard is not None) and (xc_hard is not None):
++                p_hard = self.base_model([xv_hard, xc_hard], training=True)
++                hard_ce = tf.reduce_mean(tf.keras.losses.categorical_crossentropy(y, p_hard))
++                total_loss = total_loss + tf.cast(self.hard_ce_weight, tf.float32) * hard_ce
++                if ENABLE_CONSISTENCY:
++                    kl_hard = self._kl_stopgrad_teacher(p_base, p_hard)
++                    total_loss = total_loss + self.cons_lambda * tf.cast(self.hard_kl_weight, tf.float32) * kl_hard
++
++            loss = total_loss
++
++        grads = tape.gradient(loss, self.base_model.trainable_variables)
++        self.optimizer.apply_gradients(zip(grads, self.base_model.trainable_variables))
++
++        self.compiled_metrics.update_state(y, p_base)
++
++        self._ce_metric.update_state(ce)
++        self._noisy_ce_metric.update_state(noisy_ce)
++        self._hard_ce_metric.update_state(hard_ce)
++        self._kl_metric.update_state(kl)
++        self._kl_hard_metric.update_state(kl_hard)
++
++        out = {m.name: m.result() for m in self.metrics}
++        out["loss"] = loss
++        out["cons_lambda"] = self.cons_lambda
++        return out
++
++    def test_step(self, data):
++        (xv, xc), y = data
++        y = tf.cast(y, tf.float32)
++
++        xv_base = _tf_add_noise_then_optional_post_zscore(xv, self.base_snr_db)
++        xc_base = _tf_add_noise_then_optional_post_zscore(xc, self.base_snr_db)
++
++        p = self.base_model([xv_base, xc_base], training=False)
++        ce = tf.reduce_mean(tf.keras.losses.categorical_crossentropy(y, p))
++        reg = tf.add_n(self.base_model.losses) if self.base_model.losses else 0.0
++        loss = ce + reg
++
++        self.compiled_metrics.update_state(y, p)
++        self._ce_metric.update_state(ce)
++        self._noisy_ce_metric.update_state(tf.constant(0.0, dtype=tf.float32))
++        self._hard_ce_metric.update_state(tf.constant(0.0, dtype=tf.float32))
++        self._kl_metric.update_state(tf.constant(0.0, dtype=tf.float32))
++        self._kl_hard_metric.update_state(tf.constant(0.0, dtype=tf.float32))
++
++        out = {m.name: m.result() for m in self.metrics}
++        out["loss"] = loss
++        out["cons_lambda"] = self.cons_lambda
++        return out
++
++
++class ConsistencyLambdaScheduler(tf.keras.callbacks.Callback):
++    def __init__(self, max_lambda: float, warmup_epochs: int):
++        super().__init__()
++        self.max_lambda = float(max_lambda)
++        self.warmup_epochs = int(max(1, warmup_epochs))
++
++    def on_epoch_begin(self, epoch, logs=None):
++        if not hasattr(self.model, "cons_lambda"):
++            return
++        if (not ENABLE_CONSISTENCY) or (self.max_lambda <= 0.0):
++            self.model.cons_lambda.assign(0.0)
++            return
++        if epoch < self.warmup_epochs:
++            lam = self.max_lambda * (float(epoch + 1) / float(self.warmup_epochs))
++        else:
++            lam = self.max_lambda
++        self.model.cons_lambda.assign(lam)
++
++
++# ============================================================
++# 11) Visualization (aligned)
++# ============================================================
++def save_curves(history, out_path, title_prefix, val_name="Val"):
++    plt.figure(figsize=(10, 4))
++    plt.subplot(1, 2, 1)
++    plt.plot(history.history["loss"], label="Train")
++    plt.plot(history.history["val_loss"], label=val_name)
++    plt.title(f"Loss - {title_prefix}")
++    plt.legend()
++
++    plt.subplot(1, 2, 2)
++    plt.plot(history.history["accuracy"], label="Train")
++    plt.plot(history.history["val_accuracy"], label=val_name)
++    plt.title(f"Accuracy - {title_prefix}")
++    plt.legend()
++
++    plt.tight_layout()
++    plt.savefig(out_path, dpi=300)
++    plt.close()
++
++def save_cm(y_true, y_pred, out_path, title_prefix, cmap="Blues"):
++    cm = confusion_matrix(y_true, y_pred)
++    plt.figure(figsize=(6, 5))
++    sns.heatmap(cm, annot=True, fmt="d", cmap=cmap, cbar=True)
++    plt.title(f"Confusion Matrix - {title_prefix}")
++    plt.tight_layout()
++    plt.savefig(out_path, dpi=300)
++    plt.close()
++
++def save_tsne(feat_model, x_te_v, x_te_c, y_true, out_path, title_prefix, seed=42):
++    feats = feat_model.predict([x_te_v, x_te_c], verbose=0)
++    n = len(feats)
++    if n > TSNE_MAX_POINTS:
++        rng = np.random.RandomState(seed)
++        idx = rng.choice(n, size=TSNE_MAX_POINTS, replace=False)
++        feats = feats[idx]
++        y_vis = y_true[idx]
++    else:
++        y_vis = y_true
++
++    tsne = TSNE(n_components=2, random_state=seed).fit_transform(feats)
++    plt.figure(figsize=(6, 5))
++    sns.scatterplot(x=tsne[:, 0], y=tsne[:, 1], hue=y_vis, palette="tab10", legend="full", s=15)
++    plt.title(f"t-SNE - {title_prefix}")
++    plt.tight_layout()
++    plt.savefig(out_path, dpi=300)
++    plt.close()
++
++def save_roc(y_true, y_prob, out_path, title_prefix, class_colors=None):
++    y_test_bin = label_binarize(y_true, classes=np.arange(NUM_CLASSES))
++
++    fpr, tpr, roc_auc = {}, {}, {}
++    for i in range(NUM_CLASSES):
++        fpr[i], tpr[i], _ = roc_curve(y_test_bin[:, i], y_prob[:, i])
++        roc_auc[i] = auc(fpr[i], tpr[i])
++
++    fpr["micro"], tpr["micro"], _ = roc_curve(y_test_bin.ravel(), y_prob.ravel())
++    roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
++
++    all_fpr = np.unique(np.concatenate([fpr[i] for i in range(NUM_CLASSES)]))
++    mean_tpr = np.zeros_like(all_fpr)
++    for i in range(NUM_CLASSES):
++        mean_tpr += np.interp(all_fpr, fpr[i], tpr[i])
++    mean_tpr /= NUM_CLASSES
++    fpr["macro"], tpr["macro"] = all_fpr, mean_tpr
++    roc_auc["macro"] = auc(fpr["macro"], tpr["macro"])
++
++    plt.figure(figsize=(8, 6))
++    plt.plot(fpr["micro"], tpr["micro"], label=f"Micro-avg (AUC={roc_auc['micro']:.4f})", linestyle=":", lw=3)
++    plt.plot(fpr["macro"], tpr["macro"], label=f"Macro-avg (AUC={roc_auc['macro']:.4f})", linestyle=":", lw=3)
++
++    if class_colors is None:
++        class_colors = ROC_COLORS_2NM
++
++    colors = cycle(class_colors)
++    for i, c in zip(range(NUM_CLASSES), colors):
++        plt.plot(fpr[i], tpr[i], color=c, lw=2, label=f"Class {i} (AUC={roc_auc[i]:.4f})")
++
++    plt.plot([0, 1], [0, 1], "k--", lw=2)
++    plt.xlabel("False Positive Rate")
++    plt.ylabel("True Positive Rate")
++    plt.title(f"ROC Curve - {title_prefix}")
++    plt.legend(loc="lower right", fontsize="small")
++    plt.tight_layout()
++    plt.savefig(out_path, dpi=300)
++    plt.close()
++
++
++# ============================================================
++# 12) Trimmed stats + radar + trend plot (aligned style)
++# ============================================================
++def trimmed_mean_std(values):
++    v = sorted(list(values))
++    if len(v) > 2:
++        v = v[1:-1]
++    return float(np.mean(v)), float(np.std(v))
++
++def plot_radar(snr_or_labels, acc_list, f1_list, out_path, title):
++    def _lab(s):
++        if isinstance(s, str):
++            return s
++        if np.isinf(s):
++            return "NoNoise"
++        return str(int(s))
++
++    labels = [_lab(s) for s in snr_or_labels]
++    n = len(labels)
++    angles = np.linspace(0, 2 * np.pi, n, endpoint=False).tolist()
++    angles += angles[:1]
++
++    acc = list(acc_list) + [acc_list[0]]
++    f1 = list(f1_list) + [f1_list[0]]
++
++    fig = plt.figure(figsize=(7, 7))
++    ax = plt.subplot(111, polar=True)
++    ax.set_theta_offset(np.pi / 2)
++    ax.set_theta_direction(-1)
++
++    ax.set_thetagrids(np.degrees(angles[:-1]), labels)
++    ax.plot(angles, acc, linewidth=2, label="Accuracy")
++    ax.fill(angles, acc, alpha=0.10)
++    ax.plot(angles, f1, linewidth=2, label="Macro-F1")
++    ax.fill(angles, f1, alpha=0.10)
++
++    ax.set_ylim(0.0, 1.05)
++    ax.set_title(title, y=1.08)
++    ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.15), ncol=2)
++
++    plt.tight_layout()
++    plt.savefig(out_path, dpi=300)
++    plt.close()
++
++def plot_performance_trend(n_list, acc2, f12, acc4, f14, out_path):
++    plt.figure(figsize=(10, 5))
++    plt.plot(n_list, acc2, marker="o", label="2Nm Acc")
++    plt.plot(n_list, f12, marker="o", label="2Nm F1")
++    plt.plot(n_list, acc4, marker="s", label="4Nm Acc")
++    plt.plot(n_list, f14, marker="s", label="4Nm F1")
++    plt.xlabel("N per class (0Nm train)")
++    plt.ylabel("Metric")
++    plt.ylim(0.0, 1.05)
++    plt.title("Performance Trend (Trimmed Mean) - MSF-DFormer Load Shift")
++    plt.grid(True, alpha=0.3)
++    plt.legend()
++    plt.tight_layout()
++    plt.savefig(out_path, dpi=300)
++    plt.close()
++
++
++# ============================================================
++# 13) Evaluate helper (aligned)
++# ============================================================
++def eval_on_test(model, feat_model, x_te_v, x_te_c, y_te,
++                out_dir, tag, snr_db, seed, tta_k=1,
++                roc_colors=None, cm_cmap="Blues"):
++    y_true = np.argmax(y_te, axis=1)
++
++    use_tta = (tta_k is not None and int(tta_k) > 1 and (snr_db is not None)
++               and (not (np.isscalar(snr_db) and np.isinf(snr_db))))
++
++    t_inf0 = time.perf_counter()
++
++    if not use_tta:
++        rng = np.random.RandomState(seed + 999)
++        x_tv = add_noise_then_optional_post_zscore_np(x_te_v, snr_db, rng)
++        x_tc = add_noise_then_optional_post_zscore_np(x_te_c, snr_db, rng)
++        y_prob = model.predict([x_tv, x_tc], verbose=0)
++    else:
++        Kk = int(tta_k)
++        prob_sum = None
++        for kk in range(Kk):
++            rng = np.random.RandomState(seed + 999 + kk * 131)
++            x_tv = add_noise_then_optional_post_zscore_np(x_te_v, snr_db, rng)
++            x_tc = add_noise_then_optional_post_zscore_np(x_te_c, snr_db, rng)
++            p = model.predict([x_tv, x_tc], verbose=0)
++            prob_sum = p.astype(np.float64) if prob_sum is None else (prob_sum + p.astype(np.float64))
++        y_prob = (prob_sum / float(Kk)).astype(np.float32)
++
++    y_pred = np.argmax(y_prob, axis=1)
++    t_inf1 = time.perf_counter()
++    infer_time_s = float(t_inf1 - t_inf0)
++
++    acc = accuracy_score(y_true, y_pred)
++    f1 = f1_score(y_true, y_pred, average="macro")
++    prec = precision_score(y_true, y_pred, average="macro")
++    rec = recall_score(y_true, y_pred, average="macro")
++
++    viz_time_s = 0.0
++    if out_dir is not None:
++        os.makedirs(out_dir, exist_ok=True)
++        t_viz0 = time.perf_counter()
++
++        title_snr = "NoNoise" if (snr_db is None or (np.isscalar(snr_db) and np.isinf(snr_db))) else f"{snr_db}dB"
++        save_cm(y_true, y_pred, os.path.join(out_dir, f"cm_{tag}.png"),
++                f"{tag} | SNR={title_snr}", cmap=cm_cmap)
++        save_tsne(feat_model, x_tv, x_tc, y_true, os.path.join(out_dir, f"tsne_{tag}.png"),
++                  f"{tag} | SNR={title_snr}")
++        save_roc(y_true, y_prob, os.path.join(out_dir, f"roc_{tag}.png"),
++                 f"{tag} | SNR={title_snr}", class_colors=roc_colors)
++
++        t_viz1 = time.perf_counter()
++        viz_time_s = float(t_viz1 - t_viz0)
++
++    return acc, f1, prec, rec, infer_time_s, viz_time_s
++
++
++# ============================================================
++# 14) Full experiment (Stage2)  (aligned)
++# ============================================================
++def run_full_experiment(DATA_0, DATA_2, DATA_4):
++    x2_v, x2_c, y2 = build_test_from_load(DATA_2, seed=123)
++    x4_v, x4_c, y4 = build_test_from_load(DATA_4, seed=456)
++
++    print("\n>>> Best MSF-DFormer Model Architecture Summary:")
++    print("=" * 60)
++    tmp_model, _ = create_model()
++    tmp_model.summary()
++    del tmp_model
++    print("=" * 60 + "\n")
++
++    raw_rows = []
++    trim_rows = []
++
++    trend_n = []
++    trend_acc2 = []
++    trend_f12 = []
++    trend_acc4 = []
++    trend_f14 = []
++
++    for n_train in SAMPLE_RANGE:
++        sample_dir = os.path.join(BASE_OUTPUT_DIR, f"Samples_{n_train:02d}")
++        os.makedirs(sample_dir, exist_ok=True)
++        print(f"\n======== Train(0Nm) N={n_train} (Run 1-{REPEAT_TIMES}) ========")
++
++        buf = {
++            "acc_2": [], "f1_2": [], "prec_2": [], "rec_2": [],
++            "acc_4": [], "f1_4": [], "prec_4": [], "rec_4": [],
++            "train_s": [],
++            "t2_inf_s": [], "t2_viz_s": [],
++            "t4_inf_s": [], "t4_viz_s": [],
++        }
++
++        for run_idx in range(1, REPEAT_TIMES + 1):
++            run_dir = os.path.join(sample_dir, f"Run_{run_idx:02d}")
++            os.makedirs(run_dir, exist_ok=True)
++
++            seed = run_idx - 1  # [audit] seeds 0..9
++            set_global_seed(seed)
++
++            n_val = min(VAL_PER_CLASS_MAIN, MAX_SEGMENTS_PER_CLASS - n_train - 1)
++            (x_tr_v, x_tr_c, y_tr), (x_va_v, x_va_c, y_va) = build_train_val_from_0Nm(
++                DATA_0, seed=seed, n_train=n_train, n_val=n_val
++            )
++
++            tf.keras.backend.clear_session()
++            gc.collect()
++
++            base_model, feat_model = create_model()
++            trainer = NoiseStableTrainer(base_model, base_snr_db=TRAIN_BASE_SNR_DB, name="NoiseStableTrainer")
++
++            opt = tf.keras.optimizers.Adamax(learning_rate=LR, clipnorm=GRAD_CLIPNORM)
++            trainer.compile(optimizer=opt, metrics=["accuracy"])
++
++            callbacks = [ConsistencyLambdaScheduler(CONSIST_MAX_LAMBDA, CONSIST_WARMUP_EPOCHS)]
++
++            if AUDIT_CB: callbacks.append(AUDIT_CB(run_idx, seed, base_model, x2_v, x2_c, y2, x4_v, x4_c, y4))  # [audit]
++            t_fit0 = time.perf_counter()
++            history = trainer.fit(
++                [x_tr_v, x_tr_c], y_tr,
++                epochs=EPOCHS,
++                batch_size=BATCH_SIZE,
++                validation_data=([x_va_v, x_va_c], y_va),
++                verbose=0,
++                callbacks=callbacks
++            )
++            t_fit1 = time.perf_counter()
++            train_time_s = float(t_fit1 - t_fit0)
++
++            save_curves(history, os.path.join(run_dir, "curves.png"),
++                        f"Train0Nm N={n_train} Run={run_idx}", val_name="Val(0Nm)")
++
++            out2 = os.path.join(run_dir, "Test_2Nm")
++            out4 = os.path.join(run_dir, "Test_4Nm")
++
++            acc2, f12, p2, r2, t2_inf_s, t2_viz_s = eval_on_test(
++                base_model, feat_model, x2_v, x2_c, y2, out2, "2Nm", TRAIN_BASE_SNR_DB, seed,
++                tta_k=1, roc_colors=ROC_COLORS_2NM, cm_cmap=CM_CMAP_2NM
++            )
++            acc4, f14, p4, r4, t4_inf_s, t4_viz_s = eval_on_test(
++                base_model, feat_model, x4_v, x4_c, y4, out4, "4Nm", TRAIN_BASE_SNR_DB, seed,
++                tta_k=1, roc_colors=ROC_COLORS_4NM, cm_cmap=CM_CMAP_4NM
++            )
++
++            buf["acc_2"].append(acc2); buf["f1_2"].append(f12); buf["prec_2"].append(p2); buf["rec_2"].append(r2)
++            if AUDIT_FINAL: AUDIT_FINAL(run_idx, seed, acc2, acc4)  # [audit]
++            buf["acc_4"].append(acc4); buf["f1_4"].append(f14); buf["prec_4"].append(p4); buf["rec_4"].append(r4)
++
++            buf["train_s"].append(train_time_s)
++            buf["t2_inf_s"].append(t2_inf_s); buf["t2_viz_s"].append(t2_viz_s)
++            buf["t4_inf_s"].append(t4_inf_s); buf["t4_viz_s"].append(t4_viz_s)
++
++            raw_rows.append([
++                n_train, run_idx,
++                acc2, f12, p2, r2,
++                acc4, f14, p4, r4,
++                train_time_s, t2_inf_s, t2_viz_s, t4_inf_s, t4_viz_s
++            ])
++
++            print(
++                f"  [N{n_train}-R{run_idx}] "
++                f"Train={_fmt_sec(train_time_s)} | "
++                f"2Nm Acc={acc2:.4f} F1={f12:.4f} | "
++                f"4Nm Acc={acc4:.4f} F1={f14:.4f}"
++            )
++
++            del trainer, base_model, feat_model
++            tf.keras.backend.clear_session()
++            gc.collect()
++
++        acc2_m, acc2_s = trimmed_mean_std(buf["acc_2"])
++        f12_m, f12_s = trimmed_mean_std(buf["f1_2"])
++        p2_m, p2_s = trimmed_mean_std(buf["prec_2"])
++        r2_m, r2_s = trimmed_mean_std(buf["rec_2"])
++
++        acc4_m, acc4_s = trimmed_mean_std(buf["acc_4"])
++        f14_m, f14_s = trimmed_mean_std(buf["f1_4"])
++        p4_m, p4_s = trimmed_mean_std(buf["prec_4"])
++        r4_m, r4_s = trimmed_mean_std(buf["rec_4"])
++
++        tr_m, tr_s = trimmed_mean_std(buf["train_s"])
++        t2i_m, t2i_s = trimmed_mean_std(buf["t2_inf_s"])
++        t2v_m, t2v_s = trimmed_mean_std(buf["t2_viz_s"])
++        t4i_m, t4i_s = trimmed_mean_std(buf["t4_inf_s"])
++        t4v_m, t4v_s = trimmed_mean_std(buf["t4_viz_s"])
++
++        trim_rows.append([
++            n_train,
++            acc2_m, acc2_s, f12_m, f12_s, p2_m, p2_s, r2_m, r2_s,
++            acc4_m, acc4_s, f14_m, f14_s, p4_m, p4_s, r4_m, r4_s,
++            tr_m, tr_s,
++            t2i_m, t2i_s, t2v_m, t2v_s,
++            t4i_m, t4i_s, t4v_m, t4v_s
++        ])
++
++        print(f"  >>> Trimmed N={n_train}: 2Nm Acc={acc2_m:.4f}±{acc2_s:.4f} F1={f12_m:.4f}±{f12_s:.4f} | "
++              f"4Nm Acc={acc4_m:.4f}±{acc4_s:.4f} F1={f14_m:.4f}±{f14_s:.4f}")
++
++        trend_n.append(n_train)
++        trend_acc2.append(acc2_m); trend_f12.append(f12_m)
++        trend_acc4.append(acc4_m); trend_f14.append(f14_m)
++
++    raw_df = pd.DataFrame(
++        raw_rows,
++        columns=[
++            "N", "Run",
++            "Acc_2Nm", "F1_2Nm", "Prec_2Nm", "Recall_2Nm",
++            "Acc_4Nm", "F1_4Nm", "Prec_4Nm", "Recall_4Nm",
++            "TrainTime_s",
++            "Test2_Infer_s", "Test2_Viz_s",
++            "Test4_Infer_s", "Test4_Viz_s",
++        ]
++    )
++    trim_df = pd.DataFrame(
++        trim_rows,
++        columns=[
++            "N",
++            "Acc2_Mean", "Acc2_Std", "F12_Mean", "F12_Std", "Prec2_Mean", "Prec2_Std", "Rec2_Mean", "Rec2_Std",
++            "Acc4_Mean", "Acc4_Std", "F14_Mean", "F14_Std", "Prec4_Mean", "Prec4_Std", "Rec4_Mean", "Rec4_Std",
++            "TrainTime_Mean_s", "TrainTime_Std_s",
++            "Test2_Infer_Mean_s", "Test2_Infer_Std_s",
++            "Test2_Viz_Mean_s", "Test2_Viz_Std_s",
++            "Test4_Infer_Mean_s", "Test4_Infer_Std_s",
++            "Test4_Viz_Mean_s", "Test4_Viz_Std_s",
++        ]
++    )
++
++    raw_df.to_csv(os.path.join(BASE_OUTPUT_DIR, "Final_Summary_Stats_raw.csv"), index=False, encoding="utf-8-sig")
++    trim_df.to_csv(os.path.join(BASE_OUTPUT_DIR, "Final_Summary_Stats_trimmed.csv"), index=False, encoding="utf-8-sig")
++
++    plot_performance_trend(trend_n, trend_acc2, trend_f12, trend_acc4, trend_f14,
++                           os.path.join(BASE_OUTPUT_DIR, "performance_trend.png"))
++
++    return
++
++
++# ============================================================
++# 15) Noise robustness study (Stage3) - FAIR VERSION (SameModel)
++# ============================================================
++def run_noise_study(DATA_0, DATA_2, DATA_4):
++    noise_dir = os.path.join(BASE_OUTPUT_DIR, "NoiseStudy_LoadShift_FAIR_SameModel")
++    os.makedirs(noise_dir, exist_ok=True)
++
++    x2_v, x2_c, y2 = build_test_from_load(DATA_2, seed=123)
++    x4_v, x4_c, y4 = build_test_from_load(DATA_4, seed=456)
++
++    # Train NoiseStudy model ONCE (N=30, fixed seed)
++    seed = 2026
++    set_global_seed(seed)
++
++    n_train = 30
++    n_val = min(VAL_PER_CLASS_MAIN, MAX_SEGMENTS_PER_CLASS - n_train - 1)
++    (x_tr_v, x_tr_c, y_tr), (x_va_v, x_va_c, y_va) = build_train_val_from_0Nm(
++        DATA_0, seed=seed, n_train=n_train, n_val=n_val
++    )
++
++    tf.keras.backend.clear_session()
++    gc.collect()
++
++    base_model, feat_model = create_model()
++
++    trainer = NoiseStableTrainer(
++        base_model,
++        base_snr_db=STEP3_BASE_SNR_DB,
++        noisy_low_db=STEP3_NOISY_LOW_DB,
++        noisy_high_db=STEP3_NOISY_HIGH_DB,
++        bias_p=STEP3_SNR_BIAS_P,
++        per_sample_snr=True,
++        noisy_ce_weight=STEP3_NOISY_CE_WEIGHT,
++        hard_snr_db=STEP3_HARD_SNR_DB,
++        hard_ce_weight=STEP3_HARD_CE_WEIGHT,
++        hard_kl_weight=STEP3_HARD_KL_WEIGHT,
++        name="NoiseStableTrainer_NoiseStudyModel_FAIR"
++    )
++
++    opt = tf.keras.optimizers.Adamax(learning_rate=LR, clipnorm=GRAD_CLIPNORM)
++    trainer.compile(optimizer=opt, metrics=["accuracy"])
++    callbacks = [ConsistencyLambdaScheduler(STEP3_CONSIST_MAX_LAMBDA, STEP3_CONSIST_WARMUP_EPOCHS)]
++
++    t_fit0 = time.perf_counter()
++    _ = trainer.fit(
++        [x_tr_v, x_tr_c], y_tr,
++        epochs=STEP3_EPOCHS,
++        batch_size=BATCH_SIZE,
++        validation_data=([x_va_v, x_va_c], y_va),
++        verbose=0,
++        callbacks=callbacks
++    )
++    t_fit1 = time.perf_counter()
++    print(f"[Step3-FAIR] NoiseStudy_model trained ONCE. time={_fmt_sec(t_fit1 - t_fit0)}")
++
++    unified_tta_k = (int(TTA_K) if ENABLE_TTA else 1)
++
++    rows = []
++    acc2_mean_list, f12_mean_list, acc4_mean_list, f14_mean_list = [], [], [], []
++
++    for snr_db in TEST_SNR_DB_LIST:
++        label = "NoNoise" if (np.isscalar(snr_db) and np.isinf(snr_db)) else str(int(snr_db))
++        tta_k = 1 if (np.isscalar(snr_db) and np.isinf(snr_db)) else unified_tta_k
++
++        acc2_buf, f12_buf = [], []
++        acc4_buf, f14_buf = [], []
++
++        for rep in range(EVAL_NOISE_REPEATS if not (np.isscalar(snr_db) and np.isinf(snr_db)) else 1):
++            rep_seed2 = seed + 1000 + rep * 17
++            rep_seed4 = seed + 2000 + rep * 17
++            k_inside = EVAL_TTA_PER_REPEAT if tta_k > 1 else 1
++
++            a2, f2, _, _, _, _ = eval_on_test(
++                base_model, feat_model, x2_v, x2_c, y2,
++                out_dir=None, tag="2Nm", snr_db=snr_db, seed=rep_seed2,
++                tta_k=k_inside, roc_colors=ROC_COLORS_2NM, cm_cmap=CM_CMAP_2NM
++            )
++            a4, f4, _, _, _, _ = eval_on_test(
++                base_model, feat_model, x4_v, x4_c, y4,
++                out_dir=None, tag="4Nm", snr_db=snr_db, seed=rep_seed4,
++                tta_k=k_inside, roc_colors=ROC_COLORS_4NM, cm_cmap=CM_CMAP_4NM
++            )
++
++            acc2_buf.append(a2); f12_buf.append(f2)
++            acc4_buf.append(a4); f14_buf.append(f4)
++
++        acc2_m, acc2_s = float(np.mean(acc2_buf)), float(np.std(acc2_buf))
++        f12_m, f12_s = float(np.mean(f12_buf)), float(np.std(f12_buf))
++        acc4_m, acc4_s = float(np.mean(acc4_buf)), float(np.std(acc4_buf))
++        f14_m, f14_s = float(np.mean(f14_buf)), float(np.std(f14_buf))
++
++        rows.append([
++            label, (np.nan if np.isinf(snr_db) else float(snr_db)),
++            acc2_m, acc2_s, f12_m, f12_s,
++            acc4_m, acc4_s, f14_m, f14_s,
++            tta_k, EVAL_NOISE_REPEATS
++        ])
++
++        acc2_mean_list.append(acc2_m); f12_mean_list.append(f12_m)
++        acc4_mean_list.append(acc4_m); f14_mean_list.append(f14_m)
++
++        print(f"[Step3-FAIR] SNR={label} | 2Nm Acc={acc2_m:.4f}±{acc2_s:.4f} F1={f12_m:.4f}±{f12_s:.4f} | "
++              f"4Nm Acc={acc4_m:.4f}±{acc4_s:.4f} F1={f14_m:.4f}±{f14_s:.4f} | tta={tta_k}")
++
++        if not (np.isscalar(snr_db) and np.isinf(snr_db)):
++            rng = np.random.RandomState(seed + 555)
++            subset = slice(0, min(256, x2_v.shape[0]))
++            x_clean = x2_v[subset]
++            x_noisy = add_noise_then_optional_post_zscore_np(x_clean, snr_db, rng)
++            emp = estimate_empirical_snr_db(x_clean, x_noisy)
++            print(f"    [Sanity] empirical SNR≈{emp:.2f} dB (vib subset, after pipeline)")
++
++    out_csv = os.path.join(noise_dir, "Noise_Robustness_LoadShift_SameModel_FAIR.csv")
++    pd.DataFrame(rows, columns=[
++        "label", "SNR_dB",
++        "Acc_2Nm_mean", "Acc_2Nm_std", "F1_2Nm_mean", "F1_2Nm_std",
++        "Acc_4Nm_mean", "Acc_4Nm_std", "F1_4Nm_mean", "F1_4Nm_std",
++        "tta_k_reported", "eval_repeats"
++    ]).to_csv(out_csv, index=False, encoding="utf-8-sig")
++    print("[Step3-FAIR] Saved:", out_csv)
++
++    plot_radar(TEST_SNR_DB_LIST, acc2_mean_list, f12_mean_list, os.path.join(noise_dir, "radar_2Nm.png"),
++               title="2Nm Robustness (FAIR, SameModel)  NoNoise/0/-2..-10 (mean over noise draws)")
++    plot_radar(TEST_SNR_DB_LIST, acc4_mean_list, f14_mean_list, os.path.join(noise_dir, "radar_4Nm.png"),
++               title="4Nm Robustness (FAIR, SameModel)  NoNoise/0/-2..-10 (mean over noise draws)")
++
++    # Baseline plots only (0 dB, single draw)
++    base_plots_dir = os.path.join(noise_dir, "BaselinePlots_SNR0dB")
++    os.makedirs(base_plots_dir, exist_ok=True)
++    _ = eval_on_test(base_model, feat_model, x2_v, x2_c, y2, base_plots_dir, "2Nm", 0, seed + 10, tta_k=1,
++                     roc_colors=ROC_COLORS_2NM, cm_cmap=CM_CMAP_2NM)
++    _ = eval_on_test(base_model, feat_model, x4_v, x4_c, y4, base_plots_dir, "4Nm", 0, seed + 20, tta_k=1,
++                     roc_colors=ROC_COLORS_4NM, cm_cmap=CM_CMAP_4NM)
++
++    del trainer, base_model, feat_model
++    tf.keras.backend.clear_session()
++    gc.collect()
++
++
++# ============================================================
++# 16) Main (aligned)
++# ============================================================
++def main():
++    os.makedirs(BASE_OUTPUT_DIR, exist_ok=True)
++    log_path = os.path.join(BASE_OUTPUT_DIR, "log.txt")
++    f_log = open(log_path, "w", encoding="utf-8")
++    old_out, old_err = sys.stdout, sys.stderr
++    sys.stdout = _Tee(old_out, f_log)
++    sys.stderr = _Tee(old_err, f_log)
++
++    try:
++        t0_all = time.perf_counter()
++
++        print("========== MSF-DFormer (Baseline, NO Optuna) Load Shift | Vib(.mat)+Current(.tdms) ==========")
++        print("VIB_MAT_DIR_0NM:", VIB_MAT_DIR_0NM)
++        print("VIB_MAT_DIR_2NM:", VIB_MAT_DIR_2NM)
++        print("VIB_MAT_DIR_4NM:", VIB_MAT_DIR_4NM)
++        print("CUR_TDMS_DIR   :", CUR_TDMS_DIR)
++        print("OUTPUT_DIR     :", BASE_OUTPUT_DIR)
++        print(f"NUM_CLASSES={NUM_CLASSES} | SAMPLE_RANGE=5..30 | REPEAT={REPEAT_TIMES}")
++        print(f"TRAIN/VAL: {TRAIN_LOAD} | TEST: {TEST_LOADS}")
++        robust_envs = ["NoNoise" if np.isinf(s) else int(s) for s in TEST_SNR_DB_LIST]
++        print(f"Base noise: {TRAIN_BASE_SNR_DB}dB | Robust envs={robust_envs}")
++        print(f"[post-zscore(after noise)] {ENABLE_POST_ZSCORE_AFTER_NOISE}  (should be False)")
++        print(f"[TTA] ENABLE_TTA={ENABLE_TTA} | TTA_K={TTA_K}")
++        print(f"[EVAL] repeats per SNR={EVAL_NOISE_REPEATS} | tta per repeat={EVAL_TTA_PER_REPEAT}")
++        print(f"[Train] epochs={EPOCHS}, batch={BATCH_SIZE}, Adamax lr={LR}, clipnorm={GRAD_CLIPNORM}")
++        print("[LOG] Writing terminal output to:", log_path)
++
++        # save fixed params for consistency
++        bp = os.path.join(BASE_OUTPUT_DIR, "best_parameters.txt")
++        with open(bp, "w", encoding="utf-8") as f:
++            f.write("MSF-DFormer (fixed, NO Optuna)\n")
++            f.write(f"LR={LR}\nBATCH_SIZE={BATCH_SIZE}\nEPOCHS={EPOCHS}\n")
++            f.write(f"CONSIST_MAX_LAMBDA={CONSIST_MAX_LAMBDA}\nCONSIST_WARMUP_EPOCHS={CONSIST_WARMUP_EPOCHS}\n")
++            f.write(f"TRAIN_BASE_SNR_DB={TRAIN_BASE_SNR_DB}\n")
++            f.write(f"ENABLE_POST_ZSCORE_AFTER_NOISE={ENABLE_POST_ZSCORE_AFTER_NOISE}\n")
++        print("[OK] Saved:", bp)
++
++        # ---- Preload data ----
++        data_all = preload_kaist()
++        DATA_0 = data_all["0Nm"]
++        DATA_2 = data_all["2Nm"]
++        DATA_4 = data_all["4Nm"]
++
++        # ---- Stage2 ----
++        print("\n>>> Stage 2: Full experiment (Train 0Nm@base | Test 2Nm&4Nm@base) ...")
++        t_s2_0 = time.perf_counter()
++        run_full_experiment(DATA_0, DATA_2, DATA_4)
++        t_s2_1 = time.perf_counter()
++        stage2_s = float(t_s2_1 - t_s2_0)
++        print(f"[Time] Stage2(FullExp) = {_fmt_sec(stage2_s)}")
++
++        # ---- Stage3 ----
++        print("\n>>> Stage 3: Noise robustness study (FAIR, SameModel, mean±std over noise draws) ...")
++        t_s3_0 = time.perf_counter()
++        pass  # [audit] Stage 3 not run
++        t_s3_1 = time.perf_counter()
++        stage3_s = float(t_s3_1 - t_s3_0)
++        print(f"[Time] Stage3(NoiseStudy) = {_fmt_sec(stage3_s)}")
++
++        total_s = float(time.perf_counter() - t0_all)
++        print(f"[Time] TOTAL = {_fmt_sec(total_s)}")
++
++        time_txt = os.path.join(BASE_OUTPUT_DIR, "Time_Summary.txt")
++        with open(time_txt, "w", encoding="utf-8") as f:
++            f.write(f"Stage2_FullExp_s: {stage2_s:.6f}\n")
++            f.write(f"Stage3_NoiseStudy_s: {stage3_s:.6f}\n")
++            f.write(f"TOTAL_s: {total_s:.6f}\n")
++        print("[Time] Saved:", time_txt)
++
++        print("\nALL DONE. Outputs saved to:", BASE_OUTPUT_DIR)
++        print("[LOG] Saved:", log_path)
++
++    except Exception as e:
++        print("\n[ERROR] Unhandled exception:", type(e).__name__, str(e))
++        traceback.print_exc()
++        raise
++    finally:
++        sys.stdout = old_out
++        sys.stderr = old_err
++        f_log.close()
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/audit_run64.py b/audit_run64.py
+new file mode 100755
+index 00000000..5d64df67
+--- /dev/null
++++ b/audit_run64.py
+@@ -0,0 +1,159 @@
++"""[audit] Driver for object 64 (registry: results/main_objects/registry/64_*.md).
++Executes one of the authors' KAIST scripts (MHCNN_KAIST.py = MHFL-MCA, MSF-DFormer_KAIST.py, CFFN_KAIST.py) with
++source-level edits only (the executed code is written next to this driver as audit_<script> for the patch record):
++  - the YOUR_* path placeholders (README: 'replace with your own paths') -> local KAIST copy and an output dir;
++  - SAMPLE_RANGE range(5, 31) -> range(5, 6): the N = 5 task only (jeff 2026-10-23);
++  - per-run seed n_train*100 + run_idx -> audit seed run_idx - 1 (0..9);
++  - Stage 3 (noise study) not run;
++  - one line attaching the audit Keras callback, one line passing their 2 Nm / 4 Nm accuracies to the driver.
++MHCNN: Stage 1 (Optuna, 30 trials on the 0 Nm tune split) runs as written. MHCNN / MSF-DFormer: the callback is
++attached to the Stage-2 end-to-end fit. CFFN (jeff: final-classifier stage only): the callback is attached to the
++softmax classifier fit on CCA-fused features (after the two-branch EDCN fit and CCA), and evaluates the full pipeline
++(their feature extractors + CCA + classifier) on the test set each classifier epoch.
++Test inputs per epoch = exactly their eval noise: MHCNN / MSF 0 dB with RandomState(seed + 999); CFFN RandomState(seed + 10)
++(2 Nm) / (seed + 20) (4 Nm). Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR."""
++import argparse, json, os, re, sys, time
++import numpy as np
++from audit.main.epoch_record import Recorder
++
++p = argparse.ArgumentParser()
++p.add_argument("--script", default="MHCNN_KAIST.py")
++p.add_argument("--group", default="MHFL-MCA")
++p.add_argument("--repeats", type=int, default=10)
++p.add_argument("--epochs", type=int, default=None)      # smoke only
++p.add_argument("--trials", type=int, default=None)      # smoke only
++p.add_argument("--out", default=None)
++a = p.parse_args()
++OUT = a.out or os.path.expanduser(f"~/audit_ext/work64/out_{a.group}")
++REPO = os.path.dirname(os.path.abspath(__file__))
++CODE = os.path.join(REPO, "Codes", "Codes for KAIST")
++DATA = os.path.expanduser("~/audit_ext/data/kaist64")
++SCRIPT = os.path.join(CODE, a.script)
++src = open(SCRIPT, encoding="utf-8").read()
++CFFN = a.script.startswith("CFFN")
++
++
++def sub(old, new, count=1):
++    global src
++    assert src.count(old) == count, (old, src.count(old))
++    src = src.replace(old, new)
++
++
++def resub(pat, rep, count=1):
++    global src
++    n = len(re.findall(pat, src, flags=re.M))
++    assert n == count, (pat, n)
++    src = re.sub(pat, rep, src, flags=re.M)
++
++
++n = src.count('r"YOUR_TEMP_PATH"')
++if n:
++    sub('r"YOUR_TEMP_PATH"', repr(os.path.join(OUT, "tmp")), n)
++for k in ("0NM", "2NM", "4NM"):
++    sub(f'r"YOUR_VIB_MAT_DIR_{k}"', repr(os.path.join(DATA, "vibration")))
++sub('r"YOUR_CUR_TDMS_DIR"', repr(os.path.join(DATA, "current")))
++sub('r"YOUR_OUTPUT_DIR"', repr(OUT))
++resub(r"^SAMPLE_RANGE = range\(5, 31\).*$", "SAMPLE_RANGE = range(5, 6)  # [audit] N = 5 task only")
++resub(r"^(\s+)seed = n_train \* 100 \+ run_idx$", r"\1seed = run_idx - 1  # [audit] seeds 0..9")
++resub(r"^(\s+)run_noise_study(_same_model)?\((.*)\)$", r"\1pass  # [audit] Stage 3 not run")
++resub(r"^REPEAT_TIMES = 10$", f"REPEAT_TIMES = {a.repeats}")
++if not CFFN:
++    resub(r"^(            )t_fit0 = time\.perf_counter\(\)$",
++          r"\1if AUDIT_CB: callbacks.append(AUDIT_CB(run_idx, seed, base_model, x2_v, x2_c, y2, x4_v, x4_c, y4))  # [audit]\n\1t_fit0 = time.perf_counter()")
++    resub(r'^(            )buf\["acc_2"\]\.append\(acc2\); (.*)$',
++          r'\1buf["acc_2"].append(acc2); \2\n\1if AUDIT_FINAL: AUDIT_FINAL(run_idx, seed, acc2, acc4)  # [audit]')
++else:
++    resub(r"^(                )feat_v, feat_c, cca_params, clf, train_time, _ = train_one_run_cffn\($",
++          r"\1AUDIT_CTX.update(run_idx=run_idx, seed=seed, x2=(x2_v, x2_c, y2), x4=(x4_v, x4_c, y4))  # [audit]\n\1feat_v, feat_c, cca_params, clf, train_time, _ = train_one_run_cffn(")
++    sub("    hist_clf = clf.fit(\n        fused_tr, ytr,\n",
++        "    hist_clf = clf.fit(\n        fused_tr, ytr,\n"
++        "        callbacks=([AUDIT_CB(feat_v, feat_c, cca_params)] if (AUDIT_CB and AUDIT_CTX) else None),  # [audit]\n")
++    resub(r'^(                )acc2_list\.append\(m2\["acc"\]\); f12_list\.append\(m2\["f1"\]\); (.*)$',
++          r'\1acc2_list.append(m2["acc"]); f12_list.append(m2["f1"]); \2\n\1if AUDIT_FINAL: AUDIT_FINAL(run_idx, seed, m2["acc"], m4["acc"])  # [audit]')
++if a.epochs:
++    resub(r"^(EPOCHS(_FULL)?) = \d+$", rf"\1 = {a.epochs}")
++    if src.count("            epochs=30,\n") == 1:
++        sub("            epochs=30,\n", f"            epochs={a.epochs},\n")
++if a.trials:
++    resub(r"^SEARCH_TRIALS = \d+$", f"SEARCH_TRIALS = {a.trials}")
++os.makedirs(os.path.join(OUT, "tmp"), exist_ok=True)
++with open(os.path.join(REPO, f"audit_{a.script}"), "w", encoding="utf-8") as f:
++    f.write(src)
++
++import tensorflow as tf
++recs = {}
++G = {"__name__": "__main__", "__file__": SCRIPT}
++AUDIT_CTX = {}
++
++
++def new_rec(run_idx, seed):
++    rec = Recorder(obj="64", group=f"{a.group}|KAIST 0->2Nm N=5", seed=seed, select_split="val", report_split="test",
++                   note=("CFFN: epochs = final softmax-classifier epochs (EDCN + CCA fixed before it); " if CFFN else "")
++                   + "val = their 0 Nm validation (50/class); test = 2 Nm at 0 dB (their eval noise); 4 Nm acc in test4_acc; reported = last epoch")
++    rec.d["test4_acc"] = {}
++    recs[run_idx] = rec
++    return rec
++
++
++def acc_ce(prob, y_oh):
++    y = np.argmax(y_oh, axis=1)
++    return float(np.mean(np.argmax(prob, axis=1) == y)), float(np.mean(-np.log(np.clip(prob[np.arange(len(y)), y], 1e-12, 1.0))))
++
++
++class _Base(tf.keras.callbacks.Callback):
++    def on_epoch_end(self, epoch, logs=None):
++        logs = logs or {}
++        a2, ce2 = acc_ce(self.prob(self.t2), self.t2[2])
++        a4, _ = acc_ce(self.prob(self.t4), self.t4[2])
++        self.rec.log(epoch + 1, "val", float(logs.get("val_accuracy", np.nan)), float(logs.get("val_loss", np.nan)))
++        self.rec.log(epoch + 1, "test", a2, ce2)
++        self.rec.d["test4_acc"][str(epoch + 1)] = a4
++        self.rec.d["last"] = epoch + 1
++
++
++class AuditCB(_Base):          # MHCNN / MSF-DFormer
++    def __init__(self, run_idx, seed, base_model, x2v, x2c, y2, x4v, x4c, y4):
++        super().__init__()
++        self.base = base_model
++        f, snr = G["add_noise_then_optional_post_zscore_np"], G["TRAIN_BASE_SNR_DB"]
++        rng = np.random.RandomState(seed + 999); self.t2 = (f(x2v, snr, rng), f(x2c, snr, rng), y2)
++        rng = np.random.RandomState(seed + 999); self.t4 = (f(x4v, snr, rng), f(x4c, snr, rng), y4)
++        self.rec = new_rec(run_idx, seed)
++
++    def prob(self, t):
++        return self.base.predict([t[0], t[1]], verbose=0)
++
++
++class AuditCFFN(_Base):        # CFFN final-classifier stage
++    def __init__(self, feat_v, feat_c, cca_params):
++        super().__init__()
++        c = AUDIT_CTX; seed = c["seed"]
++        f, snr = G["add_noise_then_optional_post_zscore_np"], G["TRAIN_BASE_SNR_DB"]
++        fused = []
++        for (xv, xc, y), s in ((c["x2"], seed + 10), (c["x4"], seed + 20)):
++            rng = np.random.RandomState(s)
++            xvn, xcn = f(xv, snr, rng), f(xc, snr, rng)
++            fv = feat_v.predict(xvn, batch_size=256, verbose=0); fc = feat_c.predict(xcn, batch_size=256, verbose=0)
++            fused.append((G["cca_transform"](fv, fc, cca_params), None, y))
++        self.t2, self.t4 = fused
++        self.rec = new_rec(c["run_idx"], seed)
++
++    def prob(self, t):
++        return self.model.predict(t[0], batch_size=256, verbose=0)
++
++
++T0 = time.time()
++
++
++def final(run_idx, seed, acc2, acc4):
++    rec = recs[run_idx]
++    rec.author_pick(rec.d["last"])     # no checkpointing: their reported model is the last epoch
++    rec.d["author_reported_4nm"] = float(acc4)
++    rec.finish(float(acc2))
++    print(json.dumps(dict(group=a.group, seed=seed, seconds=round(time.time() - T0, 1), author_epoch=rec.d["author_epoch"],
++                          reported=float(acc2), check=rec.d["author_check"])), flush=True)
++
++
++G.update(AUDIT_CB=(AuditCFFN if CFFN else AuditCB), AUDIT_FINAL=final, AUDIT_CTX=AUDIT_CTX)
++os.chdir(CODE)
++exec(compile(src, SCRIPT, "exec"), G)

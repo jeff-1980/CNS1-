@@ -1,0 +1,109 @@
+diff --git a/DAGCN/models/AdversarialNet.py b/DAGCN/models/AdversarialNet.py
+index 2fde62e..4531924 100644
+--- a/DAGCN/models/AdversarialNet.py
++++ b/DAGCN/models/AdversarialNet.py
+@@ -3,7 +3,7 @@ import numpy as np
+ 
+ 
+ def calc_coeff(iter_num, high=1.0, low=0.0, alpha=10.0, max_iter=10000.0):
+-    return np.float(2.0 * (high - low) / (1.0 + np.exp(-alpha * iter_num / max_iter)) - (high - low) + low)
++    return float(2.0 * (high - low) / (1.0 + np.exp(-alpha * iter_num / max_iter)) - (high - low) + low)
+ 
+ 
+ def grl_hook(coeff):
+diff --git a/DAGCN/utils/train_utils_combines.py b/DAGCN/utils/train_utils_combines.py
+index ee443d7..1eab087 100644
+--- a/DAGCN/utils/train_utils_combines.py
++++ b/DAGCN/utils/train_utils_combines.py
+@@ -14,6 +14,7 @@ import models
+ import datasets
+ from utils.save import Save_Tool
+ from loss.DAN import DAN
++AUDIT_HOOK = None; AUDIT_FINAL = None  # [audit] set by audit_run76.py
+ 
+ 
+ 
+@@ -228,7 +229,7 @@ class train_utils(object):
+                         labels = labels.to(self.device)
+                     else:
+                         source_inputs = inputs
+-                        target_inputs, target_labels = iter_target.next()
++                        target_inputs, target_labels = next(iter_target)
+                         inputs = torch.cat((source_inputs, target_inputs), dim=0)
+                         inputs = inputs.to(self.device)
+                         labels = labels.to(self.device)
+@@ -258,7 +259,7 @@ class train_utils(object):
+                             domain_label_target = torch.zeros(inputs.size(0)-labels.size(0)).float()
+                             adversarial_label = torch.cat((domain_label_source, domain_label_target), dim=0).to(self.device)
+                             adversarial_out = self.AdversarialNet(features)
+-                            adversarial_loss = self.adversarial_loss(adversarial_out, adversarial_label)
++                            adversarial_loss = self.adversarial_loss(adversarial_out, adversarial_label.view_as(adversarial_out))
+                             structure_loss = self.structure_loss(features.narrow(0, 0, labels.size(0)),
+                                                                features.narrow(0, labels.size(0),inputs.size(0) - labels.size(0)))
+ 
+@@ -317,6 +318,7 @@ class train_utils(object):
+                 logging.info('Epoch: {} {}-Loss: {:.4f} {}-Acc: {:.4f}, Cost {:.1f} sec'.format(
+                     epoch, phase, epoch_loss, phase, epoch_acc, time.time() - epoch_start
+                 ))
++                if AUDIT_HOOK: AUDIT_HOOK(epoch + 1, phase, epoch_acc, epoch_loss, phase == 'target_val' and epoch_acc > best_acc and epoch > args.middle_epoch - 1)  # [audit]
+                 # save the model
+                 if phase == 'target_val':
+                     # save the checkpoint for other learning
+@@ -330,6 +332,7 @@ class train_utils(object):
+                     save_list.update(save_path)
+                     # save the best model according to the val accuracy
+                     if (epoch_acc > best_acc or epoch > args.max_epoch-2) and (epoch > args.middle_epoch-1):
++                        if AUDIT_FINAL and epoch_acc > best_acc: AUDIT_FINAL(epoch_acc)  # [audit] their best saved model
+                         best_acc = epoch_acc
+                         logging.info("save best model epoch {}, acc {:.4f}".format(epoch, epoch_acc))
+                         torch.save(model_state_dic,
+diff --git a/audit_run76.py b/audit_run76.py
+new file mode 100755
+index 0000000..65fd226
+--- /dev/null
++++ b/audit_run76.py
+@@ -0,0 +1,44 @@
++"""[audit] Driver for object 76 (registry: results/main_objects/registry/76_HazeDT__DAGCN.md).
++Runs the authors' DAGCN/train_advanced.py (runpy, cwd = DAGCN/) with the README command (CWRU, transfer task
++[3],[0], --last_batch True, other args default) 10 times unseeded (the code sets no torch / numpy seed; the 80/20
++splits use random_state=40). The hook after their per-phase epoch log records source_val and target_val accuracy /
++loss as computed by the authors; target_val is their test set and selects their 'best' model (strict >, from epoch
++index 1 on). AUDIT_FINAL receives the accuracy of their last strictly-better saved model. Needs PYTHONPATH with
++~/audit_cns/code, AUDIT_RECORD_DIR."""
++import argparse, glob, json, os, runpy, shutil, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++SRC = os.path.join(REPO, "DAGCN")
++p = argparse.ArgumentParser()
++p.add_argument("--repeats", default="0-9")
++p.add_argument("--epochs", type=int, default=None)   # smoke only
++p.add_argument("--data_dir", required=True)
++p.add_argument("--work", required=True)
++a = p.parse_args()
++lo, hi = map(int, a.repeats.split("-")) if "-" in a.repeats else (int(a.repeats),) * 2
++os.chdir(SRC); sys.path.insert(0, SRC)
++from audit.main.epoch_record import Recorder
++import utils.train_utils_combines as TU
++
++for r in range(lo, hi + 1):
++    ck = os.path.join(a.work, f"ckpt_r{r}"); shutil.rmtree(ck, ignore_errors=True)
++    rec = Recorder(obj="76", group="DAGCN|CWRU 12k DE 3hp->0hp", seed=r, select_split=None, report_split="test",
++                   note="unseeded repeat; test = their target_val (20% of target, also selects their best model); "
++                        "source_val logged as extra split")
++    final = {}
++
++    def hook(ep, phase, acc, loss, strict_best):
++        if phase == "source_train": return
++        rec.log(ep, "test" if phase == "target_val" else "source_val", float(acc), float(loss))
++        if strict_best: rec.author_pick(ep)
++
++    TU.AUDIT_HOOK = hook
++    TU.AUDIT_FINAL = lambda v: final.update(v=float(v))
++    sys.argv = ["train_advanced.py", "--model_name", "DAGCN_features", "--data_name", "CWRU", "--data_dir", a.data_dir,
++                "--transfer_task", "[3],[0]", "--last_batch", "True", "--checkpoint_dir", ck]
++    if a.epochs: sys.argv += ["--max_epoch", str(a.epochs)]
++    t0 = time.time()
++    runpy.run_path(os.path.join(SRC, "train_advanced.py"), run_name="__main__")
++    rec.finish(final.get("v"))
++    shutil.rmtree(ck, ignore_errors=True)   # checkpoints are not kept
++    print(json.dumps(dict(repeat=r, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                          reported=final.get("v"), check=rec.d["author_check"])), flush=True)

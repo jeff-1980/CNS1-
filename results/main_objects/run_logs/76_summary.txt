@@ -1,0 +1,1 @@
+DAGCN|CWRU 12k DE 3hp->0hp 10 author 99.43 +- 0.41; last 93.52 +- 4.43; best_rep 99.43 +- 0.41; minloss 99.39 +- 0.45; budget50 94.90 +- 3.60 checks 10

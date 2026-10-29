@@ -1,0 +1,1 @@
+MvGNN|SEU 9-class 10 author 99.98 +- 0.02; last 99.99 +- 0.01; best_rep 100.00 +- 0.01; minloss 99.99 +- 0.01; budget50 99.97 +- 0.03 checks 10

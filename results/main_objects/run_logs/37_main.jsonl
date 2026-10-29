@@ -1,0 +1,10 @@
+{"repeat": 0, "seconds": 186.6, "author_epoch": 15, "reported": 0.84339, "check": {"recorded": 0.84339, "reported": 0.84339, "abs_diff": 0.0, "matches": true}}
+{"repeat": 1, "seconds": 187.3, "author_epoch": 11, "reported": 0.826, "check": {"recorded": 0.826, "reported": 0.826, "abs_diff": 0.0, "matches": true}}
+{"repeat": 2, "seconds": 192.8, "author_epoch": 22, "reported": 0.8384999999999999, "check": {"recorded": 0.8384999999999999, "reported": 0.8384999999999999, "abs_diff": 0.0, "matches": true}}
+{"repeat": 3, "seconds": 188.6, "author_epoch": 14, "reported": 0.8541599999999999, "check": {"recorded": 0.8541599999999999, "reported": 0.8541599999999999, "abs_diff": 0.0, "matches": true}}
+{"repeat": 4, "seconds": 181.4, "author_epoch": 22, "reported": 0.84956, "check": {"recorded": 0.84956, "reported": 0.84956, "abs_diff": 0.0, "matches": true}}
+{"repeat": 5, "seconds": 187.6, "author_epoch": 13, "reported": 0.84773, "check": {"recorded": 0.84773, "reported": 0.84773, "abs_diff": 0.0, "matches": true}}
+{"repeat": 6, "seconds": 193.3, "author_epoch": 20, "reported": 0.8351099999999999, "check": {"recorded": 0.8351099999999999, "reported": 0.8351099999999999, "abs_diff": 0.0, "matches": true}}
+{"repeat": 7, "seconds": 196.1, "author_epoch": 17, "reported": 0.84384, "check": {"recorded": 0.84384, "reported": 0.84384, "abs_diff": 0.0, "matches": true}}
+{"repeat": 8, "seconds": 208.1, "author_epoch": 12, "reported": 0.8398300000000001, "check": {"recorded": 0.8398300000000001, "reported": 0.8398300000000001, "abs_diff": 0.0, "matches": true}}
+{"repeat": 9, "seconds": 207.7, "author_epoch": 16, "reported": 0.82894, "check": {"recorded": 0.82894, "reported": 0.82894, "abs_diff": 0.0, "matches": true}}

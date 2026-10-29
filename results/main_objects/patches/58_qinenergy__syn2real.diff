@@ -1,0 +1,267 @@
+diff --git a/audit_run58.py b/audit_run58.py
+new file mode 100755
+index 0000000..2fd8c10
+--- /dev/null
++++ b/audit_run58.py
+@@ -0,0 +1,69 @@
++"""[audit] Driver for object 58 (registry: results/main_objects/registry/58_*.md).
++The authors' only entry point is code/Syn2real_CWRU.ipynb (Colab, TF 1.x). This driver executes its code cells
++verbatim in one namespace: cell 0 without the Colab magics (%tensorflow_version, !rm, !wget, !md5sum; the four .npy
++files are read from the repo's data/preprocessed/ instead of being re-downloaded), cells 1-2 (model / run()) with ONE
++added line after their per-epoch test evaluation (the audit hook), and for each group the data-preparation part of
++its cell (everything before `res = []`) followed by their own seed loop for i in range(10) (args.seed = i; run()).
++Groups: Source-only (cell 4), DANN (cell 7), CDAN (cell 9), CDAN+mixup (cell 11, proposed).
++The hook records their test accuracy and balanced accuracy (the paper's metric) and test loss each epoch.
++Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR. Run with cwd = data/preprocessed."""
++import argparse, json, os, re, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++from audit.main.epoch_record import Recorder
++
++CELLS = {"Source-only": 4, "DANN": 7, "CDAN": 9, "CDAN-mixup": 11}
++p = argparse.ArgumentParser()
++p.add_argument("--groups", default="CDAN-mixup,CDAN,DANN,Source-only")
++p.add_argument("--seeds", default="0-9")
++p.add_argument("--epochs", type=int, default=None)
++a = p.parse_args()
++lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds),) * 2
++
++nb = json.load(open(os.path.join(REPO, "code", "Syn2real_CWRU.ipynb"), encoding="utf-8"))
++src = lambda i: "".join(nb["cells"][i]["source"])
++cell0 = "\n".join(l for l in src(0).splitlines() if not l.lstrip().startswith(("%", "!")))
++HOOK_AT = "            test_loss_, acc_, pred_, ground_truth_ = sess.run([test_loss, acc_tgt, pred, ground_truth])\n"
++cell2 = src(2)
++assert cell2.count(HOOK_AT) == 1
++cell2 = cell2.replace(HOOK_AT, HOOK_AT + "            if AUDIT_HOOK: AUDIT_HOOK(ep + 1, test_loss_, acc_, pred_, ground_truth_)  # [audit]\n")
++with open(os.path.join(REPO, "audit_syn2real_cells.py"), "w") as f:   # the exact code executed, kept for the patch diff
++    f.write("# [audit] code cells 0-2 of code/Syn2real_CWRU.ipynb (Colab magics removed, one hook line added)\n")
++    f.write(cell0 + "\n\n" + src(1) + "\n\n" + cell2 + "\n")
++
++
++def balanced(pred, y):
++    import numpy as np
++    return float(np.mean([np.mean(pred[y == c] == c) for c in range(4)]))
++
++
++# one namespace for the whole session, as in the notebook (flip_gradient registers gradients by a running counter)
++ns = {"__name__": "syn2real", "AUDIT_HOOK": None}
++exec(compile(open(os.path.join(REPO, "audit_syn2real_cells.py")).read(), "audit_syn2real_cells.py", "exec"), ns)
++
++for g in a.groups.split(","):
++    data_part = src(CELLS[g]).split("res = []")[0]
++    exec(compile(data_part, f"cell{CELLS[g]}", "exec"), ns)
++    if "class args" not in data_part:          # cells 6/11 define args after `res = []`
++        args_part = src(CELLS[g]).split("res_im = []")[1].split("for i in range(10)")[0]
++        exec(compile(args_part, f"cell{CELLS[g]}-args", "exec"), ns)
++    if a.epochs:
++        ns["args"].num_epoch = a.epochs
++    for s in range(lo, hi + 1):
++        rec = Recorder(obj="58", group=f"{g}|Syn->Real CWRU 4-class", seed=s, select_split=None, report_split="test",
++                       note="acc = balanced accuracy (paper metric) on the real-CWRU target test set; plain accuracy in test_plain_acc")
++        rec.d["test_plain_acc"] = {}
++        st = {"last": None}
++
++        def hook(ep, loss, acc, pred, y):
++            rec.log(ep, "test", balanced(pred, y), float(loss))
++            rec.d["test_plain_acc"][str(ep)] = float(acc)
++            st["last"] = ep
++
++        ns["AUDIT_HOOK"] = hook
++        ns["args"].seed = s                      # their loop: args.seed = i; run()
++        t0 = time.time()
++        acc_b, acc_i = ns["run"]()
++        rec.author_pick(st["last"])              # they report the last epoch
++        rec.finish(float(acc_b))
++        print(json.dumps(dict(group=g, seed=s, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                              reported=float(acc_b), plain_acc=float(acc_i), check=rec.d["author_check"])), flush=True)
+diff --git a/audit_syn2real_cells.py b/audit_syn2real_cells.py
+new file mode 100644
+index 0000000..402f814
+--- /dev/null
++++ b/audit_syn2real_cells.py
+@@ -0,0 +1,186 @@
++# [audit] code cells 0-2 of code/Syn2real_CWRU.ipynb (Colab magics removed, one hook line added)
++
++import numpy as np
++from numpy.random import seed
++from tqdm import tqdm
++
++import tensorflow as tf
++from tensorflow.python.framework import ops
++
++
++
++
++
++# 4096 100 -> (4000, 1000)
++
++
++class FlipGradientBuilder(object):
++    def __init__(self):
++        self.num_calls = 0
++
++    def __call__(self, x, l=1.0):
++        grad_name = "FlipGradient%d" % self.num_calls
++        @ops.RegisterGradient(grad_name)
++        def _flip_gradients(op, grad):
++            return [tf.negative(grad) * l]
++        
++        g = tf.get_default_graph()
++        with g.gradient_override_map({"Identity": grad_name}):
++            y = tf.identity(x)
++            
++        self.num_calls += 1
++        return y
++    
++flip_gradient = FlipGradientBuilder()
++
++def eval(pred, y):
++    y0 = pred[y==0]
++    y1 = pred[y==1]
++    y2 = pred[y==2]
++    y3 = pred[y==3]
++    acc = np.sum(y0==0)/len(y0)
++    acc += np.sum(y1==1)/len(y1)
++    acc += np.sum(y2==2)/len(y2)
++    acc += np.sum(y3==3)/len(y3)
++    print("per class", np.sum(y0==0)/len(y0), np.sum(y1==1)/len(y1), np.sum(y2==2)/len(y2), np.sum(y3==3)/len(y3))
++    return acc/4
++
++
++
++def feature_extractor(x, training=True, reuse=False, scope=""):
++    with tf.variable_scope("feature_ext"+scope, reuse= reuse):
++        h = tf.expand_dims(x, axis=-1)
++        h = tf.layers.conv1d(h, 10, 3, activation=tf.nn.relu, name="f_conv1", kernel_initializer=tf.contrib.layers.xavier_initializer(), bias_initializer=tf.contrib.layers.xavier_initializer())
++        h = tf.layers.dropout(h, training=training)
++        h = tf.layers.conv1d(h, 10, 3, activation=tf.nn.relu, name="f_conv2", kernel_initializer=tf.contrib.layers.xavier_initializer(), bias_initializer=tf.contrib.layers.xavier_initializer())
++        h = tf.layers.dropout(h, training=training)
++        h = tf.layers.conv1d(h, 10, 3, activation=tf.nn.relu, name="f_conv3", kernel_initializer=tf.contrib.layers.xavier_initializer(), bias_initializer=tf.contrib.layers.xavier_initializer())
++        h = tf.layers.dropout(h, training=training)
++        h = tf.layers.flatten(h, name="f_flat")
++        h = tf.layers.dense(h, args.size, activation=tf.nn.relu, name="f_fc", kernel_initializer=tf.contrib.layers.xavier_initializer(), bias_initializer=tf.contrib.layers.xavier_initializer())
++        h = tf.layers.dropout(h, training=training)
++    return h
++
++
++def clf(x, training=True, reuse=False, scope=""):
++    with tf.variable_scope("clf"+scope, reuse= reuse):
++        h = tf.layers.dense(x, args.size, activation=tf.nn.relu, name="clf_fc1")
++        h = tf.layers.dense(h, 4, name="clf_fc", kernel_initializer=tf.contrib.layers.xavier_initializer(), bias_initializer=tf.contrib.layers.xavier_initializer())
++    return h
++
++
++def discriminator(x, training=True, reuse=False, scope=0):
++    with tf.variable_scope("discrimiator"+str(scope), reuse= not training or reuse):
++        h = tf.layers.dense(x, args.size*2, activation=tf.nn.relu, name="dis_fc1", kernel_initializer=tf.contrib.layers.xavier_initializer(), bias_initializer=tf.contrib.layers.xavier_initializer())
++        h = tf.layers.dense(h, 2, name="clf_fc")
++    return h
++
++def grl(src, tgt, y, training, mode="uni"):
++    if training:
++        feat_src = feature_extractor(src, training=training)
++        logits = clf(feat_src, training=training)
++        loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=logits))
++        correct_prediction = tf.equal(y, tf.argmax(logits, axis=-1))
++        accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
++        global_step = tf.Variable(0., trainable=False, name='global_step')
++        p = args.p
++        if mode == "dann":
++            feat_tgt = feature_extractor(tgt, training=training, reuse=True)
++            feat = tf.concat([feat_src, feat_tgt], axis=0)
++            feat = flip_gradient(feat, p)
++            logits_dm = discriminator(feat)
++            labels_dm = tf.concat([tf.ones([args.batch_size], tf.int32), tf.zeros([args.batch_size], tf.int32)], axis=0)
++            loss_dm = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=labels_dm, logits=logits_dm))
++            loss_total = loss  + loss_dm
++        elif mode == "cdan":
++            feat_tgt = feature_extractor(tgt, training=training, reuse=True)
++            logits_tgt = clf(feat_tgt, training=False, reuse=True)
++            softmax_output_tgt = tf.stop_gradient(tf.nn.softmax(logits_tgt, axis=-1))
++            softmax_output_src = tf.stop_gradient(tf.nn.softmax(logits, axis=-1))
++            feat_src_ = tf.reshape(tf.matmul(tf.reshape(softmax_output_src, [-1, 4, 1]), tf.reshape(feat_src, [-1, 1, args.size])), [-1, 4*args.size])
++            feat_tgt_ = tf.reshape(tf.matmul(tf.reshape(softmax_output_tgt, [-1, 4, 1]), tf.reshape(feat_tgt, [-1, 1, args.size])), [-1, 4*args.size])
++            feat = tf.concat([feat_src_, feat_tgt_], axis=0)
++            feat = flip_gradient(feat, p)
++            logits_dm = discriminator(feat)
++            labels_dm = tf.concat([tf.ones([args.batch_size], tf.int32), tf.zeros([args.batch_size], tf.int32)], axis=0)
++            loss_dm = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=labels_dm, logits=logits_dm))
++            loss_total = loss  + loss_dm
++        elif mode == "cdanmixup":
++            dist_beta = tf.distributions.Beta(args.beta, args.beta)
++            lmb = tf.reshape(dist_beta.sample(tf.shape(src)[0]), [-1, 1])
++            labels_dm = tf.concat([tf.ones([args.batch_size], tf.int32), tf.zeros([args.batch_size], tf.int32)], axis=0)
++            feat_tgt = feature_extractor(tgt, training=training, reuse=True)
++            logits_tgt = clf(feat_tgt, training=False, reuse=True)
++            softmax_output_tgt = tf.stop_gradient(tf.nn.softmax(logits_tgt, axis=-1))
++            softmax_output_src = tf.stop_gradient(tf.nn.softmax(logits, axis=-1))
++            idxx = tf.random.shuffle(tf.range(tf.shape(feat_src)[0]))
++            feat_src = lmb * feat_src + (1.-lmb) * tf.gather(feat_src, idxx)
++            feat_tgt = lmb * feat_tgt + (1.-lmb) * tf.gather(feat_tgt, idxx)
++            softmax_output_src = lmb * softmax_output_src + (1.-lmb) * tf.gather(softmax_output_src, idxx)
++            softmax_output_tgt = lmb * softmax_output_tgt + (1.-lmb) * tf.gather(softmax_output_tgt, idxx)
++            feat_src_ = tf.reshape(tf.matmul(tf.reshape(softmax_output_src, [-1, 4, 1]), tf.reshape(feat_src, [-1, 1, args.size])), [-1, 4*args.size])
++            feat_tgt_ = tf.reshape(tf.matmul(tf.reshape(softmax_output_tgt, [-1, 4, 1]), tf.reshape(feat_tgt, [-1, 1, args.size])), [-1, 4*args.size])
++            feat = tf.concat([feat_src_, feat_tgt_], axis=0)
++            feat = flip_gradient(feat, p)
++            logits_dm = discriminator(feat)
++            loss_dm = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=labels_dm, logits=logits_dm))
++            loss_total = loss  + loss_dm
++        else:
++            loss_total = loss 
++
++        train_op = tf.train.AdamOptimizer(learning_rate=args.lr).minimize(loss_total, global_step=global_step)
++        return loss_total, train_op
++    else:
++        feat_src = feature_extractor(src, training=False, reuse=True)
++        logits = clf(feat_src, training=False, reuse=True)
++        loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=logits))
++        pred = tf.argmax(logits, axis=-1)
++        correct_prediction = tf.equal(y, pred)
++        accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
++        return loss, accuracy, pred, y
++        
++
++def run():
++    tf.keras.backend.clear_session()
++    tf.set_random_seed(args.seed)
++    seed(args.seed)
++    data_src = data_src_fft.astype(np.float32)
++    data_tgt = data_tgt_fft.astype(np.float32)
++    data_tgt_up = data_tgt_fft_up.astype(np.float32)
++    
++    args.length = len(data_src)
++
++    dataset_src = tf.data.Dataset.from_tensor_slices((data_src, label_src)).repeat(args.num_epoch).shuffle(len(label_src)).batch(args.batch_size).prefetch(10)
++    iterator_src = dataset_src.make_initializable_iterator()
++    src_x, src_y = iterator_src.get_next()
++
++    data_val, label_val = data_tgt[:], label_tgt[:]
++    
++    dataset_tgt = tf.data.Dataset.from_tensor_slices((data_tgt_up, label_tgt_up)).repeat(args.num_epoch * (len(data_src) // len(data_tgt_up) + 1)).shuffle(len(label_tgt_up)).batch(args.batch_size).prefetch(10)
++    dataset_val = tf.data.Dataset.from_tensors((data_val, label_val))
++    iterator_tgt = dataset_tgt.make_initializable_iterator()
++    iterator_val = dataset_val.make_initializable_iterator()
++
++    train_init_op = [iterator_src.initializer, iterator_tgt.initializer]
++    test_init_op = iterator_val.initializer
++    tgt_x, tgt_y = iterator_tgt.get_next()
++    test_x, test_y = iterator_val.get_next()
++    
++    train_loss, train_op = grl(src_x, tgt_x, src_y, training=True, mode=args.model)
++    test_loss, acc_tgt, pred, ground_truth = grl(test_x, test_x, test_y, training=False)
++
++    with tf.Session() as sess:
++        sess.run(tf.global_variables_initializer())
++        sess.run([train_init_op])
++        for ep in range(args.num_epoch):
++            for j in range(len(data_src)//args.batch_size):
++                train_loss_, _= sess.run([train_loss, train_op])
++            sess.run([test_init_op])
++            test_loss_, acc_, pred_, ground_truth_ = sess.run([test_loss, acc_tgt, pred, ground_truth])
++            if AUDIT_HOOK: AUDIT_HOOK(ep + 1, test_loss_, acc_, pred_, ground_truth_)  # [audit]
++        print("Test Accuracy" ,acc_)
++        balanced_acc = eval(pred_, ground_truth_)
++        print("Test Balanced Accuracy", balanced_acc)
++    return balanced_acc, acc_
++
++

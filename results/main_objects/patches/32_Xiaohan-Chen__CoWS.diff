@@ -1,0 +1,81 @@
+diff --git a/Transfer.py b/Transfer.py
+index cfbbda9..1b07510 100644
+--- a/Transfer.py
++++ b/Transfer.py
+@@ -17,6 +17,8 @@ from Model import ResNet1D
+ from Utils.logger import setlogger
+ from Utils import tools
+ 
++AUDIT_HOOK = None  # [audit]
++
+ def loadtgtdata(args):
+     train_datadict, val_datadict, test_datadict = load_tgt_data(args)
+ 
+@@ -119,6 +121,8 @@ def main(args):
+     for epoch in range(args.max_epochs):
+         train_acc, train_loss = train(model, train_loader, optimizer, criterion, device)
+         val_acc, val_loss = evaluate(model, val_loader, criterion, device)
++        if AUDIT_HOOK is not None:  # [audit] per-epoch record (test evaluated isolated in the hook)
++            AUDIT_HOOK(epoch + 1, model, val_acc, val_loss, test_loader, criterion, device)
+ 
+         lr_scheduler.step()
+ 
+@@ -130,6 +134,7 @@ def main(args):
+             logging.info(f"Epoch: {epoch+1:>4}/{args.max_epochs}, train_acc: {train_acc:6.2f}%, " 
+             f"train_loss: {train_loss:.4f}, val_acc: {val_acc:6.2f}%, val_loss: {val_loss:.4f}")
+     logging.info(f">>> {args.model} test acc: {test_acc:7.2f}%")
++    return test_acc  # [audit] authors' reported value
+ 
+ if __name__ == "__main__":
+     args = parms.parse_args()
+diff --git a/audit_run32.py b/audit_run32.py
+new file mode 100644
+index 0000000..7ad0c05
+--- /dev/null
++++ b/audit_run32.py
+@@ -0,0 +1,45 @@
++"""[audit] Driver for object 32 (registry: results/main_objects/registry/32_*.md).
++Runs the authors' Transfer.main(args) with Configs/transfer.py defaults plus --tgt_data XJTUBearing --tgt_load 0
++--labels 0,1,2,3 (XJTU-SY WC1), 10 unseeded repeats, from the released checkpoint Checkpoint/CoWS_Bearing_load0.pth.
++The hook records the authors' val acc/loss and, isolated, test acc/loss with the authors' own evaluate().
++Run with cwd = the repo (relative ./Data, ./Checkpoint). Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR."""
++import argparse, json, os, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, REPO)
++import torch
++import Transfer as T
++import Configs.transfer as parms
++from audit.main.epoch_record import Recorder
++from audit.torch_utils import isolate
++
++p = argparse.ArgumentParser()
++p.add_argument("--repeats", default="0-9")
++p.add_argument("--epochs", type=int, default=None)
++a = p.parse_args()
++lo, hi = map(int, a.repeats.split("-")) if "-" in a.repeats else (int(a.repeats),) * 2
++sys.argv = [sys.argv[0], "--tgt_data", "XJTUBearing", "--tgt_load", "0", "--labels", "0,1,2,3"]
++args = parms.parse_args()
++if a.epochs:
++    args.max_epochs = a.epochs
++
++for r in range(lo, hi + 1):
++    rec = Recorder(obj="32", group="CoWS|CWRU->XJTU-SY WC1", seed=r, select_split="val", report_split="test",
++                   note=f"epochs={args.max_epochs}; unseeded repeat {r}; released checkpoint; acc = authors' mean of per-batch accuracies")
++    best = {"v": 0.0}
++
++    def hook(ep, model, val_acc, val_loss, test_loader, criterion, device):
++        rec.log(ep, "val", val_acc / 100, val_loss)
++        with isolate([model], device):
++            test_acc, test_loss = T.evaluate(model, test_loader, criterion, device)
++        rec.log(ep, "test", test_acc / 100, test_loss)
++        if val_acc >= best["v"]:      # the authors' rule: test_acc is taken at this epoch
++            best["v"] = val_acc
++            rec.author_pick(ep)
++
++    T.AUDIT_HOOK = hook
++    t0 = time.time()
++    reported = T.main(args)
++    T.AUDIT_HOOK = None
++    rec.finish(float(reported) / 100)
++    print(json.dumps(dict(repeat=r, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                          reported=float(reported), check=rec.d["author_check"])), flush=True)
