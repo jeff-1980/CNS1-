@@ -1,0 +1,28 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{mathptmx}\usepackage[a4paper,margin=2.4cm]{geometry}\usepackage{url}\usepackage{setspace}
+\input{rev_numbers.tex}
+\begin{document}
+\onehalfspacing
+\noindent Yi Wang\\
+College of Engineering, Lishui University, Lishui 323000, Zhejiang, China\\
+\texttt{jefflsxy@lsu.edu.cn}
+
+\bigskip
+\noindent To the Editors, \emph{Reliability Engineering \& System Safety}
+
+\bigskip
+\noindent Dear Editors,
+
+\medskip
+\noindent I submit the manuscript ``When interval coverage hides the direction of maintenance-trigger errors: a sensor-degradation stress test of remaining-useful-life prediction intervals'' for consideration as a research article.
+
+Recent work in this journal has moved the evaluation of probabilistic remaining-useful-life (RUL) prognostics from accuracy and coverage to maintenance decisions (Kamariotis et al., 2024; Mitici et al., 2023; de Pater et al., 2022; Lee and Mitici, 2023), and has benchmarked interval methods under distribution shift (Basora et al., 2025). Those decision studies use clean inputs, and the benchmarks stop at the interval metrics. The manuscript asks what happens between the two: when sensors degrade, do the interval metrics that are usually reported reveal which maintenance error a lower-bound trigger rule will make?
+
+On C-MAPSS, with five interval mechanisms, two backbones and engine-disjoint fitting, validation and calibration partitions, the answer is no. Central coverage falls for drifts in either direction, while the one-sided coverage of the lower bound rises to 1.00 exactly when \RVPremTwo{}\% of evaluated engines are triggered prematurely and falls only when needed maintenance is missed. The side of the error follows whether the shift moves inputs along or against the degradation signature the model has learned; it holds for all channels, channel subsets and single channels, for drifts accumulating along whole trajectories, and at three bound levels, three tolerance bands and three lead times. The manuscript also shows that perturbation sizes set as a share of the training range, a common choice, differ by a factor of about 9 in within-condition standard deviations between single- and six-condition data, and produce an apparent dataset contrast that disappears at matched scale.
+
+The study uses public simulated data, is inference-only from released checkpoints, and proposes no new architecture. All code, checkpoints and result files are public. The manuscript has not been published and is not under consideration elsewhere. The use of an AI assistant for analysis code and editing is declared in the manuscript. There are no conflicts of interest.
+
+\medskip
+\noindent Sincerely,\\
+Yi Wang
+\end{document}

@@ -1,0 +1,6 @@
+Highlights
+- Interval coverage on degraded sensors does not show which maintenance error occurs
+- Lower-bound one-sided coverage reaches 1.00 while up to 75% of triggers are premature
+- Error side follows whether drift moves inputs along the learned degradation signature
+- Pattern holds for single channels, channel subsets and drift along whole trajectories
+- Range-scaled perturbations are ~9x larger on six-condition data than they appear
