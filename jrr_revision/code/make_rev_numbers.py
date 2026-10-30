@@ -52,6 +52,7 @@ for ds in DS:
     ratio[ds] = 0.05 * r['fs'][m] / r['sdw'][m]
 M['RVRatioSingle'] = f2(np.median(np.concatenate([ratio['FD001'], ratio['FD003']])))
 M['RVRatioSix'] = f0(np.median(np.concatenate([ratio['FD002'], ratio['FD004']])))
+M['RVRatioFactor'] = f0(np.median(np.concatenate([ratio['FD002'], ratio['FD004']])) / np.median(np.concatenate([ratio['FD001'], ratio['FD003']])))
 M['RVRatioSixRange'] = rng(np.concatenate([ratio['FD002'], ratio['FD004']]), f1)
 
 # ---------- main SD conditions (heteroscedastic head, L = 20)

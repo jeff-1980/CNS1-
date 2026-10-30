@@ -1,0 +1,26 @@
+\documentclass[11pt]{letter}
+\usepackage[margin=2.5cm]{geometry}
+\newcommand{\PTITLE}{When interval coverage hides the direction of maintenance-trigger errors: a sensor-degradation stress test of remaining-useful-life prediction intervals}
+\signature{Yi Wang\\College of Engineering, Lishui University\\jefflsxy@lsu.edu.cn}
+\address{}
+\begin{document}
+\begin{letter}{The Editor\\Transactions of the Institute of Measurement and Control}
+\opening{Dear Editor,}
+
+Please consider my manuscript \emph{``\PTITLE''} for publication as an Original Article in \emph{Transactions of the Institute of Measurement and Control}.
+
+\textbf{Problem.} Condition-based maintenance increasingly acts on a lower prediction bound for remaining useful life: work is triggered when the bound reaches a lead time. The bound is computed from sensor measurements, and sensors drift and acquire offsets in service. Interval methods are usually judged by coverage. Whether coverage tells an engineer which error a degraded measurement will cause in the trigger, a premature intervention or a missed one, has not been tested.
+
+\textbf{What the paper shows.} On C-MAPSS, with five interval mechanisms, two backbones and engine-disjoint fitting, validation and calibration partitions, coverage does not reveal the side of the error. Under sensor drift the one-sided coverage of the lower bound rises to 1.00 exactly when 37--75\% of evaluated engines are triggered prematurely, and falls only when needed maintenance is missed. The side of the error follows whether the measurement shift moves inputs along or against the degradation signature the model has learned; this holds for all channels, channel subsets and single channels, for drifts accumulating along whole trajectories, and at three bound levels, tolerance bands and lead times. The paper also shows that perturbation sizes set as a share of a sensor's training range, a common choice, are about 25 times larger in within-condition standard deviations on multi-regime data than on single-regime data, which creates apparent dataset contrasts.
+
+\textbf{Fit to the journal.} The paper concerns the link between measurement quality and a threshold control action: how sensor drift and offset propagate through a learned predictor into a maintenance trigger, and how such predictors should be stress-tested (shifts scaled within operating regimes, varied in alignment and channel set, and scored on both trigger errors). It is an evaluation study, inference-only from released checkpoints, and states its limits: simulated data, two backbones, one rule family.
+
+\textbf{Previous submission.} An earlier version was rejected by \emph{Proceedings of the IMechE, Part O: Journal of Risk and Reliability} (JRR-26-0446, October 2026) without reviewer comments. The present manuscript is a substantial revision: the claims are rebuilt around one-sided coverage and the side of the trigger error; perturbations are rescaled to within-condition standard deviations; degradation-aligned, channel-subset, single-channel and trajectory-drift controls, calibration-unit variants and a bound-level, tolerance and lead-time sensitivity analysis are new; an incorrect percentage in the protocol audit is corrected; and the comparison with prior work is redone.
+
+\textbf{Related submission.} A manuscript by the same corresponding author on a different topic (noise robustness of Mamba-based bearing fault diagnosis, TIMC-26-2433) is under consideration at this journal; the two share no data, figures or results.
+
+\textbf{Transparency.} Code, checkpoints, result files and the scripts that generate every number are public. The use of an AI assistant is declared in the manuscript. The manuscript is not under consideration elsewhere.
+
+\closing{Sincerely,}
+\end{letter}
+\end{document}
