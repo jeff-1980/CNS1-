@@ -1,0 +1,1 @@
+7a7ace5f61eaa129f98971c1769c735972158aeb8c99d403e4c1c04dfce32818  scripts/kill_aeroup_K3.py

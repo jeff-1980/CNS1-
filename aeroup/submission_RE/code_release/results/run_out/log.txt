@@ -1,0 +1,301 @@
+ROOT files: ['2020.zip', '2021.zip', '2022.zip', '2023.zip', 'CHANGELOG.md', 'Hill_of_Towie_AeroUp_install_dates.csv', 'Hill_of_Towie_ShutdownDuration.zip', 'Hill_of_Towie_alarms_description.csv', 'Hill_of_Towie_data_dictionary.md', 'Hill_of_Towie_tables_description.csv', 'Hill_of_Towie_turbine_fields_description.csv', 'Hill_of_Towie_turbine_metadata.csv', 'README.md']
+
+--- small csv Hill_of_Towie_AeroUp_install_dates.csv ---
+   Turbine First date of AeroUp works Last date of AeroUp works
+0      T01                 2022-07-23                2022-08-01
+1      T02                 2022-07-18                2022-07-28
+2      T03                 2022-07-28                2022-08-14
+3      T04                 2022-07-31                2022-09-10
+4      T05                 2022-07-16                2022-07-22
+5      T06                 2022-07-16                2023-04-15
+6      T07                 2022-09-20                2023-05-25
+7      T08                 2022-08-08                2022-09-21
+8      T09                 2022-09-13                2022-10-03
+9      T10                 2022-08-04                2023-04-26
+10     T11                 2022-09-09                2023-05-18
+11     T12                 2022-09-01                2023-05-09
+12     T13                 2021-09-23                2021-09-29
+13     T14                 2022-08-30                2022-10-03
+14     T15                 2022-07-14                2023-05-26
+15     T16                 2022-08-27                2023-04-15
+16     T17                 2022-08-10                2022-08-27
+17     T18                 2022-08-22                2022-09-21
+18     T19                 2022-08-11                2022-08-23
+19     T20                 2022-08-13                2023-04-20
+20     T21                 2022-08-21                2022-09-01
+zip Hill_of_Towie_ShutdownDuration.zip: ['ShutdownDuration.csv']
+
+--- small csv Hill_of_Towie_alarms_description.csv ---
+    Alarm Code                    Description  Stopping
+0           20         Large generator Cut-in         0
+1           25      Fast cut-out of generator         0
+2          102    Ice detection             :         0
+3         1005        Availability - low wind         1
+4         3130              Pitch lubrication         1
+5         8000  Windspeed too high to operate         1
+6         8210          Stopped, due to icing         1
+7         8230      Ice detection: Low torque         1
+8         8234       Ice detection: No cut in         1
+9         8235            Ice Detect: Stopped         1
+10        8236    Ice Detect: Stopped, De-Ice         1
+11       10105     Stopped, untwisting cables         1
+
+--- small csv Hill_of_Towie_tables_description.csv ---
+                 Name                                                                          Description
+0         tblAlarmLog                                       Log of stopping and non-stopping events/alarms
+1        tblSCTurGrid                                            Turbine grid-related measurements [10min]
+2      tblSCTurIntern                                                     Turbine internal signals [10min]
+3       tblSCTurPress                                                Turbine pressure measurements [10min]
+4        tblSCTurTemp                                             Turbine temperature measurements [10min]
+5      tblSCTurDigiIn                                                Turbine digital input signals [10min]
+6     tblSCTurDigiOut                                               Turbine digital output signals [10min]
+7       tblSCTurCount                                Turbine counter signals (hours, events, etc.) [10min]
+8        tblSCTurbine                              Turbine signals not categorised in other tables [10min]
+9        tblSCTurFlag                                                   Turbine status information [10min]
+10    tblDailySummary  Daily aggregations of turbine signals, either averages or last value of each signal
+11            tblGrid                                        Signals from grid monitoring stations [10min]
+12  tblGridScientific          Signals from grid monitoring stations, including calculated signals [10min]
+
+--- small csv Hill_of_Towie_turbine_fields_description.csv ---
+                                  Field Description             Manufacturer Name          Table     Unit
+0                                      Active power             wtc_ActPower_mean   tblSCTurGrid       kW
+1                                   Current Phase R               wtc_AmpPhR_mean   tblSCTurGrid        A
+2                                   Current Phase S               wtc_AmpPhS_mean   tblSCTurGrid        A
+3                                   Current Phase T               wtc_AmpPhT_mean   tblSCTurGrid        A
+4                                    Grid frequency             wtc_GridFreq_mean   tblSCTurGrid       Hz
+5                                      Power Factor               wtc_CosPhi_mean   tblSCTurGrid      NaN
+6                                    Reactive Power             wtc_ReactPwr_mean   tblSCTurGrid     kVar
+7                                   Voltage Phase R              wtc_VoltPhR_mean   tblSCTurGrid        V
+8                                   Voltage Phase S              wtc_VoltPhS_mean   tblSCTurGrid        V
+9                                   Voltage Phase T              wtc_VoltPhT_mean   tblSCTurGrid        V
+10                       Brake accumulator pressure             wtc_BrAccPrs_mean  tblSCTurPress      bar
+11                               Brake oil pressure             wtc_BrakPres_mean  tblSCTurPress      bar
+12                                Gear oil pressure             wtc_GearPres_mean  tblSCTurPress      bar
+13                        Inverter coolant pressure             wtc_InvPress_mean  tblSCTurPress      bar
+14                     Yaw brake hydraulic pressure             wtc_YawPress_mean  tblSCTurPress      bar
+15                            Actual wind direction  wtc_ActualWindDirection_mean   tblSCTurbine      deg
+16               Wind speed from active wind sensor             wtc_AcWindSp_mean   tblSCTurbine      m/s
+17              Wind speed from primary wind sensor             wtc_PrWindSp_mean   tblSCTurbine      m/s
+18            Wind speed from secondary wind sensor             wtc_SeWindSp_mean   tblSCTurbine      m/s
+19                                    Generator RPM               wtc_GenRpm_mean   tblSCTurbine      rpm
+20                                   Main shaft RPM             wtc_MainSRpm_mean   tblSCTurbine      rpm
+21              Nacelle yaw angle relative to North             wtc_NacelPos_mean   tblSCTurbine      deg
+22                             Pitch angle, blade A             wtc_PitcPosA_mean   tblSCTurbine      deg
+23                             Pitch angle, blade B             wtc_PitcPosB_mean   tblSCTurbine      deg
+24                             Pitch angle, blade C             wtc_PitcPosC_mean   tblSCTurbine      deg
+25                              Ambient temperature             wtc_AmbieTmp_mean   tblSCTurTemp       °C
+26                Generator winding temperature 1U1             wtc_Gen1U1Tm_mean   tblSCTurTemp       °C
+27                Generator winding temperature 1V1             wtc_Gen1V1Tm_mean   tblSCTurTemp       °C
+28                Generator winding temperature 1W1             wtc_Gen1W1Tm_mean   tblSCTurTemp       °C
+29                Generator winding temperature 2U1             wtc_Gen2U1Tm_mean   tblSCTurTemp       °C
+30                Generator winding temperature 2V1             wtc_Gen2V1Tm_mean   tblSCTurTemp       °C
+31                Generator winding temperature 2W1             wtc_Gen2W1Tm_mean   tblSCTurTemp       °C
+32                Generator NDE bearing temperature             wtc_GenBeGTm_mean   tblSCTurTemp       °C
+33                 Generator DE bearing temperature             wtc_GenBeRTm_mean   tblSCTurTemp       °C
+34         Generator bearing inner ring temperature             wtc_GenBeITm_mean   tblSCTurTemp       °C
+35         Generator bearing outer ring temperature             wtc_GenBeOTm_mean   tblSCTurTemp       °C
+36            Generator cooling water temperature A             wtc_GenCoTmA_mean   tblSCTurTemp       °C
+37            Generator cooling water temperature B             wtc_GenCoTmB_mean   tblSCTurTemp       °C
+38                             Gear oil temperature             wtc_GeOilTmp_mean   tblSCTurTemp       °C
+39   Gearbox bearing temperature, HS generator side             wtc_HSGenTmp_mean   tblSCTurTemp       °C
+40       Gearbox bearing temperature, HS rotor side             wtc_HSRotTmp_mean   tblSCTurTemp       °C
+41  Gearbox bearing temperature, IMS generator side             wtc_IMSGenTm_mean   tblSCTurTemp       °C
+42      Gearbox bearing temperature, IMS rotor side             wtc_IMSRotTm_mean   tblSCTurTemp       °C
+43                                  Hub temperature              wtc_HubTemp_mean   tblSCTurTemp       °C
+44                  Pitch hydraulic oil temperature             wtc_HydOilTm_mean   tblSCTurTemp       °C
+45                         Main bearing temperature             wtc_MainBTmp_mean   tblSCTurTemp       °C
+46                              Nacelle temperature             wtc_NacelTmp_mean   tblSCTurTemp       °C
+47                      Transformer temperature, L1             wtc_TrafL1Tm_mean   tblSCTurTemp       °C
+48                      Transformer temperature, L2             wtc_TrafL2Tm_mean   tblSCTurTemp       °C
+49                      Transformer temperature, L3             wtc_TrafL3Tm_mean   tblSCTurTemp       °C
+50                      Transformer oil temperature             wtc_TrafOilT_mean   tblSCTurTemp       °C
+51                     Transformer room temperature             wtc_TraRoomT_mean   tblSCTurTemp       °C
+52                           Time running in period           wtc_ScInOper_timeon   tblSCTurFlag  seconds
+53                  Time ready to operate in period           wtc_ScReToOp_timeon   tblSCTurFlag  seconds
+54              Time turbine error active in period           wtc_ScTurSto_timeon   tblSCTurFlag  seconds
+
+--- small csv Hill_of_Towie_turbine_metadata.csv ---
+        Wind Farm Turbine Name   Latitude  Longitude  Station ID Manufacturer          Model  Rated power (kW)  Hub Height (m)  Rotor Diameter (m) Country Commercial Operations Date
+0   Hill of Towie          T01  57.499214  -3.086743     2304510      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+1   Hill of Towie          T02  57.496266  -3.082818     2304511      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+2   Hill of Towie          T03  57.502070  -3.088980     2304512      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+3   Hill of Towie          T04  57.501967  -3.082085     2304513      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+4   Hill of Towie          T05  57.498911  -3.078124     2304514      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+5   Hill of Towie          T06  57.500245  -3.071322     2304515      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+6   Hill of Towie          T07  57.505133  -3.085851     2304516      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+7   Hill of Towie          T08  57.504656  -3.077542     2304517      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+8   Hill of Towie          T09  57.508278  -3.082573     2304518      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+9   Hill of Towie          T10  57.505425  -3.070656     2304519      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+10  Hill of Towie          T11  57.511843  -3.080659     2304520      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+11  Hill of Towie          T12  57.510816  -3.073685     2304521      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+12  Hill of Towie          T13  57.516662  -3.078147     2304522      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+13  Hill of Towie          T14  57.513760  -3.074940     2304523      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+14  Hill of Towie          T15  57.499418  -3.062837     2304524      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+15  Hill of Towie          T16  57.505139  -3.053341     2304525      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+16  Hill of Towie          T17  57.506623  -3.047793     2304526      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+17  Hill of Towie          T18  57.504297  -3.041184     2304527      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+18  Hill of Towie          T19  57.508596  -3.041657     2304528      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+19  Hill of Towie          T20  57.512028  -3.040436     2304529      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+20  Hill of Towie          T21  57.509785  -3.034697     2304530      Siemens  SWT-2.3-VS-82              2300              59                  82      UK                 2012-05-12
+
+tblSCTurGrid columns: ['TimeStamp', 'StationId', 'wtc_VoltPhR_min', 'wtc_VoltPhR_max', 'wtc_VoltPhR_mean', 'wtc_VoltPhR_stddev', 'wtc_VoltPhS_min', 'wtc_VoltPhS_max', 'wtc_VoltPhS_mean', 'wtc_VoltPhS_stddev', 'wtc_VoltPhT_min', 'wtc_VoltPhT_max', 'wtc_VoltPhT_mean', 'wtc_VoltPhT_stddev', 'wtc_ActPower_min', 'wtc_ActPower_max', 'wtc_ActPower_mean', 'wtc_ActPower_stddev', 'wtc_ActPower_endvalue', 'wtc_AmpPhR_min', 'wtc_AmpPhR_max', 'wtc_AmpPhR_mean', 'wtc_AmpPhR_stddev', 'wtc_AmpPhS_min', 'wtc_AmpPhS_max', 'wtc_AmpPhS_mean', 'wtc_AmpPhS_stddev', 'wtc_AmpPhT_min', 'wtc_AmpPhT_max', 'wtc_AmpPhT_mean', 'wtc_AmpPhT_stddev', 'wtc_CosPhi_min', 'wtc_CosPhi_max', 'wtc_CosPhi_mean', 'wtc_CosPhi_stddev', 'wtc_CosPhi_endvalue', 'wtc_GridFreq_min', 'wtc_GridFreq_max', 'wtc_GridFreq_mean', 'wtc_GridFreq_stddev', 'wtc_ReactPwr_min', 'wtc_ReactPwr_max', 'wtc_ReactPwr_mean', 'wtc_ReactPwr_stddev', 'wtc_ReactPwr_endvalue', 'wtc_ActRegSt_endvalue', 'wtc_ActPower_Quality_endvalue', 'wtc_RawPower_min', 'wtc_RawPower_max', 'wtc_RawPower_mean', 'wtc_RawPower_stddev', 'wtc_RawPower_endvalue']
+tblSCTurbine columns: ['TimeStamp', 'StationId', 'wtc_CurTime_endvalue', 'wtc_SecAnemo_min', 'wtc_SecAnemo_max', 'wtc_SecAnemo_mean', 'wtc_SecAnemo_stddev', 'wtc_YawPos_min', 'wtc_YawPos_max', 'wtc_YawPos_mean', 'wtc_YawPos_stddev', 'wtc_GenRpm_min', 'wtc_GenRpm_max', 'wtc_GenRpm_mean', 'wtc_GenRpm_stddev', 'wtc_MainSRpm_min', 'wtc_MainSRpm_max', 'wtc_MainSRpm_mean', 'wtc_MainSRpm_stddev', 'wtc_PitchRef_BladeA_min', 'wtc_PitchRef_BladeA_max', 'wtc_PitchRef_BladeA_mean', 'wtc_PitchRef_BladeA_stddev', 'wtc_PitchRef_BladeB_min', 'wtc_PitchRef_BladeB_max', 'wtc_PitchRef_BladeB_mean', 'wtc_PitchRef_BladeB_stddev', 'wtc_PitchRef_BladeC_min', 'wtc_PitchRef_BladeC_max', 'wtc_PitchRef_BladeC_mean', 'wtc_PitchRef_BladeC_stddev', 'wtc_PitcRefA_min', 'wtc_PitcRefA_max', 'wtc_PitcRefA_mean', 'wtc_PitcRefA_stddev', 'wtc_PriAnemo_min', 'wtc_PriAnemo_max', 'wtc_PriAnemo_mean', 'wtc_PriAnemo_stddev', 'wtc_TwrHumid_mean', 'wtc_PitcPosA_min', 'wtc_PitcPosA_max', 'wtc_PitcPosA_mean', 'wtc_PitcPosA_stddev', 'wtc_PitcPosB_min', 'wtc_PitcPosB_max', 'wtc_PitcPosB_mean', 'wtc_PitcPosB_stddev', 'wtc_PitcPosC_min', 'wtc_PitcPosC_max', 'wtc_PitcPosC_mean', 'wtc_PitcPosC_stddev', 'wtc_PowerRef_endvalue', 'wtc_ScYawPos_min', 'wtc_ScYawPos_max', 'wtc_ScYawPos_mean', 'wtc_ScYawPos_stddev', 'wtc_PrWindSp_min', 'wtc_PrWindSp_max', 'wtc_PrWindSp_mean', 'wtc_PrWindSp_stddev', 'wtc_SeWindSp_min', 'wtc_SeWindSp_max', 'wtc_SeWindSp_mean', 'wtc_SeWindSp_stddev', 'wtc_AcWindSp_min', 'wtc_AcWindSp_max', 'wtc_AcWindSp_mean', 'wtc_AcWindSp_stddev', 'wtc_NacelPos_min', 'wtc_NacelPos_max', 'wtc_NacelPos_mean', 'wtc_NacelPos_stddev', 'wtc_TetAnFrq_min', 'wtc_TetAnFrq_max', 'wtc_TetAnFrq_mean', 'wtc_TetAnFrq_stddev', 'wtc_TowerFrq_Frequenc_min', 'wtc_TowerFrq_Frequenc_max', 'wtc_TowerFrq_Frequenc_mean', 'wtc_TowerFrq_Frequenc_stddev', 'wtc_BoostAva_min', 'wtc_BoostAva_max', 'wtc_BoostAva_mean', 'wtc_BoostAva_stddev']
+tblSCTurTemp columns: ['TimeStamp', 'StationId', 'wtc_A1ExtTmp_min', 'wtc_A1ExtTmp_max', 'wtc_A1ExtTmp_mean', 'wtc_A3LefTmp_min', 'wtc_A3LefTmp_max', 'wtc_A3LefTmp_mean', 'wtc_A3RigTmp_min', 'wtc_A3RigTmp_max', 'wtc_A3RigTmp_mean', 'wtc_A9IntTmp_min', 'wtc_A9IntTmp_max', 'wtc_A9IntTmp_mean', 'wtc_AmbieTmp_min', 'wtc_AmbieTmp_max', 'wtc_AmbieTmp_mean', 'wtc_BrkTmpGn_min', 'wtc_BrkTmpGn_max', 'wtc_BrkTmpGn_mean', 'wtc_Gen1U1Tm_min', 'wtc_Gen1U1Tm_max', 'wtc_Gen1U1Tm_mean', 'wtc_Gen1V1Tm_min', 'wtc_Gen1V1Tm_max', 'wtc_Gen1V1Tm_mean', 'wtc_Gen1W1Tm_min', 'wtc_Gen1W1Tm_max', 'wtc_Gen1W1Tm_mean', 'wtc_GenBeGTm_min', 'wtc_GenBeGTm_max', 'wtc_GenBeGTm_mean', 'wtc_GenBeRTm_min', 'wtc_GenBeRTm_max', 'wtc_GenBeRTm_mean', 'wtc_GeOilTmp_min', 'wtc_GeOilTmp_max', 'wtc_GeOilTmp_mean', 'wtc_HSGenTmp_min', 'wtc_HSGenTmp_max', 'wtc_HSGenTmp_mean', 'wtc_HSRotTmp_min', 'wtc_HSRotTmp_max', 'wtc_HSRotTmp_mean', 'wtc_HubTemp_min', 'wtc_HubTemp_max', 'wtc_HubTemp_mean', 'wtc_IMSGenTm_min', 'wtc_IMSGenTm_max', 'wtc_IMSGenTm_mean', 'wtc_IMSRotTm_min', 'wtc_IMSRotTm_max', 'wtc_IMSRotTm_mean', 'wtc_NacelTmp_min', 'wtc_NacelTmp_max', 'wtc_NacelTmp_mean', 'wtc_A1ExtTmp_stddev', 'wtc_A3LefTmp_stddev', 'wtc_A3RigTmp_stddev', 'wtc_A9IntTmp_stddev', 'wtc_AmbieTmp_stddev', 'wtc_BrkTmpGn_stddev', 'wtc_Gen1U1Tm_stddev', 'wtc_Gen1V1Tm_stddev', 'wtc_Gen1W1Tm_stddev', 'wtc_GenBeGTm_stddev', 'wtc_GenBeRTm_stddev', 'wtc_GeOilTmp_stddev', 'wtc_HSGenTmp_stddev', 'wtc_HSRotTmp_stddev', 'wtc_HubTemp_stddev', 'wtc_IMSGenTm_stddev', 'wtc_IMSRotTm_stddev', 'wtc_NacelTmp_stddev', 'wtc_TraOilTF_min', 'wtc_TraOilTF_max', 'wtc_TraOilTF_mean', 'wtc_TraOilTF_stddev', 'wtc_TraRooTF_min', 'wtc_TraRooTF_max', 'wtc_TraRooTF_mean', 'wtc_TraRooTF_stddev', 'wtc_ConvWTmp_min', 'wtc_ConvWTmp_max', 'wtc_ConvWTmp_mean', 'wtc_ConvWTmp_stddev', 'wtc_HydOilTm_min', 'wtc_HydOilTm_max', 'wtc_HydOilTm_mean', 'wtc_HydOilTm_stddev', 'wtc_GFilB1Tm_min', 'wtc_GFilB1Tm_max', 'wtc_GFilB1Tm_mean', 'wtc_GFilB1Tm_stddev', 'wtc_GFilB2Tm_min', 'wtc_GFilB2Tm_max', 'wtc_GFilB2Tm_mean', 'wtc_GFilB2Tm_stddev', 'wtc_GFilB3Tm_min', 'wtc_GFilB3Tm_max', 'wtc_GFilB3Tm_mean', 'wtc_GFilB3Tm_stddev', 'wtc_ReacUTmp_min', 'wtc_ReacUTmp_max', 'wtc_ReacUTmp_mean', 'wtc_ReacUTmp_stddev', 'wtc_ReacVTmp_min', 'wtc_ReacVTmp_max', 'wtc_ReacVTmp_mean', 'wtc_ReacVTmp_stddev', 'wtc_ReacWTmp_min', 'wtc_ReacWTmp_max', 'wtc_ReacWTmp_mean', 'wtc_ReacWTmp_stddev', 'wtc_MainBTmp_min', 'wtc_MainBTmp_max', 'wtc_MainBTmp_mean', 'wtc_MainBTmp_stddev', 'wtc_DeltaTmp_min', 'wtc_DeltaTmp_max', 'wtc_DeltaTmp_mean', 'wtc_DeltaTmp_stddev', 'wtc_A21IntTm_min', 'wtc_A21IntTm_max', 'wtc_A21IntTm_mean', 'wtc_A21IntTm_stddev']
+SD_COL wtc_ActPower_stddev PITCH ['wtc_PitchRef_BladeA_mean', 'wtc_PitchRef_BladeB_mean', 'wtc_PitchRef_BladeC_mean'] TEMPS ['wtc_A1ExtTmp_mean', 'wtc_A3LefTmp_mean', 'wtc_A3RigTmp_mean', 'wtc_A9IntTmp_mean', 'wtc_BrkTmpGn_mean', 'wtc_Gen1U1Tm_mean', 'wtc_Gen1V1Tm_mean', 'wtc_Gen1W1Tm_mean', 'wtc_GenBeGTm_mean', 'wtc_GenBeRTm_mean', 'wtc_GeOilTmp_mean', 'wtc_HSGenTmp_mean', 'wtc_HSRotTmp_mean', 'wtc_HubTemp_mean', 'wtc_IMSGenTm_mean', 'wtc_IMSRotTm_mean', 'wtc_NacelTmp_mean', 'wtc_TraOilTF_mean', 'wtc_TraRooTF_mean', 'wtc_ConvWTmp_mean', 'wtc_HydOilTm_mean', 'wtc_GFilB1Tm_mean', 'wtc_GFilB2Tm_mean', 'wtc_GFilB3Tm_mean', 'wtc_ReacUTmp_mean', 'wtc_ReacVTmp_mean', 'wtc_ReacWTmp_mean', 'wtc_MainBTmp_mean', 'wtc_DeltaTmp_mean', 'wtc_A21IntTm_mean']
+rows merged: 4338962  share with shutdown info: 1.0
+normal-operation rows: 3069135  per turbine median: 158635
+
+=== A. T13 clean window, common reference set (all except T13 and target) ===
+        turbine       E    R_pp      D3   D10_3      D4      D6  coverage
+station                                                                  
+2304510     T01 -0.0134 -0.6640 -0.0101 -0.0098 -0.0093 -0.0078    0.9993
+2304511     T02 -0.0303 -0.5804 -0.0162 -0.0152 -0.0135 -0.0101    0.9993
+2304512     T03 -0.0029 -0.2799 -0.0039 -0.0039 -0.0038 -0.0034    0.9993
+2304513     T04 -0.0176 -0.6165 -0.0114 -0.0109 -0.0100 -0.0078    0.9994
+2304514     T05 -0.0339 -0.7854 -0.0181 -0.0170 -0.0151 -0.0113    0.9993
+2304515     T06  0.0141 -0.2084 -0.0023 -0.0028 -0.0031 -0.0030    1.0000
+2304516     T07 -0.0046 -0.5026 -0.0034 -0.0034 -0.0033 -0.0030    0.9993
+2304517     T08 -0.0091 -0.2273 -0.0051 -0.0048 -0.0042 -0.0031    0.9993
+2304518     T09 -0.0069 -0.6443 -0.0056 -0.0055 -0.0054 -0.0048    0.9993
+2304519     T10 -0.0263 -0.6138 -0.0150 -0.0143 -0.0132 -0.0110    0.9992
+2304520     T11  0.0032 -0.3361 -0.0020 -0.0021 -0.0024 -0.0024    1.0000
+2304521     T12  0.0070 -0.4722  0.0020  0.0016  0.0009 -0.0003    0.9993
+2304523     T14  0.0131  0.0880  0.0060  0.0055  0.0047  0.0030    0.9994
+2304524     T15 -0.0299 -0.1759 -0.0157 -0.0145 -0.0125 -0.0086    0.9992
+2304525     T16 -0.0403  0.1827 -0.0042 -0.0024 -0.0001  0.0016    0.9938
+2304526     T17 -0.0282 -0.2721 -0.0110 -0.0099 -0.0081 -0.0049    0.9987
+2304527     T18 -0.0337 -0.2897 -0.0181 -0.0169 -0.0148 -0.0103    0.9998
+2304528     T19 -0.0174 -0.2486 -0.0089 -0.0083 -0.0071 -0.0048    0.9992
+2304529     T20 -0.0046 -0.4197 -0.0049 -0.0048 -0.0046 -0.0040    0.9998
+2304530     T21 -0.0101 -0.0834 -0.0052 -0.0048 -0.0040 -0.0025    0.9991
+2304522     T13  0.0364  1.3528  0.0175  0.0163  0.0143  0.0104    0.9995
+
+T13 corrected (minus placebo median):
+E                        0.0481
+R_pp                     1.6656
+D3                       0.0230
+D10_3                    0.0215
+D4                       0.0193
+D6                       0.0148
+D8                       0.0116
+D10                      0.0096
+W                        0.0166
+SD                       0.0106
+PITCH                    0.2095
+TMP_wtc_A1ExtTmp_mean    0.1461
+TMP_wtc_A3LefTmp_mean   -0.0976
+TMP_wtc_A3RigTmp_mean   -0.3089
+TMP_wtc_A9IntTmp_mean   -0.3207
+TMP_wtc_BrkTmpGn_mean    0.2633
+TMP_wtc_Gen1U1Tm_mean    0.0122
+TMP_wtc_Gen1V1Tm_mean    0.0217
+TMP_wtc_Gen1W1Tm_mean    0.0140
+TMP_wtc_GenBeGTm_mean   -0.0882
+TMP_wtc_GenBeRTm_mean    0.2315
+TMP_wtc_GeOilTmp_mean   -0.0570
+TMP_wtc_HSGenTmp_mean    0.2874
+TMP_wtc_HSRotTmp_mean    0.0307
+TMP_wtc_HubTemp_mean    -0.1854
+TMP_wtc_IMSGenTm_mean    0.0702
+TMP_wtc_IMSRotTm_mean    0.0168
+TMP_wtc_NacelTmp_mean    0.2229
+TMP_wtc_TraOilTF_mean   -0.0336
+TMP_wtc_TraRooTF_mean   -0.2737
+TMP_wtc_ConvWTmp_mean   -0.0059
+TMP_wtc_HydOilTm_mean    0.0212
+TMP_wtc_GFilB1Tm_mean    0.3865
+TMP_wtc_GFilB2Tm_mean   -0.2600
+TMP_wtc_GFilB3Tm_mean    0.7484
+TMP_wtc_ReacUTmp_mean    0.0616
+TMP_wtc_ReacVTmp_mean    0.2141
+TMP_wtc_ReacWTmp_mean    0.2487
+TMP_wtc_MainBTmp_mean    0.4664
+TMP_wtc_DeltaTmp_mean   -0.4616
+TMP_wtc_A21IntTm_mean    7.4930
+T13 rank (1 = largest) among 21 : {'E': 1, 'R_pp': 1, 'D3': 1, 'D10_3': 1, 'D4': 1, 'D6': 1, 'D8': 1, 'D10': 1, 'W': 2, 'SD': 3, 'PITCH': 1, 'TMP_wtc_A1ExtTmp_mean': 8, 'TMP_wtc_A3LefTmp_mean': 14, 'TMP_wtc_A3RigTmp_mean': 16, 'TMP_wtc_A9IntTmp_mean': 21, 'TMP_wtc_BrkTmpGn_mean': 3, 'TMP_wtc_Gen1U1Tm_mean': 8, 'TMP_wtc_Gen1V1Tm_mean': 8, 'TMP_wtc_Gen1W1Tm_mean': 8, 'TMP_wtc_GenBeGTm_mean': 12, 'TMP_wtc_GenBeRTm_mean': 8, 'TMP_wtc_GeOilTmp_mean': 15, 'TMP_wtc_HSGenTmp_mean': 1, 'TMP_wtc_HSRotTmp_mean': 8, 'TMP_wtc_HubTemp_mean': 15, 'TMP_wtc_IMSGenTm_mean': 3, 'TMP_wtc_IMSRotTm_mean': 11, 'TMP_wtc_NacelTmp_mean': 7, 'TMP_wtc_TraOilTF_mean': 13, 'TMP_wtc_TraRooTF_mean': 15, 'TMP_wtc_ConvWTmp_mean': 20, 'TMP_wtc_HydOilTm_mean': 10, 'TMP_wtc_GFilB1Tm_mean': 8, 'TMP_wtc_GFilB2Tm_mean': 12, 'TMP_wtc_GFilB3Tm_mean': 6, 'TMP_wtc_ReacUTmp_mean': 6, 'TMP_wtc_ReacVTmp_mean': 4, 'TMP_wtc_ReacWTmp_mean': 4, 'TMP_wtc_MainBTmp_mean': 4, 'TMP_wtc_DeltaTmp_mean': 15, 'TMP_wtc_A21IntTm_mean': 2}
+
+T13 corrected with week-bootstrap 95% CI (placebo median fixed):
+quantity  estimate      lo     hi  rank_of_21
+       E    0.0481  0.0329 0.0625         1.0
+    R_pp    1.6656  0.4575 2.8137         1.0
+      D3    0.0230  0.0131 0.0319         1.0
+   D10_3    0.0215  0.0120 0.0300         1.0
+      D4    0.0193  0.0107 0.0271         1.0
+      D6    0.0148  0.0079 0.0209         1.0
+      D8    0.0116  0.0059 0.0168         1.0
+     D10    0.0096  0.0046 0.0140         1.0
+       W    0.0166  0.0115 0.0214         2.0
+      SD    0.0106 -0.0313 0.0573         3.0
+   PITCH    0.2095  0.0808 0.3397         1.0
+    C_D3    0.4772  0.3883 0.5393         NaN
+ C_D10_3    0.4465  0.3555 0.5102         NaN
+    C_D4    0.4007  0.3099 0.4673         NaN
+    C_D6    0.3072  0.2235 0.3713         NaN
+    C_D8    0.2412  0.1625 0.3004         NaN
+   C_D10    0.1996  0.1288 0.2523         NaN
+reproducibility check vs frozen K2: E +0.048, R_pp +1.67, D3 +0.023, C 0.48
+                         E    R_pp      D3    C_D3
+median_of_20        0.0481  1.6656  0.0230  0.4772
+mean_of_20          0.0500  1.7102  0.0252  0.5041
+trimmed_mean_of_20  0.0504  1.7260  0.0253  0.5025
+no_correction       0.0364  1.3528  0.0175  0.4821
+
+=== B. decomposition by reference-power bin ===
+T13 share of energy gain by ref-power bin: {0.0: 0.039, 200.0: 0.142, 400.0: 0.177, 600.0: 0.192, 800.0: 0.137, 1000.0: 0.093, 1200.0: 0.098, 1400.0: 0.087, 1600.0: 0.032, 1800.0: 0.005, 2000.0: 0.002, 2200.0: -0.005}
+T13 share of T^3 gain by ref-power bin: {0.0: 0.005, 200.0: 0.041, 400.0: 0.078, 600.0: 0.155, 800.0: 0.156, 1000.0: 0.14, 1200.0: 0.159, 1400.0: 0.157, 1600.0: 0.075, 1800.0: 0.028, 2000.0: 0.016, 2200.0: -0.008}
+
+=== C. torque spectrum ===
+
+=== D. K1 known-truth injection and pure power-scaling benchmark ===
+station       2.304520e+06
+E_true        3.370000e-02
+E_rec         3.290000e-02
+R_pp_true     2.583700e+00
+R_pp_rec      2.397300e+00
+D3_true       2.930000e-02
+D3_rec        2.710000e-02
+D10_3_true    2.860000e-02
+D10_3_rec     2.640000e-02
+C_true        8.684000e-01
+C_rec         8.001000e-01
+     E   R_pp     D3  D10_3     D4     D6     D8    D10    k     data   C_D3  C_D10_3   C_D4   C_D6   C_D8  C_D10
+0.0081 0.7058 0.0070 0.0068 0.0066 0.0060 0.0056 0.0053 1.01  T13_pre 0.8620   0.8432 0.8105 0.7385 0.6890 0.6517
+0.0077 1.0660 0.0066 0.0065 0.0063 0.0057 0.0053 0.0050 1.01 T13_post 0.8628   0.8444 0.8123 0.7407 0.6910 0.6532
+0.0156 1.3684 0.0130 0.0126 0.0120 0.0107 0.0098 0.0091 1.02  T13_pre 0.8335   0.8110 0.7720 0.6870 0.6295 0.5866
+0.0147 1.9553 0.0123 0.0120 0.0114 0.0102 0.0093 0.0087 1.02 T13_post 0.8363   0.8145 0.7766 0.6931 0.6358 0.5929
+0.0227 1.9182 0.0185 0.0179 0.0170 0.0149 0.0135 0.0124 1.03  T13_pre 0.8151   0.7903 0.7474 0.6546 0.5926 0.5469
+0.0213 2.7398 0.0174 0.0169 0.0160 0.0141 0.0128 0.0118 1.03 T13_post 0.8186   0.7946 0.7530 0.6620 0.6005 0.5548
+0.0296 2.4389 0.0237 0.0229 0.0216 0.0187 0.0167 0.0153 1.04  T13_pre 0.8011   0.7746 0.7288 0.6306 0.5655 0.5180
+0.0277 3.4765 0.0223 0.0216 0.0203 0.0177 0.0159 0.0146 1.04 T13_post 0.8053   0.7798 0.7355 0.6393 0.5749 0.5276
+0.0363 2.9386 0.0287 0.0277 0.0259 0.0222 0.0197 0.0180 1.05  T13_pre 0.7897   0.7618 0.7137 0.6112 0.5439 0.4952
+0.0338 4.2161 0.0268 0.0259 0.0244 0.0210 0.0187 0.0171 1.05 T13_post 0.7944   0.7675 0.7211 0.6209 0.5544 0.5059
+0.0428 3.3673 0.0334 0.0322 0.0300 0.0255 0.0225 0.0204 1.06  T13_pre 0.7801   0.7511 0.7011 0.5952 0.5263 0.4767
+0.0397 4.8389 0.0312 0.0301 0.0282 0.0241 0.0214 0.0194 1.06 T13_post 0.7851   0.7572 0.7089 0.6054 0.5373 0.4880
+0.0555 4.1942 0.0424 0.0407 0.0378 0.0316 0.0276 0.0248 1.08  T13_pre 0.7644   0.7335 0.6806 0.5694 0.4981 0.4474
+0.0512 5.9678 0.0394 0.0379 0.0352 0.0297 0.0261 0.0235 1.08 T13_post 0.7697   0.7400 0.6889 0.5802 0.5097 0.4592
+
+=== E. sensitivity grid (T13 corrected) ===
+     E   R_pp     D3  D10_3   C_D3  rank_R  rank_E  rank_D3               config
+0.0481 1.6656 0.0230 0.0215 0.4772     1.0     1.0      1.0              default
+0.0477 1.6619 0.0228 0.0214 0.4777     1.0     1.0      1.0               pbin25
+0.0485 1.7371 0.0230 0.0219 0.4748     1.0     1.0      1.0              pbin100
+0.0488 1.9012 0.0229 0.0215 0.4692     1.0     1.0      1.0                nsec4
+0.0495 1.7641 0.0255 0.0238 0.5155     1.0     1.0      1.0               nsec12
+0.0470 1.5875 0.0224 0.0210 0.4754     1.0     1.0      1.0               min_n8
+0.0501 1.8004 0.0239 0.0223 0.4761     1.0     1.0      1.0              min_n15
+0.0481 2.0990 0.0230 0.0215 0.4772     1.0     1.0      1.0            rated0.90
+0.0481 1.6447 0.0230 0.0215 0.4772     1.0     1.0      1.0            rated0.98
+0.0470 1.4194 0.0235 0.0216 0.5009     1.0     1.0      1.0       month_reweight
+0.0444 1.5928 0.0215 0.0200 0.4840     1.0     1.0      1.0 post_from_2021-11-01
+0.0540 1.7822 0.0267 0.0248 0.4943     1.0     1.0      1.0  pre_from_2020-10-01
+
+=== F. monthly event study ===
+
+=== G. replication K3 (ref T13) and null K3b (ref T01, T21) ===
+               set  n  share_R_pos      E   E_lo   E_hi   R_pp  R_pp_lo  R_pp_hi     D3  D3_lo  D3_hi  D10_3  D10_3_lo  D10_3_hi   C_D3   C_lo   C_hi
+K3_rollout_ref_T13 20       0.9500 0.0519 0.0320 0.0752 1.8201   1.4954   2.1385 0.0280 0.0201 0.0366 0.0275    0.0192    0.0361 0.5392 0.3053 0.8509
+  K3b_null_ref_T01 19       0.7368 0.0098 0.0037 0.0159 0.3313   0.1306   0.5186 0.0105 0.0076 0.0130 0.0106    0.0078    0.0130 1.0679 0.7610 2.2396
+  K3b_null_ref_T21 19       0.4737 0.0226 0.0141 0.0318 0.0526  -0.1475   0.2457 0.0135 0.0063 0.0217 0.0130    0.0058    0.0216 0.5979 0.4110 0.8544
+reproducibility check vs frozen K3: R +1.82, E +0.052, D3 +0.028, 19/20; K3b T01 R +0.33 E +0.010; T21 R +0.05 E +0.023
+
+DONE
