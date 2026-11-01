@@ -1,0 +1,1 @@
+Transcribed from log_ws.txt of paper_aeroup_ws.py (347b295) run 2026-11-01 on jeff's PC; raw files at C:\Users\ThinkPad\claude_project\scan_daily_q1\Q20261030_aeroup\paper_run\ws\out_ws\. Rows 2,334,142 (2020-2022 archives only).
