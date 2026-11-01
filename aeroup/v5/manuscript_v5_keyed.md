@@ -181,7 +181,7 @@ This research did not receive any specific grant from funding agencies in the pu
 We thank RES and the owners of the Hill of Towie wind farm for releasing the SCADA data, shutdown records and retrofit dates as an open dataset.
 
 ## Data and code availability
-The data are the Hill of Towie wind farm open dataset, version 2.1.0, Zenodo, https://doi.org/10.5281/zenodo.22662930 (CC BY 4.0) [@hot]. The frozen test scripts with their SHA-256 hashes, the paper analysis scripts and the figure code are available at https://github.com/jeff-1980/aeroup-vg-load-cost (version used for this paper: commit dfcc49c).
+The data are the Hill of Towie wind farm open dataset, version 2.1.0, Zenodo, https://doi.org/10.5281/zenodo.22662930 (CC BY 4.0) [@hot]. The frozen test scripts with their SHA-256 hashes, the paper analysis scripts and the figure code are available at https://github.com/jeff-1980/aeroup-vg-load-cost (version used for this paper: release v1.0.0, commit dfcc49c).
 
 ## Declaration of generative AI and AI-assisted technologies in the manuscript preparation process
 During the preparation of this work the author used Claude (Anthropic) in order to write analysis code and to draft and edit the text. After using this tool, the author reviewed and edited the content as needed and takes full responsibility for the content of the published article.
