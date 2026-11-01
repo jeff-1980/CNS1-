@@ -1,6 +1,6 @@
 # Drivetrain load cost of a vortex-generator retrofit (Hill of Towie)
 
-Code and results for: Y. Wang, Y. Tang, "Energy gain and drivetrain torque exposure of a vortex-generator retrofit: a field assessment at an operating wind farm" (submitted to *Renewable Energy*).
+Code and results for: Y. Wang, "Energy gain and drivetrain torque exposure of a vortex-generator retrofit: a field assessment at an operating wind farm" (submitted to *Renewable Energy*).
 
 ## Data
 Hill of Towie wind farm open dataset v2.1.0 (A. Clerc, E. Lingkan), Zenodo, https://doi.org/10.5281/zenodo.22662930, CC BY 4.0. Download the yearly archives `2020.zip` … `2023.zip`, `Hill_of_Towie_ShutdownDuration.zip` and the AeroUp install-date file into one folder (`ROOT`). The data are not redistributed here.

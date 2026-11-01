@@ -1,10 +1,9 @@
 # Energy gain and drivetrain torque exposure of a vortex-generator retrofit: a field assessment at an operating wind farm
 
-Yi Wang^a,*^, Yongqing Tang^b^
+Yi Wang
 
-^a^ College of Engineering, Lishui University, Lishui, Zhejiang 323000, China
-^b^ School of Physics, Mechanics and Electronics, Longyan University, Longyan, Fujian, China
-\* Corresponding author: jefflsxy@lsu.edu.cn
+College of Engineering, Lishui University, Lishui, Zhejiang 323000, China
+E-mail: jefflsxy@lsu.edu.cn
 
 ## Highlights
 - One retrofitted turbine and 20 unmodified neighbours form a natural experiment
@@ -169,10 +168,10 @@ C converts a validated energy uplift into a change in the quasi-static torque le
 - The exposure ratio can be estimated from routine SCADA data alongside standard energy-uplift validation. It screens the load-level side of a retrofit; fatigue damage and remaining life require load measurements that SCADA does not provide.
 
 ## CRediT authorship contribution statement
-**Yi Wang:** Conceptualization, Methodology, Software, Formal analysis, Data curation, Visualization, Writing – original draft. **Yongqing Tang:** Validation, Writing – review & editing.
+**Yi Wang:** Conceptualization, Methodology, Software, Formal analysis, Data curation, Visualization, Validation, Writing – original draft, Writing – review & editing.
 
 ## Declaration of competing interest
-The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
+The author declares no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
 
 ## Funding
 This research did not receive any specific grant from funding agencies in the public, commercial, or not-for-profit sectors.
@@ -184,7 +183,7 @@ We thank RES and the owners of the Hill of Towie wind farm for releasing the SCA
 The data are the Hill of Towie wind farm open dataset, version 2.1.0, Zenodo, https://doi.org/10.5281/zenodo.22662930 (CC BY 4.0) [18]. The frozen test scripts with their SHA-256 hashes, the paper analysis scripts and the figure code are available at https://github.com/jeff-1980/aeroup-vg-load-cost.
 
 ## Declaration of generative AI and AI-assisted technologies in the manuscript preparation process
-During the preparation of this work the authors used Claude (Anthropic) in order to write analysis code and to draft and edit the text. After using this tool, the authors reviewed and edited the content as needed and take full responsibility for the content of the published article.
+During the preparation of this work the author used Claude (Anthropic) in order to write analysis code and to draft and edit the text. After using this tool, the author reviewed and edited the content as needed and takes full responsibility for the content of the published article.
 
 ## Table 1. AeroUp installation dates (first and last day of works)
 | Turbine | First | Last | | Turbine | First | Last |

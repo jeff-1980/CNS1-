@@ -18,13 +18,13 @@ Using the open SCADA data of the Hill of Towie wind farm, where one turbine was 
 
 We believe the work fits the journal's scope on wind energy conversion and the operation of renewable power plants. It gives operators a method, requiring only standard SCADA data, to screen the drivetrain load-level side of an upgrade alongside its energy gain.
 
-The manuscript is original, has not been published, and is not under consideration elsewhere. Both authors approved the submission and declare no competing interests. The data are openly available, and all code is publicly released. Generative AI use is declared in the manuscript.
+The manuscript is original, has not been published, and is not under consideration elsewhere. I declare no competing interests. The data are openly available, and all code is publicly released. Generative AI use is declared in the manuscript.
 
-Suggested reviewers (none has collaborated with the authors):
+Suggested reviewers (none has collaborated with the author):
 1. Dr Wout Weijtjens, Vrije Universiteit Brussel, Belgium (wout.weijtjens@vub.be) – fatigue load monitoring and SCADA-based load estimation for wind turbines.
 2. Dr Shuangwen (Shawn) Sheng, National Renewable Energy Laboratory, USA (Shawn.Sheng@nrel.gov) – wind turbine drivetrain reliability.
 3. Dr Davide Astolfi, University of Perugia, Italy ({{email to confirm}}) – SCADA-based assessment of wind turbine power upgrades.
 
 Yours sincerely,
 
-Yi Wang (corresponding author), on behalf of both authors
+Yi Wang

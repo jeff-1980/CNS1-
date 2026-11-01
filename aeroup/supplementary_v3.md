@@ -2,7 +2,7 @@
 
 **What does a vortex-generator retrofit cost the drivetrain? Fleet evidence for the load price of an energy gain at an operating wind farm**
 
-Yi Wang, Yongqing Tang
+Yi Wang
 
 ## Table S1. Share of 10-minute records kept by the normal-operation filter (%), per turbine and year
 

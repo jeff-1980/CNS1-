@@ -1,14 +1,11 @@
 # Energy gain and drivetrain torque exposure of a vortex-generator retrofit: a field assessment at an operating wind farm
 
-**Yi Wang**^a,\*^, **Yongqing Tang**^b^
+**Yi Wang**
 
-^a^ College of Engineering, Lishui University, Lishui, Zhejiang 323000, China
+College of Engineering, Lishui University, Lishui, Zhejiang 323000, China
 
-^b^ School of Physics, Mechanics and Electronics, Longyan University, Longyan, Fujian, China
+Corresponding author: Yi Wang, College of Engineering, Lishui University, Lishui, Zhejiang 323000, China. E-mail: jefflsxy@lsu.edu.cn
 
-\* Corresponding author. College of Engineering, Lishui University, Lishui, Zhejiang 323000, China. E-mail: jefflsxy@lsu.edu.cn
-
-E-mail addresses: jefflsxy@lsu.edu.cn (Y. Wang), yq_tang@lyun.edu.cn (Y. Tang)
 
 ORCID: {{optional}}
 
