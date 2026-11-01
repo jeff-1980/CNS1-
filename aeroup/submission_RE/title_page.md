@@ -1,4 +1,4 @@
-# What does a vortex-generator retrofit cost the drivetrain? Fleet evidence for the load price of an energy gain at an operating wind farm
+# Energy gain and drivetrain torque exposure of a vortex-generator retrofit: a field assessment at an operating wind farm
 
 **Yi Wang**^a,\*^, **Yongqing Tang**^b^
 
@@ -12,4 +12,4 @@ E-mail addresses: jefflsxy@lsu.edu.cn (Y. Wang), yq_tang@lyun.edu.cn (Y. Tang)
 
 ORCID: {{optional}}
 
-Word count (Sections 1–6, excluding abstract, tables, captions and references): about 4,400.
+Word count (Sections 1–6, excluding abstract, tables, captions and references): about 5,700.

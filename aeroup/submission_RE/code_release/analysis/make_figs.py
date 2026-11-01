@@ -1,4 +1,5 @@
-"""Figures for the AeroUp paper from paper_aeroup.py CSV outputs. Usage: python make_figs.py <OUTDIR> <FIGDIR>"""
+"""Figures for the AeroUp paper from paper_aeroup.py CSV outputs. Usage: python make_figs.py <OUTDIR> <FIGDIR> [REVDIR]
+REVDIR (optional): outputs of paper_aeroup_rev.py; Fig 5 then uses the joint-bootstrap intervals and adds the mechanism counterfactuals."""
 import os
 import sys
 
@@ -9,6 +10,7 @@ import numpy as np
 import pandas as pd
 
 D, F = sys.argv[1], sys.argv[2]
+REV = sys.argv[3] if len(sys.argv) > 3 else None
 os.makedirs(F, exist_ok=True)
 T13 = 2304522
 BLUE, ORANGE, AQUA, GREY, INK, MUTED = "#2a78d6", "#eb6834", "#1baf7a", "#9a9993", "#0b0b0b", "#52514e"
@@ -30,7 +32,7 @@ def save(fig, n):
 A = pd.read_csv(f"{D}/A_per_turbine_T13window.csv", index_col="station")
 fig, axs = plt.subplots(1, 3, figsize=(7.2, 2.6))
 for ax, (k, lab, sc) in zip(axs, [("E", "Energy ratio change (%)", 100), ("R_pp", "Time at rated power (pp)", 1),
-                                   ("D3", "Torque DEL proxy, m = 3 (%)", 100)]):
+                                   ("D3", "Torque exposure index, m = 3 (%)", 100)]):
     v = (A[k] * sc).sort_values()
     c = [BLUE if s == T13 else GREY for s in v.index]
     ax.barh(range(len(v)), v.to_numpy(), color=c, height=0.7)
@@ -81,12 +83,17 @@ for ax in axs:
     ax.axhline(0, color=MUTED, lw=0.8)
 save(fig, "fig4_power_bins")
 
-# ---- Fig 5: load cost ratio vs exponent: observed vs pure-scaling benchmark
+# ---- Fig 5: exposure ratio vs exponent: observed vs pure-scaling benchmark
 S = pd.read_csv(f"{D}/A_T13_corrected_summary.csv").set_index("quantity")
 SC = pd.read_csv(f"{D}/D_pure_scaling_benchmark.csv")
 ms = [("D3", 3), ("D10_3", 10 / 3), ("D4", 4), ("D6", 6), ("D8", 8), ("D10", 10)]
 fig, ax = plt.subplots(figsize=(3.5, 2.8))
-obs = [S.loc["C_" + k] for k, _ in ms]
+if REV:
+    J = pd.read_csv(f"{REV}/R1_joint_bootstrap_summary.csv", index_col=0)
+    ms = [("D3", 3), ("D10_3", 10 / 3), ("D4", 4), ("D6", 6), ("D10", 10)]
+    obs = [J.loc["C_" + k] for k, _ in ms]
+else:
+    obs = [S.loc["C_" + k] for k, _ in ms]
 mm = [m for _, m in ms]
 ax.errorbar(mm, [o.estimate for o in obs], yerr=[[o.estimate - o.lo for o in obs], [o.hi - o.estimate for o in obs]],
             color=BLUE, marker="o", ms=5, lw=1.5, capsize=2, label="T13 measured (drift-corrected)")
@@ -96,8 +103,14 @@ k0 = kk[np.argmin(np.abs(kk - (1 + e13)))]
 bench = SC[(SC.data == "T13_pre") & (SC.k == k0)].iloc[0]
 ax.plot(mm, [bench["C_" + k] for k, _ in ms], color=GREY, marker="s", ms=4, lw=1.2, ls="--",
         label=f"pure power scaling ×{k0:.2f}, capped")
+if REV:
+    M = pd.read_csv(f"{REV}/R4_mechanism_counterfactuals.csv", index_col=0)
+    for row, lab, c, mk in [("b_measured_bin_profile_fixed_speed", "measured gain profile, speed fixed", ORANGE, "^"),
+                            ("c_bin_profile_plus_Kw2_speed", "gain profile + Kω² speed response", AQUA, "v")]:
+        ax.plot(mm, [M.loc[row, "C_" + k] for k, _ in ms], color=c, marker=mk, ms=4, lw=1, ls=":", label=lab)
+ax.set_ylim(0, 1)
 ax.set_xlabel("S-N exponent m")
-ax.set_ylabel("Load cost ratio C = ΔDEL / ΔE")
+ax.set_ylabel("Exposure ratio C = D_m / E")
 ax.legend(fontsize=6, loc="upper right")
 save(fig, "fig5_cost_ratio")
 
@@ -106,7 +119,7 @@ G = pd.read_csv(f"{D}/G_replication_pooled.csv").set_index("set")
 fig, axs = plt.subplots(1, 3, figsize=(7.2, 2.0))
 labs = {"K3_rollout_ref_T13": "2022–23 rollout\n(ref T13)", "K3b_null_ref_T01": "null 2020→21\n(ref T01)",
         "K3b_null_ref_T21": "null 2020→21\n(ref T21)"}
-for ax, (k, lab, sc) in zip(axs, [("R_pp", "Time at rated (pp)", 1), ("E", "Energy (%)", 100), ("D3", "Torque DEL m=3 (%)", 100)]):
+for ax, (k, lab, sc) in zip(axs, [("R_pp", "Time at rated (pp)", 1), ("E", "Energy (%)", 100), ("D3", "Torque exposure m=3 (%)", 100)]):
     for i, s in enumerate(G.index):
         c = BLUE if s.startswith("K3_") else GREY
         ax.errorbar(G.loc[s, k] * sc, i, xerr=[[(G.loc[s, k] - G.loc[s, k + "_lo"]) * sc], [(G.loc[s, k + "_hi"] - G.loc[s, k]) * sc]],
@@ -154,7 +167,7 @@ save(fig, "figS2_sensitivity")
 # ---- Fig S3: known-truth recovery
 K = pd.read_csv(f"{D}/D_known_truth.csv")
 fig, axs = plt.subplots(1, 3, figsize=(7.2, 2.4))
-for ax, (k, lab, sc) in zip(axs, [("E", "Energy (%)", 100), ("R_pp", "Time at rated (pp)", 1), ("D3", "Torque DEL m=3 (%)", 100)]):
+for ax, (k, lab, sc) in zip(axs, [("E", "Energy (%)", 100), ("R_pp", "Time at rated (pp)", 1), ("D3", "Torque exposure m=3 (%)", 100)]):
     t, r = K[k + "_true"] * sc, K[k + "_rec"] * sc
     ax.scatter(t, r, color=BLUE, s=14)
     lo, hi = min(t.min(), r.min()), max(t.max(), r.max())
@@ -178,7 +191,7 @@ for k in ["E", "R_pp", "D3"]:
 Yd = pd.DataFrame(rows)
 Yd.to_csv(f"{D}/F2_yoy_same_month.csv", index=False)
 fig, axs = plt.subplots(3, 1, figsize=(7.2, 5.0), sharex=True)
-for ax, (k, lab, sc) in zip(axs, [("E", "Energy (%)", 100), ("R_pp", "Time at rated (pp)", 1), ("D3", "Torque DEL m=3 (%)", 100)]):
+for ax, (k, lab, sc) in zip(axs, [("E", "Energy (%)", 100), ("R_pp", "Time at rated (pp)", 1), ("D3", "Torque exposure m=3 (%)", 100)]):
     g = Yd[Yd.k == k]
     x = g.p.dt.to_timestamp()
     ax.fill_between(x, g.lo * sc, g.hi * sc, color=GREY, alpha=0.35, lw=0, label="unmodified turbines, 10–90%")

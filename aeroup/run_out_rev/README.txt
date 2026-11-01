@@ -1,0 +1,1 @@
+Results of analysis/paper_aeroup_rev.py (commit 23257cf, run 2026-11-01, 1000 joint bootstrap draws), transcribed from log_rev.txt. Raw output files: C:\Users\ThinkPad\claude_project\scan_daily_q1\Q20261030_aeroup\paper_run\rev\.

@@ -98,7 +98,7 @@ def arrow(x0, y0, x1, y1):
 box(3, 26, 38, 24, "1  Farm state", "for every 10-min stamp:\nmean power of reference\nturbines (≥10 operating),\n50 kW bins  ×  circular-mean\nyaw, 8 sectors  →  cell c", GREY)
 box(49, 26, 38, 24, "2  Counterfactual", "target turbine's own\npre-window records in c\n→ expected P, time at\nrated, torque T = P/ω\nraised to m", GREY)
 box(95, 26, 38, 24, "3  Effect", r"post records: observed $-$ expected" "\n" r"$E=\Sigma P/\Sigma\hat{P}-1$" "\n" r"$R=\Delta$ share with $P\geq0.95P_r$" "\n" r"$D_m=(\Sigma T^m/\Sigma\hat{T}^m)^{1/m}-1$", BLUE)
-box(141, 26, 36, 24, "4  Load cost ratio", r"$C=D_m/E$" "\n\ncompared with pure\npower scaling at\nunchanged rotor speed", BLUE)
+box(141, 26, 36, 24, "4  Exposure ratio", r"$C=D_m/E$" "\n\ncompared with pure\npower scaling at\nunchanged rotor speed", BLUE)
 arrow(41.8, 38, 48.2, 38)
 arrow(87.8, 38, 94.2, 38)
 arrow(133.8, 38, 140.2, 38)

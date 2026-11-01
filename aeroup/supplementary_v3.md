@@ -41,7 +41,7 @@ Kept = shutdown duration zero, P > 0, power set-point ≥ 2290 kW and main-shaft
 **Fig. S2.** Sensitivity of the drift-corrected T13 effects to one-at-a-time changes of the specification.
 
 ![](figs/figS3_known_truth.png)
-**Fig. S3.** Known-truth check: +4% power (capped) injected into each unmodified turbine; recovered versus injected values.
+**Fig. S3.** Known-truth check: +4% power (capped) injected into each unmodified turbine; recovered versus injected values. The median is recovered without bias; the spread across turbines reflects each turbine's own null drift.
 
 ![](figs/figS4_event_study_raw.png)
 **Fig. S4.** Monthly effects relative to the pre-retrofit cells for T13 (blue) and the unmodified turbines (median and interquartile range). Pre-retrofit months are in-sample and show T13's own seasonal deviation from the fleet.
