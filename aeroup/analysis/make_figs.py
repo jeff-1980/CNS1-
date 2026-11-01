@@ -40,7 +40,7 @@ for ax, (k, lab, sc) in zip(axs, [("E", "Energy ratio change (%)", 100), ("R_pp"
     ax.set_yticklabels([NAME(s) for s in v.index], fontsize=6)
     ax.set_xlabel(lab)
     ax.grid(axis="y", visible=False)
-axs[0].text(0.02, 0.02, "dashed: median of 20\nunmodified turbines", transform=axs[0].transAxes, fontsize=6, color=MUTED)
+fig.text(0.5, 0.995, "Blue: T13 (retrofitted).  Grey: 20 unmodified turbines.  Dashed: their median (null drift).", ha="center", va="top", fontsize=7, color=MUTED)
 save(fig, "fig2_per_turbine")
 
 # ---- Fig 3: monthly event study
@@ -59,7 +59,7 @@ for ax, (k, lab, sc) in zip(axs, [("R_pp", "Time at rated (pp)", 1), ("E", "Ener
     ax.set_ylabel(lab)
 axs[0].text(pd.Timestamp("2021-10-05"), axs[0].get_ylim()[1] * 0.85, "T13 retrofit", color=INK, fontsize=7)
 axs[0].legend(loc="upper left", fontsize=6, ncol=3)
-save(fig, "fig3_event_study")
+save(fig, "figS4_event_study_raw")
 
 # ---- Fig 4: where the energy and load gains occur (T13 minus median of others, per ref-power bin)
 B = pd.read_csv(f"{D}/B_power_bin_decomposition.csv")
@@ -135,7 +135,7 @@ w = mid.to_numpy()[1] - mid.to_numpy()[0]
 axs[1].bar(mid, (c13.obs - c13.exp).to_numpy() * 100 - oth * 100, width=w * 0.85, color=BLUE)
 axs[1].axhline(0, color=MUTED, lw=0.8)
 axs[1].set_xlabel("Main-shaft torque proxy (MNm)")
-axs[1].set_ylabel("Observed − expected, drift-corrected (pp)")
+axs[1].set_ylabel("Obs. − exp., corrected (pp)")
 save(fig, "figS1_torque_spectrum")
 
 # ---- Fig S2: sensitivity grid
@@ -162,4 +162,38 @@ for ax, (k, lab, sc) in zip(axs, [("E", "Energy (%)", 100), ("R_pp", "Time at ra
     ax.set_xlabel(f"Injected truth: {lab}")
     ax.set_ylabel("Recovered")
 save(fig, "figS3_known_truth")
+# ---- Fig 3: same-calendar-month year-on-year difference-in-differences (T13 minus fleet median)
+M = pd.read_csv(f"{D}/F_monthly_event_study.csv")
+M["p"] = pd.PeriodIndex(M["month"], freq="M")
+rows = []
+for k in ["E", "R_pp", "D3"]:
+    v = M.pivot(index="p", columns="station", values=k)
+    for p in v.index:
+        q = p - 12
+        if q in v.index:
+            d = v.loc[p] - v.loc[q]
+            rows.append({"p": p, "k": k, "did": d[T13] - d.drop(T13).median(),
+                         "lo": (d.drop(T13) - d.drop(T13).median()).quantile(0.1), "hi": (d.drop(T13) - d.drop(T13).median()).quantile(0.9),
+                         "rank": int((d >= d[T13]).sum())})
+Yd = pd.DataFrame(rows)
+Yd.to_csv(f"{D}/F2_yoy_same_month.csv", index=False)
+fig, axs = plt.subplots(3, 1, figsize=(7.2, 5.0), sharex=True)
+for ax, (k, lab, sc) in zip(axs, [("E", "Energy (%)", 100), ("R_pp", "Time at rated (pp)", 1), ("D3", "Torque DEL m=3 (%)", 100)]):
+    g = Yd[Yd.k == k]
+    x = g.p.dt.to_timestamp()
+    ax.fill_between(x, g.lo * sc, g.hi * sc, color=GREY, alpha=0.35, lw=0, label="unmodified turbines, 10–90%")
+    post = (g.p >= pd.Period("2021-10", "M")).to_numpy()
+    trans = (g.p == pd.Period("2021-09", "M")).to_numpy()
+    pre = ~post & ~trans
+    ax.bar(x, g.did * sc, width=20, color=np.where(post, BLUE, np.where(trans, "#ffffff", GREY)),
+           edgecolor=np.where(trans, ORANGE, "none"), hatch=None)
+    ax.axvline(pd.Timestamp("2021-09-26"), color=ORANGE, lw=1.2)
+    ax.axhline(0, color=MUTED, lw=0.8)
+    ax.set_ylabel(lab)
+    mp, mq = g.did[pre].mean() * sc, g.did[post].mean() * sc
+    ax.set_title(f"pre-retrofit months mean {mp:+.2f}   |   post-retrofit months mean {mq:+.2f}   (Sep 2021 = retrofit month, open bar)",
+                 fontsize=6.5, color=MUTED, loc="left")
+axs[0].legend(loc="lower left", fontsize=6)
+axs[-1].set_xlabel("Month (difference to the same month one year earlier)")
+save(fig, "fig3_event_study")
 print("figures written to", F)
