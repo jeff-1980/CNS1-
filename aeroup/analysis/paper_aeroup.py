@@ -9,6 +9,7 @@ Usage: python paper_aeroup.py <ROOT with 2020..2023.zip + Hill_of_Towie_Shutdown
 Read-only on ROOT. Writes CSVs and log lines to OUTDIR.
 """
 import glob
+import io
 import os
 import re
 import sys
@@ -20,6 +21,8 @@ import pandas as pd
 ROOT, OUT = sys.argv[1], sys.argv[2]
 NBOOT = int(sys.argv[3]) if len(sys.argv) > 3 else 2000
 os.makedirs(OUT, exist_ok=True)
+if os.path.exists(f"{OUT}/log.txt"):
+    os.remove(f"{OUT}/log.txt")  # fresh log per run (only our own output file)
 RATED = 2300.0
 T13 = 2304522
 STATIONS = list(range(2304510, 2304531))
@@ -39,18 +42,29 @@ def log(*a):
 
 
 # ------------------------------------------------------------------ inventory
+def read_small(fh):
+    raw = fh.read()
+    for enc in ("utf-8", "cp1252", "latin-1"):
+        try:
+            return pd.read_csv(io.StringIO(raw.decode(enc)))
+        except (UnicodeDecodeError, pd.errors.ParserError):
+            continue
+    return pd.DataFrame({"unreadable": [len(raw)]})
+
+
 log("ROOT files:", sorted(os.path.basename(p) for p in glob.glob(f"{ROOT}/*")))
 for p in sorted(glob.glob(f"{ROOT}/*")):
     if p.lower().endswith(".csv") and os.path.getsize(p) < 2_000_000:
         log(f"\n--- small csv {os.path.basename(p)} ---")
-        log(pd.read_csv(p).to_string(max_rows=80))
+        with open(p, "rb") as fh:
+            log(read_small(fh).to_string(max_rows=80))
     if p.lower().endswith(".zip") and not re.search(r"/20\d\d\.zip$", p):
         with zipfile.ZipFile(p) as z:
             log(f"zip {os.path.basename(p)}: {z.namelist()[:20]}")
             for n in z.namelist():
                 if n.lower().endswith(".csv") and z.getinfo(n).file_size < 200_000:
                     with z.open(n) as fh:
-                        log(f"--- {n} ---\n" + pd.read_csv(fh).to_string(max_rows=80))
+                        log(f"--- {n} ---\n" + read_small(fh).to_string(max_rows=80))
 
 
 def list_cols(table, year=2021):
