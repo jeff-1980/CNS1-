@@ -30,7 +30,7 @@ Yi Wang
 | T20 | 83.7 | 75.8 | 71.2 | 69.5 |
 | T21 | 85.2 | 78.9 | 74.9 | 71.7 |
 
-Kept = shutdown duration zero, P > 0, power set-point ≥ 2290 kW and main-shaft speed > 0.3 rad/s. All turbines: 77.3% (2020), 71.9% (2021), 66.6% (2022), 66.9% (2023).
+Kept = shutdown duration zero, P > 0, power set-point ≥ 2290 kW and main-shaft speed > 0.3 rad/s. All turbines: 77.3% (2020), 71.9% (2021), 66.6% (2022), 66.9% (2023); 70.7% pooled over 2020–2023.
 
 ## Supplementary figures
 
@@ -47,5 +47,5 @@ Kept = shutdown duration zero, P > 0, power set-point ≥ 2290 kW and main-shaft
 **Fig. S4.** Monthly effects relative to the pre-retrofit cells for T13 (blue) and the unmodified turbines (median and interquartile range). Pre-retrofit months are in-sample and show T13's own seasonal deviation from the fleet.
 
 ![](figs/figS5_wind_speed_bins.png)
-**Fig. S5.** T13's drift-corrected effect by 1 m/s wind-speed bin, binned on the mean nacelle wind speed of the reference turbines (blue) and on T13's own nacelle anemometer (orange). (a) Net power uplift relative to expected power; (b) share of T13's total net energy gain. Bins holding less than 0.5% of records are omitted. Shaded: 10–18 m/s, where [20] locates most of the gain.
+**Fig. S5.** T13's drift-corrected effect by 1 m/s wind-speed bin, binned on the mean nacelle wind speed of the reference turbines (blue) and on T13's own nacelle anemometer (orange). (a) Net power uplift relative to expected power; (b) share of T13's total net energy gain. Bins holding less than 0.5% of records are omitted. Shaded: 10–18 m/s, where Wang and Vidal (2026; ref. [49] of the main text) locate most of the gain.
 
