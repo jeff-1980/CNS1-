@@ -24,7 +24,7 @@ def box(x, y, w, h, title, body, c):
 
 box(2, 6, 27, 29, "Natural experiment", "Hill of Towie, 21 turbines\n1 retrofitted with vortex\ngenerators (Sep 2021),\n20 unmodified for 9 months\n\nopen 10-min SCADA\nreference-cell estimator\n+ placebo drift correction", GREY)
 box(35, 6, 25, 29, "Retrofit effect", "", BLUE)
-for i, (lab, q, unit, sc) in enumerate([("Energy", "E", "%", 100), ("Time at rated", "R_pp", " pp", 1), ("Torque DEL (m=3)", "D3", "%", 100)]):
+for i, (lab, q, unit, sc) in enumerate([("Energy", "E", "%", 100), ("Time at rated", "R_pp", " pp", 1), ("Torque exposure (m=3)", "D3", "%", 100)]):
     y = 26 - 6.5 * i
     ax0.text(47.5, y, lab, ha="center", fontsize=11, color=MUTED)
     ax0.text(47.5, y - 3.2, f"+{A.loc[q,'estimate']*sc:.1f}{unit}", ha="center", fontsize=17, fontweight="bold", color=BLUE)
@@ -41,7 +41,7 @@ bench = [B[f"C_{k}"] for k in keys]
 ax.plot(ms, bench, "-", color=GREY, lw=2, label="pure power scaling")
 ax.fill_between(ms, lo, hi, color=BLUE, alpha=0.2, lw=0)
 ax.plot(ms, C, "-o", color=BLUE, lw=2, label="measured")
-ax.set_xlabel("S-N exponent m"); ax.set_ylabel("C = ΔDEL / ΔE")
+ax.set_xlabel("S-N exponent m"); ax.set_ylabel("Exposure ratio C = D_m / E")
 ax.set_ylim(0, 1); ax.legend(frameon=False, fontsize=10, loc="upper right")
 for s in ["top", "right"]:
     ax.spines[s].set_visible(False)
