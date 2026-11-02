@@ -80,8 +80,24 @@ These cases are illustrations, not confirmatory evidence:
 - **81 DARM:** the proposed method did not exceed ERM or Mixup under any protocol.
 - **Rankings:** in three objects (14, 42, 30) the method ranking differs from the paper's: in 42 an ablation outranks the full model, and in 30 ablations beat the full model.
 
+## 3.8 Disclosure in the wider literature (static coding; S3)
+
+Numbers from `results/static_coding/ai_coding/analysis.json` (codebook v1) and `analysis_v1.1.json` (S4a and S8 recoded under v1.1). All counts are out of the 79 sampled papers with full text (paper 003 had no accessible full text and is coded X). Ranges run from the cells both models agreed on (lower bound) to those cells plus every disputed cell in which either model gave that code (upper bound). These are descriptive results: no human coder checked the AI codes (deviation, 2026-10-29 and 2026-11-02).
+
+**Disclosure of the checkpoint rule (S3; item S4a, v1.1).** Both models agree that 2 papers state in the text which epoch or checkpoint their reported numbers come from; counting every disputed cell where either model coded "explicit", the upper bound is 10 (3–13%). Under codebook v1 the same bounds are 4–14 (5–18%). 48–63 papers (61–80%) say nothing about checkpoint selection, and 10–27 mention it only vaguely.
+
+**Code and artefacts (S3 code rule, S4b, S8).** One paper links its own code in the text, so the code-based checkpoint rule (S3) and the text–code consistency check (S4b) could be assessed for one paper only. Under v1.1, 76–77 papers release no code, weights, training logs or per-run results, and 2–3 release code.
+
+**Evaluation design (S1, S2, S5–S7, v1).**
+- Split unit: 26–38 papers split windows or samples at random, 10–15 split by operating condition or domain, and 29–40 do not say. No paper splits by recording file or by bearing, under either model.
+- Validation: 6–19 papers select or tune on the test split, 22–29 use no validation split, 11 use a separate one, and 25–35 do not say.
+- Repeated runs: 51–55 papers do not report how many times they trained; 48–59 report no spread across runs.
+- Metrics: 31–34 report accuracy only.
+- Noise protocol: 18–21 run no noise experiment; 6–9 add noise to test data only; 8–13 add it to both training and test data.
+
+**Reliability of the AI coding.** Two models from different vendors (Claude Opus 5.5 via the Anthropic batch API; DeepSeek v4-pro at temperature 0) coded each paper three times from the same frozen prompt and input pack. A model's code for a cell is its majority over the three runs; at least two runs agreed in 96–100% of cells for every item. Quotes were found verbatim in the input for 99.7% (Claude) and 93.1% (DeepSeek) of non-empty quotes. Between models, Cohen's κ was 0.70–1.00 for eight of ten items (PABAK 0.72–1.00). Two items fell below the pre-registered 0.6 threshold under v1: S4a (κ 0.48, PABAK 0.61) and S8 (κ 0.49, PABAK 0.92). After rewriting their definitions (codebook v1.1) and recoding, S8 reached κ 1.00 and S4a κ 0.51 (PABAK 0.67). S4a is therefore reported as a low-confidence item. Of its 19 disputed cells under v1.1, 11 are between "vague" and "not stated" and 8 involve "explicit". 87 of 790 cells (11%) were disputed under v1.
+
 ## Still open for this section
 
-- **S3:** static coding still needs a second coder.
 - **S4 and S5:** checkpoint provenance and code lineage.
 - **Figure:** `fig_inflation.pdf` (a: I_o by object with seed-bootstrap 95% CI; b: best_rep − last against h, coloured by author rule) is done; captions still to write.
