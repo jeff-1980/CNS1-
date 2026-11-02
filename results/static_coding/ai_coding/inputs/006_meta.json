@@ -2,20 +2,24 @@
  "draw_order": 6,
  "pages": 16,
  "links_found": [
-  "https://github.com/sliu7102/SQ-"
+  "https://github.com/sliu7102/SQ-dataset-with-variable-speed-for-fault-diagnosis"
  ],
  "code": {
-  "status": "all_clones_failed",
+  "status": "ok",
   "repos": [
    {
-    "url": "https://github.com/sliu7102/SQ-",
-    "status": "clone_failed",
-    "err": "remote: Repository not found.\nfatal: repository 'https://github.com/sliu7102/SQ-/' not found"
+    "url": "https://github.com/sliu7102/SQ-dataset-with-variable-speed-for-fault-diagnosis",
+    "status": "ok",
+    "commit": "86e5e5c09dd01547f7d549b689cac1ab4dad4fd9",
+    "dir": "/mnt/d/audit_data/ai_coding_repos/006/SQ-dataset-with-variable-speed-for-fault-diagnosis"
    }
-  ]
+  ],
+  "n_files_kept": 2,
+  "n_files_total": 110,
+  "truncated": true
  },
  "paper_sha256": "f9363a5832bd93e23f7ad4c0f81d73d614bf3ba3a84029b3aae0f96e00ce51d7",
- "code_sha256": "b340cab2bea7032a3adf657295362acd26aefd645aaae386d8001f36f8d7cdff",
+ "code_sha256": "1af06001c62fa36193c87a01d0185e711f37065ae25259e67c5a4bb9580993bb",
  "paper_chars": 54128,
- "code_chars": 7
+ "code_chars": 7037
 }
