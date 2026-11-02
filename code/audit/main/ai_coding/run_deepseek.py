@@ -36,15 +36,38 @@ def call(model, system, user):
             print('  retry after', repr(e)[:120]); time.sleep(2 ** (attempt + 2))
 
 
+def wait_off_peak(margin_min=10):
+    """RULES_v1 §1: only start calls off-peak (Beijing weekdays 9-12, 14-18 are peak).
+    DEEPSEEK_ALLOW_PEAK=1 skips this (jeff 2026-11-02: run without waiting, top up if needed)."""
+    while os.environ.get('DEEPSEEK_ALLOW_PEAK') != '1':
+        bj = time.gmtime(time.time() + 8 * 3600)
+        m = bj.tm_hour * 60 + bj.tm_min
+        peak = bj.tm_wday < 5 and any(s - margin_min <= m < e for s, e in ((540, 720), (840, 1080)))
+        if not peak:
+            return
+        time.sleep(60)
+
+
+def balance():
+    req = urllib.request.Request('https://api.deepseek.com/user/balance',
+                                 headers={'Authorization': 'Bearer ' + os.environ['DEEPSEEK_API_KEY']})
+    return float(json.load(urllib.request.urlopen(req, timeout=60))['balance_infos'][0]['total_balance'])
+
+
 if __name__ == '__main__':
-    model, run, papers = sys.argv[1], int(sys.argv[2]), sys.argv[3:]
+    from concurrent.futures import ThreadPoolExecutor
+    model, run, workers, papers = sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), sys.argv[4:]
     system, user_t, hashes = templates()
     out = f'{D}/raw/deepseek/{model}/run{run}'
     os.makedirs(out, exist_ok=True)
-    for a in papers:
+
+    def one(a):
         n = int(a)
         if os.path.exists(f'{out}/{n:03d}.json'):
-            print(n, 'exists, skipped'); continue
+            print(n, 'exists, skipped'); return
+        wait_off_peak()
+        if balance() < 3:
+            print(n, 'balance below 3 CNY, stopped'); return
         paper = open(f'{D}/inputs/{n:03d}_paper.txt', encoding='utf-8').read()
         code = open(f'{D}/inputs/{n:03d}_code.txt', encoding='utf-8').read()
         user = user_t.replace('{PAPER}', paper).replace('{CODE}', code)
@@ -61,4 +84,14 @@ if __name__ == '__main__':
         except Exception:
             ok = 'PARSE_FAIL'
         print(n, r.get('model'), '| tokens in', u.get('prompt_tokens'), 'out', u.get('completion_tokens'),
-              '| items', ok, '|', rec['seconds'], 's')
+              '| items', ok, '|', rec['seconds'], 's', flush=True)
+
+    def safe(a):
+        try:
+            one(a)
+        except Exception as e:
+            print(a, 'FAILED', repr(e)[:200], flush=True)
+
+    with ThreadPoolExecutor(workers) as ex:
+        list(ex.map(safe, papers))
+    print('run', run, 'done', time.strftime('%H:%M:%SZ', time.gmtime()), flush=True)
