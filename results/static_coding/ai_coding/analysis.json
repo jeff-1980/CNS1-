@@ -96,52 +96,62 @@
   "S1_split_unit": {
    "n": 79,
    "agreement": 0.81,
-   "kappa": 0.699
+   "kappa": 0.699,
+   "pabak": 0.715
   },
   "S2_validation": {
    "n": 79,
    "agreement": 0.81,
-   "kappa": 0.735
+   "kappa": 0.735,
+   "pabak": 0.747
   },
   "S3_checkpoint_rule_code": {
    "n": 79,
    "agreement": 1.0,
-   "kappa": 1.0
+   "kappa": 1.0,
+   "pabak": 1.0
   },
   "S4a_text_discloses": {
    "n": 76,
    "agreement": 0.737,
-   "kappa": 0.478
+   "kappa": 0.478,
+   "pabak": 0.605
   },
   "S4b_text_matches_code": {
    "n": 79,
    "agreement": 1.0,
-   "kappa": 1.0
+   "kappa": 1.0,
+   "pabak": 1.0
   },
   "S5_runs": {
    "n": 79,
    "agreement": 0.937,
-   "kappa": null
+   "kappa": null,
+   "pabak": null
   },
   "S5_spread_reported": {
    "n": 79,
    "agreement": 0.861,
-   "kappa": 0.7
+   "kappa": 0.7,
+   "pabak": 0.791
   },
   "S6_metrics": {
    "n": 77,
    "agreement": 0.974,
-   "kappa": 0.961
+   "kappa": 0.961,
+   "pabak": 0.965
   },
   "S7_noise_protocol": {
    "n": 78,
    "agreement": 0.885,
-   "kappa": 0.85
+   "kappa": 0.85,
+   "pabak": 0.856
   },
   "S8_traceability": {
    "n": 78,
    "agreement": 0.949,
-   "kappa": 0.487
+   "kappa": 0.487,
+   "pabak": 0.923
   }
  },
  "merge": {
