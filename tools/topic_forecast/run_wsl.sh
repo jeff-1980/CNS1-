@@ -10,6 +10,11 @@ if [ ! -x "$VENV/bin/python" ]; then
   python3 -m venv "$VENV"
   "$VENV/bin/pip" install -q numpy scipy pandas scikit-learn lightgbm
 fi
+# Non-interactive shells skip ~/.bashrc: load the key line from ~/.profile or ~/.bashrc if needed
+if [ -z "${OPENALEX_API_KEY:-}" ]; then
+  line="$(grep -h '^export OPENALEX_API_KEY=' "$HOME/.profile" "$HOME/.bashrc" 2>/dev/null | tail -1 || true)"
+  [ -n "$line" ] && eval "$line"
+fi
 mkdir -p "$DATA" "$OUT"
 case "${1:-}" in
   probe) "$VENV/bin/python" "$HERE/fetch_openalex.py" --out "$DATA" --probe ;;
