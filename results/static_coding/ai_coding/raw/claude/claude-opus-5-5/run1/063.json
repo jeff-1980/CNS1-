@@ -1,0 +1,52 @@
+{
+ "draw_order": 63,
+ "requested_model": "claude-opus-5-5",
+ "run": 1,
+ "effort": "high",
+ "prompt_sha256": "bdb13fd28c16e90c9140ac7fe162301b2ef010f622778525721f76e7012ad67d",
+ "codebook_sha256": "e6c4b453b07d3fd331ff6248c90eba80305dde1dbb24b0131da48d1b7b0b546e",
+ "batch": "msgbatch_01Cov2rG6fArYj1tQrcyfqKs",
+ "ended_at_utc": "2026-11-02 04:45:46.501475+00:00",
+ "system_sha256": "604d5fab156c4dac03cc13aa43369a6587e98db5390087e8beb6a02a328753cc",
+ "user_sha256": "98584ffac946a7a4fbd370a62653809f8a2fd7fb151e26e6908bf7c16522dfb3",
+ "response": {
+  "id": "msg_011CgdVRTfXdeXR9S5JK3SoU",
+  "container": null,
+  "content": [
+   {
+    "signature": "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",
+    "thinking": "",
+    "type": "thinking"
+   },
+   {
+    "citations": null,
+    "text": "```json\n{\n  \"S1_split_unit\": {\n    \"code\": \"D\",\n    \"quote\": \"CCC has the highest average accuracy on 12 transfer tasks.\",\n    \"location\": \"p.8\",\n    \"reason\": \"The headline results are averages over cross-condition transfer tasks: PU tasks 0→1 and so on use different speed, torque and radial-force settings (Table 1), and LZUT tasks use different speeds (Table 3). Training and testing are separated by working condition (source domain → target domain). Within each domain the paper also uses an 80%/20% sample split (p.6), but the unit that separates training from evaluation in the headline setting is the working condition.\"\n  },\n  \"S2_validation\": {\n    \"code\": \"A\",\n    \"quote\": \"80% of the samples are utilized for training and the remaining samples are for testing.\",\n    \"location\": \"p.6\",\n    \"reason\": \"Only a training/testing split is described. No validation set appears anywhere in the paper. The dropout-rate and α/β sensitivity analyses report accuracy on the transfer task 0→1, but the main experiments set α and β with a fixed formula, so there is no explicit evidence that the test set was used to select the reported configuration. Coded A.\"\n  },\n  \"S3_checkpoint_rule_code\": {\n    \"code\": \"N\",\n    \"quote\": \"\",\n    \"location\": \"\",\n    \"reason\": \"The code section is NO_CODE, and the paper gives no code repository link.\"\n  },\n  \"S4a_text_discloses\": {\n    \"code\": \"Y\",\n    \"quote\": \"It should be pointed out that for each method, the average accuracy of the 80𝑡ℎ → 100𝑡ℎ is set as one time accuracy, the average value of running 5 times is used as the final accuracy of the method\",\n    \"location\": \"p.6\",\n    \"reason\": \"The text states that the reported accuracy is the average over epochs 80 to 100, rather than a single checkpoint. This is an explicit rule of the 'other' kind (average over the last epochs).\"\n  },\n  \"S4b_text_matches_code\": {\n    \"code\": \"N\",\n    \"quote\": \"\",\n    \"location\": \"\",\n    \"reason\": \"No public code is available, so the text cannot be checked against code.\"\n  },\n  \"S5_runs\": {\n    \"code\": \"5\",\n    \"quote\": \"the average value of running 5 times is used as the final accuracy of the method\",\n    \"location\": \"p.6\",\n    \"reason\": \"The paper states that the reported result is the average of 5 runs.\"\n  },\n  \"S5_spread_reported\": {\n    \"code\": \"Y\",\n    \"quote\": \"Accuracy(mean±standard deviation) for nine methods on PU bearing dataset.\",\n    \"location\": \"p.8\",\n    \"reason\": \"Tables 2 and 4 report mean ± standard deviation for each task.\"\n  },\n  \"S6_metrics\": {\n    \"code\": \"A\",\n    \"quote\": \"Accuracy(mean ± standard deviation) for nine methods on LZUT bearing dataset.\",\n    \"location\": \"p.9\",\n    \"reason\": \"The results use accuracy only. The other analyses are t-SNE, convergence curves, proxy A-distance and computational time. No confusion matrix, F1, precision or recall is reported.\"\n  },\n  \"S7_noise_protocol\": {\n    \"code\": \"N\",\n    \"quote\": \"\",\n    \"location\": \"\",\n    \"reason\": \"The word 'noisy' in the paper always refers to noisy pseudo labels. Sections 4.1–4.7 and the abstract contain no experiment that adds noise to the signals.\"\n  },\n  \"S8_traceability\": {\n    \"code\": \"0\",\n    \"quote\": \"Data will be made available on request.\",\n    \"location\": \"p.13\",\n    \"reason\": \"The paper does not release code, weights, training logs or raw result files; data are available only on request. The code section is NO_CODE. The per-epoch curves in the figures (Figs. 12 and 13) are plots inside the paper, not released logs.\"\n  }\n}\n```",
+    "type": "text"
+   }
+  ],
+  "model": "claude-opus-5-5",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+   "cache_creation": {
+    "ephemeral_1h_input_tokens": 0,
+    "ephemeral_5m_input_tokens": 0
+   },
+   "cache_creation_input_tokens": 0,
+   "cache_read_input_tokens": 0,
+   "inference_geo": "global",
+   "input_tokens": 33968,
+   "output_tokens": 2519,
+   "server_tool_use": null,
+   "service_tier": "batch",
+   "output_tokens_details": {
+    "thinking_tokens": 1223
+   },
+   "speed": "standard"
+  },
+  "diagnostics": null
+ }
+}
