@@ -19,6 +19,7 @@ mkdir -p "$DATA" "$OUT"
 case "${1:-}" in
   probe) "$VENV/bin/python" "$HERE/fetch_openalex.py" --out "$DATA" --probe ;;
   fetch) "$VENV/bin/python" "$HERE/fetch_openalex.py" --out "$DATA" --max-requests "${2:-9500}" ;;
+  abstracts) "$VENV/bin/python" "$HERE/fetch_abstracts.py" "$DATA" ;;
   model) "$VENV/bin/python" "$HERE/model.py" --data "$DATA" --out "$OUT" ;;
-  *) echo "usage: run_wsl.sh probe|fetch|model"; exit 1 ;;
+  *) echo "usage: run_wsl.sh probe|fetch|abstracts|model"; exit 1 ;;
 esac
