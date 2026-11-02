@@ -21,5 +21,14 @@ case "${1:-}" in
   fetch) "$VENV/bin/python" "$HERE/fetch_openalex.py" --out "$DATA" --max-requests "${2:-9500}" ;;
   abstracts) "$VENV/bin/python" "$HERE/fetch_abstracts.py" "$DATA" ;;
   model) "$VENV/bin/python" "$HERE/model.py" --data "$DATA" --out "$OUT" ;;
-  *) echo "usage: run_wsl.sh probe|fetch|abstracts|model"; exit 1 ;;
+  resume)  # keep retrying the fetch (exit 3 = budget used) every 30 min, then fit the model
+    for i in $(seq 1 "${2:-10}"); do
+      set +e; "$VENV/bin/python" "$HERE/fetch_openalex.py" --out "$DATA" --max-requests 9500; rc=$?; set -e
+      [ "$rc" -eq 0 ] && break
+      [ "$rc" -ne 3 ] && exit "$rc"
+      echo "$(date '+%F %T') fetch budget exhausted (try $i), retry in 30 min"; sleep 1800
+    done
+    [ "${rc:-1}" -eq 0 ] || { echo "fetch still incomplete"; exit 3; }
+    "$VENV/bin/python" "$HERE/model.py" --data "$DATA" --out "$OUT" ;;
+  *) echo "usage: run_wsl.sh probe|fetch|abstracts|model|resume [tries]"; exit 1 ;;
 esac
