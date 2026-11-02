@@ -9,13 +9,17 @@ import hashlib, json, os, re, sys, time, urllib.request
 ROOT = os.path.expanduser('~/audit_cns')
 D = f'{ROOT}/results/static_coding/ai_coding'
 sha = lambda s: hashlib.sha256(s.encode('utf-8')).hexdigest()
+# v1.1 recode of S4a/S8: AI_PROMPT=PROMPT_v1.1.md AI_CODEBOOK=CODEBOOK_v1.1.md AI_TAG=_v1.1
+PROMPT = os.environ.get('AI_PROMPT', 'PROMPT_v1.md')
+CODEBOOK = os.environ.get('AI_CODEBOOK', 'CODEBOOK_v1.md')
+TAG = os.environ.get('AI_TAG', '')
 
 
 def templates():
-    t = open(f'{D}/PROMPT_v1.md', encoding='utf-8').read()
+    t = open(f'{D}/{PROMPT}', encoding='utf-8').read()
     system = t.split('## 系统提示', 1)[1].split('## 用户消息', 1)[0].strip()
     user = t.split('## 用户消息', 1)[1].split('## 输入包', 1)[0].strip()
-    cb = open(f'{ROOT}/results/static_coding/CODEBOOK_v1.md', encoding='utf-8').read()
+    cb = open(f'{ROOT}/results/static_coding/{CODEBOOK}', encoding='utf-8').read()
     # only the item/category definitions; the "怎么编" section addresses human coders
     items = '## 条目与类别' + cb.split('## 条目与类别', 1)[1].split('## 一致性', 1)[0].rstrip()
     return system.replace('{CODEBOOK}', items), user, {'prompt_sha256': sha(t), 'codebook_sha256': sha(cb)}
@@ -58,7 +62,7 @@ if __name__ == '__main__':
     from concurrent.futures import ThreadPoolExecutor
     model, run, workers, papers = sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), sys.argv[4:]
     system, user_t, hashes = templates()
-    out = f'{D}/raw/deepseek/{model}/run{run}'
+    out = f'{D}/raw/deepseek/{model}{TAG}/run{run}'
     os.makedirs(out, exist_ok=True)
 
     def one(a):

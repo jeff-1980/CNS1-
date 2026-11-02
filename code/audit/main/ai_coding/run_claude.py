@@ -11,7 +11,7 @@ import json, os, sys, time
 import anthropic
 from anthropic.types.message_create_params import MessageCreateParamsNonStreaming
 from anthropic.types.messages.batch_create_params import Request
-from run_deepseek import D, sha, templates
+from run_deepseek import D, TAG, sha, templates
 
 MODEL, EFFORT, MAX_TOKENS = 'claude-opus-5-5', 'high', 16000
 client = anthropic.Anthropic(api_key=os.environ['AUDIT_ANTHROPIC_KEY'])
@@ -43,20 +43,20 @@ def save(out, n, run, user, msg, extra):
 if __name__ == '__main__':
     mode = sys.argv[1]
     if mode == 'test':
-        n = int(sys.argv[2]); out = f'{D}/raw/claude/{MODEL}/run0'; os.makedirs(out, exist_ok=True)
+        n = int(sys.argv[2]); out = f'{D}/raw/claude/{MODEL}{TAG}/run0'; os.makedirs(out, exist_ok=True)
         user, p = params(n); t0 = time.time()
         msg = client.messages.create(**p)
         save(out, n, 0, user, msg, {'called_at_utc': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime(t0)),
                                     'seconds': round(time.time() - t0, 1), 'batch': None})
     elif mode == 'submit':
         run, papers = int(sys.argv[2]), [int(a) for a in sys.argv[3:]]
-        out = f'{D}/raw/claude/{MODEL}/run{run}'; os.makedirs(out, exist_ok=True)
+        out = f'{D}/raw/claude/{MODEL}{TAG}/run{run}'; os.makedirs(out, exist_ok=True)
         b = client.messages.batches.create(requests=[Request(custom_id=f'{n:03d}', params=params(n)[1]) for n in papers])
         json.dump({'batch_id': b.id, 'run': run, 'papers': papers, 'submitted_at_utc': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())},
                   open(f'{out}/_batch.json', 'w'), indent=1)
         print('run', run, 'batch', b.id, b.processing_status, len(papers), 'requests')
     elif mode == 'collect':
-        run = int(sys.argv[2]); out = f'{D}/raw/claude/{MODEL}/run{run}'
+        run = int(sys.argv[2]); out = f'{D}/raw/claude/{MODEL}{TAG}/run{run}'
         meta = json.load(open(f'{out}/_batch.json'))
         while (b := client.messages.batches.retrieve(meta['batch_id'])).processing_status != 'ended':
             time.sleep(120)
