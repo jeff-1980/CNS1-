@@ -1,0 +1,122 @@
+{
+ "replay": {
+  "n": 38,
+  "n_alive": 3,
+  "auc_alive_vs_rest": 0.986,
+  "survivor_ranks": {
+   "S2-aeroup": 1,
+   "S3-audit": 2,
+   "S1-backblaze": 4
+  },
+  "top5": [
+   "S2-aeroup",
+   "S3-audit",
+   "D4-weld-smallstudy",
+   "S1-backblaze",
+   "Q1-runout"
+  ]
+ },
+ "n_topics_with_priors": 588,
+ "assayed_top20": [
+  [
+   "0.0431",
+   "Power Line Inspection Robots",
+   "Adversarial Robustness in Machine Learning"
+  ],
+  [
+   "0.0412",
+   "Geotechnical and Geomechanical Engineering",
+   "Model Reduction and Neural Networks"
+  ],
+  [
+   "0.0402",
+   "Hydraulic Fracturing and Reservoir Analysis",
+   "Reinforcement Learning in Robotics"
+  ],
+  [
+   "0.0341",
+   "Fire Detection and Safety Systems",
+   "Adversarial Robustness in Machine Learning"
+  ],
+  [
+   "0.0337",
+   "Fire dynamics and safety research",
+   "Power Line Inspection Robots"
+  ],
+  [
+   "0.0331",
+   "Fire Detection and Safety Systems",
+   "Multimodal Machine Learning Applications"
+  ],
+  [
+   "0.0317",
+   "Safety Systems Engineering in Autonomy",
+   "Multimodal Machine Learning Applications"
+  ],
+  [
+   "0.0287",
+   "Digital Transformation in Industry",
+   "Adversarial Robustness in Machine Learning"
+  ],
+  [
+   "0.0234",
+   "Safety Systems Engineering in Autonomy",
+   "Machine Learning in Healthcare"
+  ],
+  [
+   "0.0231",
+   "High Entropy Alloys Studies",
+   "Iron and Steelmaking Processes"
+  ],
+  [
+   "0.0230",
+   "Traffic and Road Safety",
+   "Natural Language Processing Techniques"
+  ],
+  [
+   "0.0226",
+   "Power Line Inspection Robots",
+   "Adaptive Dynamic Programming Control"
+  ],
+  [
+   "0.0215",
+   "Refrigeration and Air Conditioning Technologies",
+   "Explainable Artificial Intelligence (XAI)"
+  ],
+  [
+   "0.0207",
+   "Power System Reliability and Maintenance",
+   "Natural Language Processing Techniques"
+  ],
+  [
+   "0.0204",
+   "Metallurgical Processes and Thermodynamics",
+   "Reinforcement Learning in Robotics"
+  ],
+  [
+   "0.0198",
+   "Power Line Inspection Robots",
+   "Natural Language Processing Techniques"
+  ],
+  [
+   "0.0196",
+   "Industrial Engineering and Technologies",
+   "Electric Vehicles and Infrastructure"
+  ],
+  [
+   "0.0194",
+   "Sustainable Industrial Ecology",
+   "Time Series Analysis and Forecasting"
+  ],
+  [
+   "0.0194",
+   "Powder Metallurgy Techniques and Materials",
+   "Model Reduction and Neural Networks"
+  ],
+  [
+   "0.0183",
+   "Tree Root and Stability Studies",
+   "Reinforcement Learning in Robotics"
+  ]
+ ]
+}

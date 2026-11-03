@@ -1,0 +1,51 @@
+rank,assay,p_emerge,a_name,b_name,b_subfield,cum_ab,n_a,n_b,field_w,feas,ceiling,realw,crowd,mech
+1,0.0431,0.613,Power Line Inspection Robots,Adversarial Robustness in Machine Learning,Artificial Intelligence,2.0,1368,8246,1.00,0.22,0.22,0.36,0.41,0.22
+2,0.0412,0.138,Geotechnical and Geomechanical Engineering,Model Reduction and Neural Networks,Statistical and Nonlinear Physics,2.0,2751,8860,1.00,0.49,0.66,0.65,0.44,0.17
+3,0.0402,0.252,Hydraulic Fracturing and Reservoir Analysis,Reinforcement Learning in Robotics,Artificial Intelligence,2.0,4721,7933,1.00,0.33,0.48,0.47,0.40,0.20
+4,0.0341,0.291,Fire Detection and Safety Systems,Adversarial Robustness in Machine Learning,Artificial Intelligence,1.0,2879,8246,1.00,0.31,0.39,0.39,0.41,0.17
+5,0.0337,0.152,Fire dynamics and safety research,Power Line Inspection Robots,Mechanical Engineering,2.0,6457,1368,1.00,0.36,0.50,0.50,0.07,0.14
+6,0.0331,0.326,Fire Detection and Safety Systems,Multimodal Machine Learning Applications,Computer Vision and Pattern Recognition,2.0,2879,7046,1.00,0.25,0.39,0.39,0.35,0.17
+7,0.0317,0.662,Safety Systems Engineering in Autonomy,Multimodal Machine Learning Applications,Computer Vision and Pattern Recognition,2.0,1618,7046,1.00,0.18,0.26,0.10,0.35,0.26
+8,0.0287,0.580,Digital Transformation in Industry,Adversarial Robustness in Machine Learning,Artificial Intelligence,2.0,13073,8246,1.00,0.15,0.22,0.31,0.41,0.32
+9,0.0234,0.523,Safety Systems Engineering in Autonomy,Machine Learning in Healthcare,Artificial Intelligence,2.0,1618,8485,1.00,0.18,0.26,0.10,0.42,0.26
+10,0.0231,0.144,High Entropy Alloys Studies,Iron and Steelmaking Processes,Mechanical Engineering,2.0,6797,3939,1.00,0.27,0.47,0.25,0.20,0.44
+11,0.0230,0.172,Traffic and Road Safety,Natural Language Processing Techniques,Artificial Intelligence,2.0,9608,9782,1.00,0.31,0.50,0.62,0.49,0.09
+12,0.0226,0.330,Power Line Inspection Robots,Adaptive Dynamic Programming Control,Computational Theory and Mathematics,2.0,1368,2104,1.00,0.17,0.22,0.36,0.11,0.22
+13,0.0215,0.110,Refrigeration and Air Conditioning Technologies,Explainable Artificial Intelligence (XAI),Artificial Intelligence,2.0,5683,6264,1.00,0.34,0.60,0.41,0.31,0.23
+14,0.0207,0.136,Power System Reliability and Maintenance,Natural Language Processing Techniques,Artificial Intelligence,2.0,3300,9782,1.00,0.35,0.58,0.50,0.49,0.12
+15,0.0204,0.405,Metallurgical Processes and Thermodynamics,Reinforcement Learning in Robotics,Artificial Intelligence,2.0,6255,7933,1.00,0.18,0.19,0.19,0.40,0.30
+16,0.0198,0.406,Power Line Inspection Robots,Natural Language Processing Techniques,Artificial Intelligence,1.0,1368,9782,1.00,0.17,0.22,0.36,0.49,0.22
+17,0.0196,0.103,Industrial Engineering and Technologies,Electric Vehicles and Infrastructure,Electrical and Electronic Engineering,2.0,119,9472,1.00,0.40,0.68,0.25,0.47,0.31
+18,0.0194,0.163,Sustainable Industrial Ecology,Time Series Analysis and Forecasting,Signal Processing,1.0,1615,5484,1.00,0.28,0.44,0.31,0.27,0.19
+19,0.0194,0.270,Powder Metallurgy Techniques and Materials,Model Reduction and Neural Networks,Statistical and Nonlinear Physics,2.0,3210,8860,1.00,0.18,0.32,0.19,0.44,0.50
+20,0.0183,0.081,Tree Root and Stability Studies,Reinforcement Learning in Robotics,Artificial Intelligence,2.0,2795,7933,1.00,0.39,0.58,0.58,0.40,0.20
+21,0.0179,0.288,Fiber-reinforced polymer composites,Model Reduction and Neural Networks,Statistical and Nonlinear Physics,2.0,6157,8860,1.00,0.18,0.32,0.19,0.44,0.41
+22,0.0175,0.385,Mechatronics Education and Applications,Reinforcement Learning in Robotics,Artificial Intelligence,2.0,1203,7933,1.00,0.14,0.19,0.19,0.40,0.42
+23,0.0168,0.347,Safety Systems Engineering in Autonomy,Machine Learning in Materials Science,Materials Chemistry,2.0,1618,17114,1.00,0.31,0.37,0.08,0.86,0.26
+24,0.0164,0.104,Traffic and Road Safety,ICT in Developing Communities,Information Systems,2.0,9608,6400,1.00,0.31,0.50,0.62,0.32,0.09
+25,0.0158,0.312,Power Line Inspection Robots,Quantum Computing Algorithms and Architecture,Artificial Intelligence,1.0,1368,8980,1.00,0.17,0.22,0.36,0.45,0.22
+26,0.0155,0.128,Sustainable Industrial Ecology,Advanced Graph Neural Networks,Artificial Intelligence,1.0,1615,5174,1.00,0.28,0.44,0.31,0.26,0.19
+27,0.0148,0.092,Fire dynamics and safety research,Imbalanced Data Classification Techniques,Artificial Intelligence,2.0,6457,5412,1.00,0.31,0.50,0.50,0.27,0.14
+28,0.0138,0.104,Sustainable Industrial Ecology,Energy and Environmental Sustainability,"Renewable Energy, Sustainability and the Environment",1.0,1615,2824,1.00,0.28,0.44,0.31,0.14,0.19
+29,0.0137,0.063,Power System Reliability and Maintenance,AI-based Problem Solving and Planning,Artificial Intelligence,2.0,3300,1603,1.00,0.35,0.58,0.50,0.08,0.12
+30,0.0134,0.238,Sustainable Industrial Ecology,Artificial Intelligence Applications,Artificial Intelligence,1.0,1615,22822,1.00,0.35,0.44,0.31,1.00,0.19
+31,0.0129,0.229,Transport and Logistics Innovations,Research Data Management Practices,Information Systems,2.0,8252,6827,1.00,0.17,0.22,0.36,0.34,0.22
+32,0.0128,0.079,Fire dynamics and safety research,Advanced Graph Neural Networks,Artificial Intelligence,1.0,6457,5174,1.00,0.31,0.50,0.50,0.26,0.14
+33,0.0127,0.253,Mechanical Behavior of Composites,Reinforcement Learning in Robotics,Artificial Intelligence,2.0,10184,7933,1.00,0.12,0.19,0.19,0.40,0.71
+34,0.0126,0.163,"Adhesion, Friction, and Surface Interactions",Model Reduction and Neural Networks,Statistical and Nonlinear Physics,2.0,1937,8860,1.00,0.17,0.32,0.19,0.44,0.65
+35,0.0123,0.450,Safety Systems Engineering in Autonomy,AI in cancer detection,Artificial Intelligence,1.0,1618,16269,1.00,0.18,0.26,0.10,0.81,0.26
+36,0.0118,0.361,Digital Transformation in Industry,Energy and Environmental Sustainability,"Renewable Energy, Sustainability and the Environment",2.0,13073,2824,1.00,0.09,0.11,0.31,0.14,0.32
+37,0.0113,0.068,Traffic and Road Safety,Digital Media Forensic Detection,Computer Vision and Pattern Recognition,1.0,9608,5082,1.00,0.31,0.50,0.62,0.25,0.09
+38,0.0113,0.059,Power Line Inspection Robots,Infrastructure Resilience and Vulnerability Analysis,Civil and Structural Engineering,1.0,1368,4037,1.00,0.34,0.45,0.45,0.20,0.22
+39,0.0112,0.102,Fire dynamics and safety research,Topic Modeling,Artificial Intelligence,2.0,6457,17390,1.00,0.43,0.50,0.50,0.87,0.14
+40,0.0109,0.058,Traffic and Road Safety,Adaptive Dynamic Programming Control,Computational Theory and Mathematics,2.0,9608,2104,1.00,0.31,0.50,0.62,0.11,0.09
+41,0.0108,0.144,Structural Integrity and Reliability Analysis,Reinforcement Learning in Robotics,Artificial Intelligence,2.0,6570,7933,1.00,0.21,0.22,0.19,0.40,0.51
+42,0.0106,0.078,Sustainable Industrial Ecology,Environmental and Cultural Studies in Latin America and Beyond,Ecology,1.0,1615,1967,1.00,0.28,0.44,0.31,0.10,0.19
+43,0.0105,0.208,Extraction and Separation Processes,Model Reduction and Neural Networks,Statistical and Nonlinear Physics,1.0,11393,8860,1.00,0.25,0.32,0.19,0.44,0.01
+44,0.0105,0.046,Refrigeration and Air Conditioning Technologies,Complex Systems and Dynamics,Statistical and Nonlinear Physics,2.0,5683,2504,1.00,0.34,0.60,0.41,0.13,0.23
+45,0.0104,0.172,Hydrocarbon exploration and reservoir analysis,Multimodal Machine Learning Applications,Computer Vision and Pattern Recognition,2.0,9424,7046,1.00,0.20,0.28,0.28,0.35,0.17
+46,0.0103,0.107,Maritime Ports and Logistics,Research Data Management Practices,Information Systems,2.0,5249,6827,1.00,0.24,0.36,0.36,0.34,0.22
+47,0.0103,0.195,Heat Transfer and Boiling Studies,Reinforcement Learning in Robotics,Artificial Intelligence,2.0,4607,7933,1.00,0.13,0.19,0.19,0.40,0.70
+48,0.0101,0.165,Transport and Logistics Innovations,Topic Modeling,Artificial Intelligence,2.0,8252,17390,1.00,0.29,0.36,0.36,0.87,0.22
+49,0.0099,0.051,Traffic and Road Safety,Cognitive Computing and Networks,Artificial Intelligence,2.0,9608,1152,1.00,0.31,0.50,0.62,0.06,0.09
+50,0.0099,0.485,Industrial Engineering and Technologies,Artificial Intelligence Applications,Artificial Intelligence,2.0,119,22822,1.00,0.18,0.26,0.10,1.00,0.31
