@@ -1,0 +1,44 @@
+{
+ "draw_order": 78,
+ "requested_model": "deepseek-v4-pro",
+ "run": 1,
+ "temperature": 0,
+ "called_at_utc": "2026-11-02T04:53:57Z",
+ "seconds": 39.5,
+ "prompt_sha256": "bdb13fd28c16e90c9140ac7fe162301b2ef010f622778525721f76e7012ad67d",
+ "codebook_sha256": "e6c4b453b07d3fd331ff6248c90eba80305dde1dbb24b0131da48d1b7b0b546e",
+ "system_sha256": "604d5fab156c4dac03cc13aa43369a6587e98db5390087e8beb6a02a328753cc",
+ "user_sha256": "2ee05553541efca6492a039d7e959f74043c1f9ec7d0d517df3a762e03d743cf",
+ "response": {
+  "id": "23acd005-9b35-4227-8ec6-5eabd4aeb010",
+  "object": "chat.completion",
+  "created": 1793595237,
+  "model": "deepseek-v4-pro",
+  "choices": [
+   {
+    "index": 0,
+    "message": {
+     "role": "assistant",
+     "content": "{\n  \"S1_split_unit\":        {\"code\": \"U\", \"quote\": \"\", \"location\": \"\", \"reason\": \"论文为信号分解方法，通篇未提及训练集/测试集划分；在摘要、方法、实验及结论部分均无相关描述。\"},\n  \"S2_validation\":        {\"code\": \"A\", \"quote\": \"\", \"location\": \"\", \"reason\": \"论文没有训练/测试过程，因此不存在验证集；在全文搜索未见验证集相关描述。\"},\n  \"S3_checkpoint_rule_code\": {\"code\": \"N\", \"quote\": \"\", \"location\": \"\", \"reason\": \"代码文件为 NO_CODE，未公开代码，无法查看 checkpoint 规则。\"},\n  \"S4a_text_discloses\":   {\"code\": \"N\", \"quote\": \"\", \"location\": \"\", \"reason\": \"论文未提及模型选择、报告轮次或任何选模规则，仅直接展示一次分解结果。\"},\n  \"S4b_text_matches_code\":{\"code\": \"N\", \"quote\": \"\", \"location\": \"\", \"reason\": \"无公开代码（NO_CODE），无法核对正文与代码的一致性。\"},\n  \"S5_runs\":              {\"code\": \"U\", \"quote\": \"\", \"location\": \"\", \"reason\": \"论文未提及重复训练次数，所有实验均为单次分析，无多次运行结果。\"},\n  \"S5_spread_reported\":   {\"code\": \"N\", \"quote\": \"the AFMD method can extract the 1 f i –5fi inner ring fault characteristic frequency in the simulation signal, 1fo–4fo and 8fo–10fo outer ring fault characteristic frequency in Case 1, 1 fi–2fi inner ring fault characteristic frequency in Case 2, 1 fo–7fo outer ring fault characteristic frequency in Case 3, 1 fo–5fo outer ring fault characteristic frequency and 1 fi–3fi inner ring fault characteristic frequency in Case 4\", \"location\": \"p.20\", \"reason\": \"结论中只报告了各案例提取到的故障特征频率值，未报告标准差、方差、区间或箱线图等。\"},\n  \"S6_metrics\":           {\"code\": \"U\", \"quote\": \"\", \"location\": \"\", \"reason\": \"论文未报告准确率、混淆矩阵、F1、精确率、召回率等任何分类指标，仅以包络谱中故障特征频率的显现程度作为评价。\"},\n  \"S7_noise_protocol\":    {\"code\": \"N\", \"quote\": \"\", \"location\": \"\", \"reason\": \"论文仅在模拟信号中包含高斯噪声以模拟真实环境，并未设置针对训练/测试加噪的噪声实验协议。\"},\n  \"S8_traceability\":      {\"code\": \"0\", \"quote\": \"NO_CODE\", \"location\": \"NO_CODE\", \"reason\": \"代码文件为 NO_CODE，论文未提供代码、训练权重、训练日志或逐次运行结果；致谢中仅提及数据来源单位提供免费下载的轴承数据，但不属于列出的 C/W/G/R 类别。\"}\n}",
+     "reasoning_content": "我们需要根据论文全文和代码文件（NO_CODE）来填写各项条目。只依据提供的文本，不使用外部知识。论文是一个期刊文章，关于自适应傅里叶模态分解（AFMD）用于滚动轴承故障诊断。没有公开代码（NO_CODE）。注意：这是一个信号处理方法论文，不是深度学习方法，所以有些条目可能不适用，但需要按手册填写。\n\n我们需要逐条分析。\n\n首先，理解手册中的条目是针对故障诊断论文的，可能假设是深度学习方法，但这里不是深度学习方法。不过仍要按通用规则填写。\n\nS1 切分单元：训练集和测试集按什么分开（取头条结果所用的设置）。这个论文不是监督学习方法，没有训练集和测试集。它是对信号进行分解和包络谱分析，没有训练/测试划分。所以应是“未说明，无法判断”还是“无全文”？但手册里没有“不适用”选项，只有 U 未说明。由于论文没有提及任何训练/测试切分，所以 S1 填 U。需要证据：找不到，所以 quote 空，location 空，reason 说明找过哪些地方（摘要、方法、实验等，均未提及训练/测试）。\n\nS2 验证集：手册定义验证集是与测试集区分，论文没有训练/测试，所以也没有验证集。但手册的 S2 选项有 A 没有验证集，B 有独立验证集，C 测试集兼作验证集，U 未说明。由于论文根本没有训练/测试的概念，应该是“没有验证集”更合适？还是“未说明”？从调参角度，论文没有调参后挑选模型的过程，所以没有验证集。可填 A。需要证据：可以引用论文中没有提到验证集的语句？但证据需要逐字引用，很难证明未提及。可能填 U 更合适，因为手册说“未说明，无法判断”。但如果是信号处理，没有验证集很正常，应填 A。我们看手册的意图：S1 切分单元，如果论文不是分类/回归任务，可能填 U。S2 验证集，可能也填 A 或 U。由于没有训练/测试，所以没有验证集，填 A 合理。证据：无法直接引用“没有验证集”，只能引用论文没有相关描述，所以 quote 空，reason 说明。\n\nS3 checkpoint 规则（看代码）：最终报告的模型是哪一轮。由于没有公开代码（NO_CODE），所以应填 N（没有公开代码）。证据：代码文件处为 NO_CODE，所以 quote 可以是代码文件路径？但代码文件内容只有 NO_CODE，不能作为证据？可以引用论文中关于代码的说明？论文可能没有提到代码，所以 S3 填 N，quote 空，reason 提及代码文件为 NO_CODE。\n\nS4a 正文是否说明选模规则：正文是否明确写了报告的是哪一轮或按什么挑的。对于这个论文，它不是训练模型，而是信号分解方法，没有“轮次”或“模型选择”。它报告的是分解结果，直接展示模态分量和包络谱，没有选择某个模型。S4a 选项有 Y, P, N。P 是含糊说法如“取最优结果”“训练至收敛”，N 是没写。论文没有提到选模规则，所以应该填 N。证据：找不到相关描述。\n\nS4b 正文与代码是否一致：因为代码为 NO_CODE，所以应填 N（没有公开代码）。quote 空。\n\nS5 种子数与方差：\n- S5_runs：头条结果重复训练的次数。论文没有重复训练，只是单次分析，所以应为数字？手册说没说明写 U。因为没有训练，也没有重复次数，所以写 U。\n- S5_spread_reported：是否报告了标准差、方差、区间或箱线图。论文没有报告这些，只报告了单次分析结果（提取的故障特征频率）。所以应填 N（只报均值或单次）。但论文并没有报告多次运行，所以填 N 合适？手册的 N 是只报均值或单次，U 是未说明。论文里没有提及多次运行，只展示单次分析，所以应填 N。证据：可以引用结论中的结果，如“AFMD method can extract the 1fi–5fi”等。\n\nS6 指标：论文不是分类任务，没有准确率、混淆矩阵、F1 等指标。所以应填 U（未说明）？手册中 S6 选项只有 A（只有准确率）、M（准确率加混淆矩阵）、F（含F1等但没有混淆矩阵）、B（同时有混淆矩阵和F1类指标）。这些都不适用，所以可能填 U，或者看有没有其他指标？论文中没有这些指标，所以 U。证据：没有提到。\n\nS7 噪声协议：论文中模拟信号添加了高斯噪声，且信噪比约 214.84 dB（注意这个数值疑似误写，可能是 -14.84？但原文如此）。但 S7 是关于噪声实验，手册定义：N 没有噪声实验；T 训练用干净数据，测试加噪；B 训练和测试都加噪；O 其他噪声设置；U 有噪声实验但协议说不清。论文的模拟信号包含噪声，但这不是训练/测试的噪声协议，而是模拟信号本身含有噪声，用来验证方法。S7 针对的是机器学习场景的训练/测试加噪，不是信号仿真的噪声。因此，这个论文没有“噪声实验”作为训练/测试协议，所以应填 N（没有噪声实验）。但论文确实有模拟信号含噪声，不过 S7 的选项定义是针对训练和测试加噪的，论文没有训练和测试。所以填 N 合适。证据：可以引用模拟信号描述“n(t) denotes the Gaussian noise with a standard deviation of s, and the signal-to-noise ratio is about 214.84 dB.”但这是仿真信号的组成部分，不是训练/测试噪声协议。所以填 N，quote 可能不选，reason 解释论文只包含模拟信号中含噪声，但无训练/测试加噪协议。\n\nS8 可溯源性：公开了哪些（可多选，用 + 连接）：代码C、权重W、日志G、原始结果R。论文可能提到数据来自大学，但未提及公开代码、权重等。没有代码文件（NO_CODE），所以没有代码。也没有权重、日志、原始结果。所以应填 0（什么都没有）。证据：可以引用论文中未提及代码、数据链接等。但需要逐字证据，可能引用末尾的参考文献或感谢，但没有明确说公开了什么。我们需要找论文中是否有任何“公开”“提供”“下载”等字样。在摘要或结论中可能没有。在致谢中：“The authors would like to appreciate Shijiazhuang Tiedao University and Beijing Jiaotong University for providing free downloadable fault-bearing data.” 这里提到提供免费下载的轴承数据，这算不算公开了数据？S8 选项是代码、权重、训练日志、原始结果文件。数据也许属于原始结果文件？但手册只列出这些，没有数据集选项。所以只有0。因为只公开了数据，但数据不属于列出的C/W/G/R，所以填0。理由：没有代码、权重、日志、原始结果文件。\n\n现在开始逐条找证据。需要提供逐字摘录的原文作为证据，并写明位置。论文的页码是[[PAGE n]]，我们使用页码格式 p.1, p.2 等。如果找不到证据，quote 填空字符串，reason 说明找过哪些地方。\n\n我们整理各条：\n\nS1：代码 U，quote 空，location 空，reason：在摘要、方法、实验等部分均未提及训练集/测试集划分，论文为信号分解方法，无监督学习设置。\n\nS2：代码 A，quote 空，location 空，reason：论文未提及验证集概念，无训练/测试划分，因此无验证集。\n\nS3：代码 N，quote 空，location 空，reason：代码文件为 NO_CODE，未公开代码，无法检查 checkpoint 规则。\n\nS4a：代码 N，quote 空，location 空，reason：论文未提及模型选择或报告轮次规则，仅展示一次分解结果。\n\nS4b：代码 N，quote 空，location 空，reason：无公开代码，无法核对一致性。\n\nS5_runs：代码 U，quote 空，location 空，reason：论文未提及重复训练次数，仅展示单次分析结果。\n\nS5_spread_reported：代码 N，quote 可以引用结论中的“AFMD method can extract the 1fi–5fi inner ring fault characteristic frequency in the simulation signal, 1fo–4fo and 8fo–10fo outer ring fault characteristic frequency in Case 1, 1fi–2fi inner ring fault characteristic frequency in Case 2, 1fo–7fo outer ring fault characteristic frequency in Case 3, 1fo–5fo outer ring fault characteristic frequency and 1fi–3fi inner ring fault characteristic frequency in Case 4” 这里只报告了提取的故障特征频率，没有方差等。location 是 p.20 附近（结论部分）。或者用摘要中的结果，但摘要比较笼统。选结论中的具体描述。需要精确页码，结论从 p.20 开始。论文页 20 有结论，我们引用：“Future research could consider developing an evaluation indicator that adaptively selects the optimal modal components. In addition, future work will focus on the integration of the methods in this paper with deep learning algorithms for intelligent fault diagnosis.” 但这不是结果。结论中有一段（3）列出的具体结果，位置在 p.20 的“the AFMD method can extract the 1 fi–5fi...”这句话。我们引用这句，location 写 p.20。但需要确认页码，论文 PDF 抽取有 [[PAGE 20]]，我们看内容：在 p.20 之前是 p.19 结束，p.20 包含结论开始，包括（1）（2）（3）三点。所以 location p.20 正确。\n\nS6：代码 U，quote 空，location 空，reason：论文未报告准确率、混淆矩阵、F1等分类指标，仅报告故障特征频率提取效果。\n\nS7：代码 N，quote 可以引用模拟信号中的噪声描述，但该噪声是仿真信号的一部分，并非训练/测试加噪协议，所以代码 N，quote 可选？手册要求给出证据，但如果我们填 N 表示没有噪声实验，就需要证据证明没有。我们没法引用不存在的东西，所以 quote 空，reason 说明论文中只有模拟信号含噪声，无专门的噪声实验（训练/测试加噪）协议。但手册的 S7 是针对有噪声实验的，填 N 意味着没有，可以不给证据。quote 空，location 空，reason：论文只在模拟信号中加入高斯噪声以模拟真实信号，但未设置机器学习式的噪声实验（如训练干净测试加噪）。\n\nS8：代码 0，quote 可以引用致谢中关于提供数据的句子，但这并不属于列出的 C/W/G/R，所以不能作为证据。我们需要证据证明没有公开代码等。可以引用代码文件 NO_CODE，但代码文件从论文中给出的公开仓库获取，实际为 NO_CODE，所以我们可以说代码文件显示 NO_CODE。quote 可以写 \"NO_CODE\"。location 写 \"NO_CODE\"。reason：论文未提供代码、权重、日志或原始结果文件，仅致谢提到数据来源。\n\n现在构建 JSON 对象。注意：手册要求每个条目给出代码和 quote，如果 quote 空也要写空字符串。location 也要写，如果空写空字符串。reason 给出说明。\n\n检查是否有条目需要提供 quote 比如 S5_spread_reported 我们引用了结论中的具体结果，可以。其他条目 quote 空。\n\n确保输出 JSON 格式，只有一个对象。\n\n最终输出。"
+    },
+    "logprobs": null,
+    "finish_reason": "stop"
+   }
+  ],
+  "usage": {
+   "prompt_tokens": 16587,
+   "completion_tokens": 3217,
+   "total_tokens": 19804,
+   "prompt_tokens_details": {
+    "cached_tokens": 1024
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 2555
+   },
+   "prompt_cache_hit_tokens": 1024,
+   "prompt_cache_miss_tokens": 15563
+  },
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396"
+ }
+}

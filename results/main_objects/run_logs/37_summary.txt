@@ -1,0 +1,1 @@
+P2PCHF|HUST bearing + CWRU9 10 author 84.07 +- 0.89; last 82.49 +- 1.48; best_rep 84.07 +- 0.89; minloss 83.53 +- 1.13; budget50 83.57 +- 0.86 checks 10

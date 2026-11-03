@@ -1,0 +1,446 @@
+[
+ {
+  "obj": "51",
+  "group": "MvGNN|SEU 9-class",
+  "seed": 0,
+  "n_epochs": 9,
+  "minloss_split": "val",
+  "author_check": {
+   "recorded": 0.9994444444444445,
+   "reported": 0.9994444444444445,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "acc_curve": [
+   0.9997222222222222,
+   1.0,
+   0.9994444444444445,
+   0.9994444444444445,
+   0.9994444444444445,
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "protocols": {
+   "author": {
+    "epoch": 4,
+    "acc": 0.9994444444444445
+   },
+   "last": {
+    "epoch": 9,
+    "acc": 1.0
+   },
+   "best_rep": {
+    "epoch": 2,
+    "acc": 1.0
+   },
+   "minloss": {
+    "epoch": 8,
+    "acc": 1.0
+   },
+   "budget50": {
+    "epoch": 5,
+    "acc": 0.9994444444444445
+   }
+  }
+ },
+ {
+  "obj": "51",
+  "group": "MvGNN|SEU 9-class",
+  "seed": 1,
+  "n_epochs": 7,
+  "minloss_split": "val",
+  "author_check": {
+   "recorded": 1.0,
+   "reported": 1.0,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "acc_curve": [
+   0.9955555555555555,
+   1.0,
+   0.9991666666666666,
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "protocols": {
+   "author": {
+    "epoch": 2,
+    "acc": 1.0
+   },
+   "last": {
+    "epoch": 7,
+    "acc": 1.0
+   },
+   "best_rep": {
+    "epoch": 2,
+    "acc": 1.0
+   },
+   "minloss": {
+    "epoch": 7,
+    "acc": 1.0
+   },
+   "budget50": {
+    "epoch": 4,
+    "acc": 1.0
+   }
+  }
+ },
+ {
+  "obj": "51",
+  "group": "MvGNN|SEU 9-class",
+  "seed": 2,
+  "n_epochs": 9,
+  "minloss_split": "val",
+  "author_check": {
+   "recorded": 1.0,
+   "reported": 1.0,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "acc_curve": [
+   0.9997222222222222,
+   0.9977777777777778,
+   0.9991666666666666,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "protocols": {
+   "author": {
+    "epoch": 4,
+    "acc": 1.0
+   },
+   "last": {
+    "epoch": 9,
+    "acc": 1.0
+   },
+   "best_rep": {
+    "epoch": 4,
+    "acc": 1.0
+   },
+   "minloss": {
+    "epoch": 8,
+    "acc": 1.0
+   },
+   "budget50": {
+    "epoch": 5,
+    "acc": 1.0
+   }
+  }
+ },
+ {
+  "obj": "51",
+  "group": "MvGNN|SEU 9-class",
+  "seed": 3,
+  "n_epochs": 8,
+  "minloss_split": "val",
+  "author_check": {
+   "recorded": 0.9997222222222222,
+   "reported": 0.9997222222222222,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "acc_curve": [
+   1.0,
+   0.9922222222222222,
+   0.9997222222222222,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "protocols": {
+   "author": {
+    "epoch": 3,
+    "acc": 0.9997222222222222
+   },
+   "last": {
+    "epoch": 8,
+    "acc": 1.0
+   },
+   "best_rep": {
+    "epoch": 1,
+    "acc": 1.0
+   },
+   "minloss": {
+    "epoch": 8,
+    "acc": 1.0
+   },
+   "budget50": {
+    "epoch": 4,
+    "acc": 1.0
+   }
+  }
+ },
+ {
+  "obj": "51",
+  "group": "MvGNN|SEU 9-class",
+  "seed": 4,
+  "n_epochs": 7,
+  "minloss_split": "val",
+  "author_check": {
+   "recorded": 0.9997222222222222,
+   "reported": 0.9997222222222222,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "acc_curve": [
+   0.9997222222222222,
+   0.9997222222222222,
+   1.0,
+   0.9991666666666666,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "protocols": {
+   "author": {
+    "epoch": 2,
+    "acc": 0.9997222222222222
+   },
+   "last": {
+    "epoch": 7,
+    "acc": 1.0
+   },
+   "best_rep": {
+    "epoch": 3,
+    "acc": 1.0
+   },
+   "minloss": {
+    "epoch": 7,
+    "acc": 1.0
+   },
+   "budget50": {
+    "epoch": 4,
+    "acc": 0.9991666666666666
+   }
+  }
+ },
+ {
+  "obj": "51",
+  "group": "MvGNN|SEU 9-class",
+  "seed": 5,
+  "n_epochs": 6,
+  "minloss_split": "val",
+  "author_check": {
+   "recorded": 0.9997222222222222,
+   "reported": 0.9997222222222222,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "acc_curve": [
+   0.9997222222222222,
+   0.9997222222222222,
+   0.9994444444444445,
+   0.9997222222222222,
+   0.9994444444444445,
+   0.9997222222222222
+  ],
+  "protocols": {
+   "author": {
+    "epoch": 1,
+    "acc": 0.9997222222222222
+   },
+   "last": {
+    "epoch": 6,
+    "acc": 0.9997222222222222
+   },
+   "best_rep": {
+    "epoch": 1,
+    "acc": 0.9997222222222222
+   },
+   "minloss": {
+    "epoch": 4,
+    "acc": 0.9997222222222222
+   },
+   "budget50": {
+    "epoch": 3,
+    "acc": 0.9994444444444445
+   }
+  }
+ },
+ {
+  "obj": "51",
+  "group": "MvGNN|SEU 9-class",
+  "seed": 6,
+  "n_epochs": 7,
+  "minloss_split": "val",
+  "author_check": {
+   "recorded": 0.9997222222222222,
+   "reported": 0.9997222222222222,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "acc_curve": [
+   0.9997222222222222,
+   0.9997222222222222,
+   1.0,
+   1.0,
+   1.0,
+   0.9997222222222222,
+   1.0
+  ],
+  "protocols": {
+   "author": {
+    "epoch": 2,
+    "acc": 0.9997222222222222
+   },
+   "last": {
+    "epoch": 7,
+    "acc": 1.0
+   },
+   "best_rep": {
+    "epoch": 3,
+    "acc": 1.0
+   },
+   "minloss": {
+    "epoch": 6,
+    "acc": 0.9997222222222222
+   },
+   "budget50": {
+    "epoch": 4,
+    "acc": 1.0
+   }
+  }
+ },
+ {
+  "obj": "51",
+  "group": "MvGNN|SEU 9-class",
+  "seed": 7,
+  "n_epochs": 6,
+  "minloss_split": "val",
+  "author_check": {
+   "recorded": 1.0,
+   "reported": 1.0,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "acc_curve": [
+   1.0,
+   0.9958333333333333,
+   0.9994444444444445,
+   1.0,
+   1.0,
+   0.9997222222222222
+  ],
+  "protocols": {
+   "author": {
+    "epoch": 1,
+    "acc": 1.0
+   },
+   "last": {
+    "epoch": 6,
+    "acc": 0.9997222222222222
+   },
+   "best_rep": {
+    "epoch": 1,
+    "acc": 1.0
+   },
+   "minloss": {
+    "epoch": 4,
+    "acc": 1.0
+   },
+   "budget50": {
+    "epoch": 3,
+    "acc": 0.9994444444444445
+   }
+  }
+ },
+ {
+  "obj": "51",
+  "group": "MvGNN|SEU 9-class",
+  "seed": 8,
+  "n_epochs": 7,
+  "minloss_split": "val",
+  "author_check": {
+   "recorded": 0.9997222222222222,
+   "reported": 0.9997222222222222,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "acc_curve": [
+   0.9972222222222222,
+   0.9997222222222222,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   0.9997222222222222
+  ],
+  "protocols": {
+   "author": {
+    "epoch": 2,
+    "acc": 0.9997222222222222
+   },
+   "last": {
+    "epoch": 7,
+    "acc": 0.9997222222222222
+   },
+   "best_rep": {
+    "epoch": 3,
+    "acc": 1.0
+   },
+   "minloss": {
+    "epoch": 6,
+    "acc": 1.0
+   },
+   "budget50": {
+    "epoch": 4,
+    "acc": 1.0
+   }
+  }
+ },
+ {
+  "obj": "51",
+  "group": "MvGNN|SEU 9-class",
+  "seed": 9,
+  "n_epochs": 8,
+  "minloss_split": "val",
+  "author_check": {
+   "recorded": 1.0,
+   "reported": 1.0,
+   "abs_diff": 0.0,
+   "matches": true
+  },
+  "acc_curve": [
+   0.9994444444444445,
+   0.9988888888888889,
+   1.0,
+   1.0,
+   0.9997222222222222,
+   0.9997222222222222,
+   0.9997222222222222,
+   0.9997222222222222
+  ],
+  "protocols": {
+   "author": {
+    "epoch": 3,
+    "acc": 1.0
+   },
+   "last": {
+    "epoch": 8,
+    "acc": 0.9997222222222222
+   },
+   "best_rep": {
+    "epoch": 3,
+    "acc": 1.0
+   },
+   "minloss": {
+    "epoch": 6,
+    "acc": 0.9997222222222222
+   },
+   "budget50": {
+    "epoch": 4,
+    "acc": 1.0
+   }
+  }
+ }
+]

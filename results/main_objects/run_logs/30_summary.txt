@@ -1,0 +1,4 @@
+cnn_bigru|HIT 10 author 99.97 +- 0.06; last 100.00 +- 0.00; best_rep 100.00 +- 0.00; minloss 100.00 +- 0.00; budget50 99.74 +- 0.55 checks 10
+cnn_transformer|HIT 10 author 99.96 +- 0.09; last 99.96 +- 0.13; best_rep 100.00 +- 0.00; minloss 100.00 +- 0.00; budget50 99.35 +- 2.05 checks 10
+ct_bigru|HIT 10 author 99.79 +- 0.39; last 99.92 +- 0.22; best_rep 100.00 +- 0.00; minloss 99.99 +- 0.04; budget50 98.85 +- 2.60 checks 10
+transformer_bigru|HIT 10 author 99.28 +- 0.34; last 99.35 +- 0.92; best_rep 99.97 +- 0.06; minloss 99.86 +- 0.20; budget50 98.36 +- 1.57 checks 10

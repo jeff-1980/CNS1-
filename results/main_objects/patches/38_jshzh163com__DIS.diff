@@ -1,0 +1,142 @@
+diff --git a/audit_run38.py b/audit_run38.py
+new file mode 100644
+index 0000000..01fbc91
+--- /dev/null
++++ b/audit_run38.py
+@@ -0,0 +1,69 @@
++"""[audit] Driver for object 38 (registry: results/main_objects/registry/38_*.md).
++Runs the authors' train.py as __main__ (runpy) with --dataset SQV --data_dir <prepared> --seed s (defaults otherwise).
++At each of the authors' evaluation points the hook records their valid / target accuracy (mean over loaders, as they
++compute it) and, isolated, the cross-entropy on the same loaders; the authors' selection rule incl. its tie rule
++marks author_pick. 'epoch' = evaluation point 1..25. Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR."""
++import argparse, json, os, runpy, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, REPO)
++import numpy as np, torch
++import torch.nn.functional as F
++from audit.main.epoch_record import Recorder
++from audit.torch_utils import isolate
++
++p = argparse.ArgumentParser()
++p.add_argument("--seeds", default="0-9")
++p.add_argument("--max_epoch", type=int, default=None)
++p.add_argument("--data_dir", required=True)
++p.add_argument("--out", required=True)
++a = p.parse_args()
++lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds),) * 2
++real_stdout, real_stderr = sys.stdout, sys.stderr
++
++
++@torch.no_grad()
++def mean_ce(alg, loaders, dev):
++    vals = []
++    for ld in loaders:
++        tot, n = 0.0, 0
++        for d in ld:
++            x, y = d[0].to(dev).float(), d[1].to(dev).long()
++            tot += F.cross_entropy(alg.predict(x), y, reduction="sum").item(); n += len(x)
++        vals.append(tot / n)
++    return float(np.mean(vals))
++
++
++for s in range(lo, hi + 1):
++    rec = Recorder(obj="38", group="DIS|SQV test_env 0", seed=s, select_split="val", report_split="test",
++                   note="epoch = evaluation point (epochs 0,5,...,115,119); acc = authors' mean over loaders")
++    st = dict(n=0, best_valid=0.0, target=0.0)
++
++    def hook(epoch, alg, eval_loaders, names, accs):
++        st["n"] += 1; n = st["n"]
++        dev = next(alg.parameters()).device
++        with isolate([alg], dev):
++            alg.eval()
++            vl = mean_ce(alg, [eval_loaders[i] for i in names["valid"]], dev)
++            tl = mean_ce(alg, [eval_loaders[i] for i in names["target"]], dev)
++        rec.log(n, "val", accs["valid"], vl)
++        rec.log(n, "test", accs["target"], tl)
++        rec.d.setdefault("eval_epoch", {})[str(n)] = int(epoch)
++        if accs["valid"] > st["best_valid"]:
++            st["best_valid"] = accs["valid"]; st["target"] = accs["target"]; rec.author_pick(n)
++        if accs["valid"] >= st["best_valid"] and accs["target"] >= st["target"]:
++            st["target"] = accs["target"]; rec.author_pick(n)
++
++    final = {}
++    out = os.path.join(a.out, f"seed{s}")
++    sys.argv = [os.path.join(REPO, "train.py"), "--dataset", "SQV", "--data_dir", a.data_dir, "--seed", str(s),
++                "--output", out] + (["--max_epoch", str(a.max_epoch)] if a.max_epoch else [])
++    t0 = time.time()
++    cwd = os.getcwd(); os.chdir(REPO)
++    try:
++        runpy.run_path(os.path.join(REPO, "train.py"), init_globals=dict(AUDIT_HOOK=hook, AUDIT_FINAL=lambda v: final.update(v=float(v))),
++                       run_name="__main__")
++    finally:
++        os.chdir(cwd); sys.stdout, sys.stderr = real_stdout, real_stderr
++    rec.finish(final.get("v"))
++    print(json.dumps(dict(seed=s, seconds=round(time.time() - t0, 1), n_eval=st["n"], author_epoch=rec.d["author_epoch"],
++                          reported=final.get("v"), check=rec.d["author_check"])), flush=True)
+diff --git a/audit_sqv_text_to_mat.py b/audit_sqv_text_to_mat.py
+new file mode 100644
+index 0000000..05bab48
+--- /dev/null
++++ b/audit_sqv_text_to_mat.py
+@@ -0,0 +1,41 @@
++"""[audit] Python port of the authors' matlab/SQV_text_to_mat.m + get_speed.m (rule d154119: light deterministic
++preprocessing -> Python). For every condition folder and every REC*_ch2.txt (sorted, as MATLAB dir() lists them):
++  vibration = column 2 from row 17 of REC<id>_ch2.txt;  speed = -(column 2 from row 17 of REC<id>_ch3.txt)
++  index = all i (1-based) with speed(i) >= 5 and speed(i+1) <= 5      (get_speed with threshold 5)
++  if index non-empty: data = vibration(index(1):index(end)) saved as <condition>_<k>.mat (k = 1, 2, ... in order)
++The public archive names the normal folder 'NC'; the authors' script and prepare_sqv.py use condition 'N'.
++No resampling, so no filter-sensitivity check is needed."""
++import argparse, glob, os, re
++import numpy as np
++from scipy.io import savemat
++
++p = argparse.ArgumentParser()
++p.add_argument("--root", required=True)
++p.add_argument("--out", required=True)
++a = p.parse_args()
++FS = 25.6e3
++FOLDERS = {"IF_1": "IF_1", "IF_2": "IF_2", "IF_3": "IF_3", "OF_1": "OF_1", "OF_2": "OF_2", "OF_3": "OF_3", "N": "NC"}
++
++
++def col2(path):
++    return np.loadtxt(path, skiprows=16, usecols=1, dtype=np.float64)
++
++
++for condition, folder in FOLDERS.items():
++    os.makedirs(a.out, exist_ok=True)
++    files = sorted(glob.glob(os.path.join(a.root, folder, "REC*_ch2.txt")))
++    k = 0
++    for f in files:
++        rid = re.search(r"REC(\d+)_ch2\.txt$", f).group(1)
++        vib = col2(f)
++        spd = -col2(os.path.join(a.root, folder, f"REC{rid}_ch3.txt"))
++        idx = np.nonzero((spd[:-1] >= 5) & (spd[1:] <= 5))[0] + 1      # 1-based like MATLAB
++        if idx.size:
++            first, last = int(idx[0]), int(idx[-1])
++            k += 1
++            savemat(os.path.join(a.out, f"{condition}_{k}.mat"),
++                    dict(data=vib[first - 1:last].reshape(-1, 1), fs=FS, record_id=rid, condition=condition,
++                         first_sample=first, last_sample=last))
++            print(condition, k, rid, len(vib), first, last, flush=True)
++        else:
++            print(condition, "skip", rid, len(vib), flush=True)
+diff --git a/train.py b/train.py
+index 4280675..c709816 100644
+--- a/train.py
++++ b/train.py
+@@ -165,6 +165,7 @@ if __name__ == "__main__":
+                 )
+                 acc_msg.append("{}_acc:{:.4f}".format(item, acc_record[item]))
+             print(",".join(acc_msg))
++            if globals().get("AUDIT_HOOK"): AUDIT_HOOK(epoch, algorithm, eval_loaders, eval_name_dict, dict(acc_record))  # [audit]
+ 
+             if acc_record["valid"] > best_valid_acc:
+                 best_valid_acc = acc_record["valid"]
+@@ -180,6 +181,7 @@ if __name__ == "__main__":
+ 
+     print("valid acc: {:.4f}".format(best_valid_acc))
+     print("DG result: {:.4f}".format(target_acc))
++    if globals().get("AUDIT_FINAL"): AUDIT_FINAL(target_acc)  # [audit] authors' reported value
+     print("Last epoch test acc: {:.4f}".format(acc_record["target"]))
+ 
+     with open(os.path.join(args.output, "DIS_test.txt"), "a") as f:

@@ -1,0 +1,476 @@
+{
+ "meta": {
+  "step": "expansion_epmc",
+  "query": "(\"bearing fault\" OR \"rolling bearing\" OR \"bearing diagnosis\" OR \"rotating machinery\") AND \"github\" AND PUB_YEAR:[2019 TO 2025] AND IN_EPMC:y AND NOT SRC:PPR",
+  "started_at_utc": "2026-10-21T11:53:18+00:00",
+  "finished_at_utc": "2026-10-21T11:57:55+00:00",
+  "hit_count": 38,
+  "n_works": 38,
+  "n_no_doi": 0,
+  "fulltext_status": {
+   "xml": 38
+  },
+  "n_link": 34,
+  "registration": "https://osf.io/2tqv6"
+ },
+ "works": [
+  {
+   "openalex_id": null,
+   "doi": "10.1371/journal.pone.0337203",
+   "year": "2025",
+   "pmcid": "PMC12637991",
+   "title": "Large language models for prognostic analysis in mechanical fault diagnosis.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/royalhao3zz/llm-for-prognostic-analysis-in-mechanical-fault-diagnosis"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1038/s41598-025-06734-y",
+   "year": "2025",
+   "pmcid": "PMC12533170",
+   "title": "Lightweight bearing fault diagnosis via decoupled distillation and low rank adaptation.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/lipengyi0829/dkdl-net",
+    "https://github.com/spbu-lipengyi/dkdl-net"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1371/journal.pone.0314898",
+   "year": "2024",
+   "pmcid": "PMC11687897",
+   "title": "Rolling bearing fault diagnosis method based on gramian angular difference field and dynamic self-calibrated convolution module.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/debug-xue/dscnn_plos-one"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1371/journal.pone.0335368",
+   "year": "2025",
+   "pmcid": "PMC12561987",
+   "title": "Fault detection of high-speed train wheelset bearings based on improved auxiliary classifier generative adversarial networks and VAE.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/ppeterqq/vibration-data"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1038/s41598-025-92838-4",
+   "year": "2025",
+   "pmcid": "PMC11933336",
+   "title": "An intelligent fault diagnosis model for bearings with adaptive hyperparameter tuning in multi-condition and limited sample scenarios.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/ghfdcwklighqf/hgwa"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.7717/peerj-cs.1807",
+   "year": "2024",
+   "pmcid": "PMC10803066",
+   "title": "Rolling bearing fault diagnosis based on Gramian angular difference field and improved channel attention model.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/qwerty123456000000/data"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.3390/s25092941",
+   "year": "2025",
+   "pmcid": "PMC12074256",
+   "title": "Multi-Variable Transformer-Based Meta-Learning for Few-Shot Fault Diagnosis of Large-Scale Systems.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/ypcj/mvmt"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.3390/s24247909",
+   "year": "2024",
+   "pmcid": "PMC11678982",
+   "title": "A Novel Intelligent Fault Diagnosis Method of Rolling Bearings Based on the ConvNeXt Network with Improved DenseBlock.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/houleihit/hit-dataset"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.3390/s24154855",
+   "year": "2024",
+   "pmcid": "PMC11314809",
+   "title": "GCN-Based LSTM Autoencoder with Self-Attention for Bearing Fault Diagnosis.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/daeheetwo/fault-simulator-data"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1371/journal.pone.0292381",
+   "year": "2023",
+   "pmcid": "PMC10553235",
+   "title": "The combination model of CNN and GCN for machine fault diagnosis.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/iridescentcloud/machine_fault_diagnosis"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1016/j.dib.2023.109327",
+   "year": "2023",
+   "pmcid": "PMC10331275",
+   "title": "University of Ottawa constant load and speed rolling-element bearing vibration and acoustic fault signature datasets.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/bob-1234/1_bearing_spectrogram_dataset_creation"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.3390/s22239037",
+   "year": "2022",
+   "pmcid": "PMC9736871",
+   "title": "Explainable AI Algorithms for Vibration Data-Based Fault Detection: Use Case-Adadpted Methods and Critical Evaluation.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/emanuel-metzenthin/lime-for-time",
+    "https://github.com/o-mey/xai-vibration-fault-detection"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.7717/peerj-cs.795",
+   "year": "2021",
+   "pmcid": "PMC8641573",
+   "title": "Deep learning-based anomaly-onset aware remaining useful life estimation of bearings.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/poojapaikamat/anomalyonsetawarerul"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1038/s41598-022-26316-6",
+   "year": "2022",
+   "pmcid": "PMC9768155",
+   "title": "Research on an intelligent diagnosis method of mechanical faults for small sample data sets.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/yyxyz/casewesternreserveuniversitydata"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1371/journal.pone.0316569",
+   "year": "2025",
+   "pmcid": "PMC11798475",
+   "title": "Surface defect detection on industrial drum rollers: Using enhanced YOLOv8n and structured light for accurate inspection.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/sillybe/yolov8n"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.3389/fpls.2025.1597673",
+   "year": "2025",
+   "pmcid": "PMC12405167",
+   "title": "Using preprocessed datasets to construct and interpret multiclass identification models.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/cvn77andf1/tobacco-data-and-cod"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.3390/s25154536",
+   "year": "2025",
+   "pmcid": "PMC12349419",
+   "title": "Remaining Useful Life Prediction Across Conditions Based on a Health Indicator-Weighted Subdomain Alignment Network.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/wangbiaoxjtu/xjtu-sy-bearing-datasets"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.3390/s24216906",
+   "year": "2024",
+   "pmcid": "PMC11548141",
+   "title": "Prediction of the Remaining Useful Life of Bearings Through CNN-Bi-LSTM-Based Domain Adaptation Model.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/feifanli-arch/phm2012_domain_cnn_bi_lstm"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1038/s41598-025-21674-3",
+   "year": "2025",
+   "pmcid": "PMC12572128",
+   "title": "Band level similarity reduction and deep dual signal fusion for reliable diagnosis of power insulator defects.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/sfstefenon/insulatorclassificationultrasound"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1371/journal.pone.0327802",
+   "year": "2025",
+   "pmcid": "PMC12306765",
+   "title": "Fault analysis and performance improvement of grid-connected doubly fed induction generator through an enhanced crowbar protection scheme.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/lashariabbas/dr.-rameez-pape-code"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1038/s41598-025-03765-3",
+   "year": "2025",
+   "pmcid": "PMC12137709",
+   "title": "Optimization of deep learning architecture based on multi-path convolutional neural network algorithm.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/tommyzihao/train_custom_dataset"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.3390/e28010003",
+   "year": "2025",
+   "pmcid": "PMC12840462",
+   "title": "LEARNet: A Learning Entropy-Aware Representation Network for Educational Video Understanding.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/nivedhavijayan/learnet-evud-benchmark",
+    "https://zenodo.org/records/14036059?preview=1&amp"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1371/journal.pone.0335360",
+   "year": "2025",
+   "pmcid": "PMC12594399",
+   "title": "Real-time motor operating state recognition via multi-sensor fusion: A wavelet-neural-evidence framework for industrial condition monitoring.",
+   "fulltext": "xml",
+   "links": []
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1371/journal.pone.0321384",
+   "year": "2025",
+   "pmcid": "PMC12133019",
+   "title": "Multi-objective maintenance optimization of contact networks considering integrated state parameters.",
+   "fulltext": "xml",
+   "links": []
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1371/journal.pone.0325474",
+   "year": "2025",
+   "pmcid": "PMC12244652",
+   "title": "Multi-scale time series prediction model based on deep learning and its application.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/lulu-dududu/code"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.3390/s23010012",
+   "year": "2022",
+   "pmcid": "PMC9824278",
+   "title": "A Data-Driven Framework for Small Hydroelectric Plant Prognosis Using Tsfresh and Machine Learning Survival Models.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/rodrigosantis1/shp_prognosis"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.3390/s25082599",
+   "year": "2025",
+   "pmcid": "PMC12031522",
+   "title": "Deep Learning-Based Fault Diagnosis via Multisensor-Aware Data for Incipient Inter-Turn Short Circuits (ITSC) in Wind Turbine Generators.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/lapisco/wind_turbine_failure_prediction"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1007/s11831-023-09912-1",
+   "year": "2023",
+   "pmcid": "PMC10115392",
+   "title": "Marine Predators Algorithm: A Review.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/afshinfaramarzi/marine-predators-algorithm",
+    "https://github.com/da-da-chen/mompa"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.3390/ani14142021",
+   "year": "2024",
+   "pmcid": "PMC11273464",
+   "title": "Federated Multi-Label Learning (FMLL): Innovative Method for Classification Tasks in Animal Science.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/bitaghasemkhani/federated-multi-label-learning-fmll"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1016/j.gastha.2023.03.019",
+   "year": "2023",
+   "pmcid": "PMC10500958",
+   "title": "Substance Use Among Patients With Incident Crohn's Disease in the United States, 2010 to 2019: A Medicaid Observational Study.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/susanmhutfless/playground"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.3390/s23010272",
+   "year": "2022",
+   "pmcid": "PMC9823532",
+   "title": "A New Approach to Optimize SVM for Insulator State Identification Based on Improved PSO Algorithm.",
+   "fulltext": "xml",
+   "links": []
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.3390/s22186733",
+   "year": "2022",
+   "pmcid": "PMC9503337",
+   "title": "Low-Cost, Open-Source, Emoncms-Based SCADA System for a Large Grid-Connected PV System.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/adafruit/adafruit_sensor",
+    "https://github.com/adafruit/dht-sensor-library",
+    "https://github.com/openenergymonitor/emonhub"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1016/j.eswa.2021.115650",
+   "year": "2021",
+   "pmcid": "PMC8327617",
+   "title": "Wavelet and deep learning-based detection of SARS-nCoV from thoracic X-ray images for rapid and efficient testing.",
+   "fulltext": "xml",
+   "links": []
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.7717/peerj-cs.690",
+   "year": "2021",
+   "pmcid": "PMC8444085",
+   "title": "Data-driven remaining useful life prediction based on domain adaptation.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/wen-afk/bgru-dann"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.7717/peerj-cs.1014",
+   "year": "2022",
+   "pmcid": "PMC9454774",
+   "title": "Gene Ontology Capsule GAN: an improved architecture for protein function prediction.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/musadaqmansoor/gocapgan"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1073/pnas.2106598119",
+   "year": "2022",
+   "pmcid": "PMC8872732",
+   "title": "Fully learnable deep wavelet transform for unsupervised monitoring of high-frequency time series.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/michaugabriel/despawn",
+    "https://zenodo.org/record/3384388#.YG1g150zaUk"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.1007/s10489-022-04278-6",
+   "year": "2023",
+   "pmcid": "PMC9709375",
+   "title": "Front-end deep learning web apps development and deployment: a review.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/arbml/arbml",
+    "https://github.com/caffe2/models",
+    "https://github.com/cazala/synaptic",
+    "https://github.com/dermotte/headbangz",
+    "https://github.com/idearibosome/srzoo",
+    "https://github.com/jasonmayes/real-time-person-removal",
+    "https://github.com/jjstoessel/intelliomr_2020_prototype_release",
+    "https://github.com/justadudewhohacks/face-api.js",
+    "https://github.com/karpathy/convnetjs",
+    "https://github.com/kosmask/jazzicat",
+    "https://github.com/machinelearnjs/machinelearnjs",
+    "https://github.com/marcellejs/marcelle",
+    "https://github.com/noufst/deepscratch",
+    "https://github.com/piotrmp/credibilator",
+    "https://github.com/poloclub/cnn-explainer",
+    "https://github.com/poloclub/ganlab",
+    "https://github.com/rishit-dagli/greenathon-plant-ai",
+    "https://github.com/stevenmiller888/mind",
+    "https://github.com/tensorflow/tfjs",
+    "https://github.com/tensorflow/tfjs-models",
+    "https://github.com/tensorflow/tfjs-tsne",
+    "https://github.com/transcranial/keras-js",
+    "https://github.com/victordibia/handtrack.js",
+    "https://github.com/vigliensoni/r-vae-js",
+    "https://github.com/yemount/pose-animator"
+   ]
+  },
+  {
+   "openalex_id": null,
+   "doi": "10.3390/s23010062",
+   "year": "2022",
+   "pmcid": "PMC9823653",
+   "title": "Deep Learning in Diverse Intelligent Sensor Based Systems.",
+   "fulltext": "xml",
+   "links": [
+    "https://github.com/christoschristofidis/awesome-deep-learning",
+    "https://github.com/facebookresearch/fairseq",
+    "https://github.com/facebookresearch/roberta",
+    "https://github.com/google-research/albert",
+    "https://github.com/google-research/bert",
+    "https://github.com/google-research/electra",
+    "https://github.com/google-research/t5",
+    "https://github.com/google-research/text-to-text-transfer-transformer",
+    "https://github.com/lucidrains/palm-pytorch",
+    "https://github.com/machine-learning-tokyo/ai_curriculum",
+    "https://github.com/mic-dkfz/batchgenerators",
+    "https://github.com/microsoft/deberta",
+    "https://github.com/nervanasystems/neon",
+    "https://github.com/niderhoff/nlp-datasets",
+    "https://github.com/openai/gpt-2",
+    "https://github.com/openai/gpt-3",
+    "https://github.com/tensorflow/models",
+    "https://github.com/zihangdai/xlnet"
+   ]
+  }
+ ]
+}

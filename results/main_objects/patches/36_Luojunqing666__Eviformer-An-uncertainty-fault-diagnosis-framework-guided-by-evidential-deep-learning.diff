@@ -1,0 +1,82 @@
+diff --git a/audit_run36.py b/audit_run36.py
+new file mode 100644
+index 0000000..a09936b
+--- /dev/null
++++ b/audit_run36.py
+@@ -0,0 +1,45 @@
++"""[audit] Driver for object 36 (registry: results/main_objects/registry/36_*.md).
++Runs the authors' main.main() with the 4 README training commands (all --epochs 100 --num_classes 10), 10 unseeded
++repeats each; train.AUDIT_HOOK records the authors' per-epoch val (= report) acc/loss, AUDIT_FINAL their best_acc.
++Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR; --data_dir is a root holding '12k Drive End Bearing Fault Data'."""
++import argparse, json, os, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, REPO)
++import main as M
++import train as T
++from audit.main.epoch_record import Recorder
++
++GROUPS = {"MC-SwinT+EDL-Digamma": ["--model", "mcswint", "--uncertainty", "--digamma"],
++          "1D-ViT+EDL-Log": ["--model", "vit", "--uncertainty", "--log"],
++          "LeNet+EDL-MSE": ["--model", "lenet", "--uncertainty", "--mse"],
++          "MC-SwinT+CE": ["--model", "mcswint"]}
++p = argparse.ArgumentParser()
++p.add_argument("--groups", default=",".join(GROUPS))
++p.add_argument("--repeats", default="0-9")
++p.add_argument("--epochs", type=int, default=100)
++p.add_argument("--data_dir", required=True)
++p.add_argument("--save_dir", required=True)
++a = p.parse_args()
++lo, hi = map(int, a.repeats.split("-")) if "-" in a.repeats else (int(a.repeats),) * 2
++
++for g in a.groups.split(","):
++    for r in range(lo, hi + 1):
++        rec = Recorder(obj="36", group=f"{g}|CWRU 1797", seed=r, select_split=None, report_split="test",
++                       note=f"unseeded repeat {r}; test = authors' val split (no separate test set)")
++        st = {"best": 0.0}
++
++        def hook(ep, acc, loss):
++            rec.log(ep, "test", acc, loss)
++            if acc > st["best"]:     # authors' rule (strict >)
++                st["best"] = acc; rec.author_pick(ep)
++
++        final = {}
++        T.AUDIT_HOOK, T.AUDIT_FINAL = hook, (lambda v: final.update(v=v))
++        sys.argv = ["main.py", "--train"] + GROUPS[g] + ["--data_dir", a.data_dir, "--num_classes", "10",
++                                                      "--epochs", str(a.epochs), "--save_dir", os.path.join(a.save_dir, g, str(r))]
++        t0 = time.time()
++        M.main()
++        T.AUDIT_HOOK = T.AUDIT_FINAL = None
++        rec.finish(final.get("v"))
++        print(json.dumps(dict(group=g, repeat=r, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                              reported=final.get("v"), check=rec.d["author_check"])), flush=True)
+diff --git a/train.py b/train.py
+index d64fb53..d0a4957 100644
+--- a/train.py
++++ b/train.py
+@@ -6,6 +6,9 @@ import torch
+ from utils import get_device, one_hot_embedding
+ from models.losses import relu_evidence
+ 
++AUDIT_HOOK = None   # [audit]
++AUDIT_FINAL = None  # [audit]
++
+ 
+ def train_model(model, dataloaders, num_classes, criterion, optimizer,
+                 scheduler=None, num_epochs=100, device=None, uncertainty=False):
+@@ -90,6 +93,9 @@ def train_model(model, dataloaders, num_classes, criterion, optimizer,
+ 
+             print(f"{phase.capitalize()} loss: {epoch_loss:.4f} acc: {epoch_acc:.4f}")
+ 
++            if phase == "val" and AUDIT_HOOK is not None:  # [audit] per-epoch record of the authors' val (= report) metrics
++                AUDIT_HOOK(epoch + 1, epoch_acc.item(), epoch_loss)
++
+             if phase == "val" and epoch_acc > best_acc:
+                 best_acc = epoch_acc
+                 best_model_wts = copy.deepcopy(model.state_dict())
+@@ -102,4 +108,6 @@ def train_model(model, dataloaders, num_classes, criterion, optimizer,
+ 
+     model.load_state_dict(best_model_wts)
+     metrics = (losses, accuracy)
++    if AUDIT_FINAL is not None:  # [audit] authors' reported value
++        AUDIT_FINAL(float(best_acc))
+     return model, metrics

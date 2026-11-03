@@ -1,0 +1,195 @@
+diff --git a/audit_run62.py b/audit_run62.py
+new file mode 100755
+index 0000000..498aaa8
+--- /dev/null
++++ b/audit_run62.py
+@@ -0,0 +1,133 @@
++"""[audit] Driver for object 62 (registry: results/main_objects/registry/62_*.md).
++Per seed s in 0..9 (replacing their 42): (1) the authors' train_dkd pipeline -- random_seed(s), prepro Train, train_teacher,
++train_student (DKD) -- with train_dkd.py defaults (0HP, SNR -6, bs 128, 75 epochs, SGD 0.1); (2) the authors'
++train_single.train (student without KD) with its defaults (bs 64, lr 0.5, 75 epochs) on the same task (SNR -6).
++Reported value per group = the authors' inference10 (mean macro-F1 over their 10 test re-samplings, seeds 37..46, i.e.
++config.seed = 42 as in their protocol) on the final model (their 'best' variable is a reference to the live model).
++The hook after each validation phase records their validation accuracy / loss and, isolated, test accuracy, CE and
++macro-F1 averaged over the same 10 test re-samplings. Run with cwd = a work dir holding data/0HP_{Train,Test}Noised_-6.
++Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR, WANDB_MODE=disabled."""
++import argparse, json, math, os, sys, time, types, io, contextlib
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, REPO)
++import numpy as np, torch, torch.nn.functional as F, wandb
++from sklearn.metrics import f1_score
++from torch.utils.data import DataLoader
++from audit.main.epoch_record import Recorder
++from audit.torch_utils import isolate
++import train_dkd as TD
++import train_single as TS
++from utils.Preprocess import prepro, random_seed
++from utils.DatasetLoader import CustomTensorDataset
++
++p = argparse.ArgumentParser()
++p.add_argument("--seeds", default="0-9")
++p.add_argument("--epochs", type=int, default=None)
++p.add_argument("--groups", default="dkd,single")
++a = p.parse_args()
++lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds),) * 2
++wandb.init(mode="disabled")
++dev = torch.device("cuda")
++SNR = -6
++
++
++def cfg_dkd(seed):
++    return types.SimpleNamespace(no_cuda=False, log_interval=200, seed=seed, batch_size=128, epochs=a.epochs or 75, tlr=0.1,
++                                 slr=0.1, alpha=0.2, beta=5, gammar=1, warmup=5, temperature=2.5, add_noise=True, snr=SNR,
++                                 chosen_data='0HP', chosen_model='DKD')
++
++
++def cfg_single(seed):
++    return types.SimpleNamespace(no_cuda=False, log_interval=200, seed=seed, batch_size=64, epochs=a.epochs or 75, lr=0.5,
++                                 add_noise=True, snr=SNR, chosen_data='0HP', chosen_model='SCNN')
++
++
++def test_sets():   # their inference10 test construction for seeds 37..46 (config.seed 42), built without touching RNG state
++    out = []
++    with isolate([], dev):
++        for sd in range(37, 47):
++            random_seed(sd)
++            X, Y = prepro(d_path=os.path.join('data', '0HP'), length=2048, number=250, normal=True, enc=True, enc_step=28,
++                          snr=SNR, property='Test', noise=True)
++            out.append((torch.tensor(X[:, np.newaxis, :], dtype=torch.float), torch.tensor(np.asarray(Y)).long().view(-1)))
++    return out
++
++
++TESTS = test_sets()
++
++
++@torch.no_grad()
++def eval_tests(model):
++    accs, ces, f1s = [], [], []
++    for X, Y in TESTS:
++        out = torch.cat([model(X[i:i + 512].to(dev)) for i in range(0, len(X), 512)]).cpu()
++        pred = out.argmax(1)
++        accs.append((pred == Y).float().mean().item()); ces.append(F.cross_entropy(out, Y).item())
++        f1s.append(f1_score(Y.numpy(), pred.numpy(), average="macro"))
++    return float(np.mean(accs)), float(np.mean(ces)), float(np.mean(f1s))
++
++
++def make_rec(group, s):
++    rec = Recorder(obj="62", group=f"{group}|CWRU 0HP -6dB", seed=s, select_split="val", report_split="test",
++                   note="test = mean over their 10 test re-samplings (seeds 37-46); author reports mean macro-F1 (test_f1 field); val loss = their per-sample loss")
++    rec.d["test_f1"] = {}
++    return rec
++
++
++def reported_f1(model, cfg):   # their inference10 with config.seed = 42 (test re-sampling seeds 37..46)
++    c = types.SimpleNamespace(**vars(cfg)); c.seed = 42
++    buf = io.StringIO()
++    with contextlib.redirect_stdout(buf):
++        (TD if c.chosen_model == 'DKD' else TS).inference10(model, c)
++    line = [l for l in buf.getvalue().splitlines() if l.startswith("test_f1: mean:")][-1]
++    return float(line.split("mean:")[1].split("var:")[0])
++
++
++for s in range(lo, hi + 1):
++    runs = []
++    if "dkd" in a.groups:
++        runs.append(("dkd", cfg_dkd(s)))
++    if "single" in a.groups:
++        runs.append(("single", cfg_single(s)))
++    for kind, cfg in runs:
++        recs = {}
++
++        def hook(role, ep, model, val_acc, val_loss):
++            rec = recs.setdefault(role, make_rec(role, s))
++            with isolate([model], dev):
++                model.eval(); acc, ce, f1 = eval_tests(model)
++            rec.log(ep, "val", float(val_acc), float(val_loss))
++            rec.log(ep, "test", acc, ce)
++            rec.d["test_f1"][str(ep)] = f1
++            rec.d["last"] = ep
++
++        TD.AUDIT_HOOK = TS.AUDIT_HOOK = hook
++        t0 = time.time()
++        random_seed(cfg.seed)
++        tr_X, tr_Y, va_X, va_Y = prepro(d_path=os.path.join('data', '0HP'), length=2048, number=750, normal=True, enc=True,
++                                        enc_step=28, snr=cfg.snr, property='Train', noise=True)
++        tr_X, va_X = tr_X[:, np.newaxis, :], va_X[:, np.newaxis, :]
++        loaders = {"train": DataLoader(CustomTensorDataset(torch.tensor(tr_X, dtype=torch.float), torch.tensor(tr_Y)),
++                                       batch_size=cfg.batch_size, shuffle=True, drop_last=True),
++                   "validation": DataLoader(CustomTensorDataset(torch.tensor(va_X, dtype=torch.float), torch.tensor(va_Y)),
++                                            batch_size=cfg.batch_size, shuffle=True, drop_last=True)}
++        os.makedirs('Pth', exist_ok=True)
++        if kind == "dkd":
++            tnet = TD.train_teacher(cfg, loaders)
++            snet = TD.train_student(cfg, loaders, tnet)
++            finals = {"Teacher": tnet, "DKD-Student": snet}
++        else:
++            snet = TS.train(cfg, loaders)
++            finals = {"Student": snet}
++        TD.AUDIT_HOOK = TS.AUDIT_HOOK = None
++        for role, model in finals.items():
++            rec = recs[role]
++            rep = reported_f1(model, cfg)
++            rec.author_pick(rec.d["last"])          # 'best' is a reference to the live model -> last epoch
++            rec.finish(None)
++            f1_at = rec.d["test_f1"][str(rec.d["author_epoch"])]
++            rec.d["author_reported_f1"] = rep
++            rec.d["author_check_f1"] = dict(recorded=f1_at, reported=rep, abs_diff=abs(f1_at - rep), matches=math.isclose(f1_at, rep, abs_tol=1e-6))
++            rec._dump()
++            print(json.dumps(dict(group=role, seed=s, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                                  check_f1=rec.d["author_check_f1"])), flush=True)
+diff --git a/train_dkd.py b/train_dkd.py
+index b614030..480fbc7 100644
+--- a/train_dkd.py
++++ b/train_dkd.py
+@@ -22,6 +22,7 @@ from utils.loss_fun import *
+ 
+ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+ use_gpu = torch.cuda.is_available()
++AUDIT_HOOK = None  # [audit] see audit_run62.py
+ print(torch.cuda.is_available())
+ 
+ 
+@@ -135,6 +136,7 @@ def train_teacher(config, dataloader):
+                     # torch.save(net.state_dict(), file)
+                     tnet_best = teacher_model
+             print('%s ACC:%.4f' % (phase, acc))
++            if AUDIT_HOOK and phase == 'validation': AUDIT_HOOK('Teacher', e + 1, teacher_model, acc, loss_total)  # [audit]
+     if not os.path.exists('Pth'):
+         os.mkdir('Pth')
+     file = "Pth/" + "DKD11_" + 'Tmodel' + str(config.snr) + '_' + config.chosen_data + '_'  + str(round(acc_max.item(),2)) + ".pth"
+@@ -231,6 +233,7 @@ def train_student(config, dataloader, tnet_best):
+                     acc_max = acc
+                     net_best = student_model
+             print('%s ACC:%.4f' % (phase, acc))
++            if AUDIT_HOOK and phase == 'validation': AUDIT_HOOK('DKD-Student', e + 1, student_model, acc, loss_total)  # [audit]
+ 
+     if not os.path.exists('Pth'):
+         os.mkdir('Pth')
+@@ -300,6 +303,7 @@ def inference10(net0,config):
+                                 property='Test',
+                                 noise=config.add_noise
+                                 )
++        test_X = test_X[:, np.newaxis, :]  # [audit] one-line fix, as in train_single.py
+         test_dataset = CustomTensorDataset(torch.tensor(test_X, dtype=torch.float), torch.tensor(test_Y))
+         test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, drop_last=False)
+         f1, FPR, recall, precision = inference(test_loader, net0)
+diff --git a/train_single.py b/train_single.py
+index 034009d..9e814b4 100644
+--- a/train_single.py
++++ b/train_single.py
+@@ -22,6 +22,7 @@ from utils.loss_fun import *
+ 
+ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+ use_gpu = torch.cuda.is_available()
++AUDIT_HOOK = None  # [audit] see audit_run62.py
+ print(torch.cuda.is_available())
+ 
+ 
+@@ -120,6 +121,7 @@ def train(config, dataloader):
+                     acc_max = acc
+                     tnet_best = model
+             print('%s ACC:%.4f' % (phase, acc))
++            if AUDIT_HOOK and phase == 'validation': AUDIT_HOOK('Student', e + 1, model, acc, loss_total)  # [audit]
+     if not os.path.exists('Pth'):
+         os.mkdir('Pth')
+     return tnet_best

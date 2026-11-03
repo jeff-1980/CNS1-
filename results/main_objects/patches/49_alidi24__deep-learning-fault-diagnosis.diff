@@ -1,0 +1,78 @@
+diff --git a/audit_run49.py b/audit_run49.py
+new file mode 100755
+index 0000000..e242e7e
+--- /dev/null
++++ b/audit_run49.py
+@@ -0,0 +1,72 @@
++"""[audit] Driver for object 49 (registry: results/main_objects/registry/49_*.md).
++Runs the authors' train.main() (src/config.py defaults, HF dataset alidi/wind-turbine-5mw-bearing-dataset) 10 times
++unseeded (the authors seed only their split, 42). No author file is changed: an extra Lightning callback is appended
++to the list their setup_callbacks() returns. It records, per epoch, their logged val_acc / val_loss (epoch means) and,
++isolated, test accuracy / CE on the test split their DataModule builds; the authors' pick is the ModelCheckpoint
++best (min val_loss, first minimum); reported = test_acc from their trainer.test() on that checkpoint.
++Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR, HF_HOME."""
++import argparse, json, os, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, REPO)
++import torch, torch.nn.functional as F
++from torch.utils.data import DataLoader
++from pytorch_lightning.callbacks import Callback
++import train as T
++from src.config import config
++from src.dataset_manager import DatasetManager
++from audit.main.epoch_record import Recorder
++from audit.torch_utils import isolate
++
++p = argparse.ArgumentParser()
++p.add_argument("--repeats", default="0-9")
++p.add_argument("--max_epoch", type=int, default=None)
++a = p.parse_args()
++lo, hi = map(int, a.repeats.split("-")) if "-" in a.repeats else (int(a.repeats),) * 2
++if a.max_epoch:
++    config["max_epoch"] = a.max_epoch
++
++
++class AuditCallback(Callback):
++    def __init__(self, rec):
++        self.rec, self.best, self.test_loader, self.final = rec, None, None, None
++
++    def on_validation_epoch_end(self, trainer, pl_module):
++        if trainer.sanity_checking:
++            return
++        ep = trainer.current_epoch + 1
++        m = trainer.callback_metrics
++        val_acc, val_loss = float(m["val_acc"]), float(m["val_loss"])
++        dm = trainer.datamodule
++        if self.test_loader is None:
++            test_ds = DatasetManager.create_test_data(dm.ds, dm.config)
++            self.test_loader = DataLoader(test_ds, batch_size=dm.config["batch_size"], num_workers=0,
++                                          drop_last=False, collate_fn=dm._collate_fn)
++        with isolate([pl_module], pl_module.device):
++            pl_module.eval(); correct = n = 0; ce = 0.0
++            with torch.no_grad():
++                for x, y in self.test_loader:
++                    x, y = x.to(pl_module.device), y.to(pl_module.device)
++                    out = pl_module(x)
++                    correct += int((out.argmax(1) == y).sum()); n += y.numel()
++                    ce += float(pl_module.loss_fn(out, y)) * y.numel()   # their loss_fn on their outputs
++        self.rec.log(ep, "val", val_acc, val_loss)
++        self.rec.log(ep, "test", correct / n, ce / n)
++        if self.best is None or val_loss < self.best:     # ModelCheckpoint(monitor=val_loss, mode=min): strictly better
++            self.best = val_loss; self.rec.author_pick(ep)
++
++    def on_test_epoch_end(self, trainer, pl_module):
++        self.final = float(pl_module.test_acc.compute())
++
++
++for r in range(lo, hi + 1):
++    rec = Recorder(obj="49", group="PCA-CNN|NREL 5MW A1A+A3A", seed=r, select_split="val", report_split="test",
++                   note="unseeded repeat; their split seed 42; val/test acc = Lightning epoch means / torchmetrics; pick = min val_loss")
++    cb = AuditCallback(rec)
++    _setup = T.setup_callbacks
++    T.setup_callbacks = lambda: _setup() + [cb]
++    t0 = time.time()
++    T.main()
++    T.setup_callbacks = _setup
++    rec.finish(cb.final)
++    print(json.dumps(dict(repeat=r, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                          reported=cb.final, check=rec.d["author_check"])), flush=True)

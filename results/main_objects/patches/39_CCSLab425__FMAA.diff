@@ -1,0 +1,88 @@
+diff --git a/audit_run39.py b/audit_run39.py
+new file mode 100644
+index 0000000..281e1dc
+--- /dev/null
++++ b/audit_run39.py
+@@ -0,0 +1,37 @@
++"""[audit] Driver for object 39 (registry: results/main_objects/registry/39_*.md).
++Runs the authors' main.py as __main__ (runpy, defaults) once per seed 0..9 (AUDIT_SEED replaces their seed 1).
++The hook in adv_train_process.model_evaluation records their own target-test accuracy/loss per adversarial epoch;
++AUDIT_FINAL receives best_acc. Run with cwd = the repo (relative ./datasets, ./save_dir). Needs
++PYTHONPATH=~/audit_cns/code and AUDIT_RECORD_DIR."""
++import argparse, json, os, runpy, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, REPO)
++import train_process_module.adv_train_process as ATP
++from audit.main.epoch_record import Recorder
++
++p = argparse.ArgumentParser()
++p.add_argument("--seeds", default="0-9")
++p.add_argument("--adv_epochs", type=int, default=None)
++a = p.parse_args()
++lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds),) * 2
++
++for s in range(lo, hi + 1):
++    rec = Recorder(obj="39", group="FMAA|CWRU 1hp->SBDS 1K", seed=s, select_split=None, report_split="test",
++                   note="epoch = adversarial epoch; acc = authors' batch-mean target accuracy rounded to 4 d.p.")
++    st = {"best": 0.0}
++
++    def hook(ep, acc, loss):
++        rec.log(ep, "test", acc, loss)
++        if acc >= st["best"]:   # authors' rule
++            st["best"] = acc; rec.author_pick(ep)
++
++    ATP.AUDIT_HOOK = hook
++    final = {}
++    sys.argv = ["main.py"] + (["--n_epochs_3", str(a.adv_epochs)] if a.adv_epochs else [])
++    t0 = time.time()
++    runpy.run_path(os.path.join(REPO, "main.py"), init_globals=dict(AUDIT_SEED=s, AUDIT_FINAL=lambda v: final.update(v=float(v))),
++                   run_name="__main__")
++    ATP.AUDIT_HOOK = None
++    rec.finish(final.get("v"))
++    print(json.dumps(dict(seed=s, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                          reported=final.get("v"), check=rec.d["author_check"])), flush=True)
+diff --git a/main.py b/main.py
+index 95851ff..2dc74f6 100644
+--- a/main.py
++++ b/main.py
+@@ -67,9 +67,9 @@ for task in tasks:
+             global_step = 0
+             use_cuda = True if torch.cuda.is_available() else False
+             device = torch.device('cuda:0') if use_cuda else torch.device('cpu')
+-            torch.manual_seed(1)
++            torch.manual_seed(AUDIT_SEED)  # [audit] author seed 1 -> prereg seeds 0-9
+             if use_cuda:
+-                torch.cuda.manual_seed(1)
++                torch.cuda.manual_seed(AUDIT_SEED)  # [audit]
+             # ===========================================================================================================
+             #                     Extract the names of the source and target domain datasets
+             # ===========================================================================================================
+@@ -131,6 +131,7 @@ for task in tasks:
+             best_acc, best_pre_labels, y_test_ori, best_model = adversarial_process_cls.fit()
+             # ===========================================================================================================
+             print('best_acc = ', best_acc)
++            AUDIT_FINAL(best_acc)  # [audit] authors' reported value
+             best_acc_per_experimental_task['best_accuracy'].append(best_acc)
+ 
+             acc_str = str(number + 1) + '-' + str(best_acc) + '/'
+diff --git a/train_process_module/adv_train_process.py b/train_process_module/adv_train_process.py
+index 142acfb..27ea3c1 100644
+--- a/train_process_module/adv_train_process.py
++++ b/train_process_module/adv_train_process.py
+@@ -12,6 +12,7 @@ import numpy as np
+ from utils_dsbn.save_and_other_functions import save_model
+ from MMD.MMD_calculation import MMDLoss
+ 
++AUDIT_HOOK = None  # [audit]
+ 
+ class adversarial_process():
+     def __init__(self, net=None, discriminators=None, discriminators_domain=None, conditional_d=None, pretrain_d_epochs=30,
+@@ -597,6 +598,8 @@ class adversarial_process():
+         self.train_hist['Tar_test_loss'].append(test_loss)
+         self.train_hist['Tar_test_accuracy'].append(test_accuracy)
+         print("step3----Epoch %d/%d  accuracy: %.3f " % (epoch + 1, self.adv_epochs, test_accuracy))
++        if AUDIT_HOOK is not None:  # [audit] per-epoch record of the authors' own target-test metrics
++            AUDIT_HOOK(epoch + 1, test_accuracy, float(test_loss))
+         best_model = self.net
+         if test_accuracy >= best_acc:
+             best_acc = test_accuracy

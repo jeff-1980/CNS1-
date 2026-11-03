@@ -1,0 +1,1 @@
+FMAA|CWRU 1hp->SBDS 1K 10 author 96.97 +- 3.35; last 96.65 +- 3.57; best_rep 96.97 +- 3.35; minloss 96.68 +- 3.68; budget50 91.78 +- 8.92 checks 10

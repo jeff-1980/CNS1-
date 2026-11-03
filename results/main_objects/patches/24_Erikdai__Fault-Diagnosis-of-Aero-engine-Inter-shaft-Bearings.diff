@@ -1,0 +1,112 @@
+# [audit] object 24: code cells of SEDSCN-TRANS.ipynb extracted verbatim to nb_SEDSCN-TRANS.py (scratch nb2py.py: cells concatenated with '# ---- cell [i] ----' markers);
+# the dataset notebooks were extracted the same way and run unchanged (nb_create_dataset_1.py, nb_create_dataset_2.py). Patch = diff to sedscn_audit.py, plus the driver.
+--- nb_SEDSCN-TRANS.py	2026-10-21 18:04:44.646194992 +0800
++++ sedscn_audit.py	2026-10-21 18:05:26.640681900 +0800
+@@ -7,7 +7,7 @@
+ import torch
+ import torch.nn as nn
+ # Settings
+-torch.manual_seed(100)  # fixed seed for reproducibility
++torch.manual_seed(AUDIT_SEED)  # fixed seed for reproducibility  # [audit] author seed 100 -> AUDIT_SEED (100..109)
+ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+ 
+ # Data loaders
+@@ -283,6 +283,7 @@
+             print(f'Epoch: {epoch+1:2} val_Loss:{loss_validate/val_size:10.8f},  validate_Acc:{val_accuracy:4.4f}')
+             validate_loss.append(loss_validate/val_size)
+             validate_acc.append(val_accuracy)
++            AUDIT_HOOK(epoch + 1, model, val_accuracy, loss_validate/val_size)  # [audit] per-epoch record
+             if val_accuracy > best_accuracy:
+                 best_accuracy = val_accuracy
+                 best_model = model
+@@ -302,7 +303,7 @@
+ 
+ 
+ # batch_size = 32
+-epochs = 30
++epochs = AUDIT_EPOCHS  # [audit] author 30; smoke only shortens
+ model_train(batch_size, epochs, model, optimizer, loss_function, train_loader, val_loader)
+ 
+ # ---- cell [9] ----
+@@ -327,6 +328,7 @@
+         
+         class_labels.extend(test_label.tolist())
+         predicted_labels.extend(predicted.tolist())
++        AUDIT_TEST_SEEN.append(test_data.cpu())  # [audit] which test windows the author's pass used
+ 
+ # Confusion matrix and per-class report
+ confusion_mat = confusion_matrix(class_labels, predicted_labels)
+
+# ---- driver audit_run24.py ----
+"""[audit] Driver for object 24 (registry: results/main_objects/registry/24_*.md).
+Executes sedscn_audit.py (the code cells of SEDSCN-TRANS.ipynb, verbatim except the [audit] lines) once per seed
+100..109, in a work dir that already holds the joblib files made by the two dataset notebooks.
+Per epoch: the authors' validation acc/loss (their train-mode pass) and, isolated and in eval mode, test acc/loss on
+all 233 test windows (padded to the model's fixed batch of 32; padding outputs discarded). The authors' own test
+pass (random 224 of 233) is reported and checked against the last-epoch per-window predictions on the same windows.
+Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR, TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD=1, MPLBACKEND=Agg."""
+import argparse, json, math, os, sys, time, types
+REPO = os.path.dirname(os.path.abspath(__file__))
+import numpy as np, torch
+import torch.nn.functional as F
+from joblib import load
+from audit.main.epoch_record import Recorder
+from audit.torch_utils import isolate
+
+p = argparse.ArgumentParser()
+p.add_argument("--seeds", default="100-109")
+p.add_argument("--epochs", type=int, default=30)
+a = p.parse_args()
+lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds),) * 2
+SRC = open(os.path.join(REPO, "sedscn_audit.py")).read()
+dev = torch.device("cuda")
+TX, TY = load("test_features_1024_10c"), load("testY_1024_10c")
+key = {TX[i].numpy().tobytes(): i for i in range(len(TX))}
+assert len(key) == len(TX), "test windows not unique"
+
+
+@torch.no_grad()
+def eval_full(model, bs=32):
+    n = len(TX); pad = (-n) % bs
+    X = torch.cat([TX, TX[:pad]]) if pad else TX
+    out = torch.cat([model(X[i:i + bs].to(dev)) for i in range(0, len(X), bs)])[:n].cpu()
+    loss = F.cross_entropy(out, TY, reduction="sum").item() / n     # authors' sum-CE, per sample like their val loss
+    pred = out.argmax(1)
+    return (pred == TY).float().mean().item(), loss, pred
+
+
+for s in range(lo, hi + 1):
+    rec = Recorder(obj="24", group="SEDSCN-Trans|CWRU 0hp 10c", seed=s, select_split="val", report_split="test",
+                   note=f"epochs={a.epochs}; val = authors' pass (train mode, drop_last); test = all 233 windows, eval mode")
+    last = {}
+
+    def hook(ep, model, val_acc, val_loss):
+        rec.log(ep, "val", val_acc, val_loss)
+        with isolate([model], dev):
+            model.eval()
+            acc, loss, pred = eval_full(model)
+        rec.log(ep, "test", acc, loss)
+        last["pred"] = pred
+
+    # run the cells as a fresh __main__ module, as Jupyter does (the authors torch.save the whole model object)
+    nbmod = types.ModuleType("__main__")
+    g = nbmod.__dict__
+    g.update(AUDIT_SEED=s, AUDIT_EPOCHS=a.epochs, AUDIT_HOOK=hook, AUDIT_TEST_SEEN=[])
+    t0 = time.time()
+    real_main = sys.modules["__main__"]
+    sys.modules["__main__"] = nbmod
+    try:
+        exec(compile(SRC, "sedscn_audit.py", "exec"), g)
+    finally:
+        sys.modules["__main__"] = real_main
+    rep = float(np.mean(np.array(g["class_labels"]) == np.array(g["predicted_labels"])))
+    idx = [key[x.numpy().tobytes()] for b in g["AUDIT_TEST_SEEN"] for x in b]
+    sub = float((last["pred"][idx] == TY[idx]).double().mean().item())
+    rec.author_pick(a.epochs)   # best_model = model is a reference -> the saved model is the last epoch
+    rec.finish(None)            # authors' value is on a random 224-window subset; checked below
+    rec.d["author_reported_acc_subset224"] = rep
+    rec.d["author_check_subset"] = dict(recorded=sub, reported=rep, abs_diff=abs(sub - rep), matches=math.isclose(sub, rep, abs_tol=1e-9), n=len(idx))
+    rec._dump()
+    print(json.dumps(dict(seed=s, seconds=round(time.time() - t0, 1), reported_224=rep, check=rec.d["author_check_subset"],
+                          last_test_233=rec.d["epochs"][str(a.epochs)]["test"]["acc"])), flush=True)
+    torch.cuda.empty_cache()

@@ -1,0 +1,4 @@
+SRDCNN-ND|CWRU DE+FE 1->2hp 10 author 99.95 +- 0.16; last 99.90 +- 0.27; best_rep 99.97 +- 0.11; minloss 99.95 +- 0.16; budget50 99.92 +- 0.27 checks 10
+SRDCNN|CWRU DE+FE 1->2hp 10 author 99.98 +- 0.05; last 100.00 +- 0.00; best_rep 100.00 +- 0.00; minloss 99.98 +- 0.05; budget50 100.00 +- 0.00 checks 10
+WDCNN-ND|CWRU DE+FE 1->2hp 10 author 99.85 +- 0.31; last 99.53 +- 0.81; best_rep 100.00 +- 0.00; minloss 99.85 +- 0.31; budget50 99.71 +- 0.85 checks 10
+WDCNN|CWRU DE+FE 1->2hp 10 author 100.00 +- 0.00; last 100.00 +- 0.00; best_rep 100.00 +- 0.00; minloss 100.00 +- 0.00; budget50 100.00 +- 0.00 checks 10

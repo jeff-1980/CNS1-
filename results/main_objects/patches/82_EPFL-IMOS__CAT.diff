@@ -1,0 +1,132 @@
+diff --git a/audit_run82.py b/audit_run82.py
+new file mode 100755
+index 0000000..d2061d7
+--- /dev/null
++++ b/audit_run82.py
+@@ -0,0 +1,73 @@
++"""[audit] Driver for object 82 (registry: results/main_objects/registry/82_EPFL-IMOS__CAT.md).
++Runs the authors' scripts (runpy, cwd = repo) for 4 groups on PU time domain, transfer task [[0],[1]]
++(N15_M07_F10 -> N09_M07_F10), their --seed = 0..9, other args default:
++  DANN*            train_advanced.py    --domain_adversarial True --adversarial_loss DA --mcc_loss --sdat
++  AT*              train_advanced_ts.py (as DANN*) --self_training True --self_training_criterion confidence
++                                        --adaptive_confidence_threshold
++  CAT*-TempScaling train_advanced_ts.py (as AT*) --calibration TempScaling   (README command)
++  CAT*-CPCS        train_advanced_ts.py (as AT*) --calibration CPCS
++The hook after their per-epoch source_val / target_val evaluation records their accuracy / loss; for teacher-student
++groups the report split is the teacher (the paper reports the last-epoch teacher accuracy) and the student is logged as
++extra split. The author-reported value is read independently from their TensorBoard log (last
++accuracy/target_val[_teacher] scalar). Needs PYTHONPATH with ~/audit_cns/code, AUDIT_RECORD_DIR."""
++import argparse, glob, json, os, runpy, shutil, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++COMMON = ["--data_name", "PU", "--transfer_task", "[[0],[1]]", "--domain_adversarial", "True", "--adversarial_loss", "DA",
++          "--mcc_loss", "--sdat"]
++TS = ["--self_training", "True", "--self_training_criterion", "confidence", "--adaptive_confidence_threshold"]
++GROUPS = {
++    "DANN*": ("train_advanced.py", COMMON),
++    "AT*": ("train_advanced_ts.py", COMMON + TS),
++    "CAT*-TempScaling": ("train_advanced_ts.py", COMMON + TS + ["--calibration", "TempScaling"]),
++    "CAT*-CPCS": ("train_advanced_ts.py", COMMON + TS + ["--calibration", "CPCS"]),
++}
++TASK = "PU TD 13-class N15M07F10->N09M07F10"
++p = argparse.ArgumentParser()
++p.add_argument("--groups", default=",".join(GROUPS))
++p.add_argument("--seeds", default="0-9")
++p.add_argument("--epochs", type=int, default=None)   # smoke only
++p.add_argument("--data_dir", required=True)
++p.add_argument("--work", required=True)
++a = p.parse_args()
++lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds),) * 2
++os.chdir(REPO); sys.path.insert(0, REPO)
++from audit.main.epoch_record import Recorder
++import utils.train_utils_combines as TC, utils.train_utils_combines_ts as TTS
++from tensorboard.backend.event_processing.event_accumulator import EventAccumulator
++
++
++def tb_last(save_dir, tag):
++    ev = EventAccumulator(save_dir, size_guidance={"scalars": 0}); ev.Reload()
++    return ev.Scalars(tag)[-1].value if tag in ev.Tags()["scalars"] else None
++
++
++for g in a.groups.split(","):
++    script, args = GROUPS[g]
++    for s in range(lo, hi + 1):
++        ck = os.path.join(a.work, f"ck_{g.replace('*', 's')}_{s}")
++        for d in glob.glob(ck + "_*"): shutil.rmtree(d, ignore_errors=True)
++        ts = script.endswith("_ts.py")
++        rec = Recorder(obj="82", group=f"{g}|{TASK}", seed=s, select_split=None, report_split="test",
++                       note=("test = teacher on their target_val (20% of target); student logged as test_student; "
++                             if ts else "test = their target_val (20% of target); ") + "source_val logged as extra split")
++
++        def hook(ep, phase, acc, loss, teacher):
++            name = "test" if phase == "target_val" else "source_val"
++            if teacher is not None:
++                rec.log(ep, name, float(teacher[0]), float(teacher[1]))
++                rec.log(ep, name + "_student", float(acc), float(loss))
++            else:
++                rec.log(ep, name, float(acc), float(loss))
++
++        TC.AUDIT_HOOK = TTS.AUDIT_HOOK = hook
++        sys.argv = [script, "--data_dir", a.data_dir, "--checkpoint_dir", ck, "--seed", str(s)] + args
++        if a.epochs: sys.argv += ["--max_epoch", str(a.epochs), "--middle_epoch", "1", "--self_training_epoch", "1",
++                                  "--calibration_epoch", "1"]
++        t0 = time.time()
++        runpy.run_path(os.path.join(REPO, script), run_name="__main__")
++        sd = sorted(glob.glob(ck + "_*"))[-1]
++        reported = tb_last(sd, "accuracy/target_val_teacher" if ts else "accuracy/target_val")
++        rec.finish(reported)   # author pick = last epoch (default)
++        shutil.rmtree(sd, ignore_errors=True)
++        print(json.dumps(dict(group=g, seed=s, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                              reported=reported, check=rec.d["author_check"])), flush=True)
+diff --git a/models/cnn_1d.py b/models/cnn_1d.py
+index 75d08f1..50ed938 100644
+--- a/models/cnn_1d.py
++++ b/models/cnn_1d.py
+@@ -6,7 +6,7 @@ import warnings
+ 
+ # ----------------------------inputsize >=28-------------------------------------------------------------------------
+ class CNN(nn.Module):
+-    def __init__(self, pretrained=False, in_channel=3, out_channel=10):
++    def __init__(self, pretrained=False, in_channel=1, out_channel=10):
+         super(CNN, self).__init__()
+         if pretrained == True:
+             warnings.warn("Pretrained model is not available")
+diff --git a/utils/train_utils_combines.py b/utils/train_utils_combines.py
+index 44b944e..f6f597a 100644
+--- a/utils/train_utils_combines.py
++++ b/utils/train_utils_combines.py
+@@ -10,6 +10,7 @@ import torch
+ from torch import nn
+ from torch.utils.tensorboard import SummaryWriter
+ import numpy as np
++AUDIT_HOOK = None  # [audit] set by audit_run82.py
+ 
+ import models
+ import datasets
+@@ -848,6 +849,7 @@ class train_utils(object):
+                     self.writer.add_scalar(f"calibration/SCE_{phase}", classwise_ece_scores.mean(), step)
+ 
+                     # save the model
++                    if AUDIT_HOOK: AUDIT_HOOK(epoch + 1, phase, epoch_acc, epoch_loss, (epoch_acc_teacher, epoch_loss_teacher) if self.self_training_criterion else None)  # [audit]
+                     if args.save_weights and phase == 'target_val':
+                         # save the checkpoint for other learning
+                         model_state_dic = self.model_all.state_dict()
+diff --git a/utils/train_utils_combines_ts.py b/utils/train_utils_combines_ts.py
+index f99c900..9ece73b 100644
+--- a/utils/train_utils_combines_ts.py
++++ b/utils/train_utils_combines_ts.py
+@@ -9,6 +9,7 @@ import torch
+ from torch import nn
+ from torch.utils.tensorboard import SummaryWriter
+ import numpy as np
++AUDIT_HOOK = None  # [audit] set by audit_run82.py
+ 
+ import models
+ import datasets
+@@ -824,6 +825,7 @@ class train_utils(object):
+                         # self.writer.add_scalar(f"calibration/SCE_{phase}_teacher", classwise_ece_scores_teacher.mean(), step)
+ 
+                     # save the model
++                    if AUDIT_HOOK: AUDIT_HOOK(epoch + 1, phase, epoch_acc, epoch_loss, (epoch_acc_teacher, epoch_loss_teacher) if self.self_training_criterion else None)  # [audit]
+                     if args.save_weights and phase == 'target_val':
+                         # save the best model according to the val accuracy
+                         if (epoch_acc > best_acc or epoch > (args.max_epoch + args.additional_epoch)-2) and (epoch > args.middle_epoch-1):

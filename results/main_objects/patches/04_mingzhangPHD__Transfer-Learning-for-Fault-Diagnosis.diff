@@ -1,0 +1,136 @@
+diff --git a/WDMAN/FD_DCTAN_model.py b/WDMAN/FD_DCTAN_model.py
+index 0a65f00..204c17e 100644
+--- a/WDMAN/FD_DCTAN_model.py
++++ b/WDMAN/FD_DCTAN_model.py
+@@ -59,7 +59,7 @@ class WDMAN(object):
+                  y_dim=4, ff_dim=32, df_dim=32, ffc_dim=1024, dfc_dim=1024,
+                  dataset_name_s='default_s', dataset_name_t='default_t',
+                  input_fname_pattern='.h5', checkpoint_dir=None,
+-                 data_dir='.\\datasets' or './datasets', x_type=None):
++                 data_dir='.\\datasets' or './datasets', x_type=None, audit_seed=-1, audit_rec=None):
+ 
+         """
+ 
+@@ -79,6 +79,9 @@ class WDMAN(object):
+ 
+         self.sess = sess
+         self.crop = crop
++        # [audit] author's hard-coded training seeds (graph 1, minibatch 3) unless a seed is passed
++        self.audit_tf_seed, self.audit_mb_seed = (1, 3) if audit_seed < 0 else (audit_seed, audit_seed)
++        self.audit_rec, self.audit_k = audit_rec, 0
+         self.model_name = "WDMAN" + '_' + x_type
+         self.dataset_name_s = dataset_name_s
+         self.dataset_name_t = dataset_name_t
+@@ -155,7 +158,7 @@ class WDMAN(object):
+ 
+     def build_model(self):
+ 
+-        tf.set_random_seed(1)  # to keep consistent results
++        tf.set_random_seed(self.audit_tf_seed)  # to keep consistent results
+ 
+         with tf.variable_scope("INPUTs"):
+             self.X_s = tf.placeholder(tf.float32, shape=(None, self.input_X_s), name='X_s')
+@@ -310,13 +313,28 @@ class WDMAN(object):
+ 
+     def train(self, config):
+         self.train_01(config)
++        if self.audit_rec is not None:  # [audit] author's reported value = shared best target-test acc
++            self.audit_rec.finish(float(self.bestTestAcc))
+ 
+     def train_00(self, config):
+         pass
+ 
++    def _audit_log(self, r_t, best_before):
++        # [audit] one record per author evaluation point: author's target-test acc + target-test CE (inference only)
++        if self.audit_rec is None:
++            return
++        self.audit_k += 1
++        X_t_train, Y_t_train, X_t_test, Y_t_test, classes = self.data_t
++        p = self.sess.run(self.P_t, feed_dict={self.X_t: X_t_test})
++        y = np.argmax(Y_t_test, axis=1)
++        loss = float(np.mean(-np.log(np.clip(p[np.arange(len(y)), y], 1e-12, 1.0))))
++        self.audit_rec.log(self.audit_k, "test", float(r_t[1]), loss)
++        if self.bestTestAcc != best_before:
++            self.audit_rec.author_pick(self.audit_k)
++
+     def train_01(self, config):
+ 
+-        tf.set_random_seed(1)  # to keep consistent results
++        tf.set_random_seed(self.audit_tf_seed)  # to keep consistent results
+         c_optim = tf.train.AdamOptimizer(config.learning_rate/5) \
+             .minimize(self.c_loss, var_list=self.fs_vars + self.fc_vars + self.c_vars)
+         c_optim_fine = tf.train.AdamOptimizer(config.learning_rate/10) \
+@@ -389,7 +407,7 @@ class WDMAN(object):
+ 
+         Epoch_C = config.epoch_pre
+         counter = 0
+-        seed = 3  # to keep consistent results
++        seed = self.audit_mb_seed  # to keep consistent results
+         minibatches_s = random_mini_batches_CNN1D(X_train, Y_train, self.batch_size, seed)
+         minibatches_t = random_mini_batches_CNN1D(X_t_train, Y_t_train, self.batch_size, seed)
+         i_s, i_t = 0, 0
+@@ -435,7 +453,9 @@ class WDMAN(object):
+                     wd_s_t = self.cal_wasserstein_s_t(self.data_s, self.data_t)
+                     r_s_t = wd_s_t
+                     self.write_result(counter, r_s, r_t, r_s_t)
++                    _best0 = self.bestTestAcc
+                     self.write_Bestresult(counter, r_s, r_t, r_s_t)
++                    self._audit_log(r_t, _best0)
+                     self.updataAccuracy(r_s, r_t)
+                     self.updataWD(wd_s_t)
+ 
+@@ -445,7 +465,7 @@ class WDMAN(object):
+ 
+                 counter += 1
+ 
+-        seed = 3  # to keep consistent results
++        seed = self.audit_mb_seed  # to keep consistent results
+         minibatches_s = random_mini_batches_CNN1D(X_train, Y_train, self.batch_size, seed)
+         minibatches_t = random_mini_batches_CNN1D(X_t_train, Y_t_train, self.batch_size, seed)
+         self.minibatches_s = minibatches_s
+@@ -508,7 +528,9 @@ class WDMAN(object):
+                 wd_s_t = self.cal_wasserstein_s_t(self.data_s, self.data_t)
+                 r_s_t = wd_s_t
+                 self.write_result(counter, r_s, r_t, r_s_t)
++                _best0 = self.bestTestAcc
+                 self.write_Bestresult_DA(counter, r_s, r_t, r_s_t)
++                self._audit_log(r_t, _best0)
+                 self.updataAccuracy(r_s, r_t)
+                 self.updataWD(wd_s_t)
+ 
+diff --git a/WDMAN/run_main_TAN.py b/WDMAN/run_main_TAN.py
+index 93121da..9d92054 100644
+--- a/WDMAN/run_main_TAN.py
++++ b/WDMAN/run_main_TAN.py
+@@ -28,6 +28,7 @@ flags.DEFINE_boolean("train", True, "True for training, False for testing [False
+ flags.DEFINE_boolean("crop", False, "True for training, False for testing [False]")
+ flags.DEFINE_boolean("visualize", False, "True for visualizing, False for nothing [False]")
+ flags.DEFINE_boolean("sign_run_all", False, "True for visualizing, False for nothing [False]")
++flags.DEFINE_integer("audit_seed", -1, "[audit] training seed; -1 keeps the author's hard-coded seeds")
+ 
+ global FLAGS
+ FLAGS = flags.FLAGS
+@@ -52,6 +53,12 @@ def run(data_names):
+     run_config.gpu_options.allow_growth = True
+ 
+ 
++    audit_rec = None
++    if os.environ.get("AUDIT_RECORD_DIR"):  # [audit] per-evaluation-point recorder
++        from audit.main.epoch_record import Recorder
++        audit_rec = Recorder(obj="04", group="WDMAN|CWRU A->B", seed=FLAGS.audit_seed, select_split=None,
++                             report_split="test", note="epoch = evaluation point (every 10 iterations, pretrain 150 + DA 2000)")
++
+     with tf.Session(config=run_config) as sess:
+ 
+         model = WDMAN(
+@@ -65,7 +72,9 @@ def run(data_names):
+             crop=FLAGS.crop,
+             checkpoint_dir=FLAGS.checkpoint_dir,
+             data_dir=FLAGS.data_dir,
+-            x_type=FLAGS.x_type)
++            x_type=FLAGS.x_type,
++            audit_seed=FLAGS.audit_seed,
++            audit_rec=audit_rec)
+ 
+         show_all_variables()
+ 

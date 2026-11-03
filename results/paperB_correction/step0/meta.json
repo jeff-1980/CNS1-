@@ -1,0 +1,24 @@
+{
+ "test_files": [
+  "B007_load2",
+  "IR007_load2",
+  "Normal_load1",
+  "OR007@6_load2"
+ ],
+ "train_files": [
+  "B007_load0",
+  "B007_load3",
+  "IR007_load1",
+  "IR007_load3",
+  "Normal_load0",
+  "Normal_load2",
+  "OR007@6_load0",
+  "OR007@6_load1"
+ ],
+ "n_test": 1653,
+ "n_normal_orig": 944,
+ "n_normal_x099": 946,
+ "x099_len": 485063,
+ "split_seed": 42,
+ "note": "noise seed per SNR = 20261103 + index; non-Normal windows first in both sets"
+}

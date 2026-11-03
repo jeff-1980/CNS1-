@@ -1,0 +1,32 @@
+{
+ "37": {
+  "runs": 10,
+  "finished": 10,
+  "test_curve_identical_to_main": "0/10"
+ },
+ "53": {
+  "runs": 40,
+  "finished": 40,
+  "test_curve_identical_to_main": "0/40"
+ },
+ "54": {
+  "runs": 30,
+  "finished": 30,
+  "test_curve_identical_to_main": "0/30"
+ },
+ "58": {
+  "runs": 40,
+  "finished": 40,
+  "test_curve_identical_to_main": "0/40"
+ },
+ "62": {
+  "runs": 30,
+  "finished": 30,
+  "test_curve_identical_to_main": "0/30"
+ },
+ "76": {
+  "runs": 10,
+  "finished": 10,
+  "test_curve_identical_to_main": "0/10"
+ }
+}

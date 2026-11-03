@@ -1,0 +1,296 @@
+{
+ "object": "51",
+ "n_runs": 10,
+ "n_runs_with_select_split": 10,
+ "note": "select_acc = per-epoch accuracy on the run's selection split (select_split) exactly as recorded in the raw epoch record; null when the object has no separate selection split (select_split null). extra_heldout_acc = other recorded held-out splits that are not the report split (e.g. source_val), for reference only. Accuracies are proportions.",
+ "runs": [
+  {
+   "obj": "51",
+   "group": "MvGNN|SEU 9-class",
+   "seed": 0,
+   "select_split": "val",
+   "report_split": "test",
+   "author_epoch": 4,
+   "epochs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "select_acc": [
+    0.9997222993612885,
+    0.9994445987225771,
+    0.9997222993612885,
+    1.0,
+    1.0,
+    0.9997222993612885,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "extra_heldout_acc": null,
+   "source_record": "51/MvGNN_SEU_9-class/seed0.json"
+  },
+  {
+   "obj": "51",
+   "group": "MvGNN|SEU 9-class",
+   "seed": 1,
+   "select_split": "val",
+   "report_split": "test",
+   "author_epoch": 2,
+   "epochs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "select_acc": [
+    0.9980560955290197,
+    1.0,
+    0.9983337961677312,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "extra_heldout_acc": null,
+   "source_record": "51/MvGNN_SEU_9-class/seed1.json"
+  },
+  {
+   "obj": "51",
+   "group": "MvGNN|SEU 9-class",
+   "seed": 2,
+   "select_split": "val",
+   "report_split": "test",
+   "author_epoch": 4,
+   "epochs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "select_acc": [
+    0.9997222993612885,
+    0.9980560955290197,
+    0.9991668980838656,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "extra_heldout_acc": null,
+   "source_record": "51/MvGNN_SEU_9-class/seed2.json"
+  },
+  {
+   "obj": "51",
+   "group": "MvGNN|SEU 9-class",
+   "seed": 3,
+   "select_split": "val",
+   "report_split": "test",
+   "author_epoch": 3,
+   "epochs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "select_acc": [
+    0.9994445987225771,
+    0.9888919744515412,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "extra_heldout_acc": null,
+   "source_record": "51/MvGNN_SEU_9-class/seed3.json"
+  },
+  {
+   "obj": "51",
+   "group": "MvGNN|SEU 9-class",
+   "seed": 4,
+   "select_split": "val",
+   "report_split": "test",
+   "author_epoch": 2,
+   "epochs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "select_acc": [
+    0.9997222993612885,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "extra_heldout_acc": null,
+   "source_record": "51/MvGNN_SEU_9-class/seed4.json"
+  },
+  {
+   "obj": "51",
+   "group": "MvGNN|SEU 9-class",
+   "seed": 5,
+   "select_split": "val",
+   "report_split": "test",
+   "author_epoch": 1,
+   "epochs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "select_acc": [
+    1.0,
+    0.9994445987225771,
+    1.0,
+    1.0,
+    0.9997222993612885,
+    1.0
+   ],
+   "extra_heldout_acc": null,
+   "source_record": "51/MvGNN_SEU_9-class/seed5.json"
+  },
+  {
+   "obj": "51",
+   "group": "MvGNN|SEU 9-class",
+   "seed": 6,
+   "select_split": "val",
+   "report_split": "test",
+   "author_epoch": 2,
+   "epochs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "select_acc": [
+    0.9994445987225771,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.9997222993612885
+   ],
+   "extra_heldout_acc": null,
+   "source_record": "51/MvGNN_SEU_9-class/seed6.json"
+  },
+  {
+   "obj": "51",
+   "group": "MvGNN|SEU 9-class",
+   "seed": 7,
+   "select_split": "val",
+   "report_split": "test",
+   "author_epoch": 1,
+   "epochs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "select_acc": [
+    1.0,
+    0.995279089141905,
+    0.9994445987225771,
+    1.0,
+    1.0,
+    0.9994445987225771
+   ],
+   "extra_heldout_acc": null,
+   "source_record": "51/MvGNN_SEU_9-class/seed7.json"
+  },
+  {
+   "obj": "51",
+   "group": "MvGNN|SEU 9-class",
+   "seed": 8,
+   "select_split": "val",
+   "report_split": "test",
+   "author_epoch": 2,
+   "epochs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "select_acc": [
+    0.9983337961677312,
+    1.0,
+    1.0,
+    0.9997222993612885,
+    0.9997222993612885,
+    1.0,
+    1.0
+   ],
+   "extra_heldout_acc": null,
+   "source_record": "51/MvGNN_SEU_9-class/seed8.json"
+  },
+  {
+   "obj": "51",
+   "group": "MvGNN|SEU 9-class",
+   "seed": 9,
+   "select_split": "val",
+   "report_split": "test",
+   "author_epoch": 3,
+   "epochs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "select_acc": [
+    0.9997222993612885,
+    0.9988891974451541,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "extra_heldout_acc": null,
+   "source_record": "51/MvGNN_SEU_9-class/seed9.json"
+  }
+ ]
+}

@@ -1,0 +1,4 @@
+CDAN-mixup|Syn->Real CWRU 4-class 10 author 82.06 +- 2.81; last 82.06 +- 2.81; best_rep 83.76 +- 1.58; minloss 61.95 +- 3.76; budget50 79.83 +- 4.22 checks 10
+CDAN|Syn->Real CWRU 4-class 10 author 75.09 +- 3.06; last 75.09 +- 3.06; best_rep 77.25 +- 2.47; minloss 60.54 +- 2.82; budget50 71.12 +- 3.32 checks 10
+DANN|Syn->Real CWRU 4-class 10 author 70.28 +- 3.00; last 70.28 +- 3.00; best_rep 75.07 +- 1.87; minloss 62.01 +- 3.97; budget50 70.00 +- 2.19 checks 10
+Source-only|Syn->Real CWRU 4-class 10 author 58.94 +- 0.66; last 58.94 +- 0.66; best_rep 66.00 +- 3.13; minloss 61.38 +- 4.17; budget50 58.89 +- 0.73 checks 10

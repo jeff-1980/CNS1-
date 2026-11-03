@@ -1,0 +1,119 @@
+diff --git a/audit_kt54.py b/audit_kt54.py
+new file mode 100644
+index 0000000..d2e438e
+--- /dev/null
++++ b/audit_kt54.py
+@@ -0,0 +1,74 @@
++"""[audit] Driver for object 54 (registry: results/main_objects/registry/54_*.md).
++Runs the authors' scripts as __main__ (runpy) with the README commands: TGST (experiment_v2 --mode tgst --lambda_cl 1.0
++--temperature 0.01), Baseline (experiment_v2 --mode baseline), Random-text ablation (experiment_ablation --ablation random
++--lambda_cl 1.0 --temperature 0.01), 50 epochs, 10 unseeded repeats (the authors seed only the data split, 42).
++The hook after their per-epoch evaluate_model records their test accuracy and, isolated, the test cross-entropy;
++AUDIT_FINAL receives their final evaluation (final model). Run via run54.sh (HOME points to a work dir holding
++tgst_project/datasets/CWRU). Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR."""
++import argparse, json, os, runpy, sys, time
++REPO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tgst_project")
++sys.path.insert(0, REPO)
++import torch, torch.nn.functional as F
++from audit.main.epoch_record import Recorder
++from audit.main.kt_split import Splitter, log_halves, acc as kt_acc, balanced as kt_bal  # [audit kt]
++from audit.torch_utils import isolate
++
++GROUPS = {
++    "TGST": ("scripts/experiment_v2.py", ["--mode", "tgst", "--n_classes", "4", "--lambda_cl", "1.0", "--temperature", "0.01"]),
++    "Baseline": ("scripts/experiment_v2.py", ["--mode", "baseline", "--n_classes", "4"]),
++    "Random-text": ("scripts/experiment_ablation.py", ["--ablation", "random", "--lambda_cl", "1.0", "--temperature", "0.01"]),
++}
++p = argparse.ArgumentParser()
++p.add_argument("--groups", default="TGST,Baseline,Random-text")
++p.add_argument("--repeats", default="0-9")
++p.add_argument("--epochs", type=int, default=50)
++a = p.parse_args()
++lo, hi = map(int, a.repeats.split("-")) if "-" in a.repeats else (int(a.repeats),) * 2
++
++
++@torch.no_grad()
++def test_ce(model, loader):
++    dev = next(model.parameters()).device
++    tot, n = 0.0, 0
++    for batch in loader:
++        if len(batch) == 4:
++            x, y, ids, am = batch
++            logits = model(x.to(dev), ids.to(dev), am.to(dev))[0]
++        else:
++            x, y, _ = batch
++            logits = model(x.to(dev))[0]
++        tot += F.cross_entropy(logits, y.to(dev), reduction="sum").item(); n += y.numel()
++    return tot / n
++
++
++for g in a.groups.split(","):
++    script, extra = GROUPS[g]
++    for r in range(lo, hi + 1):
++        rec = Recorder(obj="54", group=f"{g}|CWRU 4-class", seed=r, select_split=None, report_split="test",
++                       note="epoch = training epoch; acc = authors' test accuracy; reported = their final evaluation (final model)")
++        st = {"last": None}
++
++        def hook(ep, acc, model, loader):
++            dev = next(model.parameters()).device
++            with isolate([model], dev):
++                model.eval(); loss = test_ce(model, loader)
++            rec.log(ep, "test", float(acc), loss)
++            st["last"] = ep
++
++        sp = Splitter()
++
++        def pred_hook(ep, p, l):
++            S, T = sp.masks('test', l)
++            rec.log(ep, 'S', kt_acc(p, l, S)); rec.log(ep, 'T', kt_acc(p, l, T))
++            rec.d.setdefault('kt_full', {})[str(ep)] = kt_acc(p, l)
++
++        final = {}
++        save_dir = os.path.join(os.environ["HOME"], "ckpt", f"{g}_{r}")
++        sys.argv = [script] + extra + ["--epochs", str(a.epochs), "--save_dir", save_dir]
++        t0 = time.time()
++        runpy.run_path(os.path.join(REPO, script), run_name="__main__",
++                       init_globals=dict(AUDIT_HOOK=hook, AUDIT_FINAL=lambda v: final.update(v=float(v)), AUDIT_PRED=pred_hook))
++        rec.author_pick(st["last"])      # authors report the final model's test accuracy
++        rec.finish(final.get("v"))
++        print(json.dumps(dict(group=g, repeat=r, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                              reported=final.get("v"), check=rec.d["author_check"])), flush=True)
++sys.path.insert(0, REPO)
++import torch, torch.nn.functional as F
++from audit.main.epoch_record import Recorder
++from audit.main.kt_split import Splitter, log_halves, acc as kt_acc, balanced as kt_bal  # [audit kt]
++from audit.torch_utils import isolate
++
++GROUPS = {
+--
+@@ -35,4 +35,5 @@ from torch.utils.data import DataLoader, Dataset
+ from functools import partial
+ from tqdm import tqdm
++AUDIT_HOOK = globals().get('AUDIT_HOOK'); AUDIT_FINAL = globals().get('AUDIT_FINAL'); AUDIT_PRED = globals().get('AUDIT_PRED')  # [audit kt]  # [audit] see audit_run54.py
+ 
+ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+@@ -273,5 +274,7 @@ def run_ablation(args):
+--
+-        test_acc, _, _, _ = evaluate_model(model, test_loader, device)
++        test_acc, _kt_p, _kt_l, _ = evaluate_model(model, test_loader, device)
++        if AUDIT_HOOK: AUDIT_HOOK(epoch, test_acc, model, test_loader)  # [audit]
++        if AUDIT_PRED: AUDIT_PRED(epoch, _kt_p, _kt_l)  # [audit kt]
+         elapsed = time.time() - t0
+ 
+@@ -296,4 +299,5 @@ def run_ablation(args):
+--
+@@ -43,4 +43,5 @@ from torch.utils.data import DataLoader
+ from functools import partial
+ from tqdm import tqdm
++AUDIT_HOOK = globals().get('AUDIT_HOOK'); AUDIT_FINAL = globals().get('AUDIT_FINAL'); AUDIT_PRED = globals().get('AUDIT_PRED')  # [audit kt]  # [audit] see audit_run54.py
+ 
+ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+@@ -249,5 +250,7 @@ def run_experiment(args):
+--
+-            test_acc, _, _, _ = evaluate_model(model, test_loader, device, is_tgst)
++            test_acc, _kt_p, _kt_l, _ = evaluate_model(model, test_loader, device, is_tgst)
++            if AUDIT_HOOK: AUDIT_HOOK(epoch, test_acc, model, test_loader)  # [audit]
++            if AUDIT_PRED: AUDIT_PRED(epoch, _kt_p, _kt_l)  # [audit kt]
+             elapsed = time.time() - t0
+ 
+@@ -272,4 +275,5 @@ def run_experiment(args):

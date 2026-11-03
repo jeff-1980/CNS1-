@@ -1,0 +1,215 @@
+{
+ "n_cells": 160,
+ "cells_matched_to_paperB_cell_stats": "160/160",
+ "collapsed_published": [
+  "ablation_v3/mamba2_no_noise_train@-4:Inner Race",
+  "ablation_v3/mamba2_no_noise_train@-6:Inner Race",
+  "ablation_v3/mamba2_no_noise_train@-8:Inner Race",
+  "cwru_clean_v2/cnn1d@-2:Inner Race",
+  "cwru_clean_v2/cnn1d@-4:Inner Race",
+  "cwru_clean_v2/cnn1d@-6:Inner Race",
+  "cwru_clean_v2/cnn1d@-8:Inner Race",
+  "cwru_clean_v2/cnn1d@0:Inner Race",
+  "cwru_clean_v2/cnn1d@2:Inner Race",
+  "cwru_clean_v2/drsn@-6:Inner Race",
+  "cwru_clean_v2/drsn@-8:Inner Race",
+  "cwru_clean_v2/lstm@-8:Inner Race",
+  "cwru_clean_v2/vibrmamba@-6:Inner Race",
+  "cwru_clean_v2/vibrmamba@-8:Inner Race",
+  "cwru_clean_v2/wdcnn@-4:Inner Race",
+  "cwru_clean_v2/wdcnn@-6:Inner Race",
+  "cwru_clean_v2/wdcnn@-8:Inner Race"
+ ],
+ "collapsed_orig": [
+  "ablation_v3/mamba2_no_noise_train@-4:Inner Race",
+  "ablation_v3/mamba2_no_noise_train@-6:Inner Race",
+  "ablation_v3/mamba2_no_noise_train@-8:Inner Race",
+  "cwru_clean_v2/cnn1d@-2:Inner Race",
+  "cwru_clean_v2/cnn1d@-4:Inner Race",
+  "cwru_clean_v2/cnn1d@-6:Inner Race",
+  "cwru_clean_v2/cnn1d@-8:Inner Race",
+  "cwru_clean_v2/cnn1d@0:Inner Race",
+  "cwru_clean_v2/cnn1d@2:Inner Race",
+  "cwru_clean_v2/drsn@-6:Inner Race",
+  "cwru_clean_v2/drsn@-8:Inner Race",
+  "cwru_clean_v2/lstm@-8:Inner Race",
+  "cwru_clean_v2/vibrmamba@-6:Inner Race",
+  "cwru_clean_v2/vibrmamba@-8:Inner Race",
+  "cwru_clean_v2/wdcnn@-4:Inner Race",
+  "cwru_clean_v2/wdcnn@-6:Inner Race",
+  "cwru_clean_v2/wdcnn@-8:Inner Race"
+ ],
+ "collapsed_x099": [
+  "ablation_v3/mamba2_no_noise_train@-4:Inner Race",
+  "ablation_v3/mamba2_no_noise_train@-6:Inner Race",
+  "ablation_v3/mamba2_no_noise_train@-8:Inner Race",
+  "cwru_clean_v2/cnn1d@-2:Inner Race",
+  "cwru_clean_v2/cnn1d@-4:Inner Race",
+  "cwru_clean_v2/cnn1d@-6:Inner Race",
+  "cwru_clean_v2/cnn1d@-8:Inner Race",
+  "cwru_clean_v2/cnn1d@0:Inner Race",
+  "cwru_clean_v2/cnn1d@2:Inner Race",
+  "cwru_clean_v2/drsn@-6:Inner Race",
+  "cwru_clean_v2/drsn@-8:Inner Race",
+  "cwru_clean_v2/lstm@-8:Inner Race",
+  "cwru_clean_v2/vibrmamba@-6:Inner Race",
+  "cwru_clean_v2/vibrmamba@-8:Inner Race",
+  "cwru_clean_v2/wdcnn@-2:Inner Race",
+  "cwru_clean_v2/wdcnn@-4:Inner Race",
+  "cwru_clean_v2/wdcnn@-6:Inner Race",
+  "cwru_clean_v2/wdcnn@-8:Inner Race"
+ ],
+ "n_collapsed": {
+  "published": 17,
+  "orig": 17,
+  "x099": 18
+ },
+ "collapsed_changed_orig_vs_x099": [
+  "cwru_clean_v2/wdcnn@-2:Inner Race"
+ ],
+ "attractor_changed_orig_vs_x099": [],
+ "acc_change_x099_minus_orig_pp": {
+  "median": 1.4621406108084045e-05,
+  "min": -29.613245531789683,
+  "max": 0.04136395786840108,
+  "n_abs_gt_1pp": 28,
+  "n_abs_gt_5pp": 5
+ },
+ "normal_recall_change_pp": {
+  "median": 0.0,
+  "min": -51.82163077364101,
+  "max": 0.04237288135593431
+ },
+ "reeval_orig_minus_published_pp": {
+  "median_abs": 0.05444646098003436,
+  "max_abs": 0.6896551724137945
+ },
+ "largest_acc_changes": [
+  "cwru_clean_v2/cnn1d@4: 65.0 -> 35.3 (Normal recall 71.6 -> 19.8)",
+  "cwru_clean_v2/cnn1d@6: 85.9 -> 75.9 (Normal recall 95.1 -> 77.5)",
+  "ablation_v3/mamba2_no_noise_train@-2: 37.7 -> 28.7 (Normal recall 39.7 -> 24.0)",
+  "cwru_clean_v2/vibrmamba@-2: 52.2 -> 44.8 (Normal recall 60.8 -> 47.7)",
+  "cwru_clean_v2/wdcnn@4: 85.3 -> 80.2 (Normal recall 97.9 -> 88.9)",
+  "cwru_clean_v2/vibrmamba@-4: 34.3 -> 29.6 (Normal recall 31.9 -> 23.7)",
+  "cwru_clean_v2/lstm@-2: 59.0 -> 54.3 (Normal recall 78.2 -> 70.0)",
+  "ablation_v3/mamba2_no_noise_train@0: 65.3 -> 60.7 (Normal recall 80.2 -> 72.2)",
+  "cwru_clean_v2/wdcnn@-2: 27.3 -> 23.4 (Normal recall 14.2 -> 7.4)",
+  "cwru_clean_v2/drsn@-2: 49.2 -> 45.5 (Normal recall 61.0 -> 54.5)"
+ ],
+ "rescue_pp_on_collapsed_cells": {
+  "n": 18,
+  "published": 69.2303555824427,
+  "orig": 69.37890703770921,
+  "x099": 69.595166163142
+ },
+ "rescue_cells": [
+  {
+   "cell": "mamba2@-8",
+   "published": 76.50332728372658,
+   "orig": 76.69691470054447,
+   "x099": 76.4954682779456
+  },
+  {
+   "cell": "mamba2@-6",
+   "published": 81.37931034482759,
+   "orig": 81.22202056866304,
+   "x099": 81.25679758308158
+  },
+  {
+   "cell": "mamba2@-4",
+   "published": 82.56503327283727,
+   "orig": 82.25045372050816,
+   "x099": 83.14199395770395
+  },
+  {
+   "cell": "cnn1d@-8",
+   "published": 53.611615245009084,
+   "orig": 53.59951603145796,
+   "x099": 51.323262839879156
+  },
+  {
+   "cell": "cnn1d@-6",
+   "published": 61.98427102238353,
+   "orig": 62.16575922565033,
+   "x099": 60.241691842900295
+  },
+  {
+   "cell": "cnn1d@-4",
+   "published": 70.59891107078039,
+   "orig": 70.90139140955839,
+   "x099": 69.9939577039275
+  },
+  {
+   "cell": "cnn1d@-2",
+   "published": 77.44706594071387,
+   "orig": 77.38656987295826,
+   "x099": 77.36555891238672
+  },
+  {
+   "cell": "cnn1d@0",
+   "published": 82.80701754385964,
+   "orig": 82.91591046581972,
+   "x099": 82.93655589123867
+  },
+  {
+   "cell": "cnn1d@2",
+   "published": 83.81125226860253,
+   "orig": 83.89594676346037,
+   "x099": 85.47432024169186
+  },
+  {
+   "cell": "drsn@-8",
+   "published": 52.93405928614641,
+   "orig": 53.32123411978221,
+   "x099": 52.85800604229607
+  },
+  {
+   "cell": "drsn@-6",
+   "published": 57.495462794918325,
+   "orig": 57.761645493042955,
+   "x099": 58.68277945619336
+  },
+  {
+   "cell": "lstm@-8",
+   "published": 42.57713248638838,
+   "orig": 42.74652147610405,
+   "x099": 42.18731117824774
+  },
+  {
+   "cell": "vibrmamba@-8",
+   "published": 62.81911675741077,
+   "orig": 63.569267997580155,
+   "x099": 64.55589123867071
+  },
+  {
+   "cell": "vibrmamba@-6",
+   "published": 62.14156079854809,
+   "orig": 61.30671506352087,
+   "x099": 64.31419939577039
+  },
+  {
+   "cell": "wdcnn@-8",
+   "published": 69.38898971566849,
+   "orig": 70.00604960677556,
+   "x099": 69.17220543806646
+  },
+  {
+   "cell": "wdcnn@-6",
+   "published": 76.49122807017544,
+   "orig": 76.93889897156684,
+   "x099": 76.67673716012085
+  },
+  {
+   "cell": "wdcnn@-4",
+   "published": 80.87114337568057,
+   "orig": 81.45190562613429,
+   "x099": 81.45015105740183
+  },
+  {
+   "cell": "wdcnn@-2",
+   "published": 70.71990320629158,
+   "orig": 70.68360556563825,
+   "x099": 74.58610271903325
+  }
+ ]
+}

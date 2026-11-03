@@ -1,0 +1,44 @@
+{
+ "draw_order": 13,
+ "requested_model": "deepseek-v4-pro",
+ "run": 1,
+ "temperature": 0,
+ "called_at_utc": "2026-11-02T04:39:51Z",
+ "seconds": 29.4,
+ "prompt_sha256": "bdb13fd28c16e90c9140ac7fe162301b2ef010f622778525721f76e7012ad67d",
+ "codebook_sha256": "e6c4b453b07d3fd331ff6248c90eba80305dde1dbb24b0131da48d1b7b0b546e",
+ "system_sha256": "604d5fab156c4dac03cc13aa43369a6587e98db5390087e8beb6a02a328753cc",
+ "user_sha256": "3b07d0b86bf45fd1c0ad6a5a4612abcffc582acc1b51231d066f7bc7f5f132ee",
+ "response": {
+  "id": "d21da0db-4a97-40b2-a2b9-8af4a7269518",
+  "object": "chat.completion",
+  "created": 1793594392,
+  "model": "deepseek-v4-pro",
+  "choices": [
+   {
+    "index": 0,
+    "message": {
+     "role": "assistant",
+     "content": "{\n  \"S1_split_unit\": {\n    \"code\": \"A\",\n    \"quote\": \"80% of the samples for each fault type were randomly selected as training data, and the remaining samples were used for testing.\",\n    \"location\": \"p.9\",\n    \"reason\": \"论文实验设置中说明按样本随机划分训练测试，无证据按文件或轴承划分。\"\n  },\n  \"S2_validation\": {\n    \"code\": \"A\",\n    \"quote\": \"80% of the samples for each fault type were randomly selected as training data, and the remaining samples were used for testing.\",\n    \"location\": \"p.9\",\n    \"reason\": \"全文仅提及训练集和测试集划分，未提及验证集。\"\n  },\n  \"S3_checkpoint_rule_code\": {\n    \"code\": \"N\",\n    \"quote\": \"\",\n    \"location\": \"NO_CODE\",\n    \"reason\": \"代码文件为NO_CODE，没有公开代码，无法判断checkpoint规则。\"\n  },\n  \"S4a_text_discloses\": {\n    \"code\": \"P\",\n    \"quote\": \"hyper-parameters for model training were modified to achieve the best diagnostic performance during the experiments.\",\n    \"location\": \"p.9\",\n    \"reason\": \"仅含糊说调整超参数以达到最佳诊断性能，未说明报告哪一轮或按什么挑选。\"\n  },\n  \"S4b_text_matches_code\": {\n    \"code\": \"N\",\n    \"quote\": \"\",\n    \"location\": \"NO_CODE\",\n    \"reason\": \"没有公开代码，无法核对正文与代码一致性。\"\n  },\n  \"S5_runs\": {\n    \"code\": \"U\",\n    \"quote\": \"\",\n    \"location\": \"\",\n    \"reason\": \"论文未说明头条结果重复训练次数。\"\n  },\n  \"S5_spread_reported\": {\n    \"code\": \"N\",\n    \"quote\": \"\",\n    \"location\": \"\",\n    \"reason\": \"论文仅报告单次准确率，未提供标准差、方差、区间或箱线图。\"\n  },\n  \"S6_metrics\": {\n    \"code\": \"M\",\n    \"quote\": \"Figure 8 shows the confusion matrices of six models predicting ten fault types in the CWRU testing dataset under SNR=−4 dB.\",\n    \"location\": \"p.10\",\n    \"reason\": \"论文报告了准确率并提供混淆矩阵（图8和图11），未单独提供F1等。\"\n  },\n  \"S7_noise_protocol\": {\n    \"code\": \"T\",\n    \"quote\": \"During experimental validation, the diagnostic models were trained using noise-free samples and tested using samples with Gaussian white noise.\",\n    \"location\": \"p.9\",\n    \"reason\": \"训练用干净数据，测试加高斯白噪声。\"\n  },\n  \"S8_traceability\": {\n    \"code\": \"0\",\n    \"quote\": \"DATA AVAILABILITY Data will be made available on request.\",\n    \"location\": \"p.17\",\n    \"reason\": \"论文未公开代码、权重、日志或原始结果，仅声明数据可应请求提供。\"\n  }\n}",
+     "reasoning_content": "我们需要输出JSON对象，依据论文全文和代码文件（NO_CODE）。需要仔细审题，给定论文全文，没有代码文件（NO_CODE）。要按编码手册给S1-S8各条目代码。必须逐字摘自所给文本的原文作为证据，位置论文写页码，代码写文件和行号。没有公开代码，S3填N，S4b填N等。\n\n我们需逐条分析。\n\n首先通读论文关键部分：\n- S1 切分单元：训练集和测试集按什么分开。看论文实验设置。 p.9 提到 \"80% of the samples for each fault type were randomly selected as training data, and the remaining samples were used for testing.\" 这是按样本随机切分，即窗口/样本级随机切分。摘要/结论头条结果对应的设置应该就是这个。应是 A（窗口/样本级随机切分）。注意：同一段录音切出的窗口可同时出现在训练和测试中。这里说每个故障类型随机选80%样本，说明是样本级随机切分，没有说按文件或轴承，因此代码A。\n\n证据：p.9 那一段：\"80% of the samples for each fault type were randomly selected as training data, and the remaining samples were used for testing.\" 位置 p.9。\n\n- S2 验证集：是否有验证集。论文中没有明确提到验证集。训练/测试划分是80/20，没有提到另外的验证集。检查全文：没有提到validation。因此可能是没有验证集 A，或者未说明 U。但手册定义：A 没有验证集；B 有独立验证集；C 测试集兼作验证集；U 未说明。从论文看，他们只是划分训练和测试，没有提及验证，所以可认为没有验证集 A。要证据：p.9 \"80% of the samples for each fault type were randomly selected as training data, and the remaining samples were used for testing.\" 这句说明只有训练和测试，没有验证集。代码A。\n\n- S3 checkpoint 规则：看代码，但代码文件 NO_CODE，所以 N 没有公开代码。证据：代码文件说 NO_CODE，位置可写 NO_CODE，但手册要求代码写文件和行号；没有代码时，我们可写 NO_CODE。但这里需要填code: N，quote可空，location可写\"NO_CODE\"，reason说明没有公开代码。按照给定格式，quote可空字符串。\n\n- S4a 正文是否说明选模规则：正文是否明确写了报告的是哪一轮或按什么挑的。检查论文：实验部分没有明确说选择哪一轮模型，只说了训练和测试，以及结果。可能提到“hyper-parameters for model training were modified to achieve the best diagnostic performance during the experiments.” 这是含糊说法吗？S4a代码 Y 正文明确写了报告的是哪一轮或按什么挑的；P 只有含糊说法；N 没写。论文中没有明确说明报告的是哪一轮（例如最后一轮还是验证集最好），只是说超参数调整以达到最佳性能，这更像是P（含糊说法）。但需谨慎：他们可能没有说报告哪一轮，而是直接报告测试结果。可以认为P。有句子：\"hyper-parameters for model training were modified to achieve the best diagnostic performance during the experiments.\" 这是说调整超参数以求最好诊断性能，但没说明如何选模型轮次。另一处：\"Through comparison, we can see that the combination of Adam and RELU have produced a model with the best diagnosis performance.\" 这是选优化器和激活函数，不是轮次。所以选P。证据p.9或p.16。选p.9那段：\"The parameters of the comparative models were chosen as recommended by the authors, and hyper-parameters for model training were modified to achieve the best diagnostic performance during the experiments.\" 位置p.9。\n\n- S4b 正文与代码是否一致：代码没有公开，N 没有公开代码。\n\n- S5_runs：头条结果重复训练的次数，写数字。论文没有明确说明重复训练次数，只报告单次准确率？没有方差。所以S5_runs填U（未说明）。\n\n- S5_spread_reported：是否报告了标准差、方差、区间或箱线图。论文中只有准确率，没有标准差或方差。所以 N。\n\n- S6 指标：看报告了什么指标。论文中主要是准确率，还给出了混淆矩阵（图8、图11），所以是准确率加混淆矩阵，选M。证据：p.10 \"Figure 8 shows the confusion matrices of six models predicting ten fault types in the CWRU testing dataset under SNR=−4 dB.\" 位置 p.10。此外有t-SNE可视化，但不是指标。所以代码M。\n\n- S7 噪声协议：噪声实验设置。论文提到训练用干净数据，测试加噪：\"During experimental validation, the diagnostic models were trained using noise-free samples and tested using samples with Gaussian white noise.\" 这是训练干净测试加噪，代码T。证据p.9。也有摘要说在噪声下。所以代码T。\n\n- S8 可溯源性：公开了什么？论文有数据可用性声明：\"DATA AVAILABILITY Data will be made available on request.\" 但没有说代码公开。所以0什么都没有。检查论文没有提供代码链接，也没有权重等。所以代码0。\n\n需要注意：有些条目可能需要更仔细推敲。\n\nS1：样本级随机切分，但要注意是窗口/样本级随机切分，同一段录音切出的窗口可同时出现在训练和测试中。论文没有明确说窗口怎么切，但说80%样本随机，所以是A。证据p.9： \"80% of the samples for each fault type were randomly selected as training data, and the remaining samples were used for testing.\"\n\nS2：A，没有验证集。\n\nS3：N，没有公开代码。\n\nS4a：P 只有含糊说法。证据p.9：\"The parameters of the comparative models were chosen as recommended by the authors, and hyper-parameters for model training were modified to achieve the best diagnostic performance during the experiments.\" 定位p.9。\n\nS4b：N，没有公开代码。\n\nS5_runs：U。论文没提重复次数，只单次。\n\nS5_spread_reported：N，只报均值/单次。\n\nS6：M，准确率加混淆矩阵。\n\nS7：T，训练干净，测试加噪。\n\nS8：0。\n\n需要按格式输出JSON，每个条目包含code, quote, location, reason。Quote必须是逐字摘自文本，最长300字符。我们引用准确，不拼接。\n\n对于S3，没有代码，quote可以空字符串，location写\"NO_CODE\"，reason说明没有公开代码。其他类似。\n\n需要确保reason说明找过哪些地方。\n\n我们准备输出JSON。\n\n注意：引号不能改，原文摘录。我们需小心。\n\n现在逐条整理：\n\nS1: code: \"A\", quote: \"80% of the samples for each fault type were randomly selected as training data, and the remaining samples were used for testing.\", location: \"p.9\", reason: \"论文实验设置中说明按样本随机划分训练测试，无证据按文件或轴承划分。\"\n\nS2: code: \"A\", quote: \"80% of the samples for each fault type were randomly selected as training data, and the remaining samples were used for testing.\", location: \"p.9\", reason: \"全文仅提及训练集和测试集划分，未提及验证集。\"\n\nS3: code: \"N\", quote: \"\", location: \"NO_CODE\", reason: \"代码文件为NO_CODE，没有公开代码，无法判断checkpoint规则。\"\n\nS4a: code: \"P\", quote: \"hyper-parameters for model training were modified to achieve the best diagnostic performance during the experiments.\", location: \"p.9\", reason: \"仅含糊说调整超参数以达到最佳诊断性能，未说明报告哪一轮或按什么挑选。\"\n\nS4b: code: \"N\", quote: \"\", location: \"NO_CODE\", reason: \"没有公开代码，无法核对正文与代码一致性。\"\n\nS5_runs: code: \"U\", quote: \"\", location: \"\", reason: \"论文未说明头条结果重复训练次数。\"\n\n但S5_runs是条目，代码填数字或U。quote空，location空，reason说明未说明。\n\nS5_spread_reported: code: \"N\", quote: \"\", location: \"\", reason: \"论文仅报告单次准确率，未提供标准差、方差、区间或箱线图。\"\n\nS6: code: \"M\", quote: \"Figure 8 shows the confusion matrices of six models predicting ten fault types in the CWRU testing dataset under SNR=−4 dB.\", location: \"p.10\", reason: \"论文报告了准确率并提供混淆矩阵（图8和图11），未单独提供F1等。\"\n\nS7: code: \"T\", quote: \"During experimental validation, the diagnostic models were trained using noise-free samples and tested using samples with Gaussian white noise.\", location: \"p.9\", reason: \"训练用干净数据，测试加高斯白噪声。\"\n\nS8: code: \"0\", quote: \"DATA AVAILABILITY Data will be made available on request.\", location: \"p.17\", reason: \"论文未公开代码、权重、日志或原始结果，仅声明数据可应请求提供。\"\n\n注意S8用的是论文中的数据可用性声明，说明没有公开代码等，所以0。但引用这句话可能不是直接说“什么都没有”，但作为证据说明没有公开代码或其他。可接受。\n\n最终JSON。\n\n确保输出只有JSON对象，不要有其他文字。"
+    },
+    "logprobs": null,
+    "finish_reason": "stop"
+   }
+  ],
+  "usage": {
+   "prompt_tokens": 16262,
+   "completion_tokens": 2717,
+   "total_tokens": 18979,
+   "prompt_tokens_details": {
+    "cached_tokens": 1024
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 2046
+   },
+   "prompt_cache_hit_tokens": 1024,
+   "prompt_cache_miss_tokens": 15238
+  },
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396"
+ }
+}

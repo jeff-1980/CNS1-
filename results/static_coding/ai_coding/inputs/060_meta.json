@@ -1,0 +1,25 @@
+{
+ "draw_order": 60,
+ "pages": 22,
+ "links_found": [
+  "https://github.com/CHAOZHAO-1/HUSTbearing-dataset"
+ ],
+ "code": {
+  "status": "ok",
+  "repos": [
+   {
+    "url": "https://github.com/CHAOZHAO-1/HUSTbearing-dataset",
+    "status": "ok",
+    "commit": "554fe1269055660c41e9011fe97b971348bdec7f",
+    "dir": "/mnt/d/audit_data/ai_coding_repos/060/HUSTbearing-dataset"
+   }
+  ],
+  "n_files_kept": 1,
+  "n_files_total": 1,
+  "truncated": false
+ },
+ "paper_sha256": "07b1086b39c04ffb23814df1d48e39b536466ed6cc96d19754b4b6e1e5bebd44",
+ "code_sha256": "bbf16b558725157dabfa4f51245bb53cec2db5c5696612d13c983de82e4457c5",
+ "paper_chars": 58238,
+ "code_chars": 6565
+}

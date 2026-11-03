@@ -1,0 +1,4 @@
+Backbone-CNN|CWRU 48k DE load3 10 author 96.06 +- 0.10; last 95.40 +- 0.52; best_rep 96.06 +- 0.10; minloss 95.64 +- 0.30; budget50 95.20 +- 0.38 checks 10
+TFN-Chirplet|CWRU 48k DE load3 10 author 98.79 +- 0.35; last 95.77 +- 2.56; best_rep 98.79 +- 0.35; minloss 98.73 +- 0.39; budget50 89.09 +- 5.33 checks 10
+TFN-Morlet|CWRU 48k DE load3 10 author 99.84 +- 0.07; last 99.63 +- 0.28; best_rep 99.84 +- 0.07; minloss 99.79 +- 0.08; budget50 99.45 +- 0.25 checks 10
+TFN-STTF|CWRU 48k DE load3 10 author 99.74 +- 0.06; last 99.60 +- 0.17; best_rep 99.74 +- 0.06; minloss 99.70 +- 0.08; budget50 97.36 +- 2.03 checks 10

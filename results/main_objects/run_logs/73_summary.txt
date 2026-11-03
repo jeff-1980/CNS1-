@@ -1,0 +1,4 @@
+Direct|PU N09M07F10 artificial->natural 5-way 1-shot 10 author 83.72 +- 9.88; last 83.72 +- 9.88; best_rep 88.85 +- 7.65; minloss 87.58 +- 7.88; budget50 86.65 +- 7.85 checks 0
+Feature-transfer|PU N09M07F10 artificial->natural 5-way 1-shot 10 author 92.52 +- 5.38; last 92.52 +- 5.38; best_rep 92.83 +- 5.20; minloss 92.12 +- 5.91; budget50 90.35 +- 5.71 checks 0
+Full-finetune|PU N09M07F10 artificial->natural 5-way 1-shot 10 author 88.79 +- 6.06; last 88.79 +- 6.06; best_rep 92.40 +- 5.69; minloss 91.60 +- 5.96; budget50 88.48 +- 6.68 checks 0
+# author checks are stored as author_check_mean10 (fine-tune / direct groups: 30/30 match) and 'checks 0' above only counts the plain author_check field. Meta-transfer (1 test point) is report only: protocols/73_report_only.json

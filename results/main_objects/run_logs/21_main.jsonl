@@ -1,0 +1,80 @@
+{'F1 Score': 0.9026077623757457, 'FPR': np.float64(0.005938984638807018), 'Recall': 0.901622340425532, 'PRE': 0.9231580488709342}
+{"group": "bdcnn", "seed": 0, "seconds": 237.7, "first_epoch_done": 14.3, "author_epoch": 74, "check_f1": {"recorded": 0.9026077623757457, "reported": 0.9026077623757457, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.8567659216460005, 'FPR': np.float64(0.0105336599457381), 'Recall': 0.8428571428571429, 'PRE': 0.9244774761900066}
+{"group": "bdcnn", "seed": 1, "seconds": 229.7, "first_epoch_done": 3.5, "author_epoch": 33, "check_f1": {"recorded": 0.8567659216460005, "reported": 0.8567659216460005, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.7520534514415459, 'FPR': np.float64(0.013778794917338435), 'Recall': 0.7600965045592705, 'PRE': 0.8412459237458597}
+{"group": "bdcnn", "seed": 2, "seconds": 228.6, "first_epoch_done": 3.4, "author_epoch": 17, "check_f1": {"recorded": 0.7520534514415459, "reported": 0.7520534514415459, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.9143765335006547, 'FPR': np.float64(0.005468721331954015), 'Recall': 0.9088579027355623, 'PRE': 0.9225336185054717}
+{"group": "bdcnn", "seed": 3, "seconds": 231.2, "first_epoch_done": 4.9, "author_epoch": 34, "check_f1": {"recorded": 0.9143765335006547, "reported": 0.9143765335006547, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.8737589657561214, 'FPR': np.float64(0.00763277575000488), 'Recall': 0.8703822188449849, 'PRE': 0.9000614764418066}
+{"group": "bdcnn", "seed": 4, "seconds": 241.6, "first_epoch_done": 3.6, "author_epoch": 117, "check_f1": {"recorded": 0.8737589657561214, "reported": 0.8737589657561214, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.9061164559527587, 'FPR': np.float64(0.0060985888001873784), 'Recall': 0.8992386018237083, 'PRE': 0.9191020648302296}
+{"group": "bdcnn", "seed": 5, "seconds": 259.4, "first_epoch_done": 5.7, "author_epoch": 61, "check_f1": {"recorded": 0.9061164559527587, "reported": 0.9061164559527587, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.8883725058469443, 'FPR': np.float64(0.006881033708742412), 'Recall': 0.8885759878419454, 'PRE': 0.9009465463635563}
+{"group": "bdcnn", "seed": 6, "seconds": 236.9, "first_epoch_done": 4.5, "author_epoch": 193, "check_f1": {"recorded": 0.8883725058469443, "reported": 0.8883725058469443, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.8961681471662937, 'FPR': np.float64(0.006727948783010951), 'Recall': 0.890573708206687, 'PRE': 0.9115129589258556}
+{"group": "bdcnn", "seed": 7, "seconds": 229.8, "first_epoch_done": 5.1, "author_epoch": 104, "check_f1": {"recorded": 0.8961681471662937, "reported": 0.8961681471662937, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.8840363640530031, 'FPR': np.float64(0.008362071321218746), 'Recall': 0.8674285714285715, 'PRE': 0.9181967718783328}
+{"group": "bdcnn", "seed": 8, "seconds": 228.0, "first_epoch_done": 3.0, "author_epoch": 107, "check_f1": {"recorded": 0.8840363640530031, "reported": 0.8840363640530031, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.9203260638717016, 'FPR': np.float64(0.00520049577420803), 'Recall': 0.9150486322188451, 'PRE': 0.9298818408027651}
+{"group": "bdcnn", "seed": 9, "seconds": 227.2, "first_epoch_done": 2.9, "author_epoch": 58, "check_f1": {"recorded": 0.9203260638717016, "reported": 0.9203260638717016, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.6331084681466261, 'FPR': np.float64(0.01961792204243359), 'Recall': 0.6797196048632218, 'PRE': 0.6291046371006953}
+{"group": "bdresnet", "seed": 0, "seconds": 679.0, "first_epoch_done": 5.0, "author_epoch": 28, "check_f1": {"recorded": 0.6331084681466261, "reported": 0.6331084681466261, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.38755490810821597, 'FPR': np.float64(0.03164427224640369), 'Recall': 0.46961930091185405, 'PRE': 0.514448679632905}
+{"group": "bdresnet", "seed": 1, "seconds": 675.9, "first_epoch_done": 5.0, "author_epoch": 32, "check_f1": {"recorded": 0.38755490810821597, "reported": 0.38755490810821597, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.7031286758578741, 'FPR': np.float64(0.01528778326469268), 'Recall': 0.7428601823708206, 'PRE': 0.6860010892295981}
+{"group": "bdresnet", "seed": 2, "seconds": 676.6, "first_epoch_done": 4.5, "author_epoch": 33, "check_f1": {"recorded": 0.7031286758578741, "reported": 0.7031286758578741, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.7877991605181608, 'FPR': np.float64(0.013121269494271271), 'Recall': 0.7964794832826748, 'PRE': 0.8047448760867179}
+{"group": "bdresnet", "seed": 3, "seconds": 676.1, "first_epoch_done": 4.4, "author_epoch": 156, "check_f1": {"recorded": 0.7877991605181608, "reported": 0.7877991605181608, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.8606457438416296, 'FPR': np.float64(0.008249897526984561), 'Recall': 0.8617173252279634, 'PRE': 0.8750356610842763}
+{"group": "bdresnet", "seed": 4, "seconds": 692.9, "first_epoch_done": 4.4, "author_epoch": 143, "check_f1": {"recorded": 0.8606457438416296, "reported": 0.8606457438416296, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.8879281364755744, 'FPR': np.float64(0.006881033708742414), 'Recall': 0.8842879939209727, 'PRE': 0.9053228758969507}
+{"group": "bdresnet", "seed": 5, "seconds": 691.6, "first_epoch_done": 10.0, "author_epoch": 84, "check_f1": {"recorded": 0.8879281364755744, "reported": 0.8879281364755744, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.7146625414436547, 'FPR': np.float64(0.01616719692385767), 'Recall': 0.7416193009118542, 'PRE': 0.7225298156888298}
+{"group": "bdresnet", "seed": 6, "seconds": 724.9, "first_epoch_done": 5.4, "author_epoch": 39, "check_f1": {"recorded": 0.7146625414436547, "reported": 0.7146625414436547, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.842518071232815, 'FPR': np.float64(0.009545839595573164), 'Recall': 0.8377158054711248, 'PRE': 0.8615043063754545}
+{"group": "bdresnet", "seed": 7, "seconds": 716.1, "first_epoch_done": 9.1, "author_epoch": 102, "check_f1": {"recorded": 0.842518071232815, "reported": 0.842518071232815, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.7938981984959134, 'FPR': np.float64(0.012004625924696973), 'Recall': 0.8063837386018238, 'PRE': 0.8019717876713711}
+{"group": "bdresnet", "seed": 8, "seconds": 699.9, "first_epoch_done": 8.0, "author_epoch": 119, "check_f1": {"recorded": 0.7938981984959134, "reported": 0.7938981984959134, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.8583420038587618, 'FPR': np.float64(0.010191419592840551), 'Recall': 0.8791755319148936, 'PRE': 0.860175849779874}
+{"group": "bdresnet", "seed": 9, "seconds": 695.2, "first_epoch_done": 5.5, "author_epoch": 145, "check_f1": {"recorded": 0.8583420038587618, "reported": 0.8583420038587618, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.6616740106129589, 'FPR': np.float64(0.021291511330587706), 'Recall': 0.6525714285714287, 'PRE': 0.8138126577751414}
+{"group": "bdmobile", "seed": 0, "seconds": 691.1, "first_epoch_done": 6.7, "author_epoch": 64, "check_f1": {"recorded": 0.6616740106129589, "reported": 0.6616740106129589, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.8824736633548923, 'FPR': np.float64(0.007618800382565925), 'Recall': 0.8734293313069911, 'PRE': 0.9019548560763061}
+{"group": "bdmobile", "seed": 1, "seconds": 704.7, "first_epoch_done": 7.0, "author_epoch": 120, "check_f1": {"recorded": 0.8824736633548923, "reported": 0.8824736633548923, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.7073395790580738, 'FPR': np.float64(0.016338453730993695), 'Recall': 0.7131428571428573, 'PRE': 0.7916182742777814}
+{"group": "bdmobile", "seed": 2, "seconds": 689.9, "first_epoch_done": 5.2, "author_epoch": 10, "check_f1": {"recorded": 0.7073395790580738, "reported": 0.7073395790580738, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.8806697762293554, 'FPR': np.float64(0.007515390470985497), 'Recall': 0.8842940729483283, 'PRE': 0.8884189759696586}
+{"group": "bdmobile", "seed": 3, "seconds": 692.0, "first_epoch_done": 4.8, "author_epoch": 60, "check_f1": {"recorded": 0.8806697762293554, "reported": 0.8806697762293554, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.7906889442051217, 'FPR': np.float64(0.014529092577049953), 'Recall': 0.767048632218845, 'PRE': 0.8789884556534305}
+{"group": "bdmobile", "seed": 4, "seconds": 695.0, "first_epoch_done": 5.0, "author_epoch": 19, "check_f1": {"recorded": 0.7906889442051217, "reported": 0.7906889442051217, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.46814494409014934, 'FPR': np.float64(0.029972498194523058), 'Recall': 0.5107621580547114, 'PRE': 0.6565062386901278}
+{"group": "bdmobile", "seed": 5, "seconds": 696.0, "first_epoch_done": 6.5, "author_epoch": 13, "check_f1": {"recorded": 0.46814494409014934, "reported": 0.46814494409014934, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.8276466348036496, 'FPR': np.float64(0.010511857591786545), 'Recall': 0.8289589665653497, 'PRE': 0.863811333801924}
+{"group": "bdmobile", "seed": 6, "seconds": 720.0, "first_epoch_done": 4.7, "author_epoch": 141, "check_f1": {"recorded": 0.8276466348036496, "reported": 0.8276466348036496, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.9146537984650609, 'FPR': np.float64(0.005204477582807955), 'Recall': 0.9184817629179332, 'PRE': 0.914916485560699}
+{"group": "bdmobile", "seed": 7, "seconds": 746.8, "first_epoch_done": 5.1, "author_epoch": 40, "check_f1": {"recorded": 0.9146537984650609, "reported": 0.9146537984650609, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.8822489883420485, 'FPR': np.float64(0.007134268928229853), 'Recall': 0.8887705167173252, 'PRE': 0.8908246501119613}
+{"group": "bdmobile", "seed": 8, "seconds": 722.6, "first_epoch_done": 6.4, "author_epoch": 133, "check_f1": {"recorded": 0.8822489883420485, "reported": 0.8822489883420485, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.9163032834806517, 'FPR': np.float64(0.005314621435402963), 'Recall': 0.9146702127659575, 'PRE': 0.9221386775695574}
+{"group": "bdmobile", "seed": 9, "seconds": 719.6, "first_epoch_done": 6.4, "author_epoch": 171, "check_f1": {"recorded": 0.9163032834806517, "reported": 0.9163032834806517, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.5484288282288553, 'FPR': np.float64(0.02469921730134874), 'Recall': 0.57848632218845, 'PRE': 0.6776136977126869}
+{"group": "bdtransformer", "seed": 0, "seconds": 282.8, "first_epoch_done": 3.7, "author_epoch": 70, "check_f1": {"recorded": 0.5484288282288553, "reported": 0.5484288282288553, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.6034618400714046, 'FPR': np.float64(0.023049382234106925), 'Recall': 0.6177310030395137, 'PRE': 0.684985764933683}
+{"group": "bdtransformer", "seed": 1, "seconds": 273.6, "first_epoch_done": 6.0, "author_epoch": 72, "check_f1": {"recorded": 0.6034618400714046, "reported": 0.6034618400714046, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.3542316023149726, 'FPR': np.float64(0.0328449827259774), 'Recall': 0.4260022796352584, 'PRE': 0.369462170589654}
+{"group": "bdtransformer", "seed": 2, "seconds": 276.3, "first_epoch_done": 3.1, "author_epoch": 12, "check_f1": {"recorded": 0.3542316023149726, "reported": 0.3542316023149726, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.7567152259489988, 'FPR': np.float64(0.01605921964358909), 'Recall': 0.7748905775075988, 'PRE': 0.7917898247072085}
+{"group": "bdtransformer", "seed": 3, "seconds": 274.2, "first_epoch_done": 2.8, "author_epoch": 59, "check_f1": {"recorded": 0.7567152259489988, "reported": 0.7567152259489988, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.7357619661559994, 'FPR': np.float64(0.015588448851326292), 'Recall': 0.7668814589665656, 'PRE': 0.8046920870704838}
+{"group": "bdtransformer", "seed": 4, "seconds": 272.3, "first_epoch_done": 2.6, "author_epoch": 87, "check_f1": {"recorded": 0.7357619661559994, "reported": 0.7357619661559994, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.6832468302112827, 'FPR': np.float64(0.020067905451564422), 'Recall': 0.7076550151975685, 'PRE': 0.7516483055466672}
+{"group": "bdtransformer", "seed": 5, "seconds": 280.3, "first_epoch_done": 2.7, "author_epoch": 78, "check_f1": {"recorded": 0.6832468302112827, "reported": 0.6832468302112827, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.7193860329689594, 'FPR': np.float64(0.016113169246384167), 'Recall': 0.7259118541033435, 'PRE': 0.7372613741232418}
+{"group": "bdtransformer", "seed": 6, "seconds": 274.2, "first_epoch_done": 2.9, "author_epoch": 53, "check_f1": {"recorded": 0.7193860329689594, "reported": 0.7193860329689594, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.8176837388441306, 'FPR': np.float64(0.012323756172779267), 'Recall': 0.837936170212766, 'PRE': 0.8195954294942662}
+{"group": "bdtransformer", "seed": 7, "seconds": 274.4, "first_epoch_done": 2.9, "author_epoch": 95, "check_f1": {"recorded": 0.8176837388441306, "reported": 0.8176837388441306, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.6364880806303813, 'FPR': np.float64(0.02070429215544669), 'Recall': 0.6433351063829786, 'PRE': 0.70222016158632}
+{"group": "bdtransformer", "seed": 8, "seconds": 289.6, "first_epoch_done": 2.7, "author_epoch": 134, "check_f1": {"recorded": 0.6364880806303813, "reported": 0.6364880806303813, "abs_diff": 0.0, "matches": true}}
+{'F1 Score': 0.537240883916766, 'FPR': np.float64(0.026272363515702772), 'Recall': 0.5789794832826748, 'PRE': 0.5663894967606633}
+{"group": "bdtransformer", "seed": 9, "seconds": 276.7, "first_epoch_done": 3.0, "author_epoch": 35, "check_f1": {"recorded": 0.537240883916766, "reported": 0.537240883916766, "abs_diff": 0.0, "matches": true}}

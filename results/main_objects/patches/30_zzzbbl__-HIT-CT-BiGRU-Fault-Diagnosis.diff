@@ -1,0 +1,92 @@
+diff --git a/audit_run30.py b/audit_run30.py
+new file mode 100644
+index 0000000..d194a9b
+--- /dev/null
++++ b/audit_run30.py
+@@ -0,0 +1,63 @@
++"""[audit] Driver for object 30 (registry: results/main_objects/registry/30_*.md).
++As the authors' src/ablation.py: for each model, copy configs/hit_ablation.yaml with model.name and output_dir set
++(plus seed 0..9), and run src/train.py main() in-process. The hook records the authors' val acc/loss and, isolated,
++test acc/loss with their own run_epoch (no optimizer). The authors' test accuracy is read from test_metrics.json.
++Run with cwd = repo root (data/hit_full prepared). Needs PYTHONPATH=~/audit_cns/code:<repo>/src, AUDIT_RECORD_DIR."""
++import argparse, copy, json, math, os, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, os.path.join(REPO, "src"))
++import matplotlib
++matplotlib.use("Agg")
++import yaml
++import train as TR
++import hit_ct_bigru.training as TRN
++from hit_ct_bigru.config import load_config
++from hit_ct_bigru.data import build_dataloaders
++from audit.main.epoch_record import Recorder
++from audit.torch_utils import isolate
++
++ABLATION_MODELS = {"ct_bigru": "ct_bigru", "1dcnn_transformer": "cnn_transformer",
++                   "1dcnn_bigru": "cnn_bigru", "transformer_bigru": "transformer_bigru"}   # same pairs as src/ablation.py
++p = argparse.ArgumentParser()
++p.add_argument("--models", default="ct_bigru,cnn_transformer,cnn_bigru,transformer_bigru")
++p.add_argument("--seeds", default="0-9")
++p.add_argument("--epochs", type=int, default=None)
++p.add_argument("--out", required=True)
++a = p.parse_args()
++lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds),) * 2
++base = load_config(os.path.join(REPO, "configs/hit_ablation.yaml"))
++_, _, TEST_LOADER, _ = build_dataloaders(base["data"]["data_dir"], batch_size=int(base["training"]["batch_size"]), augment_train=False)
++
++for m in a.models.split(","):
++    for s in range(lo, hi + 1):
++        cfg = copy.deepcopy(base)
++        cfg["seed"] = s
++        cfg["model"]["name"] = m
++        out = os.path.join(a.out, f"{m}_seed{s}")
++        cfg["training"]["output_dir"] = out
++        if a.epochs:
++            cfg["training"]["epochs"] = a.epochs; cfg["training"]["min_epochs"] = a.epochs
++        os.makedirs(out, exist_ok=True)
++        cfg_path = os.path.join(out, "config.yaml")
++        open(cfg_path, "w").write(yaml.safe_dump(cfg, sort_keys=False))
++        rec = Recorder(obj="30", group=f"{m}|HIT", seed=s, select_split="val", report_split="test",
++                       note=f"hit_ablation.yaml, seed {s}; test = authors' run_epoch on test set (isolated)")
++        best = {"v": -1.0}
++
++        def hook(ep, model, val_metrics, criterion, device):
++            rec.log(ep, "val", val_metrics["accuracy"], val_metrics["loss"])
++            with isolate([model], device):
++                tm = TRN.run_epoch(model, TEST_LOADER, criterion, device, optimizer=None)
++            rec.log(ep, "test", tm["accuracy"], tm["loss"])
++            if val_metrics["accuracy"] > best["v"]:   # authors' rule (strict >)
++                best["v"] = val_metrics["accuracy"]; rec.author_pick(ep)
++
++        TRN.AUDIT_HOOK = hook
++        sys.argv = ["train.py", "--config", cfg_path]
++        t0 = time.time()
++        TR.main()
++        TRN.AUDIT_HOOK = None
++        reported = json.load(open(os.path.join(out, "test_metrics.json")))["accuracy"]
++        rec.finish(reported)
++        print(json.dumps(dict(model=m, seed=s, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                              reported=reported, check=rec.d["author_check"])), flush=True)
+diff --git a/src/hit_ct_bigru/training.py b/src/hit_ct_bigru/training.py
+index ce72e87..b93e6be 100644
+--- a/src/hit_ct_bigru/training.py
++++ b/src/hit_ct_bigru/training.py
+@@ -12,6 +12,9 @@ from tqdm import tqdm
+ from .utils import ensure_dir, model_output, save_json
+ 
+ 
++AUDIT_HOOK = None  # [audit]
++
++
+ def build_optimizer(model: nn.Module, cfg: dict[str, Any]) -> torch.optim.Optimizer:
+     name = str(cfg.get("name", "adam")).lower()
+     lr = float(cfg.get("lr", 1e-3))
+@@ -73,6 +76,8 @@ def train_model(
+         val_metrics = run_epoch(model, val_loader, criterion, device, optimizer=None)
+         row = {"epoch": epoch, "train": train_metrics, "val": val_metrics}
+         history.append(row)
++        if AUDIT_HOOK is not None:  # [audit] per-epoch record (test evaluated isolated in the hook)
++            AUDIT_HOOK(epoch, model, val_metrics, criterion, device)
+         print(
+             f"Epoch {epoch:03d}/{epochs} "
+             f"train_loss={train_metrics['loss']:.6f} train_acc={train_metrics['accuracy']:.4f} "

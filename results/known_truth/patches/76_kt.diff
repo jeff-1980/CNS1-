@@ -1,0 +1,82 @@
+diff --git a/audit_kt76.py b/audit_kt76.py
+new file mode 100644
+index 0000000..3e13ebe
+--- /dev/null
++++ b/audit_kt76.py
+@@ -0,0 +1,53 @@
++"""[audit] Driver for object 76 (registry: results/main_objects/registry/76_HazeDT__DAGCN.md).
++Runs the authors' DAGCN/train_advanced.py (runpy, cwd = DAGCN/) with the README command (CWRU, transfer task
++[3],[0], --last_batch True, other args default) 10 times unseeded (the code sets no torch / numpy seed; the 80/20
++splits use random_state=40). The hook after their per-phase epoch log records source_val and target_val accuracy /
++loss as computed by the authors; target_val is their test set and selects their 'best' model (strict >, from epoch
++index 1 on). AUDIT_FINAL receives the accuracy of their last strictly-better saved model. Needs PYTHONPATH with
++~/audit_cns/code, AUDIT_RECORD_DIR."""
++import argparse, glob, json, os, runpy, shutil, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++SRC = os.path.join(REPO, "DAGCN")
++p = argparse.ArgumentParser()
++p.add_argument("--repeats", default="0-9")
++p.add_argument("--epochs", type=int, default=None)   # smoke only
++p.add_argument("--data_dir", required=True)
++p.add_argument("--work", required=True)
++a = p.parse_args()
++lo, hi = map(int, a.repeats.split("-")) if "-" in a.repeats else (int(a.repeats),) * 2
++os.chdir(SRC); sys.path.insert(0, SRC)
++from audit.main.epoch_record import Recorder
++from audit.main.kt_split import Splitter, log_halves, acc as kt_acc, balanced as kt_bal  # [audit kt]
++import utils.train_utils_combines as TU
++
++for r in range(lo, hi + 1):
++    ck = os.path.join(a.work, f"ckpt_r{r}"); shutil.rmtree(ck, ignore_errors=True)
++    rec = Recorder(obj="76", group="DAGCN|CWRU 12k DE 3hp->0hp", seed=r, select_split=None, report_split="test",
++                   note="unseeded repeat; test = their target_val (20% of target, also selects their best model); "
++                        "source_val logged as extra split")
++    final = {}
++    sp = Splitter(); buf = []
++    TU.AUDIT_PRED = lambda p, l: buf.append((p.cpu().numpy(), l.cpu().numpy()))
++
++    def hook(ep, phase, acc, loss, strict_best):
++        if phase == "source_train": return
++        rec.log(ep, "test" if phase == "target_val" else "source_val", float(acc), float(loss))
++        if phase == "target_val":
++            import numpy as np
++            p = np.concatenate([b[0] for b in buf]); l = np.concatenate([b[1] for b in buf]); buf.clear()
++            S, T = sp.masks('test', l)
++            rec.log(ep, 'S', kt_acc(p, l, S)); rec.log(ep, 'T', kt_acc(p, l, T))
++            rec.d.setdefault('kt_full', {})[str(ep)] = kt_acc(p, l)
++        if strict_best: rec.author_pick(ep)
++
++    TU.AUDIT_HOOK = hook
++    TU.AUDIT_FINAL = lambda v: final.update(v=float(v))
++    sys.argv = ["train_advanced.py", "--model_name", "DAGCN_features", "--data_name", "CWRU", "--data_dir", a.data_dir,
++                "--transfer_task", "[3],[0]", "--last_batch", "True", "--checkpoint_dir", ck]
++    if a.epochs: sys.argv += ["--max_epoch", str(a.epochs)]
++    t0 = time.time()
++    runpy.run_path(os.path.join(SRC, "train_advanced.py"), run_name="__main__")
++    rec.finish(final.get("v"))
++    shutil.rmtree(ck, ignore_errors=True)   # checkpoints are not kept
++    print(json.dumps(dict(repeat=r, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                          reported=final.get("v"), check=rec.d["author_check"])), flush=True)
+ from utils.save import Save_Tool
+ from loss.DAN import DAN
++AUDIT_HOOK = None; AUDIT_FINAL = None  # [audit] set by audit_run76.py
++AUDIT_PRED = None  # [audit kt] known-truth test, see audit_kt*.py
+ 
+ 
+@@ -229,5 +231,5 @@ class train_utils(object):
+--
+@@ -275,4 +277,5 @@ class train_utils(object):
+ 
+                         pred = logits.argmax(dim=1)
++                        if AUDIT_PRED and phase == 'target_val': AUDIT_PRED(pred, labels)  # [audit kt]
+                         correct = torch.eq(pred, labels).float().sum().item()
+                         loss_temp = loss.item() * labels.size(0)
+@@ -318,4 +321,5 @@ class train_utils(object):
+--
++lo, hi = map(int, a.repeats.split("-")) if "-" in a.repeats else (int(a.repeats),) * 2
++os.chdir(SRC); sys.path.insert(0, SRC)
++from audit.main.epoch_record import Recorder
++from audit.main.kt_split import Splitter, log_halves, acc as kt_acc, balanced as kt_bal  # [audit kt]
++import utils.train_utils_combines as TU
++
++for r in range(lo, hi + 1):

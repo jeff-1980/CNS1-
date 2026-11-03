@@ -1,0 +1,179 @@
+2026-11-02T14:01:14Z start 58
+exit=0 seconds=1244 gpu_max=13653 ram_max=4068
+{"group": "CDAN-mixup", "seed": 0, "seconds": 49.1, "author_epoch": 100, "reported": 0.8247916666666666, "plain_acc": 0.824791669845581, "check": {"recorded": 0.8247916666666666, "reported": 0.8247916666666666, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN-mixup", "seed": 1, "seconds": 45.6, "author_epoch": 100, "reported": 0.8262499999999999, "plain_acc": 0.8262500166893005, "check": {"recorded": 0.8262499999999999, "reported": 0.8262499999999999, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN-mixup", "seed": 2, "seconds": 39.5, "author_epoch": 100, "reported": 0.8329166666666666, "plain_acc": 0.8329166769981384, "check": {"recorded": 0.8329166666666666, "reported": 0.8329166666666666, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN-mixup", "seed": 3, "seconds": 39.9, "author_epoch": 100, "reported": 0.7006249999999999, "plain_acc": 0.7006250023841858, "check": {"recorded": 0.7006249999999999, "reported": 0.7006249999999999, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN-mixup", "seed": 4, "seconds": 38.1, "author_epoch": 100, "reported": 0.8335416666666666, "plain_acc": 0.8335416913032532, "check": {"recorded": 0.8335416666666666, "reported": 0.8335416666666666, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN-mixup", "seed": 5, "seconds": 37.4, "author_epoch": 100, "reported": 0.7945833333333333, "plain_acc": 0.7945833206176758, "check": {"recorded": 0.7945833333333333, "reported": 0.7945833333333333, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN-mixup", "seed": 6, "seconds": 38.8, "author_epoch": 100, "reported": 0.8312499999999999, "plain_acc": 0.831250011920929, "check": {"recorded": 0.8312499999999999, "reported": 0.8312499999999999, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN-mixup", "seed": 7, "seconds": 36.9, "author_epoch": 100, "reported": 0.83375, "plain_acc": 0.8337500095367432, "check": {"recorded": 0.83375, "reported": 0.83375, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN-mixup", "seed": 8, "seconds": 38.4, "author_epoch": 100, "reported": 0.8206249999999999, "plain_acc": 0.8206250071525574, "check": {"recorded": 0.8206249999999999, "reported": 0.8206249999999999, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN-mixup", "seed": 9, "seconds": 37.6, "author_epoch": 100, "reported": 0.835625, "plain_acc": 0.8356249928474426, "check": {"recorded": 0.835625, "reported": 0.835625, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN", "seed": 0, "seconds": 39.7, "author_epoch": 100, "reported": 0.7525, "plain_acc": 0.7524999976158142, "check": {"recorded": 0.7525, "reported": 0.7525, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN", "seed": 1, "seconds": 38.2, "author_epoch": 100, "reported": 0.7510416666666667, "plain_acc": 0.7510416507720947, "check": {"recorded": 0.7510416666666667, "reported": 0.7510416666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN", "seed": 2, "seconds": 33.2, "author_epoch": 100, "reported": 0.7695833333333333, "plain_acc": 0.7695833444595337, "check": {"recorded": 0.7695833333333333, "reported": 0.7695833333333333, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN", "seed": 3, "seconds": 33.4, "author_epoch": 100, "reported": 0.7729166666666667, "plain_acc": 0.7729166746139526, "check": {"recorded": 0.7729166666666667, "reported": 0.7729166666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN", "seed": 4, "seconds": 33.5, "author_epoch": 100, "reported": 0.7675000000000001, "plain_acc": 0.7674999833106995, "check": {"recorded": 0.7675000000000001, "reported": 0.7675000000000001, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN", "seed": 5, "seconds": 33.7, "author_epoch": 100, "reported": 0.7741666666666667, "plain_acc": 0.7741666436195374, "check": {"recorded": 0.7741666666666667, "reported": 0.7741666666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN", "seed": 6, "seconds": 32.8, "author_epoch": 100, "reported": 0.7560416666666666, "plain_acc": 0.7560416460037231, "check": {"recorded": 0.7560416666666666, "reported": 0.7560416666666666, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN", "seed": 7, "seconds": 32.5, "author_epoch": 100, "reported": 0.7597916666666666, "plain_acc": 0.7597916722297668, "check": {"recorded": 0.7597916666666666, "reported": 0.7597916666666666, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN", "seed": 8, "seconds": 33.1, "author_epoch": 100, "reported": 0.7591666666666667, "plain_acc": 0.7591666579246521, "check": {"recorded": 0.7591666666666667, "reported": 0.7591666666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "CDAN", "seed": 9, "seconds": 33.1, "author_epoch": 100, "reported": 0.7566666666666666, "plain_acc": 0.7566666603088379, "check": {"recorded": 0.7566666666666666, "reported": 0.7566666666666666, "abs_diff": 0.0, "matches": true}}
+{"group": "DANN", "seed": 0, "seconds": 32.8, "author_epoch": 100, "reported": 0.6714583333333334, "plain_acc": 0.6714583039283752, "check": {"recorded": 0.6714583333333334, "reported": 0.6714583333333334, "abs_diff": 0.0, "matches": true}}
+{"group": "DANN", "seed": 1, "seconds": 31.6, "author_epoch": 100, "reported": 0.760625, "plain_acc": 0.7606250047683716, "check": {"recorded": 0.760625, "reported": 0.760625, "abs_diff": 0.0, "matches": true}}
+{"group": "DANN", "seed": 2, "seconds": 31.9, "author_epoch": 100, "reported": 0.7541666666666667, "plain_acc": 0.7541666626930237, "check": {"recorded": 0.7541666666666667, "reported": 0.7541666666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "DANN", "seed": 3, "seconds": 31.3, "author_epoch": 100, "reported": 0.6891666666666667, "plain_acc": 0.6891666650772095, "check": {"recorded": 0.6891666666666667, "reported": 0.6891666666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "DANN", "seed": 4, "seconds": 30.7, "author_epoch": 100, "reported": 0.69375, "plain_acc": 0.6937500238418579, "check": {"recorded": 0.69375, "reported": 0.69375, "abs_diff": 0.0, "matches": true}}
+{"group": "DANN", "seed": 5, "seconds": 31.3, "author_epoch": 100, "reported": 0.684375, "plain_acc": 0.684374988079071, "check": {"recorded": 0.684375, "reported": 0.684375, "abs_diff": 0.0, "matches": true}}
+{"group": "DANN", "seed": 6, "seconds": 31.5, "author_epoch": 100, "reported": 0.7035416666666667, "plain_acc": 0.7035416960716248, "check": {"recorded": 0.7035416666666667, "reported": 0.7035416666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "DANN", "seed": 7, "seconds": 31.7, "author_epoch": 100, "reported": 0.7697916666666667, "plain_acc": 0.7697916626930237, "check": {"recorded": 0.7697916666666667, "reported": 0.7697916666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "DANN", "seed": 8, "seconds": 30.1, "author_epoch": 100, "reported": 0.7139583333333333, "plain_acc": 0.7139583230018616, "check": {"recorded": 0.7139583333333333, "reported": 0.7139583333333333, "abs_diff": 0.0, "matches": true}}
+{"group": "DANN", "seed": 9, "seconds": 32.0, "author_epoch": 100, "reported": 0.7177083333333334, "plain_acc": 0.7177083492279053, "check": {"recorded": 0.7177083333333334, "reported": 0.7177083333333334, "abs_diff": 0.0, "matches": true}}
+{"group": "Source-only", "seed": 0, "seconds": 17.2, "author_epoch": 100, "reported": 0.5947916666666667, "plain_acc": 0.5947916507720947, "check": {"recorded": 0.5947916666666667, "reported": 0.5947916666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "Source-only", "seed": 1, "seconds": 18.2, "author_epoch": 100, "reported": 0.5845833333333333, "plain_acc": 0.5845833420753479, "check": {"recorded": 0.5845833333333333, "reported": 0.5845833333333333, "abs_diff": 0.0, "matches": true}}
+{"group": "Source-only", "seed": 2, "seconds": 18.1, "author_epoch": 100, "reported": 0.5843750000000001, "plain_acc": 0.5843750238418579, "check": {"recorded": 0.5843750000000001, "reported": 0.5843750000000001, "abs_diff": 0.0, "matches": true}}
+{"group": "Source-only", "seed": 3, "seconds": 19.4, "author_epoch": 100, "reported": 0.58625, "plain_acc": 0.5862500071525574, "check": {"recorded": 0.58625, "reported": 0.58625, "abs_diff": 0.0, "matches": true}}
+{"group": "Source-only", "seed": 4, "seconds": 18.0, "author_epoch": 100, "reported": 0.6035416666666668, "plain_acc": 0.6035416722297668, "check": {"recorded": 0.6035416666666668, "reported": 0.6035416666666668, "abs_diff": 0.0, "matches": true}}
+{"group": "Source-only", "seed": 5, "seconds": 18.1, "author_epoch": 100, "reported": 0.5839583333333334, "plain_acc": 0.5839583277702332, "check": {"recorded": 0.5839583333333334, "reported": 0.5839583333333334, "abs_diff": 0.0, "matches": true}}
+{"group": "Source-only", "seed": 6, "seconds": 18.1, "author_epoch": 100, "reported": 0.5839583333333334, "plain_acc": 0.5839583277702332, "check": {"recorded": 0.5839583333333334, "reported": 0.5839583333333334, "abs_diff": 0.0, "matches": true}}
+{"group": "Source-only", "seed": 7, "seconds": 18.1, "author_epoch": 100, "reported": 0.5835416666666667, "plain_acc": 0.5835416913032532, "check": {"recorded": 0.5835416666666667, "reported": 0.5835416666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "Source-only", "seed": 8, "seconds": 18.0, "author_epoch": 100, "reported": 0.5929166666666668, "plain_acc": 0.5929166674613953, "check": {"recorded": 0.5929166666666668, "reported": 0.5929166666666668, "abs_diff": 0.0, "matches": true}}
+{"group": "Source-only", "seed": 9, "seconds": 18.8, "author_epoch": 100, "reported": 0.5902083333333333, "plain_acc": 0.5902083516120911, "check": {"recorded": 0.5902083333333333, "reported": 0.5902083333333333, "abs_diff": 0.0, "matches": true}}
+2026-11-02T14:21:58Z end 58
+2026-11-02T14:21:58Z start 54
+exit=0 seconds=4067 gpu_max=943 ram_max=2730
+{"group": "TGST", "repeat": 0, "seconds": 174.8, "author_epoch": 50, "reported": 1.0, "check": {"recorded": 1.0, "reported": 1.0, "abs_diff": 0.0, "matches": true}}
+{"group": "TGST", "repeat": 1, "seconds": 176.6, "author_epoch": 50, "reported": 0.9875, "check": {"recorded": 0.9875, "reported": 0.9875, "abs_diff": 0.0, "matches": true}}
+{"group": "TGST", "repeat": 2, "seconds": 182.7, "author_epoch": 50, "reported": 0.9958333333333333, "check": {"recorded": 0.9958333333333333, "reported": 0.9958333333333333, "abs_diff": 0.0, "matches": true}}
+{"group": "TGST", "repeat": 3, "seconds": 185.2, "author_epoch": 50, "reported": 0.9958333333333333, "check": {"recorded": 0.9958333333333333, "reported": 0.9958333333333333, "abs_diff": 0.0, "matches": true}}
+{"group": "TGST", "repeat": 4, "seconds": 179.1, "author_epoch": 50, "reported": 0.9958333333333333, "check": {"recorded": 0.9958333333333333, "reported": 0.9958333333333333, "abs_diff": 0.0, "matches": true}}
+{"group": "TGST", "repeat": 5, "seconds": 176.2, "author_epoch": 50, "reported": 0.9916666666666667, "check": {"recorded": 0.9916666666666667, "reported": 0.9916666666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "TGST", "repeat": 6, "seconds": 178.3, "author_epoch": 50, "reported": 1.0, "check": {"recorded": 1.0, "reported": 1.0, "abs_diff": 0.0, "matches": true}}
+{"group": "TGST", "repeat": 7, "seconds": 181.6, "author_epoch": 50, "reported": 1.0, "check": {"recorded": 1.0, "reported": 1.0, "abs_diff": 0.0, "matches": true}}
+{"group": "TGST", "repeat": 8, "seconds": 178.8, "author_epoch": 50, "reported": 0.9958333333333333, "check": {"recorded": 0.9958333333333333, "reported": 0.9958333333333333, "abs_diff": 0.0, "matches": true}}
+{"group": "TGST", "repeat": 9, "seconds": 181.4, "author_epoch": 50, "reported": 1.0, "check": {"recorded": 1.0, "reported": 1.0, "abs_diff": 0.0, "matches": true}}
+{"group": "Baseline", "repeat": 0, "seconds": 47.2, "author_epoch": 50, "reported": 0.7958333333333333, "check": {"recorded": 0.7958333333333333, "reported": 0.7958333333333333, "abs_diff": 0.0, "matches": true}}
+{"group": "Baseline", "repeat": 1, "seconds": 45.4, "author_epoch": 50, "reported": 0.7916666666666666, "check": {"recorded": 0.7916666666666666, "reported": 0.7916666666666666, "abs_diff": 0.0, "matches": true}}
+{"group": "Baseline", "repeat": 2, "seconds": 45.4, "author_epoch": 50, "reported": 0.7666666666666667, "check": {"recorded": 0.7666666666666667, "reported": 0.7666666666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "Baseline", "repeat": 3, "seconds": 47.5, "author_epoch": 50, "reported": 0.7541666666666667, "check": {"recorded": 0.7541666666666667, "reported": 0.7541666666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "Baseline", "repeat": 4, "seconds": 48.4, "author_epoch": 50, "reported": 0.7583333333333333, "check": {"recorded": 0.7583333333333333, "reported": 0.7583333333333333, "abs_diff": 0.0, "matches": true}}
+{"group": "Baseline", "repeat": 5, "seconds": 48.8, "author_epoch": 50, "reported": 0.7916666666666666, "check": {"recorded": 0.7916666666666666, "reported": 0.7916666666666666, "abs_diff": 0.0, "matches": true}}
+{"group": "Baseline", "repeat": 6, "seconds": 53.0, "author_epoch": 50, "reported": 0.7458333333333333, "check": {"recorded": 0.7458333333333333, "reported": 0.7458333333333333, "abs_diff": 0.0, "matches": true}}
+{"group": "Baseline", "repeat": 7, "seconds": 45.5, "author_epoch": 50, "reported": 0.7458333333333333, "check": {"recorded": 0.7458333333333333, "reported": 0.7458333333333333, "abs_diff": 0.0, "matches": true}}
+{"group": "Baseline", "repeat": 8, "seconds": 45.1, "author_epoch": 50, "reported": 0.7666666666666667, "check": {"recorded": 0.7666666666666667, "reported": 0.7666666666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "Baseline", "repeat": 9, "seconds": 46.0, "author_epoch": 50, "reported": 0.8125, "check": {"recorded": 0.8125, "reported": 0.8125, "abs_diff": 0.0, "matches": true}}
+{"group": "Random-text", "repeat": 0, "seconds": 224.2, "author_epoch": 50, "reported": 0.7875, "check": {"recorded": 0.7875, "reported": 0.7875, "abs_diff": 0.0, "matches": true}}
+{"group": "Random-text", "repeat": 1, "seconds": 181.9, "author_epoch": 50, "reported": 0.7083333333333334, "check": {"recorded": 0.7083333333333334, "reported": 0.7083333333333334, "abs_diff": 0.0, "matches": true}}
+{"group": "Random-text", "repeat": 2, "seconds": 178.0, "author_epoch": 50, "reported": 0.7541666666666667, "check": {"recorded": 0.7541666666666667, "reported": 0.7541666666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "Random-text", "repeat": 3, "seconds": 172.8, "author_epoch": 50, "reported": 0.7916666666666666, "check": {"recorded": 0.7916666666666666, "reported": 0.7916666666666666, "abs_diff": 0.0, "matches": true}}
+{"group": "Random-text", "repeat": 4, "seconds": 173.1, "author_epoch": 50, "reported": 0.7541666666666667, "check": {"recorded": 0.7541666666666667, "reported": 0.7541666666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "Random-text", "repeat": 5, "seconds": 172.6, "author_epoch": 50, "reported": 0.7541666666666667, "check": {"recorded": 0.7541666666666667, "reported": 0.7541666666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "Random-text", "repeat": 6, "seconds": 175.4, "author_epoch": 50, "reported": 0.7708333333333334, "check": {"recorded": 0.7708333333333334, "reported": 0.7708333333333334, "abs_diff": 0.0, "matches": true}}
+{"group": "Random-text", "repeat": 7, "seconds": 174.2, "author_epoch": 50, "reported": 0.8041666666666667, "check": {"recorded": 0.8041666666666667, "reported": 0.8041666666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "Random-text", "repeat": 8, "seconds": 173.1, "author_epoch": 50, "reported": 0.725, "check": {"recorded": 0.725, "reported": 0.725, "abs_diff": 0.0, "matches": true}}
+{"group": "Random-text", "repeat": 9, "seconds": 172.7, "author_epoch": 50, "reported": 0.7791666666666667, "check": {"recorded": 0.7791666666666667, "reported": 0.7791666666666667, "abs_diff": 0.0, "matches": true}}
+2026-11-02T15:29:45Z end 54
+2026-11-02T15:29:45Z start 76
+exit=0 seconds=2640 gpu_max=1141 ram_max=2509
+{"repeat": 0, "seconds": 266.1, "author_epoch": 57, "reported": 0.9923371647509579, "check": {"recorded": 0.9923371647509579, "reported": 0.9923371647509579, "abs_diff": 0.0, "matches": true}}
+{"repeat": 1, "seconds": 265.7, "author_epoch": 75, "reported": 0.9770114942528736, "check": {"recorded": 0.9770114942528736, "reported": 0.9770114942528736, "abs_diff": 0.0, "matches": true}}
+{"repeat": 2, "seconds": 260.0, "author_epoch": 82, "reported": 0.9923371647509579, "check": {"recorded": 0.9923371647509579, "reported": 0.9923371647509579, "abs_diff": 0.0, "matches": true}}
+{"repeat": 3, "seconds": 268.1, "author_epoch": 209, "reported": 0.9961685823754789, "check": {"recorded": 0.9961685823754789, "reported": 0.9961685823754789, "abs_diff": 0.0, "matches": true}}
+{"repeat": 4, "seconds": 262.6, "author_epoch": 119, "reported": 0.9731800766283525, "check": {"recorded": 0.9731800766283525, "reported": 0.9731800766283525, "abs_diff": 0.0, "matches": true}}
+{"repeat": 5, "seconds": 263.1, "author_epoch": 97, "reported": 0.9923371647509579, "check": {"recorded": 0.9923371647509579, "reported": 0.9923371647509579, "abs_diff": 0.0, "matches": true}}
+{"repeat": 6, "seconds": 261.4, "author_epoch": 140, "reported": 0.9961685823754789, "check": {"recorded": 0.9961685823754789, "reported": 0.9961685823754789, "abs_diff": 0.0, "matches": true}}
+{"repeat": 7, "seconds": 267.1, "author_epoch": 53, "reported": 0.9846743295019157, "check": {"recorded": 0.9846743295019157, "reported": 0.9846743295019157, "abs_diff": 0.0, "matches": true}}
+{"repeat": 8, "seconds": 260.5, "author_epoch": 218, "reported": 0.9961685823754789, "check": {"recorded": 0.9961685823754789, "reported": 0.9961685823754789, "abs_diff": 0.0, "matches": true}}
+{"repeat": 9, "seconds": 260.8, "author_epoch": 208, "reported": 1.0, "check": {"recorded": 1.0, "reported": 1.0, "abs_diff": 0.0, "matches": true}}
+2026-11-02T16:13:45Z end 76
+2026-11-02T16:13:45Z start 37
+exit=0 seconds=1888 gpu_max=323 ram_max=2490
+{"repeat": 0, "seconds": 189.8, "author_epoch": 17, "reported": 0.84328, "check": {"recorded": 0.84328, "reported": 0.84328, "abs_diff": 0.0, "matches": true}}
+{"repeat": 1, "seconds": 181.9, "author_epoch": 20, "reported": 0.8326600000000001, "check": {"recorded": 0.8326600000000001, "reported": 0.8326600000000001, "abs_diff": 0.0, "matches": true}}
+{"repeat": 2, "seconds": 216.2, "author_epoch": 22, "reported": 0.8425499999999999, "check": {"recorded": 0.8425499999999999, "reported": 0.8425499999999999, "abs_diff": 0.0, "matches": true}}
+{"repeat": 3, "seconds": 180.9, "author_epoch": 20, "reported": 0.85104, "check": {"recorded": 0.85104, "reported": 0.85104, "abs_diff": 0.0, "matches": true}}
+{"repeat": 4, "seconds": 189.3, "author_epoch": 25, "reported": 0.83221, "check": {"recorded": 0.83221, "reported": 0.83221, "abs_diff": 0.0, "matches": true}}
+{"repeat": 5, "seconds": 182.4, "author_epoch": 21, "reported": 0.83588, "check": {"recorded": 0.83588, "reported": 0.83588, "abs_diff": 0.0, "matches": true}}
+{"repeat": 6, "seconds": 191.9, "author_epoch": 17, "reported": 0.8452299999999999, "check": {"recorded": 0.8452299999999999, "reported": 0.8452299999999999, "abs_diff": 0.0, "matches": true}}
+{"repeat": 7, "seconds": 180.8, "author_epoch": 20, "reported": 0.83206, "check": {"recorded": 0.83206, "reported": 0.83206, "abs_diff": 0.0, "matches": true}}
+{"repeat": 8, "seconds": 186.2, "author_epoch": 19, "reported": 0.8407800000000001, "check": {"recorded": 0.8407800000000001, "reported": 0.8407800000000001, "abs_diff": 0.0, "matches": true}}
+{"repeat": 9, "seconds": 185.3, "author_epoch": 14, "reported": 0.84294, "check": {"recorded": 0.84294, "reported": 0.84294, "abs_diff": 0.0, "matches": true}}
+2026-11-02T16:45:13Z end 37
+2026-11-02T16:45:13Z start 62
+exit=0 seconds=1402 gpu_max=327 ram_max=3005
+{"group": "Teacher", "seed": 0, "seconds": 108.5, "author_epoch": 75, "check_f1": {"recorded": 0.9928062940009426, "reported": 0.9928462364365147, "abs_diff": 3.994243557214894e-05, "matches": false}}
+{"group": "DKD-Student", "seed": 0, "seconds": 122.1, "author_epoch": 75, "check_f1": {"recorded": 0.9715190314721627, "reported": 0.9715190314721627, "abs_diff": 0.0, "matches": true}}
+{"group": "Student", "seed": 0, "seconds": 35.6, "author_epoch": 75, "check_f1": {"recorded": 0.3248399993599974, "reported": 0.3248399993599974, "abs_diff": 0.0, "matches": true}}
+{"group": "Teacher", "seed": 1, "seconds": 93.3, "author_epoch": 75, "check_f1": {"recorded": 0.992272899806234, "reported": 0.9923129614332783, "abs_diff": 4.006162704428551e-05, "matches": false}}
+{"group": "DKD-Student", "seed": 1, "seconds": 107.4, "author_epoch": 75, "check_f1": {"recorded": 0.9477112313846279, "reported": 0.9477112313846279, "abs_diff": 0.0, "matches": true}}
+{"group": "Student", "seed": 1, "seconds": 32.8, "author_epoch": 75, "check_f1": {"recorded": 0.3249199996799987, "reported": 0.3249199996799987, "abs_diff": 0.0, "matches": true}}
+{"group": "Teacher", "seed": 2, "seconds": 89.0, "author_epoch": 75, "check_f1": {"recorded": 0.9711516242944687, "reported": 0.9711516242944687, "abs_diff": 0.0, "matches": true}}
+{"group": "DKD-Student", "seed": 2, "seconds": 103.0, "author_epoch": 75, "check_f1": {"recorded": 0.9205153065348158, "reported": 0.9205153065348158, "abs_diff": 0.0, "matches": true}}
+{"group": "Student", "seed": 2, "seconds": 32.7, "author_epoch": 75, "check_f1": {"recorded": 0.9332345735483278, "reported": 0.9332345735483278, "abs_diff": 0.0, "matches": true}}
+{"group": "Teacher", "seed": 3, "seconds": 89.0, "author_epoch": 75, "check_f1": {"recorded": 0.9767994684509554, "reported": 0.9767994684509554, "abs_diff": 0.0, "matches": true}}
+{"group": "DKD-Student", "seed": 3, "seconds": 102.4, "author_epoch": 75, "check_f1": {"recorded": 0.9383556113513054, "reported": 0.9383556113513054, "abs_diff": 0.0, "matches": true}}
+{"group": "Student", "seed": 3, "seconds": 34.0, "author_epoch": 75, "check_f1": {"recorded": 0.01818181818181818, "reported": 0.01818181818181818, "abs_diff": 0.0, "matches": true}}
+{"group": "Teacher", "seed": 4, "seconds": 89.2, "author_epoch": 75, "check_f1": {"recorded": 0.9781725290147646, "reported": 0.9781321958952576, "abs_diff": 4.03331195070189e-05, "matches": false}}
+{"group": "DKD-Student", "seed": 4, "seconds": 103.1, "author_epoch": 75, "check_f1": {"recorded": 0.9427103257094887, "reported": 0.9427103257094887, "abs_diff": 0.0, "matches": true}}
+{"group": "Student", "seed": 4, "seconds": 33.4, "author_epoch": 75, "check_f1": {"recorded": 0.31019298462986916, "reported": 0.31019298462986916, "abs_diff": 0.0, "matches": true}}
+{"group": "Teacher", "seed": 5, "seconds": 90.4, "author_epoch": 75, "check_f1": {"recorded": 0.9956316316142967, "reported": 0.9956316316142967, "abs_diff": 0.0, "matches": true}}
+{"group": "DKD-Student", "seed": 5, "seconds": 104.4, "author_epoch": 75, "check_f1": {"recorded": 0.01818181818181818, "reported": 0.01818181818181818, "abs_diff": 0.0, "matches": true}}
+{"group": "Student", "seed": 5, "seconds": 33.9, "author_epoch": 75, "check_f1": {"recorded": 0.32291923986595883, "reported": 0.32291923986595883, "abs_diff": 0.0, "matches": true}}
+{"group": "Teacher", "seed": 6, "seconds": 96.0, "author_epoch": 75, "check_f1": {"recorded": 0.9864289042197415, "reported": 0.9863882857132721, "abs_diff": 4.061850646941423e-05, "matches": false}}
+{"group": "DKD-Student", "seed": 6, "seconds": 108.5, "author_epoch": 75, "check_f1": {"recorded": 0.9556956470173237, "reported": 0.9556956470173237, "abs_diff": 0.0, "matches": true}}
+{"group": "Student", "seed": 6, "seconds": 33.9, "author_epoch": 75, "check_f1": {"recorded": 0.317323043030929, "reported": 0.317323043030929, "abs_diff": 0.0, "matches": true}}
+{"group": "Teacher", "seed": 7, "seconds": 91.7, "author_epoch": 75, "check_f1": {"recorded": 0.9767238710525794, "reported": 0.9766838621044585, "abs_diff": 4.0008948120950905e-05, "matches": false}}
+{"group": "DKD-Student", "seed": 7, "seconds": 104.5, "author_epoch": 75, "check_f1": {"recorded": 0.9189453173244096, "reported": 0.9189453173244096, "abs_diff": 0.0, "matches": true}}
+{"group": "Student", "seed": 7, "seconds": 33.2, "author_epoch": 75, "check_f1": {"recorded": 0.9250876881154235, "reported": 0.9250876881154235, "abs_diff": 0.0, "matches": true}}
+{"group": "Teacher", "seed": 8, "seconds": 90.8, "author_epoch": 75, "check_f1": {"recorded": 0.9763310107927905, "reported": 0.9763710541790125, "abs_diff": 4.004338622198844e-05, "matches": false}}
+{"group": "DKD-Student", "seed": 8, "seconds": 103.3, "author_epoch": 75, "check_f1": {"recorded": 0.8838684924745888, "reported": 0.8838684924745888, "abs_diff": 0.0, "matches": true}}
+{"group": "Student", "seed": 8, "seconds": 33.4, "author_epoch": 75, "check_f1": {"recorded": 0.9270272744073285, "reported": 0.9270272744073285, "abs_diff": 0.0, "matches": true}}
+{"group": "Teacher", "seed": 9, "seconds": 90.7, "author_epoch": 75, "check_f1": {"recorded": 0.9781675652073366, "reported": 0.9781686428284481, "abs_diff": 1.0776211114560397e-06, "matches": false}}
+{"group": "DKD-Student", "seed": 9, "seconds": 103.2, "author_epoch": 75, "check_f1": {"recorded": 0.01818181818181818, "reported": 0.01818181818181818, "abs_diff": 0.0, "matches": true}}
+{"group": "Student", "seed": 9, "seconds": 33.3, "author_epoch": 75, "check_f1": {"recorded": 0.3229546374550312, "reported": 0.3229546374550312, "abs_diff": 0.0, "matches": true}}
+2026-11-02T17:08:35Z end 62
+2026-11-02T17:08:35Z start 53
+exit=0 seconds=4429 gpu_max=467 ram_max=3368
+{"group": "TFN_STTF", "seed": 0, "seconds": 113.9, "author_epoch": 34, "reported": 0.9985185185185185, "check": {"recorded": 0.9985185185185185, "reported": 0.9985185185185185, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_STTF", "seed": 1, "seconds": 114.3, "author_epoch": 50, "reported": 0.9977777777777778, "check": {"recorded": 0.9977777777777778, "reported": 0.9977777777777778, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_STTF", "seed": 2, "seconds": 112.6, "author_epoch": 38, "reported": 0.9955555555555555, "check": {"recorded": 0.9955555555555555, "reported": 0.9955555555555555, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_STTF", "seed": 3, "seconds": 113.6, "author_epoch": 42, "reported": 0.997037037037037, "check": {"recorded": 0.997037037037037, "reported": 0.997037037037037, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_STTF", "seed": 4, "seconds": 112.7, "author_epoch": 37, "reported": 0.9977777777777778, "check": {"recorded": 0.9977777777777778, "reported": 0.9977777777777778, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_STTF", "seed": 5, "seconds": 113.3, "author_epoch": 34, "reported": 0.997037037037037, "check": {"recorded": 0.997037037037037, "reported": 0.997037037037037, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_STTF", "seed": 6, "seconds": 111.9, "author_epoch": 50, "reported": 0.997037037037037, "check": {"recorded": 0.997037037037037, "reported": 0.997037037037037, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_STTF", "seed": 7, "seconds": 113.2, "author_epoch": 50, "reported": 0.9977777777777778, "check": {"recorded": 0.9977777777777778, "reported": 0.9977777777777778, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_STTF", "seed": 8, "seconds": 112.2, "author_epoch": 43, "reported": 0.997037037037037, "check": {"recorded": 0.997037037037037, "reported": 0.997037037037037, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_STTF", "seed": 9, "seconds": 110.7, "author_epoch": 42, "reported": 0.9955555555555555, "check": {"recorded": 0.9955555555555555, "reported": 0.9955555555555555, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Chirplet", "seed": 0, "seconds": 138.0, "author_epoch": 29, "reported": 0.9881481481481481, "check": {"recorded": 0.9881481481481481, "reported": 0.9881481481481481, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Chirplet", "seed": 1, "seconds": 137.6, "author_epoch": 48, "reported": 0.9866666666666667, "check": {"recorded": 0.9866666666666667, "reported": 0.9866666666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Chirplet", "seed": 2, "seconds": 139.4, "author_epoch": 22, "reported": 0.9837037037037037, "check": {"recorded": 0.9837037037037037, "reported": 0.9837037037037037, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Chirplet", "seed": 3, "seconds": 141.0, "author_epoch": 41, "reported": 0.9896296296296296, "check": {"recorded": 0.9896296296296296, "reported": 0.9896296296296296, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Chirplet", "seed": 4, "seconds": 146.5, "author_epoch": 49, "reported": 0.9918518518518519, "check": {"recorded": 0.9918518518518519, "reported": 0.9918518518518519, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Chirplet", "seed": 5, "seconds": 137.4, "author_epoch": 48, "reported": 0.997037037037037, "check": {"recorded": 0.997037037037037, "reported": 0.997037037037037, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Chirplet", "seed": 6, "seconds": 138.9, "author_epoch": 45, "reported": 0.9866666666666667, "check": {"recorded": 0.9866666666666667, "reported": 0.9866666666666667, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Chirplet", "seed": 7, "seconds": 137.4, "author_epoch": 34, "reported": 0.98, "check": {"recorded": 0.98, "reported": 0.98, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Chirplet", "seed": 8, "seconds": 136.3, "author_epoch": 39, "reported": 0.9859259259259259, "check": {"recorded": 0.9859259259259259, "reported": 0.9859259259259259, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Chirplet", "seed": 9, "seconds": 140.2, "author_epoch": 44, "reported": 0.9896296296296296, "check": {"recorded": 0.9896296296296296, "reported": 0.9896296296296296, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Morlet", "seed": 0, "seconds": 170.2, "author_epoch": 23, "reported": 0.9977777777777778, "check": {"recorded": 0.9977777777777778, "reported": 0.9977777777777778, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Morlet", "seed": 1, "seconds": 171.0, "author_epoch": 31, "reported": 0.9985185185185185, "check": {"recorded": 0.9985185185185185, "reported": 0.9985185185185185, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Morlet", "seed": 2, "seconds": 174.7, "author_epoch": 24, "reported": 0.9985185185185185, "check": {"recorded": 0.9985185185185185, "reported": 0.9985185185185185, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Morlet", "seed": 3, "seconds": 170.3, "author_epoch": 28, "reported": 0.9985185185185185, "check": {"recorded": 0.9985185185185185, "reported": 0.9985185185185185, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Morlet", "seed": 4, "seconds": 173.5, "author_epoch": 43, "reported": 0.9985185185185185, "check": {"recorded": 0.9985185185185185, "reported": 0.9985185185185185, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Morlet", "seed": 5, "seconds": 171.0, "author_epoch": 33, "reported": 0.9992592592592593, "check": {"recorded": 0.9992592592592593, "reported": 0.9992592592592593, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Morlet", "seed": 6, "seconds": 167.9, "author_epoch": 44, "reported": 0.9992592592592593, "check": {"recorded": 0.9992592592592593, "reported": 0.9992592592592593, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Morlet", "seed": 7, "seconds": 185.3, "author_epoch": 29, "reported": 0.9977777777777778, "check": {"recorded": 0.9977777777777778, "reported": 0.9977777777777778, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Morlet", "seed": 8, "seconds": 171.9, "author_epoch": 48, "reported": 0.9985185185185185, "check": {"recorded": 0.9985185185185185, "reported": 0.9985185185185185, "abs_diff": 0.0, "matches": true}}
+{"group": "TFN_Morlet", "seed": 9, "seconds": 169.0, "author_epoch": 36, "reported": 0.9985185185185185, "check": {"recorded": 0.9985185185185185, "reported": 0.9985185185185185, "abs_diff": 0.0, "matches": true}}
+{"group": "Backbone_CNN", "seed": 0, "seconds": 17.1, "author_epoch": 37, "reported": 0.9585185185185185, "check": {"recorded": 0.9585185185185185, "reported": 0.9585185185185185, "abs_diff": 0.0, "matches": true}}
+{"group": "Backbone_CNN", "seed": 1, "seconds": 18.9, "author_epoch": 50, "reported": 0.9607407407407408, "check": {"recorded": 0.9607407407407408, "reported": 0.9607407407407408, "abs_diff": 0.0, "matches": true}}
+{"group": "Backbone_CNN", "seed": 2, "seconds": 17.5, "author_epoch": 37, "reported": 0.9614814814814815, "check": {"recorded": 0.9614814814814815, "reported": 0.9614814814814815, "abs_diff": 0.0, "matches": true}}
+{"group": "Backbone_CNN", "seed": 3, "seconds": 18.3, "author_epoch": 46, "reported": 0.9622222222222222, "check": {"recorded": 0.9622222222222222, "reported": 0.9622222222222222, "abs_diff": 0.0, "matches": true}}
+{"group": "Backbone_CNN", "seed": 4, "seconds": 18.5, "author_epoch": 46, "reported": 0.9622222222222222, "check": {"recorded": 0.9622222222222222, "reported": 0.9622222222222222, "abs_diff": 0.0, "matches": true}}
+{"group": "Backbone_CNN", "seed": 5, "seconds": 17.3, "author_epoch": 46, "reported": 0.9614814814814815, "check": {"recorded": 0.9614814814814815, "reported": 0.9614814814814815, "abs_diff": 0.0, "matches": true}}
+{"group": "Backbone_CNN", "seed": 6, "seconds": 18.2, "author_epoch": 47, "reported": 0.96, "check": {"recorded": 0.96, "reported": 0.96, "abs_diff": 0.0, "matches": true}}
+{"group": "Backbone_CNN", "seed": 7, "seconds": 17.4, "author_epoch": 32, "reported": 0.9592592592592593, "check": {"recorded": 0.9592592592592593, "reported": 0.9592592592592593, "abs_diff": 0.0, "matches": true}}
+{"group": "Backbone_CNN", "seed": 8, "seconds": 18.6, "author_epoch": 45, "reported": 0.9585185185185185, "check": {"recorded": 0.9585185185185185, "reported": 0.9585185185185185, "abs_diff": 0.0, "matches": true}}
+{"group": "Backbone_CNN", "seed": 9, "seconds": 17.6, "author_epoch": 46, "reported": 0.9592592592592593, "check": {"recorded": 0.9592592592592593, "reported": 0.9592592592592593, "abs_diff": 0.0, "matches": true}}
+2026-11-02T18:22:25Z end 53
+2026-11-02T18:22:25Z all done

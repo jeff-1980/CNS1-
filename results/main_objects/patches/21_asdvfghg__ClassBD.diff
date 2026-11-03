@@ -1,0 +1,110 @@
+diff --git a/audit_run21.py b/audit_run21.py
+new file mode 100755
+index 0000000..edc9a02
+--- /dev/null
++++ b/audit_run21.py
+@@ -0,0 +1,84 @@
++"""[audit] Driver for object 21 (registry: results/main_objects/registry/21_*.md).
++Runs the authors' train_local.main(config) (their __main__ config: PU N09_M07_F10, Gaussian noise -4 dB, 200 epochs,
++batch 128, lr 0.5) for the four ClassBD backbones, seeds 0-9 (replacing their 42). The per-epoch hook in train()
++records the authors' validation accuracy / summed loss and, isolated, test accuracy, cross-entropy and macro-F1 on the
++test loader main() builds (captured by wrapping the module's DataLoader name). The authors' inference() return value
++(macro-F1 of the best-validation checkpoint) is captured by wrapping inference. Run with cwd = a dir whose
++../ClassBD/data/Paderborn/N09_M07_F10 holds the .mat files. Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR."""
++import argparse, json, math, os, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, REPO)
++import torch, torch.nn.functional as F
++from sklearn.metrics import f1_score
++from audit.main.epoch_record import Recorder
++from audit.torch_utils import isolate
++import train_local as T
++
++NAME = {"bdcnn": "ClassBD-WDCNN", "bdresnet": "ClassBD-ResNet18", "bdmobile": "ClassBD-MobileNetV3", "bdtransformer": "ClassBD-Transformer"}
++p = argparse.ArgumentParser()
++p.add_argument("--groups", default="bdcnn,bdresnet,bdmobile,bdtransformer")
++p.add_argument("--seeds", default="0-9")
++p.add_argument("--epochs", type=int, default=200)
++a = p.parse_args()
++lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds),) * 2
++dev = torch.device("cuda")
++
++cap = {}
++_DL = T.DataLoader
++def DL(ds, **kw):
++    dl = _DL(ds, **kw)
++    if kw.get("shuffle") is False:   # main() builds exactly one unshuffled loader: the test loader
++        cap["test"] = dl
++    return dl
++T.DataLoader = DL
++_inf = T.inference
++def INF(dl, config):
++    cap["f1"] = _inf(dl, config)
++    return cap["f1"]
++T.inference = INF
++
++
++@torch.no_grad()
++def eval_test(net):
++    ys, outs = [], []
++    for x, y in cap["test"]:
++        outs.append(net(x.float().to(dev))[0].cpu()); ys.append(y.long().view(-1))
++    out, y = torch.cat(outs), torch.cat(ys)
++    pred = out.argmax(1)
++    return (pred == y).float().mean().item(), F.cross_entropy(out, y).item(), f1_score(y.numpy(), pred.numpy(), average="macro")
++
++
++for g in a.groups.split(","):
++    for s in range(lo, hi + 1):
++        config = {'seed': s, 'batch_size': 128, 'epochs': a.epochs, 'lr': 0.5, 'add_noise': 'Gaussian', 'snr': -4,
++                  'dataset': 'Paderborn', 'chosen_dataset': 'N09_M07_F10', 'chosen_model': g, 'class_num': 14}
++        rec = Recorder(obj="21", group=f"{NAME[g]}|PU N09M07F10 -4dB", seed=s, select_split="val", report_split="test",
++                       note=f"epochs={a.epochs}; val loss = authors' summed batch loss (UW total); author reports macro-F1 (test_f1 field)")
++        rec.d["test_f1"] = {}
++        cap.clear()
++        st = {"max": 0.0}
++
++        def hook(epoch, net, val_acc, val_loss):
++            st.setdefault("t_first", time.time())
++            rec.log(epoch, "val", float(val_acc), float(val_loss))
++            with isolate([net], dev):
++                net.eval()
++                acc, loss, f1 = eval_test(net)
++            rec.log(epoch, "test", acc, loss)
++            rec.d["test_f1"][str(epoch)] = f1
++            if val_acc > st["max"]:          # authors' checkpoint rule (strict >, first max)
++                st["max"] = val_acc
++                rec.author_pick(epoch)
++
++        T.AUDIT_HOOK = hook
++        t0 = time.time()
++        T.main(config)
++        T.AUDIT_HOOK = None
++        rec.finish(None)
++        f1_at = rec.d["test_f1"][str(rec.d["author_epoch"])]
++        rep = float(cap["f1"])
++        rec.d["author_reported_f1"] = rep
++        rec.d["author_check_f1"] = dict(recorded=f1_at, reported=rep, abs_diff=abs(f1_at - rep), matches=math.isclose(f1_at, rep, abs_tol=1e-6))
++        rec._dump()
++        print(json.dumps(dict(group=g, seed=s, seconds=round(time.time() - t0, 1), first_epoch_done=round(st["t_first"] - t0, 1), author_epoch=rec.d["author_epoch"],
++                              check_f1=rec.d["author_check_f1"])), flush=True)
+diff --git a/train_local.py b/train_local.py
+index c88c7e6..16bbb5a 100644
+--- a/train_local.py
++++ b/train_local.py
+@@ -21,6 +21,7 @@ from utils.DatasetLoader import CustomTensorDataset
+ 
+ 
+ use_gpu = torch.cuda.is_available()
++AUDIT_HOOK = None  # [audit] per-epoch hook, see audit_run21.py
+ 
+ def UW(losses):
+     loss_scale = nn.Parameter(torch.tensor([-0.5] * 3)).cuda()
+@@ -118,6 +119,7 @@ def train(config, dataloader):
+ 
+             if phase == 'validation':
+                 valid_acc.append(acc)
++                if AUDIT_HOOK: AUDIT_HOOK(e + 1, net, acc, loss_total)  # [audit]
+                 if acc > max_acc:
+                     max_acc = acc
+                     if not os.path.exists("Models"):

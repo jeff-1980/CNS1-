@@ -1,0 +1,344 @@
+diff --git a/audit_run73.py b/audit_run73.py
+new file mode 100755
+index 0000000..d117f20
+--- /dev/null
++++ b/audit_run73.py
+@@ -0,0 +1,79 @@
++"""[audit] Driver for object 73 (registry: results/main_objects/registry/73_*.md).
++README commands (1 shot, 5-way, FFT input, 1-D model), 10 unseeded repeats (the code seeds only the file order):
++  Meta-transfer  : main_meta_transfer.py -s 1   (code default 5 episodes, test every 5 -> one evaluation)
++  Feature-transfer: main_finetune.py -s 1 -u 0 ; Full-finetune: main_finetune.py -s 1 -u 4 (both use the encoder
++                    pretrained in the same repeat: the authors' script caches it and the -u 4 run loads it)
++  Direct         : mian_direct.py -s 1
++Each script runs as __main__ (runpy). The hooks record their test accuracy at each evaluation (meta: per test point;
++finetune / direct: per fine-tune iteration, with an isolated test CE). Reported = their logged 'final accuracy'
++(meta: last test accuracy; finetune / direct: mean of the last 10 iterations).
++Run with cwd = repo (tempdata/ cache and result dirs are written there). Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR."""
++import argparse, glob, json, math, os, runpy, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, REPO)
++import numpy as np, torch, torch.nn.functional as F
++from audit.main.epoch_record import Recorder
++from audit.torch_utils import isolate
++
++p = argparse.ArgumentParser()
++p.add_argument("--repeats", default="0-9")
++p.add_argument("--groups", default="meta,ft,direct")
++p.add_argument("--pretrain", type=int, default=None)   # smoke only
++a = p.parse_args()
++lo, hi = map(int, a.repeats.split("-")) if "-" in a.repeats else (int(a.repeats),) * 2
++dev = torch.device("cuda")
++TASK = "PU N09M07F10 artificial->natural 5-way 1-shot"
++
++
++def run(script, argv, group, r, rule):
++    rec = Recorder(obj="73", group=f"{group}|{TASK}", seed=r, select_split=None, report_split="test",
++                   note=f"unseeded repeat; epoch = {'meta episode' if 'meta' in script else 'fine-tune iteration'}; reported = {rule}")
++    st = {"accs": []}
++
++    def hook(ep, acc, ctx):
++        loss = float("nan")
++        if ctx is not None:
++            enc, clf, loader = ctx
++            with isolate([enc, clf], dev):
++                enc.eval(); clf.eval(); tot = n = 0
++                with torch.no_grad():
++                    for x, y in loader:
++                        out = clf(enc(x.cuda().float())); y = y.cuda().long()
++                        tot += F.cross_entropy(out, y, reduction="sum").item(); n += y.numel()
++                loss = tot / n
++        rec.log(ep, "test", float(acc), loss)
++        st["accs"].append(float(acc)); rec.d["last"] = ep
++
++    final = {}
++    sys.argv = [script] + argv
++    t0 = time.time()
++    runpy.run_path(os.path.join(REPO, script), run_name="__main__",
++                   init_globals=dict(AUDIT_HOOK=hook, AUDIT_FINAL=lambda v: final.update(v=float(v))))
++    rec.author_pick(rec.d["last"])
++    if "meta" in script:
++        rec.finish(final["v"])
++    else:   # their figure is the mean of the last 10 iterations, not one epoch
++        rec.finish(None)
++        rec_mean = float(np.mean(st["accs"][-10:]))
++        rec.d["author_rule"] = "mean of the last 10 fine-tune iterations"
++        rec.d["author_reported"] = final["v"]
++        rec.d["author_check_mean10"] = dict(recorded=rec_mean, reported=final["v"], abs_diff=abs(rec_mean - final["v"]),
++                                            matches=math.isclose(rec_mean, final["v"], abs_tol=1e-9))
++        rec._dump()
++    print(json.dumps(dict(group=group, repeat=r, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                          reported=final["v"], check=rec.d.get("author_check") or rec.d.get("author_check_mean10"))), flush=True)
++
++
++for r in range(lo, hi + 1):
++    if "meta" in a.groups:
++        run("main_meta_transfer.py", ["-s", "1"], "Meta-transfer", r, "last test accuracy")
++    if "ft" in a.groups:
++        # their pretrained-encoder cache ('.\\result_finetune' + '/models_save/episode<E>.pkl' on Linux) from the
++        # previous repeat -> removed so each repeat pretrains anew (within a repeat, -u 4 reuses -u 0's encoder as in their workflow)
++        for f in glob.glob(os.path.join(REPO, ".\\result_finetune", "models_save", "*.pkl")):
++            os.remove(f)
++        extra = (["-e", str(a.pretrain)] if a.pretrain else [])
++        run("main_finetune.py", ["-s", "1", "-u", "0"] + extra, "Feature-transfer", r, "mean of last 10 iterations")
++        run("main_finetune.py", ["-s", "1", "-u", "4"] + extra, "Full-finetune", r, "mean of last 10 iterations")
++    if "direct" in a.groups:
++        run("mian_direct.py", ["-s", "1"], "Direct", r, "mean of last 10 iterations")
+diff --git a/main_finetune.py b/main_finetune.py
+index b5e0824..9de9e2d 100644
+--- a/main_finetune.py
++++ b/main_finetune.py
+@@ -6,13 +6,14 @@ import numpy as np
+ import os
+ import utlis.finetune_generator as tg
+ import argparse
++AUDIT_HOOK = globals().get('AUDIT_HOOK'); AUDIT_FINAL = globals().get('AUDIT_FINAL')  # [audit]
+ import pickle
+ from utlis.logger import setlogger
+ import logging
+ import matplotlib
+-matplotlib.use('TkAgg')
++matplotlib.use('Agg')  # [audit] was TkAgg (headless)
+ import matplotlib.pyplot as plt
+-from collections import Iterable
++from collections.abc import Iterable  # [audit] py>=3.10
+ 
+ parser = argparse.ArgumentParser(description="fine-tuning")
+ parser.add_argument("-f", "--feature_dim", type=int, default=64)
+@@ -138,6 +139,7 @@ def mytest(metatest_character_folders, feature_encoder):
+             test_accuracy = test_accuracy / len(test_dataloader.dataset)
+             logging.info("test accuracy:" + str(test_accuracy))
+             accuracys.append(test_accuracy)
++            if AUDIT_HOOK: AUDIT_HOOK(i + 1, test_accuracy, (feature_encoder, classifier_test, test_dataloader))  # [audit]
+     plt.figure()
+     plt.plot(accuracys)
+     plt.savefig(path + '/test accuracy.jpg')
+@@ -151,6 +153,7 @@ def mytest(metatest_character_folders, feature_encoder):
+     pickle.dump(accuracys, output)
+     output.close()
+     logging.info('final accuracy:' + str(np.mean(accuracys[-10:])))
++    if AUDIT_FINAL: AUDIT_FINAL(np.mean(accuracys[-10:]))  # [audit]
+     return accuracys
+ 
+ 
+diff --git a/main_meta_transfer.py b/main_meta_transfer.py
+index fe4e94e..4c7c800 100644
+--- a/main_meta_transfer.py
++++ b/main_meta_transfer.py
+@@ -7,11 +7,12 @@ import numpy as np
+ import os
+ import utlis.transfer_generator as tg
+ import argparse
++AUDIT_HOOK = globals().get('AUDIT_HOOK'); AUDIT_FINAL = globals().get('AUDIT_FINAL')  # [audit]
+ import pickle
+ from utlis.logger import setlogger
+ import logging
+ import matplotlib
+-matplotlib.use('TkAgg')
++matplotlib.use('Agg')  # [audit] was TkAgg (headless)
+ import matplotlib.pyplot as plt
+ 
+ parser = argparse.ArgumentParser(description="meta transfer learning")
+@@ -118,8 +119,8 @@ def main():
+                                               dt=DATATYPE, mt=MODELTYPE)
+ 
+         # sample datas
+-        samples, sample_labels = sample_dataloader.__iter__().next()
+-        batches, batch_labels = batch_dataloader.__iter__().next()
++        samples, sample_labels = next(sample_dataloader.__iter__())
++        batches, batch_labels = next(batch_dataloader.__iter__())
+ 
+         # calculate features
+         sample_features_o = feature_encoder(Variable(samples).cuda(GPU).float())  # 5x64*5*5
+@@ -182,8 +183,8 @@ def main():
+                 test_dataloader = tg.get_data_loader(task, num_per_class=SAMPLE_NUM_PER_CLASS, split="test",
+                                                      shuffle=True, dt=DATATYPE, mt=MODELTYPE)
+ 
+-                sample_images, sample_labels = sample_dataloader.__iter__().next()
+-                test_images, test_labels = test_dataloader.__iter__().next()
++                sample_images, sample_labels = next(sample_dataloader.__iter__())
++                test_images, test_labels = next(test_dataloader.__iter__())
+ 
+                 # calculate features
+                 sample_features = feature_encoder(Variable(sample_images).cuda(GPU).float())  # 5x64
+@@ -223,6 +224,7 @@ def main():
+             test_accuracy = total_rewards / 1.0 / CLASS_NUM / SAMPLE_NUM_PER_CLASS / TEST_EPISODE
+ 
+             logging.info("test accuracy:" + str(test_accuracy))
++            if AUDIT_HOOK: AUDIT_HOOK(episode + 1, test_accuracy, None)  # [audit]
+             accuracys.append(test_accuracy)
+             aepochs.append(episode)
+ 
+@@ -235,6 +237,7 @@ def main():
+     torch.save(feature_encoder.state_dict(), os.path.join(path, "feature_encoder_final.pkl"))
+     torch.save(relation_network.state_dict(), os.path.join(path, "relation_network_final.pkl"))
+     logging.info("final accuracy :" + str(test_accuracy))
++    if AUDIT_FINAL: AUDIT_FINAL(test_accuracy)  # [audit]
+     plt.figure()
+     plt.suptitle(path1)
+     plt.subplot(2, 1, 1)
+diff --git a/mian_direct.py b/mian_direct.py
+index e3c7665..a951c3d 100644
+--- a/mian_direct.py
++++ b/mian_direct.py
+@@ -6,12 +6,13 @@ import numpy as np
+ import os
+ import utlis.finetune_generator as tg
+ import argparse
++AUDIT_HOOK = globals().get('AUDIT_HOOK'); AUDIT_FINAL = globals().get('AUDIT_FINAL')  # [audit]
+ import pickle
+ from utlis.logger import setlogger
+ import logging
+ import matplotlib
+ 
+-matplotlib.use('TkAgg')
++matplotlib.use('Agg')  # [audit] was TkAgg (headless)
+ import matplotlib.pyplot as plt
+ 
+ parser = argparse.ArgumentParser(description="direct learning")
+@@ -84,6 +85,7 @@ def mytest(metatest_character_folders, feature_encoder):
+             test_accuracy = test_accuracy / len(test_dataloader.dataset)
+             logging.info("test accuracy:" + str(test_accuracy))
+             accuracys.append(test_accuracy)
++            if AUDIT_HOOK: AUDIT_HOOK(i + 1, test_accuracy, (feature_encoder, classifier_test, test_dataloader))  # [audit]
+     plt.figure()
+     plt.plot(accuracys)
+     plt.savefig(path + '/test accuracy.jpg')
+@@ -97,6 +99,7 @@ def mytest(metatest_character_folders, feature_encoder):
+     pickle.dump(accuracys, output)
+     output.close()
+     logging.info('final accuracy:' + str(np.mean(accuracys[-10:])))
++    if AUDIT_FINAL: AUDIT_FINAL(np.mean(accuracys[-10:]))  # [audit]
+     return accuracys
+ 
+ 
+diff --git a/utlis/finetune_generator.py b/utlis/finetune_generator.py
+index a17d327..2d22146 100644
+--- a/utlis/finetune_generator.py
++++ b/utlis/finetune_generator.py
+@@ -25,7 +25,7 @@ class Rotate(object):
+ 
+ 
+ def pu_folders(CLASS_NUM):
+-    root = "D:\Study\Data\公开\轴承-PU"
++    root = "/home/jeffwork/audit_ext/work73/pu"  # [audit] was D:\Study\Data\公开\轴承-PU
+     labels = ['KA01', 'KA03', 'KA05', 'KA07', 'KA08', 'KI01', 'KI03', 'KI07'] + ['K001'] + ['KA04', 'KB23',
+                                                                                             'KB27', 'KI04']
+     random.seed(1)
+@@ -41,14 +41,14 @@ def pu_folders(CLASS_NUM):
+     for c in folds[:-CLASS_NUM]:
+ 
+         name0 = 'N09_M07_F10_'
+-        name1 = c.split('\\')[-1] + '_'
++        name1 = c.split(os.sep)[-1] + '_'
+         temps = [os.path.join(c, name0 + name1 + str(x)) for x in range(1, 21)]
+         samples[c] = random.sample(temps, len(temps))
+         part = samples[c]
+ 
+         for i in range(part.__len__()):
+             temp = part[i]
+-            data0 = loadmat(temp)[temp.split('\\')[-1]][0][0][2][0][6][2][0]
++            data0 = loadmat(temp)[temp.split(os.sep)[-1]][0][0][2][0][6][2][0]
+             data1 = data0[:data0.size // 2048 * 2048].reshape(-1, 2048)
+             if i == 0:
+                 file = data1
+@@ -61,7 +61,7 @@ def pu_folders(CLASS_NUM):
+     for c in folds[-CLASS_NUM:]:
+ 
+         name0 = 'N09_M07_F10_'
+-        name1 = c.split('\\')[-1] + '_'
++        name1 = c.split(os.sep)[-1] + '_'
+         temps = [os.path.join(c, name0 + name1 + str(x)) for x in range(1, 21)]
+         samples[c] = random.sample(temps, len(temps))
+         part = samples[c]
+@@ -70,7 +70,7 @@ def pu_folders(CLASS_NUM):
+ 
+         for i in range(part.__len__()):
+             temp = part[i]
+-            data0 = loadmat(temp)[temp.split('\\')[-1]][0][0][2][0][6][2][0]
++            data0 = loadmat(temp)[temp.split(os.sep)[-1]][0][0][2][0][6][2][0]
+             data1 = data0[:data0.size // 2048 * 2048].reshape(-1, 2048)
+             if i == 0:
+                 file = data1
+@@ -87,7 +87,7 @@ def pu_folders(CLASS_NUM):
+ 
+ 
+ def get_class(sample):
+-    return sample.split('\\')[-2]
++    return sample.split(os.sep)[-2]
+ 
+ 
+ class trainTask(object):
+@@ -200,14 +200,14 @@ class ClassBalancedSampler(Sampler):
+ 
+ def get_train_loader(metatrain_character_folders, batchsize, class_num):
+     dataset = pu_train(metatrain_character_folders, class_num)
+-    loader = DataLoader(dataset, batch_size=batchsize, shuffle=True)
++    loader = DataLoader(dataset, batch_size=batchsize, shuffle=True, generator=torch.Generator(device="cuda"))
+     return loader
+ 
+ 
+ def get_test_loader(task, num_per_class=1, split='support', num_classes=1):
+     dataset = pu_test(task, split)
+     if split == 'support':
+-        loader = DataLoader(dataset, batch_size=num_classes, shuffle=True)
++        loader = DataLoader(dataset, batch_size=num_classes, shuffle=True, generator=torch.Generator(device="cuda"))
+     elif split == 'test':
+-        loader = DataLoader(dataset, batch_size=num_per_class, shuffle=True)
++        loader = DataLoader(dataset, batch_size=num_per_class, shuffle=True, generator=torch.Generator(device="cuda"))
+     return loader
+diff --git a/utlis/transfer_generator.py b/utlis/transfer_generator.py
+index a25e377..448b6cb 100644
+--- a/utlis/transfer_generator.py
++++ b/utlis/transfer_generator.py
+@@ -26,7 +26,7 @@ class Rotate(object):
+ 
+ 
+ def pu_folders(CLASS_NUM):
+-    root = "D:\Study\Data\公开\轴承-PU"
++    root = "/home/jeffwork/audit_ext/work73/pu"  # [audit] was D:\Study\Data\公开\轴承-PU
+     labels = ['KA01', 'KA03', 'KA05', 'KA07', 'KA08', 'KI01', 'KI03', 'KI07'] + ['K001'] + ['KA04', 'KB23',
+                                                                                             'KB27', 'KI04']
+     random.seed(1)
+@@ -42,14 +42,14 @@ def pu_folders(CLASS_NUM):
+     for c in folds[:-CLASS_NUM]:
+ 
+         name0 = 'N09_M07_F10_'
+-        name1 = c.split('\\')[-1] + '_'
++        name1 = c.split(os.sep)[-1] + '_'
+         temps = [os.path.join(c, name0 + name1 + str(x)) for x in range(1, 21)]
+         samples[c] = random.sample(temps, len(temps))
+         part = samples[c]
+ 
+         for i in range(part.__len__()):
+             temp = part[i]
+-            data0 = loadmat(temp)[temp.split('\\')[-1]][0][0][2][0][6][2][0]
++            data0 = loadmat(temp)[temp.split(os.sep)[-1]][0][0][2][0][6][2][0]
+             data1 = data0[:data0.size // 2048 * 2048].reshape(-1, 2048)
+             if i == 0:
+                 file = data1
+@@ -62,14 +62,14 @@ def pu_folders(CLASS_NUM):
+     for c in folds[-CLASS_NUM:]:
+ 
+         name0 = 'N09_M07_F10_'
+-        name1 = c.split('\\')[-1] + '_'
++        name1 = c.split(os.sep)[-1] + '_'
+         temps = [os.path.join(c, name0 + name1 + str(x)) for x in range(1, 21)]
+         samples[c] = random.sample(temps, len(temps))
+         part = samples[c]
+ 
+         for i in range(part.__len__()):
+             temp = part[i]
+-            data0 = loadmat(temp)[temp.split('\\')[-1]][0][0][2][0][6][2][0]
++            data0 = loadmat(temp)[temp.split(os.sep)[-1]][0][0][2][0][6][2][0]
+             data1 = data0[:data0.size // 2048 * 2048].reshape(-1, 2048)
+             if i == 0:
+                 file = data1
+@@ -86,7 +86,7 @@ def pu_folders(CLASS_NUM):
+ 
+ 
+ def get_class(sample):
+-    return sample.split('\\')[-2]
++    return sample.split(os.sep)[-2]
+ 
+ 
+ class puTask(object):

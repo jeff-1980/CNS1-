@@ -1,0 +1,111 @@
+diff --git a/audit_run74.py b/audit_run74.py
+new file mode 100755
+index 0000000..5cf4102
+--- /dev/null
++++ b/audit_run74.py
+@@ -0,0 +1,40 @@
++"""[audit] Driver for object 74 (registry: results/main_objects/registry/74_*.md).
++Runs the authors' train.py as __main__ (runpy) with the README command '-s 1 -b 15 -e 100 -g 0' (5-way 1-shot,
++N09_M07_F10 -> N15_M01_F10), seeds 0..9 replacing their set_seed(3). The hook records their test accuracy at each
++evaluation (every 5 episodes, 1000 test episodes); reported = their 'Final average accuracy' (mean of the test
++accuracies at episodes 85, 90, 95, 100). Run with cwd = repo (./data tree). Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR."""
++import argparse, json, math, os, runpy, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, REPO)
++import numpy as np
++from audit.main.epoch_record import Recorder
++
++p = argparse.ArgumentParser()
++p.add_argument("--seeds", default="0-9")
++p.add_argument("--episodes", type=int, default=100)
++a = p.parse_args()
++lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds),) * 2
++
++for s in range(lo, hi + 1):
++    rec = Recorder(obj="74", group="FDR-RelationNet|PU N09M07F10->N15M01F10 5-way 1-shot", seed=s, select_split=None,
++                   report_split="test", note="epoch = training episode (test every 5); reported = mean of the test accuracies at episodes 85-100")
++    st = {"pts": {}}
++
++    def hook(ep, acc):
++        rec.log(ep, "test", float(acc), float("nan"))
++        st["pts"][ep] = float(acc); rec.d["last"] = ep
++
++    final = {}
++    sys.argv = ["train.py", "-s", "1", "-b", "15", "-e", str(a.episodes), "-g", "0"]
++    t0 = time.time()
++    runpy.run_path(os.path.join(REPO, "train.py"), run_name="__main__",
++                   init_globals=dict(AUDIT_HOOK=hook, AUDIT_FINAL=lambda v: final.update(v=float(v)), AUDIT_SEED=s))
++    rec.author_pick(rec.d["last"])
++    rec.finish(None)
++    mine = float(np.sum([v for k, v in st["pts"].items() if k > 80]) / 4)     # their finalsum / 4
++    rec.d["author_rule"] = "mean of the test accuracies at episodes > 80 (finalsum / 4)"
++    rec.d["author_reported"] = final["v"]
++    rec.d["author_check_mean4"] = dict(recorded=mine, reported=final["v"], abs_diff=abs(mine - final["v"]),
++                                       matches=math.isclose(mine, final["v"], abs_tol=1e-9))
++    rec._dump()
++    print(json.dumps(dict(seed=s, seconds=round(time.time() - t0, 1), reported=final["v"], check=rec.d["author_check_mean4"])), flush=True)
+diff --git a/train.py b/train.py
+index c5c1855..1c93d8c 100644
+--- a/train.py
++++ b/train.py
+@@ -14,6 +14,7 @@ import pickle
+ import matplotlib.pyplot as plt
+ import argparse
+ import logging
++AUDIT_HOOK = globals().get('AUDIT_HOOK'); AUDIT_FINAL = globals().get('AUDIT_FINAL'); AUDIT_SEED = globals().get('AUDIT_SEED')  # [audit]
+ 
+ from src.config import Config
+ from src.models.encoders import CNNEncoder1d, CNNEncoder2d
+@@ -77,7 +78,7 @@ def main():
+     )
+     
+     # Set random seed
+-    set_seed(3)
++    set_seed(3 if AUDIT_SEED is None else AUDIT_SEED)  # [audit] seeds 0..9
+     torch.set_default_tensor_type('torch.cuda.FloatTensor')
+     
+     # Setup logging
+@@ -165,11 +166,11 @@ def main():
+                                          shuffle=False, dt=config.datatype, mt=config.modeltype, snr=config.snr)
+         
+         # Get samples
+-        samples, sample_labels = sample_dataloader.__iter__().next()
+-        samples_anchor, sample_labels_anchor = sample_dataloader_anchor.__iter__().next()
+-        samples_positive, sample_labels_positive = sample_dataloader_positive.__iter__().next()
+-        samples_negative, sample_labels_negative = sample_dataloader_negative.__iter__().next()
+-        batches, batch_labels = batch_dataloader.__iter__().next()
++        samples, sample_labels = next(sample_dataloader.__iter__())
++        samples_anchor, sample_labels_anchor = next(sample_dataloader_anchor.__iter__())
++        samples_positive, sample_labels_positive = next(sample_dataloader_positive.__iter__())
++        samples_negative, sample_labels_negative = next(sample_dataloader_negative.__iter__())
++        batches, batch_labels = next(batch_dataloader.__iter__())
+         
+         # Calculate features
+         sample_features_o = feature_encoder(Variable(samples).cuda(config.gpu).float())[0]
+@@ -240,8 +241,8 @@ def main():
+                 test_dataloader = get_data_loader(test_task, num_per_class=config.sample_num_per_class, 
+                                                 split="test", shuffle=True, dt=config.datatype, mt=config.modeltype, snr=config.snr)
+                 
+-                sample_images, sample_labels = sample_dataloader.__iter__().next()
+-                test_images, test_labels = test_dataloader.__iter__().next()
++                sample_images, sample_labels = next(sample_dataloader.__iter__())
++                test_images, test_labels = next(test_dataloader.__iter__())
+                 
+                 # Calculate features
+                 sample_features = feature_encoder(Variable(sample_images).cuda(config.gpu).float())[0]
+@@ -279,6 +280,7 @@ def main():
+                 finalsum += test_accuracy
+             
+             accuracys.append(test_accuracy)
++            if AUDIT_HOOK: AUDIT_HOOK(episode + 1, test_accuracy)  # [audit]
+             aepochs.append(episode)
+             
+             # Save best model
+@@ -294,6 +296,7 @@ def main():
+     
+     logging.info(f"Final accuracy: {test_accuracy:.4f}")
+     logging.info(f"Final average accuracy: {finalsum/4:.4f}")
++    if AUDIT_FINAL: AUDIT_FINAL(finalsum / 4)  # [audit]
+     
+     # Plot results
+     plt.figure(figsize=(12, 8))

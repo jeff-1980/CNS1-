@@ -1,0 +1,63 @@
+diff --git a/HETPM_open/audit_run11.py b/HETPM_open/audit_run11.py
+new file mode 100644
+index 0000000..42e664b
+--- /dev/null
++++ b/HETPM_open/audit_run11.py
+@@ -0,0 +1,24 @@
++"""[audit] Driver for object 11 (registry: results/main_objects/registry/11_*.md).
++Same calls as HETPM_auto.py for one task (JNU 0 -> 1), author defaults, 10 unseeded repeats.
++Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR, AUDIT_DATA_DIR."""
++import argparse, json, os, sys, time
++sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
++p = argparse.ArgumentParser()
++p.add_argument("--repeats", default="0-9")
++p.add_argument("--epochs", type=int, default=None)
++a = p.parse_args()
++sys.argv = [sys.argv[0], "--data_name", "JNUB"] + (["--max_epoch", str(a.epochs)] if a.epochs else [])
++from HETPM_auto import parse_args
++from utils.train_util_HETPM import train_utils_auto
++from audit.main.epoch_record import Recorder
++args = parse_args()
++lo, hi = map(int, a.repeats.split("-")) if "-" in a.repeats else (int(a.repeats),) * 2
++for r in range(lo, hi + 1):
++    t0 = time.time()
++    trainer = train_utils_auto(args)
++    trainer.setup([[0], [1]])
++    trainer.audit_rec = Recorder(obj="11", group="HETPM|JNU 0->1", seed=r, select_split=None, report_split="test",
++                                 note=f"unseeded repeat {r}; F2 head; epochs={args.max_epoch}")
++    f1, f2, avg = trainer.train([[0], [1]], r)
++    print(json.dumps(dict(repeat=r, epochs=args.max_epoch, seconds=round(time.time() - t0, 1), last_F1=f1, last_F2=f2, last_Avg=avg,
++                          check=trainer.audit_rec.d.get("author_check"))), flush=True)
+diff --git a/HETPM_open/utils/train_util_HETPM.py b/HETPM_open/utils/train_util_HETPM.py
+index 264f0c1..34b1df7 100644
+--- a/HETPM_open/utils/train_util_HETPM.py
++++ b/HETPM_open/utils/train_util_HETPM.py
+@@ -74,6 +74,9 @@ class train_utils_auto(object):
+             data_direction = 'F:\故障诊断数据集\PT2TL50KHZ\故障轴承'
+         if "HUST_bearings" in args.data_name:
+             data_direction = 'F:\故障诊断数据集\HUST_bearing_dataset\Raw_data_csv'
++        import os as _os  # [audit]
++        if _os.environ.get("AUDIT_DATA_DIR"):  # [audit] README step 2: point data_direction to the local dataset
++            data_direction = _os.environ["AUDIT_DATA_DIR"]
+ 
+ 
+ 
+@@ -671,6 +674,8 @@ class train_utils_auto(object):
+ 
+                 #
+                 if phase == 'target_val':
++                    if getattr(self, "audit_rec", None) is not None:  # [audit] author's own target F2 acc / loss
++                        self.audit_rec.log(epoch + 1, "test", epoch_acc_F2 / 100.0, epoch_loss)
+ 
+                     if epoch == args.max_epoch - 1:
+                         last_acc_F1 = epoch_acc_F1
+@@ -1264,5 +1269,8 @@ class train_utils_auto(object):
+         plt.show()
+         #
+ 
++        if getattr(self, "audit_rec", None) is not None:  # [audit] author reports last-epoch F2
++            self.audit_rec.author_pick(args.max_epoch)
++            self.audit_rec.finish(last_acc_F2 / 100.0)
+ 
+         return last_acc_F1, last_acc_F2, last_acc_Avg
+\ No newline at end of file

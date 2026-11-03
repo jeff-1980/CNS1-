@@ -1,0 +1,25 @@
+{
+ "draw_order": 26,
+ "pages": 12,
+ "links_found": [
+  "https://github.com/aresmiki/FastCSDL"
+ ],
+ "code": {
+  "status": "ok",
+  "repos": [
+   {
+    "url": "https://github.com/aresmiki/FastCSDL",
+    "status": "ok",
+    "commit": "f0ae0f3183e90e64a9c7cccf678b06223fca9d6f",
+    "dir": "/mnt/d/audit_data/ai_coding_repos/026/FastCSDL"
+   }
+  ],
+  "n_files_kept": 10,
+  "n_files_total": 10,
+  "truncated": false
+ },
+ "paper_sha256": "9a918fd186fe3b53181e8ca7243baa81106e9bfbe2da19a847c1a43f7a7e593f",
+ "code_sha256": "356303e8a1214c383d264a73adab0e66e79062807b1c9170a8a86ab6d3ba2974",
+ "paper_chars": 64423,
+ "code_chars": 20437
+}

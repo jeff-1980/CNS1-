@@ -1,0 +1,86 @@
+diff --git a/audit_kt58.py b/audit_kt58.py
+new file mode 100644
+index 0000000..7d0cf40
+--- /dev/null
++++ b/audit_kt58.py
+@@ -0,0 +1,73 @@
++"""[audit] Driver for object 58 (registry: results/main_objects/registry/58_*.md).
++The authors' only entry point is code/Syn2real_CWRU.ipynb (Colab, TF 1.x). This driver executes its code cells
++verbatim in one namespace: cell 0 without the Colab magics (%tensorflow_version, !rm, !wget, !md5sum; the four .npy
++files are read from the repo's data/preprocessed/ instead of being re-downloaded), cells 1-2 (model / run()) with ONE
++added line after their per-epoch test evaluation (the audit hook), and for each group the data-preparation part of
++its cell (everything before `res = []`) followed by their own seed loop for i in range(10) (args.seed = i; run()).
++Groups: Source-only (cell 4), DANN (cell 7), CDAN (cell 9), CDAN+mixup (cell 11, proposed).
++The hook records their test accuracy and balanced accuracy (the paper's metric) and test loss each epoch.
++Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR. Run with cwd = data/preprocessed."""
++import argparse, json, os, re, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++from audit.main.epoch_record import Recorder
++from audit.main.kt_split import Splitter, log_halves, acc as kt_acc, balanced as kt_bal  # [audit kt]
++
++CELLS = {"Source-only": 4, "DANN": 7, "CDAN": 9, "CDAN-mixup": 11}
++p = argparse.ArgumentParser()
++p.add_argument("--groups", default="CDAN-mixup,CDAN,DANN,Source-only")
++p.add_argument("--seeds", default="0-9")
++p.add_argument("--epochs", type=int, default=None)
++a = p.parse_args()
++lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds),) * 2
++
++nb = json.load(open(os.path.join(REPO, "code", "Syn2real_CWRU.ipynb"), encoding="utf-8"))
++src = lambda i: "".join(nb["cells"][i]["source"])
++cell0 = "\n".join(l for l in src(0).splitlines() if not l.lstrip().startswith(("%", "!")))
++HOOK_AT = "            test_loss_, acc_, pred_, ground_truth_ = sess.run([test_loss, acc_tgt, pred, ground_truth])\n"
++cell2 = src(2)
++assert cell2.count(HOOK_AT) == 1
++cell2 = cell2.replace(HOOK_AT, HOOK_AT + "            if AUDIT_HOOK: AUDIT_HOOK(ep + 1, test_loss_, acc_, pred_, ground_truth_)  # [audit]\n")
++with open(os.path.join(REPO, "audit_syn2real_cells.py"), "w") as f:   # the exact code executed, kept for the patch diff
++    f.write("# [audit] code cells 0-2 of code/Syn2real_CWRU.ipynb (Colab magics removed, one hook line added)\n")
++    f.write(cell0 + "\n\n" + src(1) + "\n\n" + cell2 + "\n")
++
++
++def balanced(pred, y):
++    import numpy as np
++    return float(np.mean([np.mean(pred[y == c] == c) for c in range(4)]))
++
++
++# one namespace for the whole session, as in the notebook (flip_gradient registers gradients by a running counter)
++ns = {"__name__": "syn2real", "AUDIT_HOOK": None}
++exec(compile(open(os.path.join(REPO, "audit_syn2real_cells.py")).read(), "audit_syn2real_cells.py", "exec"), ns)
++
++for g in a.groups.split(","):
++    data_part = src(CELLS[g]).split("res = []")[0]
++    exec(compile(data_part, f"cell{CELLS[g]}", "exec"), ns)
++    if "class args" not in data_part:          # cells 6/11 define args after `res = []`
++        args_part = src(CELLS[g]).split("res_im = []")[1].split("for i in range(10)")[0]
++        exec(compile(args_part, f"cell{CELLS[g]}-args", "exec"), ns)
++    if a.epochs:
++        ns["args"].num_epoch = a.epochs
++    for s in range(lo, hi + 1):
++        rec = Recorder(obj="58", group=f"{g}|Syn->Real CWRU 4-class", seed=s, select_split=None, report_split="test",
++                       note="acc = balanced accuracy (paper metric) on the real-CWRU target test set; plain accuracy in test_plain_acc")
++        rec.d["test_plain_acc"] = {}
++        st = {"last": None}
++
++        sp = Splitter()
++
++        def hook(ep, loss, acc, pred, y):
++            log_halves(rec, ep, pred, y, sp, metric=lambda p, t, m=None: kt_bal(p, t, m, range(4)), loss=float(loss))
++            assert abs(rec.d["epochs"][str(ep)]["test"]["acc"] - balanced(pred, y)) < 1e-9
++            rec.d["test_plain_acc"][str(ep)] = float(acc)
++            st["last"] = ep
++
++        ns["AUDIT_HOOK"] = hook
++        ns["args"].seed = s                      # their loop: args.seed = i; run()
++        t0 = time.time()
++        acc_b, acc_i = ns["run"]()
++        rec.author_pick(st["last"])              # they report the last epoch
++        rec.finish(float(acc_b))
++        print(json.dumps(dict(group=g, seed=s, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                              reported=float(acc_b), plain_acc=float(acc_i), check=rec.d["author_check"])), flush=True)
++import argparse, json, os, re, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++from audit.main.epoch_record import Recorder
++from audit.main.kt_split import Splitter, log_halves, acc as kt_acc, balanced as kt_bal  # [audit kt]
++
++CELLS = {"Source-only": 4, "DANN": 7, "CDAN": 9, "CDAN-mixup": 11}
++p = argparse.ArgumentParser()

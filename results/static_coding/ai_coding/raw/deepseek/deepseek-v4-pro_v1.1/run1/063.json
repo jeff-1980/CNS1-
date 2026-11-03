@@ -1,0 +1,44 @@
+{
+ "draw_order": 63,
+ "requested_model": "deepseek-v4-pro",
+ "run": 1,
+ "temperature": 0,
+ "called_at_utc": "2026-11-02T05:35:58Z",
+ "seconds": 28.4,
+ "prompt_sha256": "e3ef4228189bc7edd58bd00931d0047012893de50d7b4418ac01c6c5bb564aee",
+ "codebook_sha256": "07421c7046a5dd1a7edb590a84d7d069d4ecd3f587f7d71fb641bae813d5fb8d",
+ "system_sha256": "c13cd4188282ec9207f820d41cfec0ae9cc0c43d3071c1cd45ee444f86ada52f",
+ "user_sha256": "0a1c5b275f10162aeded6347f936f94e6e2569e107e476970fb5b3de0ed5b6b1",
+ "response": {
+  "id": "e3de4fb4-da97-4b8d-89e1-a2a24c4550ed",
+  "object": "chat.completion",
+  "created": 1793597758,
+  "model": "deepseek-v4-pro",
+  "choices": [
+   {
+    "index": 0,
+    "message": {
+     "role": "assistant",
+     "content": "{\n  \"S4a_text_discloses\": {\n    \"code\": \"Y\",\n    \"quote\": \"It should be pointed out that for each method, the average accuracy of the 80𝑡ℎ → 100𝑡ℎ is set as one time accuracy, the average value of running 5 times is used as the final accuracy of the method\",\n    \"location\": \"p.6\",\n    \"reason\": \"论文明确指出报告结果所用的模型轮次：取第80到100轮的平均准确率作为一次运行的准确率，再做5次平均作为最终准确率。这符合 S4a 的 Y 定义（明确写出报告结果所用的模型是哪一轮）。\"\n  },\n  \"S8_traceability\": {\n    \"code\": \"0\",\n    \"quote\": \"Data will be made available on request.\",\n    \"location\": \"p.13\",\n    \"reason\": \"论文正文未提供可访问的代码仓库、训练权重、训练日志或原始结果文件的链接；仅在 Data availability 部分表示数据可应请求提供，没有直接下载链接，按规则 S8 记 0。\"\n  }\n}",
+     "reasoning_content": "我们需要按照手册对论文的 S4a 和 S8 条目进行编码。论文是给定的，代码文件部分标注为 NO_CODE，说明没有公开代码。因此 S8 的评估只看论文正文中是否给出可访问链接、可以下载的材料。S4a 是看正文是否说明选模规则。我们需要从论文中找证据。\n\n先理解 S4a 的定义：\n- `Y` 正文明确写出报告结果所用的模型是哪一轮，或按哪个数据集上的什么指标挑出来的。例：“取验证集损失最低的一轮”“训练 100 轮后用最后一轮的模型测试”“early stopping on the validation loss”。\n- `P` 提到了挑选或报告方式，但说不清是哪一轮或在哪个数据集上挑的。例：“取最优结果”“the best accuracy is reported”“选择性能最好的模型”（未说明在哪个集合上最好）“训练至收敛”。\n- `N` 正文没有任何关于报告哪一轮、如何挑选模型的说法。只给出训练轮数、学习率等超参数（如 “trained for 100 epochs”）而没有说明报告的是哪一轮的，也记 `N`。\n\n论文中是否提到了模型选择/报告哪一轮？我们需要逐字找原文。\n\n在论文第6页（按 PDF 页码可能是 p.6）：“It should be pointed out that for each method, the average accuracy of the 80𝑡ℎ → 100𝑡ℎ is set as one time accuracy, the average value of running 5 times is used as the final accuracy of the method” 这句话出现在 Section 4 开头，位置在 p.6（因为 PDF 第6页）。这句话提到了报告结果的方式：取第80到100轮的平均准确率作为一次运行的准确率，然后5次运行的平均值作为最终准确率。这明确说明了报告的是哪一轮（第80到100轮平均）以及从哪个集合？它说的是“accuracy”，没有明确说是测试集上的准确率，但上下文前面说了“80% of the samples are utilized for training and the remaining samples are for testing.”所以这个 accuracy 应该是测试集上的准确率。但是并没有明确说是在验证集上挑选，而是说直接按最后20轮平均作为一次运行的结果。这属于明确写出了报告结果所用的模型是哪一轮（第80-100轮的平均），并且是在测试集上评估（因为测试集是剩下的20%样本）。这符合 `Y` 的定义吗？定义要求“正文明确写出报告结果所用的模型是哪一轮，或按哪个数据集上的什么指标挑出来的”。这里写了“average accuracy of the 80th → 100th is set as one time accuracy”，就是取第80到100轮的平均准确率，但没说是哪个数据集上的准确率。但结合上下文，测试集是分离的，所以这里的 accuracy 很可能就是测试集上的。但手册要求“哪个数据集上的什么指标挑出来的”，这里没明确说“在测试集上挑”，而是直接报告最后20轮平均。不过 `Y` 的例子包括“训练 100 轮后用最后一轮的模型测试”，这里是取第80-100轮的平均，也属于报告哪一轮。只是“哪个数据集上”没有说明。但我们可以认为在论文中，测试集就是剩下的20%样本，而第80-100轮的准确率就是在测试集上计算的，因为训练集用于训练，测试集用于评估。这算不算明确？我认为可以算 `Y`，因为明确说明了报告的是第80-100轮的平均。但是否符合“按哪个数据集上的什么指标挑出来”？这个“average accuracy”并没有说是在哪个集合上挑，但结合前面“remaining samples are for testing”，可推断是测试集。不过严格来说，它并没有说“在测试集上取平均”，而是直接说“accuracy”，可能被认为不够明确。我们再看有没有更明确的句子。\n\n在 Section 4 开头：“80% of the samples are utilized for training and the remaining samples are for testing.” 这是数据划分。后面那句就是报告方式。所以整体可以理解为：测试集上计算的准确率，取第80-100轮的平均。所以 S4a 应该是 `Y`。\n\n如果没有这句，可能就要考虑 `N`，因为只给了训练的超参数。但这句话明确说明了报告哪一轮。因此 S4a = Y。\n\n证据：quote 可以选 “It should be pointed out that for each method, the average accuracy of the 80𝑡ℎ → 100𝑡ℎ is set as one time accuracy, the average value of running 5 times is used as the final accuracy of the method” 位置 p.6 (PDF 第6页)。\n\nS8 可溯源性：公开了哪些（可多选，用 `+` 连接）。只算论文正文给出了可访问链接、可以下载的材料；论文正文里的图和表本身不算公开材料。\n- `0` 什么都没有（只公开了数据集、包括作者自建数据集的下载链接，也记 `0`）\n- `C` 代码：论文正文给出的可访问代码仓库\n- `W` 训练好的权重：可下载的权重文件\n- `G` 训练日志或逐轮记录：可下载的日志或逐轮数值文件\n- `R` 原始结果文件：可下载的逐次运行数值文件\n\n我们需要检查论文正文中是否给出了任何链接或可访问的代码仓库、权重、日志、结果文件等。通常论文的 Data availability 部分可能说“Data will be made available on request.”，但没有链接。在参考文献中有一些链接如 doi，但不算公开材料，只是引用。\n\n论文中是否有明确链接？没有看到任何 URL，除了文章首页的 journal homepage 和 doi，但这些不是作者公开的材料。可能作者没有提供代码链接。Data availability 部分：“Data will be made available on request.” 这意味着数据集可应请求提供，但手册说“只公开了数据集、包括作者自建数据集的下载链接，也记 `0`”，所以即使提到数据集可请求，也不算是公开可下载的材料，记 `0`。\n\n另外，论文中是否提到代码？我没有看到任何链接，没有 GitHub 仓库。所以 S8 应该是 `0`。\n\n证据：我们可以在 Data availability 部分找到一句话：“Data will be made available on request.” 但这只说明数据可请求，并没有链接。我们需要一句原文表明没有提供任何可访问的材料？我们可以引用 Data availability 部分这句话，或者引用没有公开代码的声明？手册要求证据是逐字摘自所给文本的原文。我们可以选择一句能推断出没有链接的句子。但 `0` 表示什么都没有，我们需要证明论文中没有提供任何可访问链接。我们可以找“Data will be made available on request.” 这句话，它说明数据不是直接可下载的，而是需要请求。另外，论文中没有“code available”之类的。\n\n更好的做法是引用 Data availability 的原文：“Data will be made available on request.” 位置在 p.13（因为第13页结尾有 Data availability）。这句表明数据可应请求提供，但没有提供直接下载链接，属于 `0`。同时，没有其他链接。所以我们填 `0`。\n\n但是，S8 只算论文正文给出了可访问链接、可以下载的材料。论文中是否可能有链接到代码仓库的？ 我通篇没看到任何 URL 除了 doi 和期刊主页。因此是 `0`。\n\n所以我们输出：\n\nS4a: code Y, quote \"It should be pointed out that for each method, the average accuracy of the 80𝑡ℎ → 100𝑡ℎ is set as one time accuracy, the average value of running 5 times is used as the final accuracy of the method\", location p.6, reason 说明为什么选 Y。\n\nS8: code 0, quote \"Data will be made available on request.\", location p.13, reason 说明论文没有提供任何可访问链接或可下载的代码、权重、日志、结果文件，仅有数据可应请求提供，因此记 0。\n\n注意要求：每个条目必须给出一句逐字摘自所给文本的原文作为证据，最长 300 字符。我们的 quote 符合。\n\n现在输出 JSON。注意：只输出 JSON 对象，不要其他文字。我们按格式输出。\n\n另外，代码文件是 NO_CODE，所以 S4a 不涉及代码，直接用论文文本。\n\n已给出格式，在 JSON 中，键名是 \"S4a_text_discloses\" 和 \"S8_traceability\"，对应值有 code, quote, location, reason。我们填好。\n\n需要我们写 reason，说明找过哪些地方。\n\n对于 S4a，reason 可写：论文第6页明确说明取第80-100轮的平均准确率作为一次运行的结果，然后5次平均作为最终结果，这符合 Y 的定义。\n\n对于 S8，reason 可写：论文正文未提供任何代码仓库、权重、日志或结果文件的链接；仅在 Data availability 部分表示数据可应请求提供，因此按规则记 0。\n\n现在构造 JSON。注意 location 要写页码如 p.6, p.13。\n\n最后输出。"
+    },
+    "logprobs": null,
+    "finish_reason": "stop"
+   }
+  ],
+  "usage": {
+   "prompt_tokens": 21220,
+   "completion_tokens": 2161,
+   "total_tokens": 23381,
+   "prompt_tokens_details": {
+    "cached_tokens": 1280
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 1919
+   },
+   "prompt_cache_hit_tokens": 1280,
+   "prompt_cache_miss_tokens": 19940
+  },
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396"
+ }
+}

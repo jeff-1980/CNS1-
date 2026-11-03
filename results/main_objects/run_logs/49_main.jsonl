@@ -1,0 +1,10 @@
+{"repeat": 0, "seconds": 205.5, "author_epoch": 164, "reported": 0.9964285492897034, "check": {"recorded": 0.9964285714285714, "reported": 0.9964285492897034, "abs_diff": 2.2138868072119067e-08, "matches": true}}
+{"repeat": 1, "seconds": 155.6, "author_epoch": 110, "reported": 0.9964285492897034, "check": {"recorded": 0.9964285714285714, "reported": 0.9964285492897034, "abs_diff": 2.2138868072119067e-08, "matches": true}}
+{"repeat": 2, "seconds": 258.6, "author_epoch": 215, "reported": 0.9964285492897034, "check": {"recorded": 0.9964285714285714, "reported": 0.9964285492897034, "abs_diff": 2.2138868072119067e-08, "matches": true}}
+{"repeat": 3, "seconds": 280.3, "author_epoch": 232, "reported": 0.9964285492897034, "check": {"recorded": 0.9964285714285714, "reported": 0.9964285492897034, "abs_diff": 2.2138868072119067e-08, "matches": true}}
+{"repeat": 4, "seconds": 106.6, "author_epoch": 55, "reported": 0.9142857193946838, "check": {"recorded": 0.9142857142857143, "reported": 0.9142857193946838, "abs_diff": 5.108969580724931e-09, "matches": true}}
+{"repeat": 5, "seconds": 239.4, "author_epoch": 188, "reported": 0.9964285492897034, "check": {"recorded": 0.9964285714285714, "reported": 0.9964285492897034, "abs_diff": 2.2138868072119067e-08, "matches": true}}
+{"repeat": 6, "seconds": 243.4, "author_epoch": 194, "reported": 0.9964285492897034, "check": {"recorded": 0.9964285714285714, "reported": 0.9964285492897034, "abs_diff": 2.2138868072119067e-08, "matches": true}}
+{"repeat": 7, "seconds": 200.7, "author_epoch": 152, "reported": 0.9964285492897034, "check": {"recorded": 0.9964285714285714, "reported": 0.9964285492897034, "abs_diff": 2.2138868072119067e-08, "matches": true}}
+{"repeat": 8, "seconds": 292.6, "author_epoch": 243, "reported": 0.9964285492897034, "check": {"recorded": 0.9964285714285714, "reported": 0.9964285492897034, "abs_diff": 2.2138868072119067e-08, "matches": true}}
+{"repeat": 9, "seconds": 278.4, "author_epoch": 230, "reported": 0.9964285492897034, "check": {"recorded": 0.9964285714285714, "reported": 0.9964285492897034, "abs_diff": 2.2138868072119067e-08, "matches": true}}

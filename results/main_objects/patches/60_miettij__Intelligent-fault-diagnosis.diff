@@ -1,0 +1,151 @@
+diff --git a/audit_run60.py b/audit_run60.py
+new file mode 100755
+index 0000000..0f8199c
+--- /dev/null
++++ b/audit_run60.py
+@@ -0,0 +1,99 @@
++"""[audit] Driver for object 60 (registry: results/main_objects/registry/60_*.md).
++Reproduces the cwru branch of the authors' code/main.py for the source load 1 hp only (their loop trains 3, 2, 1 hp
++in turn; the headline task 1 -> 2 hp is the first of Fig. 8): their CWRUDataset (DE + FE, validation folds), their
++model classes, their cwru_train (Adam, early stopping on rotating validation folds) and their cwru_test on 2 hp
++(reported) and 3 hp (extra). Settings: the arguments of their run_*.sh scripts with max epochs from paper Table A1
++(per jeff 2026-10-23). 10 unseeded repeats (the code sets no seed). The hook in cwru_train records their validation
++loss and, isolated, validation accuracy and test (2 hp) accuracy / CE each epoch, before their weight rollback.
++Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR. Run with cwd = code/."""
++import argparse, json, os, re, sys, time
++CODE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "code")
++sys.path.insert(0, CODE)
++import torch, torch.nn.functional as F
++from torch.utils.data import DataLoader
++from audit.main.epoch_record import Recorder
++from audit.torch_utils import isolate
++
++ARGV = {  # run_*.sh arguments; --epochs from Table A1 (WDCNN 70, SRDCNN 60, WDCNN (ND) 70, SRDCNN (ND) 40)
++    "WDCNN": "--dataset cwru --arch WDCNN --validate True --epochs 70 --lr 0.001 --batch-size 64 --bias True --DE-FE True",
++    "WDCNN_deconv": "--dataset cwru --arch WDCNN_deconv --validate True --epochs 70 --lr 0.0001 --batch-size 8 --bias True --eps 1e-5 --stride 5 --freeze True --deconv-iter 5 --delinear True --delin-iter 5 --delin-eps 1e-5 --firstl-iter 25 --DE-FE True",
++    "SRDCNN": "--dataset cwru --arch SRDCNN --validate True --epochs 60 --lr 0.0001 --batch-size 64 --bias True --DE-FE True",
++    "SRDCNN_deconv": "--dataset cwru --arch SRDCNN_deconv --validate True --epochs 40 --lr 0.1 --batch-size 128 --bias True --eps 1e-5 --stride 5 --freeze True --deconv-iter 5 --delinear True --delin-iter 5 --delin-eps 1e-5 --firstl-iter 25 --DE-FE True",
++}
++NAME = {"WDCNN": "WDCNN", "WDCNN_deconv": "WDCNN-ND", "SRDCNN": "SRDCNN", "SRDCNN_deconv": "SRDCNN-ND"}
++p = argparse.ArgumentParser()
++p.add_argument("--groups", default="WDCNN_deconv,SRDCNN_deconv,WDCNN,SRDCNN")
++p.add_argument("--repeats", default="0-9")
++p.add_argument("--epochs", type=int, default=None)
++a = p.parse_args()
++lo, hi = map(int, a.repeats.split("-")) if "-" in a.repeats else (int(a.repeats),) * 2
++
++import arg_parser
++from arg_parser import parse_args, save_path_formatter
++from datasets.cwruset import CWRUDataset
++import optalgos.cwru_train as CT
++from evaluation.cwru_eval import cwru_test
++ROOT = "../original.tmp/12k/drive_end2/"
++dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
++
++
++@torch.no_grad()
++def acc_ce(model, ds):
++    correct = n = 0; ce = 0.0
++    for x, y in DataLoader(ds, batch_size=64):
++        out = model(x.to(dev)); y = y.to(dev)
++        correct += int((out.argmax(1) == y).sum()); n += y.numel(); ce += F.cross_entropy(out, y, reduction="sum").item()
++    return correct / n, ce / n
++
++
++def build(arch, args):
++    import models.wdcnn, models.srdcnn, models.wdcnn_deconv, models.srdcnn_deconv
++    if arch == "WDCNN":
++        return models.wdcnn.WDCNN(input_channels=2, n_classes=10, bias=args.bias)
++    if arch == "SRDCNN":
++        return models.srdcnn.SRDCNN(in_channels=2, n_classes=10, args=args)
++    if arch == "WDCNN_deconv":
++        return models.wdcnn_deconv.WDCNN_deconv(in_channels=2, n_classes=10, args=args)
++    return models.srdcnn_deconv.SRDCNN_deconv(in_channels=2, n_classes=10, args=args)
++
++
++for g in a.groups.split(","):
++    sys.argv = ["main.py"] + ARGV[g].split() + (["--epochs", str(a.epochs)] if a.epochs else [])
++    args = parse_args()
++    for r in range(lo, hi + 1):
++        args.log_path = save_path_formatter(args) + f"_audit_r{r}"
++        os.makedirs(args.log_path, exist_ok=True)
++        rec = Recorder(obj="60", group=f"{NAME[g]}|CWRU DE+FE 1->2hp", seed=r, select_split="val", report_split="test",
++                       note="unseeded repeat; val = their rotating validation fold (loss is theirs, acc isolated); test = 2 hp; 3 hp in test3_acc")
++        rec.d["test3_acc"] = {}
++        train1 = CWRUDataset(args, root_dir=ROOT, motor_load=1, train_set=True, use_val_folds=True)
++        dsets = {k: (None, CWRUDataset(args, root_dir=ROOT, motor_load=k, train_set=False)) for k in (2, 3)}
++        model = build(g, args)
++        st = {}
++
++        def hook(ep, model, val_loss, improved):
++            with isolate([model], dev):
++                model.eval()
++                val_acc, _ = acc_ce(model, train1.get_validation_dataset())
++                t_acc, t_ce = acc_ce(model, dsets[2][1])
++                t3, _ = acc_ce(model, dsets[3][1])
++            rec.log(ep, "val", val_acc, float(val_loss))
++            rec.log(ep, "test", t_acc, t_ce)
++            rec.d["test3_acc"][str(ep)] = t3
++            if improved:            # their rule: weights kept only when val loss strictly decreases
++                rec.author_pick(ep)
++
++        CT.AUDIT_HOOK = hook
++        tlog = os.path.join(args.log_path, "trainstats.txt"); open(tlog, "w").close()
++        testlog = os.path.join(args.log_path, "teststats.txt"); open(testlog, "w").close()
++        t0 = time.time()
++        CT.cwru_train(train1, model, tlog, args, 1)
++        CT.AUDIT_HOOK = None
++        cwru_test(dsets, model, testlog, args, 1, 2)
++        cwru_test(dsets, model, testlog, args, 1, 3)
++        txt = open(testlog).read()
++        reported = float(re.search(r"Accuracy 1 --> 2 :\s*([0-9.]+)", txt).group(1))
++        rec.d["author_reported_3hp"] = float(re.search(r"Accuracy 1 --> 3 :\s*([0-9.]+)", txt).group(1))
++        rec.finish(reported)
++        print(json.dumps(dict(group=g, repeat=r, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                              reported=reported, check=rec.d["author_check"])), flush=True)
+diff --git a/code/models/srdcnn_deconv.py b/code/models/srdcnn_deconv.py
+index 59ed384..c8207c4 100644
+--- a/code/models/srdcnn_deconv.py
++++ b/code/models/srdcnn_deconv.py
+@@ -106,7 +106,7 @@ class FastDeconv(conv._ConvNd):
+         if torch.cuda.is_available():
+             super(FastDeconv, self).__init__(
+                 in_channels, out_channels,  _single(kernel_size), _single(stride), _single(padding), _single(dilation),
+-                False, _single(0), groups, bias)
++                False, _single(0), groups, bias, padding_mode='zeros')  # [audit] torch>=1.x requires padding_mode
+ 
+         else:
+             super(FastDeconv, self).__init__(
+diff --git a/code/models/wdcnn_deconv.py b/code/models/wdcnn_deconv.py
+index 1ada64e..c8e9313 100644
+--- a/code/models/wdcnn_deconv.py
++++ b/code/models/wdcnn_deconv.py
+@@ -106,7 +106,7 @@ class FastDeconv(conv._ConvNd):
+         if torch.cuda.is_available():
+             super(FastDeconv, self).__init__(
+                 in_channels, out_channels,  _single(kernel_size), _single(stride), _single(padding), _single(dilation),
+-                False, _single(0), groups, bias)
++                False, _single(0), groups, bias, padding_mode='zeros')  # [audit] torch>=1.x requires padding_mode
+ 
+         else:
+             super(FastDeconv, self).__init__(
+diff --git a/code/optalgos/cwru_train.py b/code/optalgos/cwru_train.py
+index 54dd773..0e45cfc 100644
+--- a/code/optalgos/cwru_train.py
++++ b/code/optalgos/cwru_train.py
+@@ -10,6 +10,7 @@ if torch.cuda.is_available():
+     device = 'cuda'
+ else:
+     device = 'cpu'
++AUDIT_HOOK = None  # [audit] see audit_run60.py
+ 
+ def learning_scheduler(optimizer, epoch, lr=0.001, lr_decay_epoch=10):
+     lr = lr * (0.5**(epoch // lr_decay_epoch))
+@@ -100,6 +101,7 @@ def cwru_train(trainset, model, trainlogfile, args, hp):
+                     val_losses.append(val_loss.item())
+             avg_val_loss = np.mean(val_losses)
+             val_errors.append(avg_val_loss)
++            if AUDIT_HOOK: AUDIT_HOOK(epoch + 1, model, avg_val_loss, avg_val_loss < best_loss)  # [audit]
+ 
+             if avg_val_loss < best_loss:
+                 best_loss = avg_val_loss

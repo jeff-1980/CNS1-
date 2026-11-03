@@ -1,0 +1,86 @@
+diff --git a/audit_run34.py b/audit_run34.py
+new file mode 100644
+index 0000000..06216e3
+--- /dev/null
++++ b/audit_run34.py
+@@ -0,0 +1,47 @@
++"""[audit] Driver for object 34 (registry: results/main_objects/registry/34_*.md).
++Runs the authors' main.py as __main__ (runpy) with --source DE --target FE --task DE-FE (defaults otherwise), once
++per unseeded repeat. AUDIT_HOOK records the authors' target accuracy each epoch and, isolated, the target
++cross-entropy; AUDIT_FINAL receives max_correct. Run with cwd = a work dir holding CWRU_dataset/ (extracted .npy)
++and record/. Needs PYTHONPATH=~/audit_cns/code and AUDIT_RECORD_DIR."""
++import argparse, json, os, runpy, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, REPO)
++import torch
++import torch.nn.functional as F
++from torch.utils.data import DataLoader
++from audit.main.epoch_record import Recorder
++from audit.torch_utils import isolate
++
++p = argparse.ArgumentParser()
++p.add_argument("--repeats", default="0-9")
++p.add_argument("--epochs", type=int, default=None)
++a = p.parse_args()
++lo, hi = map(int, a.repeats.split("-")) if "-" in a.repeats else (int(a.repeats),) * 2
++dev = torch.device("cuda")
++
++for r in range(lo, hi + 1):
++    rec = Recorder(obj="34", group="FRAN|CWRU DE->FE", seed=r, select_split=None, report_split="test",
++                   note=f"unseeded repeat {r}; test = authors' target-domain accuracy (all target samples)")
++    state = {"best": -1.0}
++
++    def hook(ep, netG, netF, correct, target_dataset):
++        with isolate([netG, netF], dev):
++            netG.eval(); netF.eval()
++            tot, n = 0.0, 0
++            with torch.no_grad():
++                for x, y in DataLoader(target_dataset, batch_size=256, shuffle=False):
++                    out = netF(netG(x.to(dev)))
++                    tot += F.cross_entropy(out, y.to(dev), reduction="sum").item(); n += y.size(0)
++        rec.log(ep, "test", float(correct), tot / n)
++        if correct >= state["best"]:   # authors' rule
++            state["best"] = correct; rec.author_pick(ep)
++
++    final = {}
++    g = dict(AUDIT_HOOK=hook, AUDIT_FINAL=lambda v: final.update(v=float(v)))
++    sys.argv = [os.path.join(REPO, "main.py"), "--source", "DE", "--target", "FE", "--task", "DE-FE"] + \
++               (["--epoch", str(a.epochs)] if a.epochs else [])
++    t0 = time.time()
++    runpy.run_path(os.path.join(REPO, "main.py"), init_globals=g, run_name="__main__")
++    rec.finish(final.get("v"))
++    print(json.dumps(dict(repeat=r, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                          reported=final.get("v"), check=rec.d["author_check"])), flush=True)
+diff --git a/main.py b/main.py
+index 0d8d0b0..9bb5fd6 100644
+--- a/main.py
++++ b/main.py
+@@ -184,10 +184,10 @@ if __name__ == "__main__":
+         tic = time.time()
+         for i, (t_imgs, _) in tqdm.tqdm(enumerate(target_loader_iter)):
+             try:
+-                s_imgs, s_labels = source_loader_iter.next()
++                s_imgs, s_labels = next(source_loader_iter)  # [audit] .next() removed in current PyTorch
+             except:
+                 source_loader_iter = iter(source_loader)
+-                s_imgs, s_labels = source_loader_iter.next()
++                s_imgs, s_labels = next(source_loader_iter)  # [audit] .next() removed in current PyTorch
+ 
+             if s_imgs.size(0) != args.batch_size or t_imgs.size(0) != args.batch_size:
+                 continue
+@@ -258,6 +258,7 @@ if __name__ == "__main__":
+         correct = correct * 1.0 / len(target_dataset)
+         correct_array.append(correct)
+ 
++        if globals().get('AUDIT_HOOK'): AUDIT_HOOK(epoch, netG, netF, correct, target_dataset)  # [audit] per-epoch record
+         if correct >= max_correct:
+             max_correct = correct
+         print('Test time:', time.time()-tic)
+@@ -265,6 +266,7 @@ if __name__ == "__main__":
+ 
+     # save results
+     print("max acc: ", max_correct)
++    if globals().get('AUDIT_FINAL'): AUDIT_FINAL(max_correct)  # [audit] authors' reported value (before rounding)
+     max_correct = float("{0:.3f}".format(max_correct))
+     result = open(os.path.join(args.result, "FRAN_" + args.task + "_" + str(max_correct) +"_lr_"+str(args.lr)+'_lambda_' + str(args.lambda_val) + '_recons_' + str(args.thres_rec)+"_weight_entropy_"+str(args.weight_entropy)+".txt"), "a")
+     for c in correct_array:

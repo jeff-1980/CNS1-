@@ -1,0 +1,33 @@
+attempt_order,own_paper_doi,full_name,commit,framework,public_data,status_note
+1,10.1016/j.neucom.2022.10.057,kavianpour/DSAGCN-Bearing-Fault-Diagnosis,0ec074aa6af4e4a7e0070b90027fc184830f8057,pytorch,CWRU; PU; JNU,confirmed from dossier
+2,10.1016/j.compeleceng.2024.110004,giabao804/few-shot-mamba,41bd1757102d7a03f7750dc3d0fb0b95e8f9410d,pytorch,CWRU; HUST,confirmed from dossier
+3,10.1007/s11071-024-10157-1,Yks151/Dynamic-CAME-TD,f1fbd76cc33ac2e03b56b7d33c28fe09c0e161cd,pytorch,,sound+vibration dataset and training entry to verify at attempt
+4,10.1109/access.2019.2916935,mingzhangPHD/Transfer-Learning-for-Fault-Diagnosis,90ff8fe55cc88f20b7eb95cebed1a5093f8c3b02,tensorflow,CWRU,confirmed from dossier
+5,10.1088/1361-6501/ad099b,hxf1228/hfn-current-fd,143828f06eb0b93eced6d94cf286d60484df1936,pytorch,,current-signal dataset to verify as public (e.g. PU) at attempt
+6,10.48550/arxiv.2311.18547,TuomasJalonen/motor-fault-icit2024,2a1a5f98678d049e5235a4f75cf256a813802462,tensorflow,KAIST,confirmed from dossier
+7,10.1109/tii.2024.3438229,John-520/DMsrTTLN,b770b535a26d4a5045394a1eb7573dc701fb9284,pytorch,CWRU; JNU; PU; SEU,time-varying-speed datasets to verify as public at attempt
+8,10.1109/access.2023.3281910,junior209lsj/FaultDiagnosisOptimizerBenchmark,536b97040cfd66cee194c0376c475d3554d77f2e,pytorch,public bearing datasets auto-downloaded (fdob/download.py); names not listed in dossier,confirmed from dossier
+9,10.1109/tim.2022.3196742,ShaneSpace/MyResearchWorksPublic,3e26367dd8e66a8043ba0cc4b5fda188a5a7d92c,unclear,,"single-file scripts; training loop, data and framework to verify at attempt"
+10,10.1007/s10489-025-06361-0,linhthan216/MixMamba-Fewshot,3b25f04020c07f7c566a13b08a9e86880e96f7a8,pytorch,CWRU,confirmed from dossier
+11,10.1109/tim.2025.3582302,Vitoyoung/HETPM_intelligent_fault_diagnosis,51abc83dd3820297d66ad6db821d367b2aa65e0e,pytorch,JNU; HUST,confirmed from dossier
+12,10.1016/j.neucom.2025.131518,thzhere/MLFork,517e95f627ad370e427bcd82f525b945c121b976,pytorch,CWRU; PU,confirmed from dossier
+13,10.1109/tim.2023.3346517,asdvfghg/BearingPGA-Net,96392f3527498a38c8d2e00911deb810e168fb79,pytorch,CWRU,confirmed from dossier
+14,10.1109/tim.2023.3259031,asdvfghg/QCNN_for_bearing_diagnosis,e325210b1ca19bdbfc731959685f6a2a2c9d7ddc,pytorch,CWRU,confirmed from dossier
+15,10.1016/j.ymssp.2026.114827,autouch/AWT-DDFN,a77c7baffbe341dd446c33a5a572f64ba061b545,unclear,PU,framework to verify at attempt
+16,10.1109/access.2026.3663988,enzoniko/LPFTDSPIPIFD,799bf2d5d602f52d13c514059aa1c01cc8e2b6c5,unclear,,ring-bearing dataset source and framework to verify at attempt
+17,10.1007/s42417-026-02626-1,viet2715/Multi-Layer-Spatial-Channel-MLSC-,a7992bf192a78b29167cc78fc4a272bdcd6fbeb2,pytorch,CWRU; PU,confirmed from dossier
+18,10.1016/j.eswa.2025.127248,Onward-AI/torch_isonet,af5037e6025e2bd38e3db9684894c5e0eef7cbcd,pytorch,HIT aero-engine inter-shaft bearing,confirmed from dossier
+19,10.1109/icspis54653.2021.9729385,kavianpour/Bearing-Fault-Diagnosis-DTCNN,502effedc7fc50b2dea76c03cee9da1bc41ca7db,tensorflow,CWRU,confirmed from dossier
+20,10.1088/1361-6501/ac8303,Littleor/MLDSO,6819ac3371fdbc42d98217a3fb555895bb996704,pytorch,CWRU,confirmed from dossier
+21,10.1016/j.ymssp.2024.111750,asdvfghg/ClassBD,08530497e388ed691936f15d6c55267f277ed270,pytorch,PU; JNU,confirmed from dossier
+22,10.1016/j.knosys.2025.114944,amstlldj/DLRSD-SMOTE,b9970548bac540122a5afb8481fe7721b27da23f,pytorch,CWRU; SEU,confirmed from dossier
+23,10.1109/tim.2024.3502884,DABINB/CSST-Net,b445512383d3f511c02dae2a5a2756a82eb5c73b,pytorch,HIT aero-engine inter-shaft bearing,confirmed from dossier
+24,10.1109/mcte62505.2024.11117663,Erikdai/Fault-Diagnosis-of-Aero-engine-Inter-shaft-Bearings,658c64286fdd547d577437f2ad5280585aa22e68,pytorch,CWRU,confirmed from dossier
+25,10.1016/j.measurement.2022.111536,kavianpour/CARMA-DACA-fault-diagnosis,602f43e9bd0cf711211251902176b4b33ccd04b8,pytorch,CWRU,confirmed from dossier
+26,10.1016/j.ymssp.2026.114640,gama-ufsc/bearing-data-leakage,4c9fd8cb3cf9d5aa4ef2b653cb314a0727e12f3d,pytorch,CWRU; PU; Ottawa; HUST,confirmed from dossier
+27,10.1007/s10845-020-01600-2,Xiaohan-Chen/bear_fault_diagnosis,51f11ddedbce6bb86e163e88963faf3e92244fc8,pytorch,CWRU,confirmed from dossier
+28,10.1007/978-3-031-76197-3_14,giabao804/few-shot-structural-rep,094a9ec613b1eef7513f3841cda50992b60fee7b,pytorch,CWRU,confirmed from dossier
+29,10.1109/tpami.2025.3588894,asdvfghg/quadratic_efficiency,8a16d3bcf77b2083e8673a279b265ece9c274890,pytorch,CWRU,confirmed from dossier
+30,10.1038/s41598-026-61710-4,zzzbbl/-HIT-CT-BiGRU-Fault-Diagnosis,767edb0d9298d5417cfed44b36793d8d4ec9c1f2,pytorch,HIT,confirmed from dossier
+31,10.3390/pr11051527,Ye-0413/RollingBearingFaultDiagnosis,33faf40f0246947cd858bb0b6b660d2766cb4202,pytorch,CWRU,authorship of 10.3390/pr11051527 to verify at attempt; not author -> E1
+32,10.1109/tetci.2026.3654383,Xiaohan-Chen/CoWS,63faaf52de990f481c7844cc13302e42b0beb167,pytorch,HUST; XJTU-SY; HIT,confirmed from dossier

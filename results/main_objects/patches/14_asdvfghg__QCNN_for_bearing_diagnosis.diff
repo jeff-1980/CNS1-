@@ -1,0 +1,119 @@
+diff --git a/audit_run14.py b/audit_run14.py
+new file mode 100644
+index 0000000..f2c820d
+--- /dev/null
++++ b/audit_run14.py
+@@ -0,0 +1,83 @@
++"""[audit] Driver for object 14 (registry: results/main_objects/registry/14_*.md).
++Runs the authors' train.main(config) (wandb offline) for QCNN and WDCNN on CWRU-0HP -6 dB with the README
++hyperparameters for that cell, seeds 0-9. The per-epoch hook records the authors' validation acc/loss and,
++isolated, test acc/loss/macro-F1 on the same test set main() builds (rebuilt here with the same seed before training).
++Run with cwd = a work dir containing a 'data' symlink. Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR, WANDB_MODE=offline."""
++import argparse, json, math, os, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, REPO)
++import numpy as np, torch, wandb
++from sklearn.metrics import f1_score
++from utils.Preprocess import prepro
++from audit.main.epoch_record import Recorder
++from audit.torch_utils import isolate
++import train as T
++
++p = argparse.ArgumentParser()
++p.add_argument("--groups", default="qcnn,wdcnn")
++p.add_argument("--seeds", default="0-9")
++p.add_argument("--epochs", type=int, default=50)
++a = p.parse_args()
++lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds),) * 2
++dev = torch.device("cuda")
++HP = {"qcnn": dict(lr=0.05, alpha=0.005), "wdcnn": dict(lr=0.3, alpha=0.03)}   # README table, CWRU-0HP -6dB (alpha unused by wdcnn)
++NAME = {"qcnn": "QCNN|CWRU-0HP -6dB", "wdcnn": "WDCNN|CWRU-0HP -6dB"}
++
++
++def build_test(seed):
++    # same calls and RNG sequence as main(): seed, train prepro, then test prepro
++    with isolate([], dev):
++        T.random_seed(seed)
++        prepro(d_path=os.path.join("data", "0HP"), length=2048, number=750, normal=False, enc=True, enc_step=28, snr=-6,
++               property="Train", noise=True)
++        X, Y = prepro(d_path=os.path.join("data", "0HP"), length=2048, number=250, normal=False, enc=True, enc_step=28, snr=-6,
++                      property="Test", noise=True)
++    return torch.tensor(np.asarray(X)[:, None, :], dtype=torch.float), torch.tensor(np.asarray(Y)).long().view(-1)
++
++
++@torch.no_grad()
++def eval_test(net, X, Y):
++    out = torch.cat([net(X[i:i + 1].to(dev)) for i in range(len(X))]).cpu()   # batch size 1, as the authors' inference()
++    pred = out.argmax(1)
++    return (pred == Y).float().mean().item(), torch.nn.functional.cross_entropy(out, Y).item(), f1_score(Y.numpy(), pred.numpy(), average="macro")
++
++
++for g in a.groups.split(","):
++    for s in range(lo, hi + 1):
++        run = wandb.init(project="audit14", mode="offline", reinit=True, dir=os.getcwd())
++        cfg = wandb.config
++        cfg.no_cuda = False; cfg.log_interval = 200; cfg.seed = s; cfg.batch_size = 64; cfg.epochs = a.epochs
++        cfg.lr = HP[g]["lr"]; cfg.alpha = HP[g]["alpha"]; cfg.add_noise = True; cfg.snr = -6; cfg.chosen_data = "0HP"; cfg.chosen_model = g
++        rec = Recorder(obj="14", group=NAME[g], seed=s, select_split="val", report_split="test",
++                       note=f"epochs={a.epochs}; author reports macro-F1 (test_f1 field)")
++        rec.d["test_f1"] = {}
++        X, Y = build_test(s)
++        state = {"max": 0.0}
++
++        def hook(epoch, net, val_acc, val_loss):
++            rec.log(epoch, "val", val_acc, val_loss)
++            with isolate([net], dev):
++                net.eval()
++                acc, loss, f1 = eval_test(net, X, Y)
++            rec.log(epoch, "test", acc, loss)
++            rec.d["test_f1"][str(epoch)] = f1
++            if val_acc >= state["max"]:          # same rule as the authors' checkpointing
++                state["max"] = val_acc
++                rec.author_pick(epoch)
++
++        T.AUDIT_HOOK = hook
++        t0 = time.time()
++        reported_f1, test_loader = T.main(cfg)
++        T.AUDIT_HOOK = None
++        # the test set main() actually used must equal the one rebuilt above
++        Xa = torch.cat([x for x, _ in test_loader]).float()
++        same_test = bool(Xa.shape == X.shape and torch.equal(Xa, X))
++        rec.finish(None)
++        f1_at = rec.d["test_f1"][str(rec.d["author_epoch"])]
++        rec.d["author_reported_f1"] = float(reported_f1)
++        rec.d["author_check_f1"] = dict(recorded=f1_at, reported=float(reported_f1), abs_diff=abs(f1_at - reported_f1),
++                                        matches=math.isclose(f1_at, reported_f1, abs_tol=1e-6), same_test_set=same_test)
++        rec._dump()
++        run.finish()
++        print(json.dumps(dict(group=g, seed=s, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                              check_f1=rec.d["author_check_f1"])), flush=True)
+diff --git a/train.py b/train.py
+index 7bad568..5091f6a 100644
+--- a/train.py
++++ b/train.py
+@@ -18,6 +18,7 @@ from utils.train_function import group_parameters
+ 
+ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+ use_gpu = torch.cuda.is_available()
++AUDIT_HOOK = None  # [audit] called after each validation: (epoch, net, val_acc, val_loss)
+ 
+ 
+ 
+@@ -141,6 +142,8 @@ def train(config, dataloader):
+                     torch.save(net.state_dict(), f'Models/best_checkpoint.pth')
+                     print('saved')
+             print('%s ACC:%.4f' % (phase, acc))
++            if phase == 'validation' and AUDIT_HOOK is not None:  # [audit]
++                AUDIT_HOOK(e + 1, net, float(acc), float(loss_total))
+ 
+ 
+     return net
+@@ -238,7 +241,7 @@ def main(config):
+     }
+     test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, drop_last=False)
+     train(config, data_loaders)
+-    inference(config, test_loader)
++    return inference(config, test_loader), test_loader  # [audit] return author's reported F1 (and the test set)
+ 
+ 
+ 

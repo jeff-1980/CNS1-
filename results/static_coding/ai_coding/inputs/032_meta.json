@@ -1,0 +1,12 @@
+{
+ "draw_order": 32,
+ "pages": 12,
+ "links_found": [],
+ "code": {
+  "status": "no_link"
+ },
+ "paper_sha256": "8be06c2fda11353f7b2ff3e6f553883cad0a430a3bdc92a236e20feacf182220",
+ "code_sha256": "b340cab2bea7032a3adf657295362acd26aefd645aaae386d8001f36f8d7cdff",
+ "paper_chars": 59170,
+ "code_chars": 7
+}

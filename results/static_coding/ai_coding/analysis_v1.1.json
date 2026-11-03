@@ -1,0 +1,68 @@
+{
+ "self_consistency": {
+  "claude:S4a_text_discloses": {
+   "all3": 0.886,
+   "ge2": 1.0
+  },
+  "claude:S8_traceability": {
+   "all3": 1.0,
+   "ge2": 1.0
+  },
+  "deepseek:S4a_text_discloses": {
+   "all3": 0.658,
+   "ge2": 0.975
+  },
+  "deepseek:S8_traceability": {
+   "all3": 0.987,
+   "ge2": 0.987
+  }
+ },
+ "quote_found_rate": {
+  "claude": 0.9967,
+  "deepseek": 0.9394
+ },
+ "invalid_codes": {},
+ "quotes_nonempty": {
+  "claude": 306,
+  "deepseek": 363
+ },
+ "kappa": {
+  "S4a_text_discloses": {
+   "n": 77,
+   "agreement": 0.779,
+   "kappa": 0.508,
+   "pabak": 0.669
+  },
+  "S8_traceability": {
+   "n": 78,
+   "agreement": 1.0,
+   "kappa": 1.0,
+   "pabak": 1.0
+  }
+ },
+ "merge": {
+  "disputed": 20,
+  "agree_valid": 138
+ },
+ "n_cells": 158,
+ "S4a_not_disclosed": {
+  "n_papers": 79,
+  "lower": 48,
+  "upper": 63,
+  "lower_pct": 60.8,
+  "upper_pct": 79.7
+ },
+ "final_distribution": {
+  "S4a_text_discloses": {
+   "DISPUTED": 19,
+   "N": 48,
+   "P": 10,
+   "Y": 2
+  },
+  "S8_traceability": {
+   "0": 76,
+   "C": 2,
+   "DISPUTED": 1
+  }
+ }
+}

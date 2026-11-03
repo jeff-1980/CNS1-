@@ -1,0 +1,114 @@
+diff --git a/audit_run81.py b/audit_run81.py
+new file mode 100755
+index 0000000..9fa01be
+--- /dev/null
++++ b/audit_run81.py
+@@ -0,0 +1,48 @@
++"""[audit] Driver for object 81 (registry: results/main_objects/registry/81_mozhenling__doge-darm.md).
++Runs the authors' main_train.py (runpy, cwd = repo) on CWRU_Bearing (author's preprocessed Google-Drive package),
++test_envs 0 (0 hp), default hparams (hparams_seed_id 0), their --seed = 0..9 (trial_seed default 0 fixes the
++splits), for DARM, ERM, IRM, Mixup (jeff 2026-10-25). The authors evaluate every split at every checkpoint
++(every CHECKPOINT_FREQ steps and the last step) and write them to results.jsonl; the audit records those numbers:
++report = test domain env0_in (the split their model selection reports), extra = env0_out, select = mean of the
++training-domain out-splits (their 'training-domain validation'). Their selection reports the last checkpoint.
++Needs PYTHONPATH with ~/audit_cns/code, AUDIT_RECORD_DIR."""
++import argparse, json, os, runpy, shutil, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++p = argparse.ArgumentParser()
++p.add_argument("--algorithms", default="DARM,ERM,IRM,Mixup")
++p.add_argument("--seeds", default="0-9")
++p.add_argument("--steps", type=int, default=None)   # smoke only
++p.add_argument("--work", required=True)
++a = p.parse_args()
++lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds),) * 2
++os.chdir(REPO); sys.path.insert(0, REPO)
++from audit.main.epoch_record import Recorder
++TEST = 0
++for alg in a.algorithms.split(","):
++    for s in range(lo, hi + 1):
++        out = os.path.join(a.work, f"out_{alg}_{s}"); shutil.rmtree(out, ignore_errors=True)
++        sys.argv = ["main_train.py", "--dataset", "CWRU_Bearing", "--algorithm", alg, "--data_dir", "./datasets",
++                    "--test_envs", str(TEST), "--seed", str(s), "--output_dir", out, "--skip_model_save"]
++        if a.steps: sys.argv += ["--steps", str(a.steps), "--checkpoint_freq", "2"]
++        t0 = time.time()
++        so, se = sys.stdout, sys.stderr
++        try:
++            runpy.run_path(os.path.join(REPO, "main_train.py"), run_name="__main__")
++        finally:
++            sys.stdout, sys.stderr = so, se   # their Tee replaces stdout / stderr
++        res_dir = [d for d in os.listdir(out)][0] if not os.path.exists(os.path.join(out, "results.jsonl")) else ""
++        rows = [json.loads(l) for l in open(os.path.join(out, res_dir, "results.jsonl"))]
++        rec = Recorder(obj="81", group=f"{alg}|CWRU_Bearing DG test env 0hp", seed=s, select_split="val",
++                       report_split="test", note="epoch = training step + 1 at their checkpoints; test = env0_in (their "
++                       "reported split), test_out = env0_out, val = mean training-domain out-split acc; no losses")
++        tr = [i for i in range(3) if i != TEST]
++        for r in rows:
++            ep = int(r["step"]) + 1
++            rec.log(ep, "test", float(r[f"env{TEST}_in_acc"]), float("nan"))
++            rec.log(ep, "test_out", float(r[f"env{TEST}_out_acc"]), float("nan"))
++            rec.log(ep, "val", sum(float(r[f"env{i}_out_acc"]) for i in tr) / len(tr), float("nan"))
++        rec.finish(float(rows[-1][f"env{TEST}_in_acc"]))   # their selection: last checkpoint
++        shutil.rmtree(out, ignore_errors=True)
++        print(json.dumps(dict(group=alg, seed=s, seconds=round(time.time() - t0, 1), n_ckpt=len(rows),
++                              last_step=rows[-1]["step"], reported=rows[-1][f"env{TEST}_in_acc"],
++                              check=rec.d["author_check"])), flush=True)
+diff --git a/datautils/__pycache__/bed_dataloaders.cpython-310.pyc b/datautils/__pycache__/bed_dataloaders.cpython-310.pyc
+index cedd8a3..72d4f27 100644
+Binary files a/datautils/__pycache__/bed_dataloaders.cpython-310.pyc and b/datautils/__pycache__/bed_dataloaders.cpython-310.pyc differ
+diff --git a/datautils/__pycache__/data_process.cpython-310.pyc b/datautils/__pycache__/data_process.cpython-310.pyc
+index 0c9e979..c2c2996 100644
+Binary files a/datautils/__pycache__/data_process.cpython-310.pyc and b/datautils/__pycache__/data_process.cpython-310.pyc differ
+diff --git a/datautils/__pycache__/dataset_selector.cpython-310.pyc b/datautils/__pycache__/dataset_selector.cpython-310.pyc
+index 90311b6..184153e 100644
+Binary files a/datautils/__pycache__/dataset_selector.cpython-310.pyc and b/datautils/__pycache__/dataset_selector.cpython-310.pyc differ
+diff --git a/datautils/__pycache__/diag_datasets.cpython-310.pyc b/datautils/__pycache__/diag_datasets.cpython-310.pyc
+index 87cf866..be9ded6 100644
+Binary files a/datautils/__pycache__/diag_datasets.cpython-310.pyc and b/datautils/__pycache__/diag_datasets.cpython-310.pyc differ
+diff --git a/datautils/__pycache__/seq_process.cpython-310.pyc b/datautils/__pycache__/seq_process.cpython-310.pyc
+index de8d55d..195ee36 100644
+Binary files a/datautils/__pycache__/seq_process.cpython-310.pyc and b/datautils/__pycache__/seq_process.cpython-310.pyc differ
+diff --git a/datautils/__pycache__/seq_transforms.cpython-310.pyc b/datautils/__pycache__/seq_transforms.cpython-310.pyc
+index 8e5ec1d..9cb4862 100644
+Binary files a/datautils/__pycache__/seq_transforms.cpython-310.pyc and b/datautils/__pycache__/seq_transforms.cpython-310.pyc differ
+diff --git a/losses/__pycache__/__init__.cpython-310.pyc b/losses/__pycache__/__init__.cpython-310.pyc
+index d1b8947..3ffafa2 100644
+Binary files a/losses/__pycache__/__init__.cpython-310.pyc and b/losses/__pycache__/__init__.cpython-310.pyc differ
+diff --git a/losses/__pycache__/dist_criteria.cpython-310.pyc b/losses/__pycache__/dist_criteria.cpython-310.pyc
+index 2a5ea94..c08e87e 100644
+Binary files a/losses/__pycache__/dist_criteria.cpython-310.pyc and b/losses/__pycache__/dist_criteria.cpython-310.pyc differ
+diff --git a/losses/__pycache__/lss_selector.cpython-310.pyc b/losses/__pycache__/lss_selector.cpython-310.pyc
+index 9babd59..0d6f0bb 100644
+Binary files a/losses/__pycache__/lss_selector.cpython-310.pyc and b/losses/__pycache__/lss_selector.cpython-310.pyc differ
+diff --git a/losses/__pycache__/rbst_losses.cpython-310.pyc b/losses/__pycache__/rbst_losses.cpython-310.pyc
+index c403c24..3935d16 100644
+Binary files a/losses/__pycache__/rbst_losses.cpython-310.pyc and b/losses/__pycache__/rbst_losses.cpython-310.pyc differ
+diff --git a/networks/__pycache__/__init__.cpython-310.pyc b/networks/__pycache__/__init__.cpython-310.pyc
+index 29fb69f..2877041 100644
+Binary files a/networks/__pycache__/__init__.cpython-310.pyc and b/networks/__pycache__/__init__.cpython-310.pyc differ
+diff --git a/networks/__pycache__/diag_nets.cpython-310.pyc b/networks/__pycache__/diag_nets.cpython-310.pyc
+index 5fe2172..b822fe5 100644
+Binary files a/networks/__pycache__/diag_nets.cpython-310.pyc and b/networks/__pycache__/diag_nets.cpython-310.pyc differ
+diff --git a/networks/__pycache__/net_selector.cpython-310.pyc b/networks/__pycache__/net_selector.cpython-310.pyc
+index c92ee2a..a47a3ff 100644
+Binary files a/networks/__pycache__/net_selector.cpython-310.pyc and b/networks/__pycache__/net_selector.cpython-310.pyc differ
+diff --git a/networks/__pycache__/wide_resnet.cpython-310.pyc b/networks/__pycache__/wide_resnet.cpython-310.pyc
+index b95b93f..fed78f2 100644
+Binary files a/networks/__pycache__/wide_resnet.cpython-310.pyc and b/networks/__pycache__/wide_resnet.cpython-310.pyc differ
+diff --git a/oututils/__pycache__/__init__.cpython-310.pyc b/oututils/__pycache__/__init__.cpython-310.pyc
+index 436af5b..7bb699d 100644
+Binary files a/oututils/__pycache__/__init__.cpython-310.pyc and b/oututils/__pycache__/__init__.cpython-310.pyc differ
+diff --git a/oututils/__pycache__/os_utils.cpython-310.pyc b/oututils/__pycache__/os_utils.cpython-310.pyc
+index 7d1aa06..e881938 100644
+Binary files a/oututils/__pycache__/os_utils.cpython-310.pyc and b/oututils/__pycache__/os_utils.cpython-310.pyc differ
+diff --git a/params/__pycache__/__init__.cpython-310.pyc b/params/__pycache__/__init__.cpython-310.pyc
+index c2fb2a1..80c99a5 100644
+Binary files a/params/__pycache__/__init__.cpython-310.pyc and b/params/__pycache__/__init__.cpython-310.pyc differ
+diff --git a/params/__pycache__/alg_params.cpython-310.pyc b/params/__pycache__/alg_params.cpython-310.pyc
+index 8e89123..61676b9 100644
+Binary files a/params/__pycache__/alg_params.cpython-310.pyc and b/params/__pycache__/alg_params.cpython-310.pyc differ
+diff --git a/params/__pycache__/seedutils.cpython-310.pyc b/params/__pycache__/seedutils.cpython-310.pyc
+index 97239e9..6fdb39d 100644
+Binary files a/params/__pycache__/seedutils.cpython-310.pyc and b/params/__pycache__/seedutils.cpython-310.pyc differ
+diff --git a/params/__pycache__/train_params.cpython-310.pyc b/params/__pycache__/train_params.cpython-310.pyc
+index ac0ae5b..226b5c7 100644
+Binary files a/params/__pycache__/train_params.cpython-310.pyc and b/params/__pycache__/train_params.cpython-310.pyc differ

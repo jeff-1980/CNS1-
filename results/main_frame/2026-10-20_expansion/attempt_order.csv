@@ -1,0 +1,52 @@
+attempt_order,own_paper_doi,full_name,commit,framework,public_data,status_note
+33,10.1016/j.ymssp.2025.112378,CQU-ZixuChen/BS-STN,5741123540ac48179acb4435ce94a855b7a9e25e,unclear,CQU sliding bearing (open-sourced),framework to verify at attempt
+34,10.1109/tmech.2020.3046277,JiahongChen/FRAN,58dd5c4a6162d0d76cd3a2b562319ca761397aac,unclear,CWRU,framework to verify at attempt
+35,10.1016/j.ress.2024.110610,CQU-BITS/FIR-CCF-main,36170becabd7ab8282388435083cf8200b7b0cb8,pytorch,SEU; MCC5-THU,confirmed from dossier
+36,10.1016/j.engappai.2025.112328,Luojunqing666/Eviformer-An-uncertainty-fault-diagnosis-framework-guided-by-evidential-deep-learning,ab6b66632379a1960f211387d77406d7979290eb,pytorch,CWRU,confirmed from dossier
+37,10.1109/jiot.2024.3489617,JC952/P2PCHF,c5c31f09e7fb247c36fcdd2ec9cb21699b454dd6,unclear,CWRU; HUST; BJUT gear,framework to verify at attempt
+38,10.1016/j.ymssp.2026.114457,jshzh163com/DIS,3d817309465a610ce5e3fac8719bb411fcde5526,pytorch,SQV; CWRU,confirmed from dossier
+39,,CCSLab425/FMAA,79f3939f87cdf6a44e6fa859afb1ab71cd213cac,pytorch,CWRU; SEU (Soochow SBDS),CDC 2024 proceedings DOI to verify at attempt (E2 if none)
+40,10.1016/j.neunet.2024.106482,zhiqan/SeGMVAE,89a32cc0db00e19746d0e1c49028c64f31e9fcea,pytorch,CWRU,confirmed from dossier
+41,10.1016/j.jmsy.2022.09.004,Luojunqing666/Modified-Deep-Subdomain-Adaptation-Network-for-Cross-Domain-Fault-Diagnosis,027467fa0be4cd8dea8064f9f90f4473f40554cd,pytorch,CWRU,repo (rewritten later) loads CWRU while the paper uses speed-fluctuation data; which table the code reproduces to verify at attempt (E8 if none)
+42,10.21595/jve.2026.26312,caie8201/Multi-Scale-CNN-Transformer-Hybrid-Network,d4fc44057bc0c62511ef2af5f25fa632f94634df,pytorch,PHM 2009 gearbox (PHM09data2_3330.mat),PHM09 gearbox data; bearing-fault classes to verify at attempt (not_bearing if none)
+43,10.1109/tnnls.2025.3531214,mozhenling/doge-eirm,af0db70a4f7576d5edaedb112ff938c56d881f82,pytorch,,datasets not named in dossier; public data to verify at attempt (E5 if not)
+44,10.1016/j.ress.2024.110001,Luojunqing666/Elastic-prototypical-network-for-fault-transfer-diagnosis,48f98c25f39d1f87655a767011762aa75b629f7f,pytorch,CWRU,repo loads CWRU while the paper uses unstable-speed bearing data; which table the code reproduces to verify at attempt (E8 if none)
+45,,wangshanze/FrFT-GADF-AWC-TSAR-Research-Repository,0b393b5aeab98005ebad116b6e7361c6adb3e71b,pytorch,HIT; HUST,README says accepted at Measurement; published DOI to verify at attempt (E2 if none)
+46,10.1016/j.engappai.2025.111386,xiaoyiming1999/DVAN_for_RMFD,03683bbd1b89df33535944a2bd1335583ca5ac68,pytorch,,Loco_bearing / THU gearbox data; public availability to verify at attempt (E5 if not)
+47,10.1007/978-3-031-36886-8_1,hmvu-nv/A-New-ConvMixer-based-Approach-for-Diagnosis-of-Fault-Bearing-using-Signal-Spectrum,65e586b02d4d1aaf494b0ade47b1f2cd64640f15,unclear,CWRU,framework to verify at attempt
+48,10.1109/tim.2020.3043510,Yongwen12/dcjdan-fault-diagnosis,019bd16f150bed1fd39fd9ab43b21b47f6cab7a0,pytorch,PU; CWRU; IMS,confirmed from dossier
+49,10.1016/j.renene.2022.12.049,alidi24/deep-learning-fault-diagnosis,d7f979c3363edc6dcfaf3d2f2e9782b68ec47669,pytorch,NREL 5MW drivetrain bearing dataset (Zenodo 10.5281/zenodo.7674842),data are simulated drivetrain signals (NREL); presence of bearing-fault classes to verify at attempt (not_bearing if none)
+50,10.1109/tim.2024.3427866,jie3040/CAC-CycleGAN-WGP,41e6ca90c881e9a702b536e4b78413e0f835cfa4,tensorflow,CWRU,confirmed from dossier
+51,10.1016/j.ymssp.2024.112025,XMAHA/MvGNN,2121f88486cd250385de53ad118a70d74075035c,pytorch,SEU,confirmed from dossier
+52,10.1007/978-981-16-1089-9_14,lestercardoz11/fault-detection-for-predictive-maintenance-in-industry-4.0,d342fb7d5bad39df4f4c718552575cc18a3f99e1,unclear,CWRU,"framework of ANN/AE notebooks and accuracy table to verify at attempt (E3 if RF only, E9 if detection without accuracy)"
+53,10.1016/j.ymssp.2023.110952,ChenQian0618/TFN,bb8af32c380fa047631b960e6a08ed0b261f1874,pytorch,CWRU,confirmed from dossier
+54,10.3901/jme.260770,RanGuangsheng/TGST,6a5ac7028adcaacfe30c8394dbe99566b8ad5d9a,pytorch,CWRU,confirmed from dossier
+55,10.1016/j.aei.2025.103349,xiaoyiming1999/AdaCP_for_RMFD,aec749ca617684897fea2e9587a1c9bec2760db8,pytorch,HUST; MCC5,accuracy table reproduced by the code to verify at attempt
+56,10.1016/j.aei.2026.105181,Dominic-ZZ/P-MIF-Robust-Fault-Diagnosis,fbfab46a8677a49e19c876473b06110e2a58846a,pytorch,PU,confirmed from dossier
+57,10.3390/s20185112,al3xsh/rolling-element-bearing-fault-detection,f7149bd11be9bcce7750a273121553166df9991b,tensorflow,CWRU,confirmed from dossier
+58,10.1109/tim.2021.3127654,qinenergy/syn2real,603fbfd0f0c414ed034f20d213f16b7251ad6553,unclear,CWRU,framework to verify at attempt
+59,10.1016/j.aei.2022.101552,123EastGod/MACGAN-for-fault-diagnosis,0659f39031ff31898586a8f2e96221c299864f15,tensorflow,CWRU; UConn gear,confirmed from dossier
+60,10.3390/app12094411,miettij/Intelligent-fault-diagnosis,4de8525fa62e2474c0aef938440d1bfe33617d7c,pytorch,CWRU,confirmed from dossier
+61,10.1016/j.ymssp.2021.108653,HazeDT/PHMGNNBenchmark,b53fd9593ead081c596a13274896d4566d3306eb,pytorch,CWRU; PU; MFPT; SEU; XJTU Gearbox,confirmed from dossier
+62,10.1038/s41598-025-06734-y,spbu-lipengyi/dkdl-net,56b3c881512fee1ee49000a4f8b4206a613b62d6,unclear,CWRU,framework to verify at attempt
+63,10.3390/e27040403,srigas/KAN_Fault_Diagnosis,20550d82fda534b1076775bcfbf4d2a111e7f7d8,pytorch,CWRU; MaFaulDa,confirmed from dossier
+64,10.1016/j.aei.2026.105277,yazyeah/MHFL-MCA-Codes-Datasets-and-Results,9848887fd845aafa97d22ccc47304f67bf38972b,tensorflow,UORED; KAIST,confirmed from dossier
+65,10.1109/tim.2020.3009341,mohamedr002/AMDA,f96f9c2a744b473012ea448f1ce474421ceb0641,pytorch,CWRU; PU,confirmed from dossier
+66,10.1016/j.measurement.2024.115901,Zjy0121/CIDSAN,84ba53da089460e05aec119a2a4d34efafc43c3a,pytorch,CWRU,confirmed from dossier
+67,10.1109/access.2025.3620386,DannieW727/fewshot-robot-fault,d9510bb5f2ec4593d43332ee79ed77e6df148f31,pytorch,CWRU; JNU,confirmed from dossier
+68,10.1109/tie.2021.3075871,ChaoyingYang/SuperGraph,044518ffc8197e654971f47329adb3cf506d3067,pytorch,CWRU; PU (KAT),confirmed from dossier
+69,10.1109/tii.2022.3169459,ZhenanHe/Open-Set-Signal-Classification-OSSC,5e3130bbe21b691a18b68c970ba3155035054cbf,pytorch,CWRU,confirmed from dossier
+70,10.1109/tim.2025.3643085,untuitivist/PCASTNet,58fc56fa25fc0e3075206f6073604513009a972d,pytorch,CWRU; BJTU,README calls the code a demo; full training of a paper table to verify at attempt
+71,10.1049/icp.2025.2364,Ritabrata-Chakraborty/An-Efficient-Approach-for-Synthetic-Data-Generation-and-Fault-Diagnosis-for-Rotating-Machinery,4adf0ac07cefc0db39db67ca6ec7a81c55eb6b3c,pytorch,CWRU,confirmed from dossier
+72,10.1109/tmech.2026.3669233,PHM-QQteam/AJDA,ff60f313b716fa71dea7490b0478fc5c65e38faa,pytorch,PU; JNU,confirmed from dossier
+73,10.1016/j.measurement.2020.108202,a1018680161/Few-shot-Transfer-Learning,060fab6164b75db0302a47bbde886792d26d1b61,pytorch,PU,confirmed from dossier
+74,10.1049/cth2.12315,wongsihan/FDR,c5db9b037acb678a8427b87cfc0b2afb057068d0,pytorch,PU,README says code was restructured with a large language model; equivalence to the paper code to verify at attempt (E8 if not)
+75,10.1016/j.asoc.2026.116218,jinyu1034/DPD-DG,207a51980a43c58243e068ff876a3cee390c1adf,pytorch,CWRU; Ottawa; SDUT bearing; BJUT gear,confirmed from dossier
+76,10.1109/tim.2021.3075016,HazeDT/DAGCN,9be9099c1d2e5d04b2a6de8229b07c8ea86d2980,pytorch,CWRU,confirmed from dossier
+77,10.1371/journal.pone.0292381,iridescentcloud/machine_fault_diagnosis,b7130fd5271f301a7e3639aa506900b8aa04decb,unclear,CWRU,empty README; framework and authorship (PLOS ONE paper) to verify at attempt
+78,10.3390/machines13100909,MachineLearningVisionRG/Faults_IndAirCool,2dbf955ed5c7216e1a072e33130772df5bf92ff6,tensorflow,IndAirCool ventilator data (released in repo),authors' own air-cooler data released with the repo; bearing classes and public download to verify at attempt
+79,10.1109/tim.2022.3198477,Western-OC2-Lab/Vibration-Based-Fault-Diagnosis-with-Low-Delay,2ee83d83b9d0856acd101094f3830ba5ad6ac662,unclear,CWRU; PU; UORED,WPT+FFT features; whether the classifier is PyTorch/TF (else E3) to verify at attempt
+80,10.1007/978-3-030-93639-6_35,biswajitsahoo1111/data_driven_features_ims,4b3073f9c0d3511ced2076ef1c8ce87c6c93ca75,tensorflow,IMS,confirmed from dossier
+81,,mozhenling/doge-darm,8cc91743734e465c479e8c88026c94b5956aacea,pytorch,CWRU; PU; UO,README says accepted at IEEE IoTJ; published DOI to verify at attempt (E2 if none)
+82,10.3390/s24237539,EPFL-IMOS/CAT,354cf94aef4f0afd1f81d7ef645bd40ffc68d8d5,pytorch,CWRU; PU; JNU; SEU; PHM2009,confirmed from dossier
+83,10.1016/j.ymssp.2026.115007,yushi1006/FLSHGAT-for-semi-supervised-fault-diagnosis,b95fd8612de98dcd782e17b8ad7901937ff1f30a,unclear,UORED,framework to verify at attempt

@@ -1,0 +1,128 @@
+diff --git a/audit_run54.py b/audit_run54.py
+new file mode 100755
+index 0000000..11cf5e5
+--- /dev/null
++++ b/audit_run54.py
+@@ -0,0 +1,66 @@
++"""[audit] Driver for object 54 (registry: results/main_objects/registry/54_*.md).
++Runs the authors' scripts as __main__ (runpy) with the README commands: TGST (experiment_v2 --mode tgst --lambda_cl 1.0
++--temperature 0.01), Baseline (experiment_v2 --mode baseline), Random-text ablation (experiment_ablation --ablation random
++--lambda_cl 1.0 --temperature 0.01), 50 epochs, 10 unseeded repeats (the authors seed only the data split, 42).
++The hook after their per-epoch evaluate_model records their test accuracy and, isolated, the test cross-entropy;
++AUDIT_FINAL receives their final evaluation (final model). Run via run54.sh (HOME points to a work dir holding
++tgst_project/datasets/CWRU). Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR."""
++import argparse, json, os, runpy, sys, time
++REPO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tgst_project")
++sys.path.insert(0, REPO)
++import torch, torch.nn.functional as F
++from audit.main.epoch_record import Recorder
++from audit.torch_utils import isolate
++
++GROUPS = {
++    "TGST": ("scripts/experiment_v2.py", ["--mode", "tgst", "--n_classes", "4", "--lambda_cl", "1.0", "--temperature", "0.01"]),
++    "Baseline": ("scripts/experiment_v2.py", ["--mode", "baseline", "--n_classes", "4"]),
++    "Random-text": ("scripts/experiment_ablation.py", ["--ablation", "random", "--lambda_cl", "1.0", "--temperature", "0.01"]),
++}
++p = argparse.ArgumentParser()
++p.add_argument("--groups", default="TGST,Baseline,Random-text")
++p.add_argument("--repeats", default="0-9")
++p.add_argument("--epochs", type=int, default=50)
++a = p.parse_args()
++lo, hi = map(int, a.repeats.split("-")) if "-" in a.repeats else (int(a.repeats),) * 2
++
++
++@torch.no_grad()
++def test_ce(model, loader):
++    dev = next(model.parameters()).device
++    tot, n = 0.0, 0
++    for batch in loader:
++        if len(batch) == 4:
++            x, y, ids, am = batch
++            logits = model(x.to(dev), ids.to(dev), am.to(dev))[0]
++        else:
++            x, y, _ = batch
++            logits = model(x.to(dev))[0]
++        tot += F.cross_entropy(logits, y.to(dev), reduction="sum").item(); n += y.numel()
++    return tot / n
++
++
++for g in a.groups.split(","):
++    script, extra = GROUPS[g]
++    for r in range(lo, hi + 1):
++        rec = Recorder(obj="54", group=f"{g}|CWRU 4-class", seed=r, select_split=None, report_split="test",
++                       note="epoch = training epoch; acc = authors' test accuracy; reported = their final evaluation (final model)")
++        st = {"last": None}
++
++        def hook(ep, acc, model, loader):
++            dev = next(model.parameters()).device
++            with isolate([model], dev):
++                model.eval(); loss = test_ce(model, loader)
++            rec.log(ep, "test", float(acc), loss)
++            st["last"] = ep
++
++        final = {}
++        save_dir = os.path.join(os.environ["HOME"], "ckpt", f"{g}_{r}")
++        sys.argv = [script] + extra + ["--epochs", str(a.epochs), "--save_dir", save_dir]
++        t0 = time.time()
++        runpy.run_path(os.path.join(REPO, script), run_name="__main__",
++                       init_globals=dict(AUDIT_HOOK=hook, AUDIT_FINAL=lambda v: final.update(v=float(v))))
++        rec.author_pick(st["last"])      # authors report the final model's test accuracy
++        rec.finish(final.get("v"))
++        print(json.dumps(dict(group=g, repeat=r, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                              reported=final.get("v"), check=rec.d["author_check"])), flush=True)
+diff --git a/tgst_project/scripts/experiment_ablation.py b/tgst_project/scripts/experiment_ablation.py
+index 703e2da..fc23f66 100644
+--- a/tgst_project/scripts/experiment_ablation.py
++++ b/tgst_project/scripts/experiment_ablation.py
+@@ -34,6 +34,7 @@ from torch.optim.lr_scheduler import CosineAnnealingLR
+ from torch.utils.data import DataLoader, Dataset
+ from functools import partial
+ from tqdm import tqdm
++AUDIT_HOOK = globals().get('AUDIT_HOOK'); AUDIT_FINAL = globals().get('AUDIT_FINAL')  # [audit] see audit_run54.py
+ 
+ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ 
+@@ -273,6 +274,7 @@ def run_ablation(args):
+         m = train_epoch(model, train_loader, optimizer, criterion, device)
+         scheduler.step()
+         test_acc, _, _, _ = evaluate_model(model, test_loader, device)
++        if AUDIT_HOOK: AUDIT_HOOK(epoch, test_acc, model, test_loader)  # [audit]
+         elapsed = time.time() - t0
+ 
+         print(f"Epoch {epoch}/{args.epochs} | Loss: {m['loss']:.4f} "
+@@ -295,6 +297,7 @@ def run_ablation(args):
+     # 最终评估
+     print(f"\n📊 最终评估...")
+     test_acc, preds, labels, feats = evaluate_model(model, test_loader, device)
++    if AUDIT_FINAL: AUDIT_FINAL(test_acc)  # [audit]
+     d_intra, d_inter, sep, sil = compute_clustering_metrics(feats, labels)
+ 
+     from sklearn.metrics import classification_report
+diff --git a/tgst_project/scripts/experiment_v2.py b/tgst_project/scripts/experiment_v2.py
+index 6476489..db4b89c 100644
+--- a/tgst_project/scripts/experiment_v2.py
++++ b/tgst_project/scripts/experiment_v2.py
+@@ -42,6 +42,7 @@ from torch.optim.lr_scheduler import CosineAnnealingLR
+ from torch.utils.data import DataLoader
+ from functools import partial
+ from tqdm import tqdm
++AUDIT_HOOK = globals().get('AUDIT_HOOK'); AUDIT_FINAL = globals().get('AUDIT_FINAL')  # [audit] see audit_run54.py
+ 
+ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ 
+@@ -249,6 +250,7 @@ def run_experiment(args):
+             m = train_epoch(model, train_loader, optimizer, criterion, device, is_tgst)
+             scheduler.step()
+             test_acc, _, _, _ = evaluate_model(model, test_loader, device, is_tgst)
++            if AUDIT_HOOK: AUDIT_HOOK(epoch, test_acc, model, test_loader)  # [audit]
+             elapsed = time.time() - t0
+ 
+             print(f"Epoch {epoch}/{args.epochs} | Loss: {m['loss']:.4f} "
+@@ -271,6 +273,7 @@ def run_experiment(args):
+         # 最终评估 + 聚类指标
+         print(f"\n📊 最终评估...")
+         test_acc, preds, labels, feats = evaluate_model(model, test_loader, device, is_tgst)
++        if AUDIT_FINAL: AUDIT_FINAL(test_acc)  # [audit]
+         d_intra, d_inter, sep, sil = compute_clustering_metrics(feats, labels)
+         
+         from sklearn.metrics import classification_report

@@ -1,0 +1,70 @@
+diff --git a/audit_run53.py b/audit_run53.py
+new file mode 100755
+index 0000000..bd76857
+--- /dev/null
++++ b/audit_run53.py
+@@ -0,0 +1,44 @@
++"""[audit] Driver for object 53 (registry: results/main_objects/registry/53_*.md).
++Runs the authors' main.py as __main__ (runpy) for Backbone_CNN, TFN_STTF, TFN_Chirplet, TFN_Morlet on their CWRU
++setting (48 kHz DE, load 3, 10 classes, main.py defaults), seeds 0..9 replacing their module-level seed 999
++(all author modules are imported first, then torch/numpy/random are re-seeded). The hook in utils.train_utils
++records the authors' own per-epoch train and val (= test, 30%) accuracy/loss; reported = max val accuracy, the
++quantity their Acc_statistic / PlotAccuracy pipeline reports ('mean max acc'). Needs PYTHONPATH=~/audit_cns/code, AUDIT_RECORD_DIR."""
++import argparse, json, os, random, runpy, sys, time
++REPO = os.path.dirname(os.path.abspath(__file__))
++sys.path.insert(0, REPO)
++import numpy as np, torch
++import utils.train_utils as TU, Datasets, Models   # import first: their module-level seeding runs now, not later
++from audit.main.epoch_record import Recorder
++
++p = argparse.ArgumentParser()
++p.add_argument("--groups", default="TFN_STTF,TFN_Chirplet,TFN_Morlet,Backbone_CNN")
++p.add_argument("--seeds", default="0-9")
++p.add_argument("--max_epoch", type=int, default=50)
++p.add_argument("--data_dir", default=os.path.expanduser("~/audit_ext/data/cwru53"))
++p.add_argument("--work", default=os.path.expanduser("~/audit_ext/work53"))
++a = p.parse_args()
++lo, hi = map(int, a.seeds.split("-")) if "-" in a.seeds else (int(a.seeds),) * 2
++
++for g in a.groups.split(","):
++    for s in range(lo, hi + 1):
++        rec = Recorder(obj="53", group=f"{g.replace('_', '-')}|CWRU 48k DE load3", seed=s, select_split=None, report_split="test",
++                       note="epoch = training epoch; test = authors' 'val' split (30%, stratified, random_state=40); reported = max over epochs")
++        st = {"best": 0.0, "accs": []}
++
++        def hook(ep, phase, acc, loss):
++            if phase == "val":
++                rec.log(ep, "test", float(acc), float(loss))
++                st["accs"].append(float(acc))
++                if acc > st["best"]:     # authors' best-epoch rule (strict >)
++                    st["best"] = acc; rec.author_pick(ep)
++
++        TU.AUDIT_HOOK = hook
++        random.seed(s); np.random.seed(s); torch.manual_seed(s); torch.cuda.manual_seed_all(s)
++        sys.argv = ["main.py", "--data_dir", a.data_dir, "--model_name", g, "--checkpoint_dir", a.work, "--max_epoch", str(a.max_epoch)]
++        t0 = time.time()
++        runpy.run_path(os.path.join(REPO, "main.py"), run_name="__main__")
++        TU.AUDIT_HOOK = None
++        rec.finish(max(st["accs"]))      # = Records['val_acc'].max(), the authors' 'max acc'
++        print(json.dumps(dict(group=g, seed=s, seconds=round(time.time() - t0, 1), author_epoch=rec.d["author_epoch"],
++                              reported=max(st["accs"]), check=rec.d["author_check"])), flush=True)
+diff --git a/utils/train_utils.py b/utils/train_utils.py
+index d9cd789..cc0a6d6 100644
+--- a/utils/train_utils.py
++++ b/utils/train_utils.py
+@@ -30,6 +30,7 @@ random.seed(seed)
+ os.environ['PYTHONHASHSEED'] = str(seed)
+ torch.manual_seed(seed)
+ torch.cuda.manual_seed_all(seed)
++AUDIT_HOOK = None  # [audit] per-epoch hook, see audit_run53.py
+ 
+ 
+ class train_utils(object):
+@@ -216,6 +217,7 @@ class train_utils(object):
+                 # Record the epoch information
+                 self.Records["%s_loss" % phase].append(epoch_loss)
+                 self.Records["%s_acc" % phase].append(epoch_acc)
++                if AUDIT_HOOK: AUDIT_HOOK(epoch + 1, phase, epoch_acc, epoch_loss)  # [audit]
+ 
+                 # save the best and the final model if needed
+                 if phase == 'val':

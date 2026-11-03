@@ -1,0 +1,18 @@
+object,headline_group,metric,audit_author_mean,reported_value,reported_source,abs_diff_pp,within_2pp,note
+13,BearingPGA-Net (DKD),macro-F1,78.33,97.20,paper,18.87,false,two seeds stuck near 32
+14,QCNN,macro-F1,93.88,98.95,paper,5.07,false,ranking vs WDCNN reversed (WDCNN 95.14 vs paper 88.83)
+19,DenseNet201+SoftMax,accuracy,98.94,100.0,paper,1.06,true,
+21,ClassBD-WDCNN,macro-F1,87.95,92.08,preprint Table 4,4.13,false,test file has 2377 windows; paper says 380
+24,SEDSCN-Trans,accuracy,99.06,99.55,README reference run,0.49,true,README not paper
+25,CARMA-DACA,accuracy,37.91,99.5,README headline,61.59,false,README not paper
+30,ct_bigru,accuracy,99.79,99.72,paper Table 6,0.07,true,
+32,CoWS,accuracy,100.00,99.52,paper,0.48,true,
+42,Ours-D,accuracy,98.28,98.66,paper Table 6 T3,0.38,true,ablation Ours-A 98.62 above full model
+49,PCA-CNN,accuracy,98.82,100.0,paper Table 12,1.18,true,simulated data
+54,TGST,accuracy,99.46,99.58,README,0.12,true,README not paper
+58,CDAN-mixup,balanced accuracy,82.06,82.3,paper Table III,0.24,true,
+60,SRDCNN,accuracy,99.98,99.01,paper Fig. 8,0.97,true,
+62,DKD-Student,macro-F1,80.36,97.52,paper (SNR unstated),17.16,false,teacher 97.36 vs paper 99.59
+64,MHFL-MCA,accuracy,96.55,97.39,paper,0.84,true,
+77,GACNN_2,accuracy,89.00,92.80,paper (SEU),3.80,false,
+82,CAT*-CPCS,accuracy,52.52,52.42,paper Table 5,0.10,true,
