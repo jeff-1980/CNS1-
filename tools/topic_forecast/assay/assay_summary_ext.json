@@ -1,0 +1,127 @@
+{
+ "evaluation_type": {
+  "replay": "relative_only",
+  "radar_K1_K3": "real_gt",
+  "assayed_pairs": "prospective_no_gt"
+ },
+ "replay": {
+  "n": 38,
+  "n_alive": 3,
+  "auc_alive_vs_rest": 0.986,
+  "survivor_ranks": {
+   "S2-aeroup": 1,
+   "S3-audit": 2,
+   "S1-backblaze": 4
+  },
+  "top5": [
+   "S2-aeroup",
+   "S3-audit",
+   "D4-weld-smallstudy",
+   "S1-backblaze",
+   "Q1-runout"
+  ]
+ },
+ "n_topics_with_priors": 588,
+ "assayed_top20": [
+  [
+   "0.0785",
+   "Electric Vehicles and Infrastructure",
+   "Adversarial Robustness in Machine Learning"
+  ],
+  [
+   "0.0597",
+   "Electric Vehicles and Infrastructure",
+   "Advanced Graph Neural Networks"
+  ],
+  [
+   "0.0496",
+   "Refrigeration and Air Conditioning Technologies",
+   "Explainable Artificial Intelligence (XAI)"
+  ],
+  [
+   "0.0416",
+   "Robot Manipulation and Learning",
+   "Fire Detection and Safety Systems"
+  ],
+  [
+   "0.0401",
+   "Autonomous Vehicle Technology and Safety",
+   "Infrastructure Resilience and Vulnerability Analysis"
+  ],
+  [
+   "0.0390",
+   "Power Line Inspection Robots",
+   "Adversarial Robustness in Machine Learning"
+  ],
+  [
+   "0.0356",
+   "Machine Fault Diagnosis Techniques",
+   "Electric Vehicles and Infrastructure"
+  ],
+  [
+   "0.0352",
+   "Autonomous Vehicle Technology and Safety",
+   "Green IT and Sustainability"
+  ],
+  [
+   "0.0325",
+   "Electric Vehicles and Infrastructure",
+   "Energy Efficiency in Computing"
+  ],
+  [
+   "0.0303",
+   "Electric Vehicles and Infrastructure",
+   "Climate Change and Environmental Impact"
+  ],
+  [
+   "0.0293",
+   "Electric Vehicles and Infrastructure",
+   "Scientific Innovation and Industrial Efficiency"
+  ],
+  [
+   "0.0293",
+   "Electric Vehicles and Infrastructure",
+   "Industrial Engineering and Technologies"
+  ],
+  [
+   "0.0270",
+   "Geothermal Energy Systems and Applications",
+   "Explainable Artificial Intelligence (XAI)"
+  ],
+  [
+   "0.0263",
+   "Electric Vehicles and Infrastructure",
+   "Climate Change and Health Impacts"
+  ],
+  [
+   "0.0263",
+   "Electric Vehicles and Infrastructure",
+   "Data Stream Mining Techniques"
+  ],
+  [
+   "0.0254",
+   "Energy Efficiency and Management",
+   "Model Reduction and Neural Networks"
+  ],
+  [
+   "0.0252",
+   "Electric Vehicles and Infrastructure",
+   "Digital and Cyber Forensics"
+  ],
+  [
+   "0.0242",
+   "Electric Vehicles and Infrastructure",
+   "Advanced Bandit Algorithms Research"
+  ],
+  [
+   "0.0232",
+   "Adhesion, Friction, and Surface Interactions",
+   "Model Reduction and Neural Networks"
+  ],
+  [
+   "0.0229",
+   "Fire Detection and Safety Systems",
+   "Multimodal Machine Learning Applications"
+  ]
+ ]
+}

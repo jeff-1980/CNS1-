@@ -1,0 +1,51 @@
+rank,assay,p_emerge,a_name,b_name,b_subfield,cum_ab,n_a,n_b,field_w,feas,ceiling,realw,crowd,mech
+1,0.0785,0.451,Electric Vehicles and Infrastructure,Adversarial Robustness in Machine Learning,Artificial Intelligence,2.0,9472,8246,1.00,0.45,0.68,0.25,0.41,0.11
+2,0.0597,0.340,Electric Vehicles and Infrastructure,Advanced Graph Neural Networks,Artificial Intelligence,2.0,9472,5174,1.00,0.40,0.68,0.25,0.26,0.11
+3,0.0496,0.254,Refrigeration and Air Conditioning Technologies,Explainable Artificial Intelligence (XAI),Artificial Intelligence,2.0,5683,6264,1.00,0.34,0.60,0.41,0.31,0.23
+4,0.0416,0.209,Robot Manipulation and Learning,Fire Detection and Safety Systems,"Safety, Risk, Reliability and Quality",2.0,5121,2879,1.00,0.21,0.39,0.39,0.14,0.81
+5,0.0401,0.179,Autonomous Vehicle Technology and Safety,Infrastructure Resilience and Vulnerability Analysis,Civil and Structural Engineering,2.0,8115,4037,1.00,0.44,0.45,0.50,0.20,0.12
+6,0.0390,0.554,Power Line Inspection Robots,Adversarial Robustness in Machine Learning,Artificial Intelligence,2.0,1368,8246,1.00,0.22,0.22,0.36,0.41,0.22
+7,0.0356,0.168,Machine Fault Diagnosis Techniques,Electric Vehicles and Infrastructure,Electrical and Electronic Engineering,2.0,12977,9472,1.00,0.39,0.68,0.25,0.47,0.42
+8,0.0352,0.246,Autonomous Vehicle Technology and Safety,Green IT and Sustainability,Electrical and Electronic Engineering,2.0,8115,2037,1.00,0.27,0.43,0.50,0.10,0.12
+9,0.0325,0.174,Electric Vehicles and Infrastructure,Energy Efficiency in Computing,Hardware and Architecture,2.0,9472,3703,1.00,0.40,0.68,0.25,0.19,0.11
+10,0.0303,0.168,Electric Vehicles and Infrastructure,Climate Change and Environmental Impact,Global and Planetary Change,2.0,9472,4511,1.00,0.40,0.68,0.25,0.23,0.11
+11,0.0293,0.137,Electric Vehicles and Infrastructure,Scientific Innovation and Industrial Efficiency,General Decision Sciences,1.0,9472,66,1.00,0.40,0.68,0.25,0.00,0.11
+12,0.0293,0.137,Electric Vehicles and Infrastructure,Industrial Engineering and Technologies,Mechanical Engineering,2.0,9472,119,1.00,0.40,0.68,0.25,0.01,0.11
+13,0.0270,0.320,Geothermal Energy Systems and Applications,Explainable Artificial Intelligence (XAI),Artificial Intelligence,2.0,2713,6264,1.00,0.22,0.35,0.25,0.31,0.26
+14,0.0263,0.157,Electric Vehicles and Infrastructure,Climate Change and Health Impacts,"Health, Toxicology and Mutagenesis",2.0,9472,6173,1.00,0.40,0.68,0.25,0.31,0.11
+15,0.0263,0.128,Electric Vehicles and Infrastructure,Data Stream Mining Techniques,Artificial Intelligence,2.0,9472,1133,1.00,0.40,0.68,0.25,0.06,0.11
+16,0.0254,0.376,Energy Efficiency and Management,Model Reduction and Neural Networks,Statistical and Nonlinear Physics,2.0,3438,8860,1.00,0.21,0.32,0.19,0.44,0.31
+17,0.0252,0.126,Electric Vehicles and Infrastructure,Digital and Cyber Forensics,Information Systems,2.0,9472,1939,1.00,0.40,0.68,0.25,0.10,0.11
+18,0.0242,0.121,Electric Vehicles and Infrastructure,Advanced Bandit Algorithms Research,Management Science and Operations Research,2.0,9472,1915,1.00,0.40,0.68,0.25,0.10,0.11
+19,0.0232,0.300,"Adhesion, Friction, and Surface Interactions",Model Reduction and Neural Networks,Statistical and Nonlinear Physics,2.0,1937,8860,1.00,0.17,0.32,0.19,0.44,0.65
+20,0.0229,0.226,Fire Detection and Safety Systems,Multimodal Machine Learning Applications,Computer Vision and Pattern Recognition,2.0,2879,7046,1.00,0.25,0.39,0.39,0.35,0.17
+21,0.0227,0.211,Power Systems and Renewable Energy,Reinforcement Learning in Robotics,Artificial Intelligence,2.0,9329,7933,1.00,0.28,0.36,0.36,0.40,0.22
+22,0.0209,0.169,Power Systems and Renewable Energy,Network Time Synchronization Technologies,Computer Networks and Communications,2.0,9329,750,1.00,0.24,0.36,0.36,0.04,0.22
+23,0.0205,0.415,Digital Transformation in Industry,Adversarial Robustness in Machine Learning,Artificial Intelligence,2.0,13073,8246,1.00,0.15,0.22,0.31,0.41,0.32
+24,0.0203,0.268,Traffic and Road Safety,Artificial Intelligence Applications,Artificial Intelligence,2.0,9608,22822,1.00,0.38,0.50,0.62,1.00,0.09
+25,0.0201,0.124,Electric Vehicles and Infrastructure,Air Quality Monitoring and Forecasting,Environmental Engineering,2.0,9472,6939,1.00,0.40,0.68,0.25,0.35,0.11
+26,0.0201,0.294,Power Line Inspection Robots,Adaptive Dynamic Programming Control,Computational Theory and Mathematics,2.0,1368,2104,1.00,0.17,0.22,0.36,0.11,0.22
+27,0.0199,0.159,Hybrid Renewable Energy Systems,Impact of Light on Environment and Health,Global and Planetary Change,2.0,10094,1506,1.00,0.31,0.50,0.19,0.08,0.12
+28,0.0193,0.176,Fire dynamics and safety research,Topic Modeling,Artificial Intelligence,2.0,6457,17390,1.00,0.43,0.50,0.50,0.87,0.14
+29,0.0193,0.132,Autonomous Vehicle Technology and Safety,Topological and Geometric Data Analysis,Computational Theory and Mathematics,2.0,8115,1481,1.00,0.27,0.43,0.50,0.07,0.12
+30,0.0193,0.243,Power Systems and Renewable Energy,Machine Learning in Materials Science,Materials Chemistry,2.0,9329,17114,1.00,0.37,0.37,0.36,0.86,0.22
+31,0.0192,0.120,Fire dynamics and safety research,Imbalanced Data Classification Techniques,Artificial Intelligence,2.0,6457,5412,1.00,0.31,0.50,0.50,0.27,0.14
+32,0.0190,0.077,Integrated Energy Systems Optimization,Robotics and Automated Systems,Control and Systems Engineering,1.0,12199,2788,1.00,0.42,0.72,0.41,0.14,0.10
+33,0.0180,0.036,Topology Optimization in Engineering,Environmental Impact and Sustainability,Environmental Engineering,2.0,4155,10370,1.00,0.51,0.73,0.42,0.52,0.85
+34,0.0180,0.226,Traffic control and management,Multimodal Machine Learning Applications,Computer Vision and Pattern Recognition,2.0,8881,7046,1.00,0.24,0.36,0.21,0.35,0.22
+35,0.0171,0.147,Topology Optimization in Engineering,Explainable Artificial Intelligence (XAI),Artificial Intelligence,1.0,4155,6264,1.00,0.19,0.28,0.25,0.31,0.85
+36,0.0171,0.057,Geotechnical and Geomechanical Engineering,Model Reduction and Neural Networks,Statistical and Nonlinear Physics,2.0,2751,8860,1.00,0.49,0.66,0.65,0.44,0.17
+37,0.0169,0.134,Power Systems and Renewable Energy,Model Reduction and Neural Networks,Statistical and Nonlinear Physics,1.0,9329,8860,1.00,0.34,0.36,0.36,0.44,0.22
+38,0.0169,0.104,Electric Vehicles and Infrastructure,Urban Green Space and Health,"Health, Toxicology and Mutagenesis",2.0,9472,7054,1.00,0.40,0.68,0.25,0.35,0.11
+39,0.0168,0.465,Digital Transformation in Industry,Educational and Technological Research,Information Systems,2.0,13073,178,1.00,0.09,0.11,0.31,0.01,0.32
+40,0.0166,0.128,Hybrid Renewable Energy Systems,Underground infrastructure and sustainability,Building and Construction,2.0,10094,503,1.00,0.31,0.50,0.19,0.03,0.12
+41,0.0165,0.082,Electric Vehicles and Infrastructure,AI-based Problem Solving and Planning,Artificial Intelligence,2.0,9472,1603,1.00,0.40,0.68,0.25,0.08,0.11
+42,0.0164,0.123,Traffic and Road Safety,Natural Language Processing Techniques,Artificial Intelligence,2.0,9608,9782,1.00,0.31,0.50,0.62,0.49,0.09
+43,0.0162,0.557,Satellite Communication Systems,Explainable Artificial Intelligence (XAI),Artificial Intelligence,2.0,3146,6264,1.00,0.10,0.11,0.25,0.31,0.31
+44,0.0161,0.336,Safety Systems Engineering in Autonomy,Multimodal Machine Learning Applications,Computer Vision and Pattern Recognition,2.0,1618,7046,1.00,0.18,0.26,0.10,0.35,0.26
+45,0.0160,0.082,Electric Vehicles and Infrastructure,Web Application Security Vulnerabilities,Information Systems,2.0,9472,2588,1.00,0.40,0.68,0.25,0.13,0.11
+46,0.0159,0.091,Electric Vehicles and Infrastructure,Advanced Graph Theory Research,Computational Theory and Mathematics,2.0,9472,5338,1.00,0.40,0.68,0.25,0.27,0.11
+47,0.0158,0.061,Integrated Energy Systems Optimization,Advanced Data and IoT Technologies,Electrical and Electronic Engineering,2.0,12199,1544,1.00,0.42,0.72,0.41,0.08,0.10
+48,0.0156,0.226,Evacuation and Crowd Dynamics,Adversarial Robustness in Machine Learning,Artificial Intelligence,2.0,2773,8246,1.00,0.23,0.23,0.41,0.41,0.14
+49,0.0152,0.142,Topology Optimization in Engineering,Infrastructure Maintenance and Monitoring,Civil and Structural Engineering,2.0,4155,11197,1.00,0.18,0.28,0.44,0.56,0.85
+50,0.0148,0.088,Power Line Inspection Robots,Photovoltaic Systems and Sustainability,Environmental Engineering,1.0,1368,4854,1.00,0.34,0.46,0.36,0.24,0.22

@@ -20,3 +20,8 @@
 - **失败记录原因码**：`ledger.jsonl` 每条加 `reason_code`（H1/H3/H4/baseline/K-sim/crowded/data），与两个扫描池的 `failed_ideas.jsonl` 同一套码；`assay.py` 会自动读入 `scan_daily/failed_ideas.jsonl` 里带完整七元组字段的条目，一起回放。
 - **三档判定与修补预算**：雷达产出的候选进入扫描池后照池子规则：先小子集、通过/杀死/可修三档、最多 2 次修补、超 4 GPU 小时需 jeff 决定。本层不跑 GPU，不另设规则。
 - LLM 审核步骤（卡片拆解、将来的命题生成）用 Claude Sonnet 子代理，不用 DeepSeek 或 Haiku。
+
+## 扩展版（13 个子领域，2026-11-03）
+`python3 assay/assay.py ext` 读 `results/ext/forecast_T2025_top2000.csv`，输出 `assayed_top50_ext.csv`、`assay_summary_ext.json`。
+化验后前 20 里"电动汽车与基础设施"占了近一半（配对抗鲁棒性、图神经网络、能效、气候、工业效率等），其余是制冷空调 + 可解释 AI、机器人操作 + 火灾安全、自动驾驶安全 + 基础设施韧性、电力线巡检机器人、地热 + 可解释 AI、故障诊断 + 电动汽车。
+注意：能源/交通起点主题在卡片先验里"机械核心占比"取默认值 0.31，会比机械起点主题略吃亏；这是已知偏差，不是结论。

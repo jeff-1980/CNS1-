@@ -136,14 +136,16 @@ def score_pairs(forecast_csv, topics_all, priors, default, out_csv, top=50):
 
 
 def main():
-    rep = replay(os.path.join(HERE, "ledger.jsonl"), os.path.join(HERE, "replay_ledger.csv"),
+    ext = len(sys.argv) > 1 and sys.argv[1] == "ext"   # python assay.py ext -> use results/ext/ forecast, write *_ext files
+    suf = "_ext" if ext else ""
+    rep = replay(os.path.join(HERE, "ledger.jsonl"), os.path.join(HERE, f"replay_ledger{suf}.csv"),
                  failed_ideas="/mnt/project-files/scan_daily/failed_ideas.jsonl")
     print("replay:", json.dumps(rep, ensure_ascii=False))
     topics_all = json.load(open(os.path.join(ROOT, "data/openalex/topics_all.json"), encoding="utf-8"))
     priors, default = topic_priors(os.path.join(ROOT, "cards/ncsa_cards.jsonl"),
                                    os.path.join(ROOT, "data/k3_ncsa_abstracts.jsonl"))
-    top = score_pairs(os.path.join(ROOT, "results/forecast_T2025_top2000.csv"), topics_all, priors, default,
-                      os.path.join(HERE, "assayed_top50.csv"))
+    top = score_pairs(os.path.join(ROOT, "results/ext/forecast_T2025_top2000.csv" if ext else "results/forecast_T2025_top2000.csv"), topics_all, priors, default,
+                      os.path.join(HERE, f"assayed_top50{suf}.csv"))
     for t in top:
         print(*t, sep=" | ")
     # Evaluation-type declaration (protocol addition 2026-11-03 §B):
@@ -152,7 +154,7 @@ def main():
     #   assayed pairs = no ground truth yet (prospective); only a kill test on data can grade them
     json.dump({"evaluation_type": {"replay": "relative_only", "radar_K1_K3": "real_gt", "assayed_pairs": "prospective_no_gt"},
                "replay": rep, "n_topics_with_priors": len(priors), "assayed_top20": top},
-              open(os.path.join(HERE, "assay_summary.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+              open(os.path.join(HERE, f"assay_summary{suf}.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 
 
 if __name__ == "__main__":
