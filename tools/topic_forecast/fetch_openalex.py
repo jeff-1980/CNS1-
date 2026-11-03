@@ -28,12 +28,15 @@ import urllib.request
 API = "https://api.openalex.org"
 # Mechanical-related subfields (OpenAlex/ASJC ids). Names are printed at start for checking.
 MECH_SUBFIELDS = ["2210", "2211", "2209", "2213"]
-# Optional extension (--ext): energy and transport subfields; co-occurrence is fetched for their topics too.
+# Optional extension (--ext): co-occurrence is fetched for these topics too, in this order
+# (energy and transport first, then electrical, control, civil/structural, computational mechanics).
 EXT_SUBFIELDS = {
     "2100": "General Energy", "2102": "Energy Engineering and Power Technology", "2103": "Fuel Technology",
     "2104": "Nuclear Energy and Engineering", "2105": "Renewable Energy, Sustainability and the Environment",
     "2202": "Aerospace Engineering", "2203": "Automotive Engineering", "2212": "Ocean Engineering",
     "3313": "Transportation",
+    "2208": "Electrical and Electronic Engineering", "2207": "Control and Systems Engineering",
+    "2205": "Civil and Structural Engineering", "2206": "Computational Mechanics",
 }
 # Nature/Science family journals used as the "high-profile" venue set (resolved by ISSN at run time).
 NS_ISSNS = {
@@ -193,9 +196,11 @@ def main():
         print(f"topics: {len(topics_all)} total, {len(mech)} mechanical", flush=True)
         ext = []
         if a.ext:
-            ext = sorted(t for t, v in topics_all.items() if v["subfield"] in EXT_SUBFIELDS)
+            order = {sf: i for i, sf in enumerate(EXT_SUBFIELDS)}
+            ext = sorted((t for t, v in topics_all.items() if v["subfield"] in EXT_SUBFIELDS),
+                         key=lambda t: (order[topics_all[t]["subfield"]], t))
             save(os.path.join(a.out, "ext_topics.json"), ext)
-            print(f"ext topics (energy/transport): {len(ext)}", flush=True)
+            print(f"ext topics: {len(ext)} in {len(EXT_SUBFIELDS)} subfields", flush=True)
 
         f_ns = os.path.join(a.out, "ns_sources.json")
         if not os.path.exists(f_ns):
