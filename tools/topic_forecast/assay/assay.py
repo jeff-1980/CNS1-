@@ -46,8 +46,15 @@ def score_card(c):
     return s, g
 
 
-def replay(ledger_path, out_csv):
+def replay(ledger_path, out_csv, failed_ideas=None):
+    """failed_ideas: optional scan_daily/failed_ideas.jsonl (protocol §A); rows with full 7-tuple fields are appended."""
     rows = [json.loads(l) for l in open(ledger_path, encoding="utf-8") if l.strip()]
+    if failed_ideas and os.path.exists(failed_ideas):
+        for l in open(failed_ideas, encoding="utf-8"):
+            r = json.loads(l) if l.strip() else None
+            if r and "data" in r and "lever" in r:
+                r.setdefault("outcome", "dropped"); r.setdefault("death_code", r.get("reason_code", ""))
+                rows.append(r)
     scored = []
     for r in rows:
         s, g = score_card(r)
@@ -129,7 +136,8 @@ def score_pairs(forecast_csv, topics_all, priors, default, out_csv, top=50):
 
 
 def main():
-    rep = replay(os.path.join(HERE, "ledger.jsonl"), os.path.join(HERE, "replay_ledger.csv"))
+    rep = replay(os.path.join(HERE, "ledger.jsonl"), os.path.join(HERE, "replay_ledger.csv"),
+                 failed_ideas="/mnt/project-files/scan_daily/failed_ideas.jsonl")
     print("replay:", json.dumps(rep, ensure_ascii=False))
     topics_all = json.load(open(os.path.join(ROOT, "data/openalex/topics_all.json"), encoding="utf-8"))
     priors, default = topic_priors(os.path.join(ROOT, "cards/ncsa_cards.jsonl"),
@@ -138,7 +146,12 @@ def main():
                       os.path.join(HERE, "assayed_top50.csv"))
     for t in top:
         print(*t, sep=" | ")
-    json.dump({"replay": rep, "n_topics_with_priors": len(priors), "assayed_top20": top},
+    # Evaluation-type declaration (protocol addition 2026-11-03 §B):
+    #   replay      = relative_only  (ledger fields and weights were written from the same lessons; not independent)
+    #   radar K1/K3 = real_gt        (OpenAlex counts; labels are what actually emerged by T+3 / in NC-SA)
+    #   assayed pairs = no ground truth yet (prospective); only a kill test on data can grade them
+    json.dump({"evaluation_type": {"replay": "relative_only", "radar_K1_K3": "real_gt", "assayed_pairs": "prospective_no_gt"},
+               "replay": rep, "n_topics_with_priors": len(priors), "assayed_top20": top},
               open(os.path.join(HERE, "assay_summary.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 
 
