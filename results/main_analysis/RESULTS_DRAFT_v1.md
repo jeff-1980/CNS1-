@@ -66,7 +66,7 @@ Seventeen objects publish a value for their headline method that we could compar
 - **Paper values only:** for the 14 objects where the value comes from the paper itself (dropping the three README-only values), 9 lie within 2 pp.
 - **The six misses:**
   - two collapse-prone distillation students, 13 and 62 (17–19 pp below);
-  - one model that is far from reproduced, 25 (38 % against 99.5 % in its README);
+  - one large gap, 25 (last-epoch accuracy about 38 % in our runs against 99.5 % in its README; possible causes include environment, data version or a README setting that differs from ours);
   - three gaps of 3.8–5.1 pp: 77, 21 and 14. In 14 the two methods also swap rank.
 
 In the other 21 objects the paper was closed, the table was not accessible, or the value was given only in a figure, so no comparison is possible. Each headline-group choice is our reading of the paper and is listed in the CSV.
@@ -77,7 +77,7 @@ These cases are illustrations, not confirmatory evidence:
 - **25:** the last epoch reached about 38% against about 99.5% claimed in the README.
 - **76 DAGCN:** the author protocol gave 99.43 against 93.52 for the last epoch.
 - **82:** under minloss and budget50 the three method groups AT*, CAT*-TempScaling and CAT*-CPCS cannot be told apart, because the authors' code trains them identically through epoch 151. The ordering CAT > AT exists only from epoch 152 on.
-- **81 DARM:** the proposed method did not exceed ERM or Mixup under any protocol.
+- **81 DARM:** in our runs the proposed method scored at or below ERM and Mixup under all five protocols (single dataset setting, CWRU test environment 0).
 - **Rankings:** in three objects (14, 42, 30) the method ranking differs from the paper's: in 42 an ablation outranks the full model, and in 30 ablations beat the full model.
 
 ## 3.8 Disclosure in the wider literature (static coding; S3)
