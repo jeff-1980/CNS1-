@@ -35,9 +35,15 @@ MIN_N = 20       # node must have >= 20 articles in year T to be a candidate end
 SEED = 20261102
 
 
-def load(data):
+def load(data, ext=False):
     topics = json.load(open(os.path.join(data, "topics_all.json"), encoding="utf-8"))
     mech = json.load(open(os.path.join(data, "mech_topics.json"), encoding="utf-8"))
+    if ext:  # energy/transport extension (fetch_openalex.py --ext): these topics become source nodes too
+        fx = os.path.join(data, "ext_topics.json")
+        if os.path.exists(fx):
+            mech = sorted(set(mech) | set(json.load(open(fx, encoding="utf-8"))))
+        else:
+            print("WARNING --ext given but ext_topics.json missing; using mechanical topics only", flush=True)
     years = sorted(int(f[:-5]) for f in os.listdir(os.path.join(data, "totals")) if f.endswith(".json"))
     ids = sorted(topics)
     idx = {t: i for i, t in enumerate(ids)}
@@ -219,10 +225,11 @@ def main():
     ap_ = argparse.ArgumentParser()
     ap_.add_argument("--data", required=True)
     ap_.add_argument("--out", required=True)
+    ap_.add_argument("--ext", action="store_true", help="include energy/transport topics (ext_topics.json) as source nodes")
     a = ap_.parse_args()
     os.makedirs(a.out, exist_ok=True)
     t0 = time.time()
-    D = load(a.data)
+    D = load(a.data, ext=a.ext)
     yrs = D["years"]
     print(f"loaded {len(D['ids'])} topics, {len(D['mech_idx'])} mech, years {yrs[0]}-{yrs[-1]}", flush=True)
     S = {}
