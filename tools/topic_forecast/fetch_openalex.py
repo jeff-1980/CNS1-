@@ -28,6 +28,13 @@ import urllib.request
 API = "https://api.openalex.org"
 # Mechanical-related subfields (OpenAlex/ASJC ids). Names are printed at start for checking.
 MECH_SUBFIELDS = ["2210", "2211", "2209", "2213"]
+# Optional extension (--ext): energy and transport subfields; co-occurrence is fetched for their topics too.
+EXT_SUBFIELDS = {
+    "2100": "General Energy", "2102": "Energy Engineering and Power Technology", "2103": "Fuel Technology",
+    "2104": "Nuclear Energy and Engineering", "2105": "Renewable Energy, Sustainability and the Environment",
+    "2202": "Aerospace Engineering", "2203": "Automotive Engineering", "2212": "Ocean Engineering",
+    "3313": "Transportation",
+}
 # Nature/Science family journals used as the "high-profile" venue set (resolved by ISSN at run time).
 NS_ISSNS = {
     "Nature": "0028-0836", "Science": "0036-8075", "Nature Communications": "2041-1723",
@@ -133,6 +140,7 @@ def main():
     ap.add_argument("--y1", type=int, default=2025)
     ap.add_argument("--probe", action="store_true", help="~8 cheap requests: check subfields, topic counts, group_by paging")
     ap.add_argument("--max-requests", type=int, default=9500, help="stop politely after this many requests")
+    ap.add_argument("--ext", action="store_true", help="also fetch co-occurrence for energy/transport topics")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
     LOG = open(os.path.join(a.out, "fetch_log.txt"), "a", encoding="utf-8", buffering=1)
@@ -183,6 +191,11 @@ def main():
         mech = sorted(t for t, v in topics_all.items() if v["subfield"] in MECH_SUBFIELDS)
         save(os.path.join(a.out, "mech_topics.json"), mech)
         print(f"topics: {len(topics_all)} total, {len(mech)} mechanical", flush=True)
+        ext = []
+        if a.ext:
+            ext = sorted(t for t, v in topics_all.items() if v["subfield"] in EXT_SUBFIELDS)
+            save(os.path.join(a.out, "ext_topics.json"), ext)
+            print(f"ext topics (energy/transport): {len(ext)}", flush=True)
 
         f_ns = os.path.join(a.out, "ns_sources.json")
         if not os.path.exists(f_ns):
@@ -218,9 +231,10 @@ def main():
             os.replace(f_k3 + ".tmp", f_k3)
             print("K3 NC/SA mechanical works:", len(works), flush=True)
 
-        todo = [(y, t) for y in years for t in mech
+        focus = mech + ext  # mechanical first, then the extension
+        todo = [(y, t) for t in focus for y in years
                 if not os.path.exists(os.path.join(a.out, "cooc", str(y), f"{t}.json"))]
-        print(f"co-occurrence queries left: {len(todo)} of {len(years) * len(mech)}", flush=True)
+        print(f"co-occurrence queries left: {len(todo)} of {len(years) * len(focus)}", flush=True)
         for i, (y, t) in enumerate(todo):
             save(os.path.join(a.out, "cooc", str(y), f"{t}.json"),
                  group_counts(f"topics.id:{t},publication_year:{y},{art}"))
