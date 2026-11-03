@@ -1,0 +1,63 @@
+subfield 2210 Mechanical Engineering | field: Engineering
+subfield 2211 Mechanics of Materials | field: Engineering
+subfield 2209 Industrial and Manufacturing Engineering | field: Engineering
+subfield 2213 Safety, Risk, Reliability and Quality | field: Engineering
+topics: 4516 total, 137 mechanical
+NS-family sources resolved: 12 ['Communications Engineering', 'Nature', 'Nature Communications', 'Nature Computational Science', 'Nature Electronics', 'Nature Energy', 'Nature Machine Intelligence', 'Nature Materials', 'Nature Sustainability', 'Science', 'Science Advances', 'Science Robotics']
+totals + NS counts done
+co-occurrence queries left: 432 of 2466
+  0/432 requests_this_run=7
+OpenAlex budget exhausted for today; rerun tomorrow to resume. {"error":"Rate limit exceeded","message":"Insufficient budget. This request costs $0.0001 but you only have $0 remaining. Resets at midnight UTC. Need more? Add funds at https://openalex.org/pricing",
+2026-11-03 07:08:23 fetch budget exhausted (try 1), retry in 30 min
+subfield 2210 Mechanical Engineering | field: Engineering
+subfield 2211 Mechanics of Materials | field: Engineering
+subfield 2209 Industrial and Manufacturing Engineering | field: Engineering
+subfield 2213 Safety, Risk, Reliability and Quality | field: Engineering
+topics: 4516 total, 137 mechanical
+NS-family sources resolved: 12 ['Communications Engineering', 'Nature', 'Nature Communications', 'Nature Computational Science', 'Nature Electronics', 'Nature Energy', 'Nature Machine Intelligence', 'Nature Materials', 'Nature Sustainability', 'Science', 'Science Advances', 'Science Robotics']
+totals + NS counts done
+co-occurrence queries left: 333 of 2466
+OpenAlex budget exhausted for today; rerun tomorrow to resume. {"error":"Rate limit exceeded","message":"Insufficient budget. This request costs $0.0001 but you only have $0 remaining. Resets at midnight UTC. Need more? Add funds at https://openalex.org/pricing",
+2026-11-03 07:39:53 fetch budget exhausted (try 2), retry in 30 min
+subfield 2210 Mechanical Engineering | field: Engineering
+subfield 2211 Mechanics of Materials | field: Engineering
+subfield 2209 Industrial and Manufacturing Engineering | field: Engineering
+subfield 2213 Safety, Risk, Reliability and Quality | field: Engineering
+topics: 4516 total, 137 mechanical
+NS-family sources resolved: 12 ['Communications Engineering', 'Nature', 'Nature Communications', 'Nature Computational Science', 'Nature Electronics', 'Nature Energy', 'Nature Machine Intelligence', 'Nature Materials', 'Nature Sustainability', 'Science', 'Science Advances', 'Science Robotics']
+totals + NS counts done
+co-occurrence queries left: 333 of 2466
+  0/333 requests_this_run=9
+  200/333 requests_this_run=783
+ALL DONE requests_this_run= 1319
+loaded 4516 topics, 137 mech, years 2008-2025
+  T=2018: 538,939 candidate pairs, positives 80 (23s)
+  T=2011: 549,039 candidate pairs, positives 203 (23s)
+  T=2012: 546,438 candidate pairs, positives 110 (23s)
+  T=2013: 543,890 candidate pairs, positives 93 (23s)
+  T=2014: 541,705 candidate pairs, positives 78 (24s)
+  T=2015: 539,660 candidate pairs, positives 55 (24s)
+/home/jeffwork/tfvenv/lib/python3.12/site-packages/lightgbm/sklearn.py:1106: LGBMDeprecationWarning: The argument 'eval_set' is deprecated, use 'eval_X' and 'eval_y' instead.
+  eval_set = _validate_eval_set_Xy(eval_set=eval_set, eval_X=eval_X, eval_y=eval_y)
+val done, best_iter=127
+  T=2016: 538,085 candidate pairs, positives 52 (33s)
+  T=2017: 540,054 candidate pairs, positives 65 (33s)
+  T=2021: 534,623 candidate pairs, positives 48 (36s)
+     split     scorer      AUC       AP  P@100  P@1000
+ val_T2018      model 0.961521 0.081015   0.15   0.042
+ val_T2018  PA_degree 0.671344 0.000305   0.00   0.000
+ val_T2018    PA_size 0.510410 0.000155   0.00   0.000
+ val_T2018 AdamicAdar 0.709858 0.000399   0.00   0.000
+ val_T2018     growth 0.869622 0.001890   0.00   0.004
+test_T2021      model 0.993206 0.086968   0.12   0.032
+test_T2021  PA_degree 0.795173 0.000302   0.00   0.000
+test_T2021    PA_size 0.670363 0.000152   0.00   0.000
+test_T2021 AdamicAdar 0.832068 0.000395   0.00   0.001
+test_T2021     growth 0.919077 0.001079   0.00   0.000
+K1 PASS: model AUC 0.993 vs best PA 0.795; P@100 0.12 vs best baseline 0.00
+  T=2020: 536,076 candidate pairs, positives 44 (40s)
+K3: {'distinct_pairs': 1294, 'new_at_2020': 57, 'new_in_candidate_set': 57, 'mean_percentile_model': 0.8993179056962727, 'share_top10pct_model': 0.7192982456140351, 'mean_percentile_PA': 0.7955206632614136, 'share_top10pct_PA': 0.3333333333333333}
+  T=2019: 537,460 candidate pairs, positives 77 (41s)
+  T=2022: 533,166 candidate pairs, positives 55 (41s)
+DONE {"K1_pass": true, "best_iter": 127, "K3": {"distinct_pairs": 1294, "new_at_2020": 57, "new_in_candidate_set": 57, "mean_percentile_model": 0.8993179056962727, "share_top10pct_model": 0.7192982456140351, "mean_percentile_PA": 0.7955206632614136, "share_top10pct_PA": 0.3333333333333333}, "n_topics": 4516, "n_mech": 137, "years": [2008, 2025], "rules": {"NEW_MAX": 3, "HIT": 10, "H": 3, "MIN_N": 20}, "runtime_s": 50}
+EXIT=0

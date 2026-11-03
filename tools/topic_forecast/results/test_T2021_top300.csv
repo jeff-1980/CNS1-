@@ -1,0 +1,301 @@
+a,b,T,score,hit,a_name,b_name
+T12111,T11714,2021,0.4808569411616455,1,Industrial Vision Systems and Defect Detection,Multimodal Machine Learning Applications
+T13715,T11714,2021,0.4334464426937415,0,Power Line Inspection Robots,Multimodal Machine Learning Applications
+T12111,T14510,2021,0.43096208957508436,0,Industrial Vision Systems and Defect Detection,Medical Imaging and Analysis
+T11143,T10097,2021,0.410960115273434,0,High Entropy Alloys Studies,Luminescence Properties of Advanced Materials
+T10763,T10682,2021,0.4066658602080546,0,Digital Transformation in Industry,Quantum Computing Algorithms and Architecture
+T10763,T12535,2021,0.3726217578397664,0,Digital Transformation in Industry,Machine Learning and Data Classification
+T11143,T12299,2021,0.36685002371965025,1,High Entropy Alloys Studies,Radiation Shielding Materials Analysis
+T10763,T11491,2021,0.3635487941405716,0,Digital Transformation in Industry,CAR-T cell therapy research
+T10763,T14436,2021,0.3605752862959857,0,Digital Transformation in Industry,Employee Performance and Leadership
+T12111,T11273,2021,0.3508440439511721,0,Industrial Vision Systems and Defect Detection,Advanced Graph Neural Networks
+T12111,T11206,2021,0.3287390348561511,0,Industrial Vision Systems and Defect Detection,Model Reduction and Neural Networks
+T13287,T10462,2021,0.3178257602744639,0,Robotic Process Automation Applications,Reinforcement Learning in Robotics
+T10763,T11052,2021,0.31212399914373334,0,Digital Transformation in Industry,Energy Load and Power Forecasting
+T11143,T11366,2021,0.30948796909274123,0,High Entropy Alloys Studies,Elasticity and Material Modeling
+T11143,T10661,2021,0.298772476588981,0,High Entropy Alloys Studies,biodegradable polymer synthesis and properties
+T13027,T13181,2021,0.2940795664038159,0,Applied Advanced Technologies,Economic and Technological Systems Analysis
+T13045,T13146,2021,0.28300608933923616,0,Industrial Engineering and Technologies,Sustainable Finance and Green Bonds
+T10705,T11689,2021,0.2614582253890367,0,Additive Manufacturing Materials and Processes,Adversarial Robustness in Machine Learning
+T11143,T11351,2021,0.2562006302315664,0,High Entropy Alloys Studies,Catalysis and Hydrodesulfurization Studies
+T11143,T14076,2021,0.2549394759820232,0,High Entropy Alloys Studies,Material Properties and Failure Mechanisms
+T11143,T11798,2021,0.24646892329845374,0,High Entropy Alloys Studies,Optimal Experimental Design Methods
+T11145,T11206,2021,0.2439055133642287,0,Epoxy Resin Curing Processes,Model Reduction and Neural Networks
+T11143,T10732,2021,0.23751985311404505,1,High Entropy Alloys Studies,Laser Material Processing Techniques
+T10763,T10468,2021,0.23439016143320474,1,Digital Transformation in Industry,Photovoltaic System Optimization Techniques
+T13287,T11819,2021,0.23053443649599437,0,Robotic Process Automation Applications,Data-Driven Disease Surveillance
+T13287,T13398,2021,0.22259437521064002,0,Robotic Process Automation Applications,Data Analysis with R
+T13027,T12594,2021,0.2216689778093612,0,Applied Advanced Technologies,Collaboration in agile enterprises
+T11143,T10245,2021,0.21468272387276283,0,High Entropy Alloys Studies,Metamaterials and Metasurfaces Applications
+T11143,T13371,2021,0.18835276723617383,0,High Entropy Alloys Studies,Military Defense Systems Analysis
+T10763,T11115,2021,0.18521024836502345,0,Digital Transformation in Industry,Topology Optimization in Engineering
+T14368,T11689,2021,0.18220260525515586,0,Evaluation and Optimization Models,Adversarial Robustness in Machine Learning
+T10763,T10938,2021,0.17959925537046303,0,Digital Transformation in Industry,Phase Change Materials Research
+T10763,T13702,2021,0.17547340918461832,0,Digital Transformation in Industry,Machine Learning in Healthcare
+T11143,T11825,2021,0.17229484395444597,1,High Entropy Alloys Studies,Catalysis and Oxidation Reactions
+T14368,T13055,2021,0.16928530057674895,0,Evaluation and Optimization Models,Global Security and Public Health
+T11143,T10461,2021,0.15831366039894956,1,High Entropy Alloys Studies,Gas Sensing Nanomaterials and Sensors
+T10763,T13499,2021,0.15383292862628134,0,Digital Transformation in Industry,Economic Systems and Logistics Management
+T10386,T11206,2021,0.15365047569116566,0,Microstructure and Mechanical Properties of Steels,Model Reduction and Neural Networks
+T13027,T13050,2021,0.1501761541195181,0,Applied Advanced Technologies,Oil and Gas Production Techniques
+T14368,T11273,2021,0.14901181527622,1,Evaluation and Optimization Models,Advanced Graph Neural Networks
+T10763,T11202,2021,0.1481326059060709,0,Digital Transformation in Industry,Cavitation Phenomena in Pumps
+T10705,T10810,2021,0.14617687266907187,0,Additive Manufacturing Materials and Processes,Polymer composites and self-healing
+T10763,T10211,2021,0.14557585615049182,0,Digital Transformation in Industry,Computational Drug Discovery Methods
+T12111,T10247,2021,0.14152175346445775,0,Industrial Vision Systems and Defect Detection,Perovskite Materials and Applications
+T12111,T10664,2021,0.1406215412800819,0,Industrial Vision Systems and Defect Detection,Sentiment Analysis and Opinion Mining
+T13027,T13482,2021,0.1402599394054396,0,Applied Advanced Technologies,Engineering Education and Technology
+T11143,T11009,2021,0.13681478726951626,0,High Entropy Alloys Studies,Catalysis for Biomass Conversion
+T11741,T11307,2021,0.1365657788494769,0,Flexible and Reconfigurable Manufacturing Systems,Domain Adaptation and Few-Shot Learning
+T11143,T10409,2021,0.13652200642416426,1,High Entropy Alloys Studies,Fuel Cells and Related Materials
+T11143,T12078,2021,0.13610433212906256,0,High Entropy Alloys Studies,Environmental remediation with nanomaterials
+T11143,T10729,2021,0.12778989403677343,0,High Entropy Alloys Studies,Electrospun Nanofibers in Biomedical Applications
+T13715,T10812,2021,0.126871536333454,0,Power Line Inspection Robots,Human Pose and Action Recognition
+T13027,T13432,2021,0.12478693796162543,0,Applied Advanced Technologies,Environmental Sustainability and Technology
+T13923,T12190,2021,0.12466293926964221,0,Nuclear and radioactivity studies,Innovations in Concrete and Construction Materials
+T13045,T11988,2021,0.12340600571728812,0,Industrial Engineering and Technologies,Sustainable Building Design and Assessment
+T12139,T10462,2021,0.122894963511455,0,Advanced Thermodynamic Systems and Engines,Reinforcement Learning in Robotics
+T11143,T12071,2021,0.1216572620066927,0,High Entropy Alloys Studies,Marine Biology and Environmental Chemistry
+T13045,T13382,2021,0.12034962188499529,0,Industrial Engineering and Technologies,Robotics and Automated Systems
+T12597,T11948,2021,0.11852355214107275,0,Fire Detection and Safety Systems,Machine Learning in Materials Science
+T11143,T10247,2021,0.11622673484905027,0,High Entropy Alloys Studies,Perovskite Materials and Applications
+T11856,T10775,2021,0.1154851570241368,0,Thermography and Photoacoustic Techniques,Generative Adversarial Networks and Image Synthesis
+T13287,T14519,2021,0.11504400039391371,0,Robotic Process Automation Applications,Innovations in Education and Learning Technologies
+T10705,T10220,2021,0.11349841424164542,0,Additive Manufacturing Materials and Processes,Machine Fault Diagnosis Techniques
+T14368,T10273,2021,0.1129343081076315,0,Evaluation and Optimization Models,IoT and Edge/Fog Computing
+T10967,T13331,2021,0.11183955784878043,0,Carbon Dioxide Capture Technologies,Energy and Environmental Sustainability
+T13045,T13038,2021,0.11130177124994976,0,Industrial Engineering and Technologies,Internet of Things and AI
+T10763,T13398,2021,0.11071196701250531,0,Digital Transformation in Industry,Data Analysis with R
+T11143,T11407,2021,0.11068284612436935,0,High Entropy Alloys Studies,Innovative Microfluidic and Catalytic Techniques Innovation
+T13287,T10912,2021,0.10916158610462809,0,Robotic Process Automation Applications,Telemedicine and Telehealth Implementation
+T11362,T10753,2021,0.10720103264489898,1,Membrane Separation and Gas Transport,Microplastics and Plastic Pollution
+T13027,T10986,2021,0.10432728003263642,0,Applied Advanced Technologies,RFID technology advancements
+T10763,T10438,2021,0.10357934695492955,1,Digital Transformation in Industry,"Energy, Environment, Economic Growth"
+T11230,T11948,2021,0.10326425650725683,0,Innovative Energy Harvesting Technologies,Machine Learning in Materials Science
+T11774,T11206,2021,0.09991862024939924,0,Adsorption and Cooling Systems,Model Reduction and Neural Networks
+T11143,T10660,2021,0.09807884152625672,0,High Entropy Alloys Studies,Conducting polymers and applications
+T12111,T13287,2021,0.09709271545932732,0,Industrial Vision Systems and Defect Detection,Robotic Process Automation Applications
+T13027,T12698,2021,0.0967484275531888,0,Applied Advanced Technologies,3D Modeling in Geospatial Applications
+T12111,T14216,2021,0.0943416880628903,0,Industrial Vision Systems and Defect Detection,Multimedia Learning Systems
+T12169,T11307,2021,0.0934756716585838,1,Non-Destructive Testing Techniques,Domain Adaptation and Few-Shot Learning
+T11143,T10102,2021,0.09237931266068558,0,High Entropy Alloys Studies,scientometrics and bibliometrics research
+T10707,T10775,2021,0.09233061649478093,0,Cellular and Composite Structures,Generative Adversarial Networks and Image Synthesis
+T11143,T11907,2021,0.0907642071621679,0,High Entropy Alloys Studies,Copper-based nanomaterials and applications
+T11529,T12916,2021,0.09011095005414928,0,Refrigeration and Air Conditioning Technologies,COVID-19 impact on air quality
+T11941,T11206,2021,0.08828898374454662,0,Power System Reliability and Maintenance,Model Reduction and Neural Networks
+T13045,T12922,2021,0.08649732692012911,0,Industrial Engineering and Technologies,Business and Economic Development
+T11091,T10462,2021,0.08591384738230035,0,Extraction and Separation Processes,Reinforcement Learning in Robotics
+T10967,T13045,2021,0.08379350162783268,0,Carbon Dioxide Capture Technologies,Industrial Engineering and Technologies
+T10705,T14260,2021,0.08265401604516034,0,Additive Manufacturing Materials and Processes,Impact of AI and Big Data on Business and Society
+T11126,T12026,2021,0.08207374363603928,0,Metallurgical Processes and Thermodynamics,Explainable Artificial Intelligence (XAI)
+T11143,T10472,2021,0.08193907813681287,0,High Entropy Alloys Studies,Semiconductor materials and devices
+T12111,T14414,2021,0.08147042760177084,0,Industrial Vision Systems and Defect Detection,Artificial Intelligence in Education
+T11774,T12190,2021,0.0792825076062162,0,Adsorption and Cooling Systems,Innovations in Concrete and Construction Materials
+T13287,T12662,2021,0.07898637760918736,0,Robotic Process Automation Applications,Digitalization and Economic Development in Agriculture
+T11143,T11877,2021,0.07891514671179609,1,High Entropy Alloys Studies,Iron oxide chemistry and applications
+T11143,T10024,2021,0.07868404909773297,0,High Entropy Alloys Studies,TiO2 Photocatalysis and Solar Cells
+T11317,T12916,2021,0.07764267401359595,0,Fire dynamics and safety research,COVID-19 impact on air quality
+T11143,T10320,2021,0.07704791849211894,0,High Entropy Alloys Studies,Neural Networks and Applications
+T12080,T11307,2021,0.07693330181378336,0,Injection Molding Process and Properties,Domain Adaptation and Few-Shot Learning
+T11941,T12026,2021,0.07628976553768425,0,Power System Reliability and Maintenance,Explainable Artificial Intelligence (XAI)
+T13287,T13411,2021,0.07604009372603586,0,Robotic Process Automation Applications,Labor Market and Education
+T10763,T11365,2021,0.07603601921445084,0,Digital Transformation in Industry,Islamic Finance and Banking Studies
+T10763,T12546,2021,0.07547237113439535,0,Digital Transformation in Industry,Smart Parking Systems Research
+T13045,T12126,2021,0.07474775032134827,0,Industrial Engineering and Technologies,Maritime Transport Emissions and Efficiency
+T11201,T10462,2021,0.07373874201629255,0,Metallurgy and Material Forming,Reinforcement Learning in Robotics
+T10635,T10810,2021,0.07229383976301042,0,Hydraulic Fracturing and Reservoir Analysis,Polymer composites and self-healing
+T13045,T12129,2021,0.07177211166177903,0,Industrial Engineering and Technologies,Global Energy Security and Policy
+T11317,T10462,2021,0.0702895767188105,0,Fire dynamics and safety research,Reinforcement Learning in Robotics
+T12406,T10775,2021,0.06985934726766116,0,IoT and GPS-based Vehicle Safety Systems,Generative Adversarial Networks and Image Synthesis
+T10763,T12306,2021,0.06920863730523939,0,Digital Transformation in Industry,Urban and Freight Transport Logistics
+T11565,T11948,2021,0.06843259842667367,0,Thermoelastic and Magnetoelastic Phenomena,Machine Learning in Materials Science
+T12425,T11206,2021,0.06730597274076448,0,Industrial Gas Emission Control,Model Reduction and Neural Networks
+T11774,T10338,2021,0.06709605585300678,0,Adsorption and Cooling Systems,Advanced Sensor and Energy Harvesting Materials
+T10938,T10320,2021,0.06699864288306327,0,Phase Change Materials Research,Neural Networks and Applications
+T12984,T13027,2021,0.0664054821093392,0,Transport and Logistics Innovations,Applied Advanced Technologies
+T10705,T10653,2021,0.06566534218542867,0,Additive Manufacturing Materials and Processes,Robot Manipulation and Learning
+T10705,T11774,2021,0.06558654928131019,0,Additive Manufacturing Materials and Processes,Adsorption and Cooling Systems
+T14392,T11652,2021,0.06513860046433692,0,Geoscience and Mining Technology,Imbalanced Data Classification Techniques
+T10635,T12794,2021,0.06505352326355128,0,Hydraulic Fracturing and Reservoir Analysis,Adaptive Dynamic Programming Control
+T11223,T10682,2021,0.06424744342866141,0,Maritime Ports and Logistics,Quantum Computing Algorithms and Architecture
+T11143,T10074,2021,0.06413570594581695,0,High Entropy Alloys Studies,Carbon Nanotubes in Composites
+T10514,T10462,2021,0.06372045997788316,0,Numerical methods in engineering,Reinforcement Learning in Robotics
+T13287,T14240,2021,0.06327423514325561,0,Robotic Process Automation Applications,E-Learning and COVID-19
+T11799,T10753,2021,0.06319864562046651,0,"Adhesion, Friction, and Surface Interactions",Microplastics and Plastic Pollution
+T13027,T13535,2021,0.06299379832168032,0,Applied Advanced Technologies,Wireless Sensor Networks and IoT
+T11856,T10753,2021,0.06299323189766357,0,Thermography and Photoacoustic Techniques,Microplastics and Plastic Pollution
+T11741,T11948,2021,0.06296051230037121,0,Flexible and Reconfigurable Manufacturing Systems,Machine Learning in Materials Science
+T10938,T10990,2021,0.06288775153498567,0,Phase Change Materials Research,Infection Control and Ventilation
+T11143,T11565,2021,0.06263566607593155,0,High Entropy Alloys Studies,Thermoelastic and Magnetoelastic Phenomena
+T10705,T10281,2021,0.06249675918552231,0,Additive Manufacturing Materials and Processes,Advanced Battery Materials and Technologies
+T12111,T10764,2021,0.06239792182047915,1,Industrial Vision Systems and Defect Detection,Privacy-Preserving Technologies in Data
+T13645,T11206,2021,0.062075400598799416,0,Thermodynamic and Structural Properties of Metals and Alloys,Model Reduction and Neural Networks
+T11143,T10593,2021,0.061815326454162094,0,High Entropy Alloys Studies,Bacterial biofilms and quorum sensing
+T14368,T12958,2021,0.0613059534397066,0,Evaluation and Optimization Models,Digital Economy and Transformation
+T11143,T10624,2021,0.0611297508215859,0,High Entropy Alloys Studies,Silicon and Solar Cell Technologies
+T10763,T10409,2021,0.06090134413305558,0,Digital Transformation in Industry,Fuel Cells and Related Materials
+T10763,T12583,2021,0.06025459715728408,0,Digital Transformation in Industry,Food Waste Reduction and Sustainability
+T11774,T12838,2021,0.060222636895136954,0,Adsorption and Cooling Systems,Photovoltaic Systems and Sustainability
+T11143,T10212,2021,0.05988129702601866,0,High Entropy Alloys Studies,Electrochemical sensors and biosensors
+T12111,T11133,2021,0.05933588208165588,0,Industrial Vision Systems and Defect Detection,UAV Applications and Optimization
+T11159,T11307,2021,0.05930943793723603,0,Manufacturing Process and Optimization,Domain Adaptation and Few-Shot Learning
+T11143,T12141,2021,0.05919558239446993,0,High Entropy Alloys Studies,Fluid Dynamics and Thin Films
+T12111,T13398,2021,0.05868323982080382,0,Industrial Vision Systems and Defect Detection,Data Analysis with R
+T10763,T11714,2021,0.05819662335638275,0,Digital Transformation in Industry,Multimodal Machine Learning Applications
+T13287,T11396,2021,0.05818379198835948,0,Robotic Process Automation Applications,Artificial Intelligence in Healthcare
+T11143,T10131,2021,0.05784804528605592,0,High Entropy Alloys Studies,Gold and Silver Nanoparticles Synthesis and Applications
+T11143,T10623,2021,0.057300742115666,0,High Entropy Alloys Studies,Thin-Film Transistor Technologies
+T10834,T10775,2021,0.05720318673352736,0,Welding Techniques and Residual Stresses,Generative Adversarial Networks and Image Synthesis
+T11741,T11273,2021,0.05704219455887546,0,Flexible and Reconfigurable Manufacturing Systems,Advanced Graph Neural Networks
+T13027,T13062,2021,0.05703010666426276,0,Applied Advanced Technologies,Cognitive Computing and Networks
+T12784,T12302,2021,0.05686977292172429,0,Modular Robots and Swarm Intelligence,Advanced Nanomaterials in Catalysis
+T12406,T10812,2021,0.05635202199970725,0,IoT and GPS-based Vehicle Safety Systems,Human Pose and Action Recognition
+T13287,T12519,2021,0.05620061864608317,0,Robotic Process Automation Applications,Cybercrime and Law Enforcement Studies
+T10763,T11343,2021,0.055649800898818394,0,Digital Transformation in Industry,Power Transformer Diagnostics and Insulation
+T13027,T13975,2021,0.05532726326726152,0,Applied Advanced Technologies,"Energy, Economy, and Technology Trends"
+T13045,T11007,2021,0.05507363269534369,0,Industrial Engineering and Technologies,Hybrid Renewable Energy Systems
+T13045,T14423,2021,0.05482208323029898,0,Industrial Engineering and Technologies,Military Technology and Strategies
+T13045,T12895,2021,0.054759188832234906,0,Industrial Engineering and Technologies,Environmental law and policy
+T13045,T13975,2021,0.054727578777373304,0,Industrial Engineering and Technologies,"Energy, Economy, and Technology Trends"
+T11143,T10782,2021,0.05426303870728199,0,High Entropy Alloys Studies,Nanoplatforms for cancer theranostics
+T11856,T11307,2021,0.054126803196363725,0,Thermography and Photoacoustic Techniques,Domain Adaptation and Few-Shot Learning
+T10763,T13429,2021,0.054034903895144315,0,Digital Transformation in Industry,Electricity Theft Detection Techniques
+T13027,T10102,2021,0.05378511551033017,0,Applied Advanced Technologies,scientometrics and bibliometrics research
+T10763,T12724,2021,0.05364788267934379,0,Digital Transformation in Industry,Water-Energy-Food Nexus Studies
+T11143,T12524,2021,0.053591284704264504,0,High Entropy Alloys Studies,Chemical Synthesis and Characterization
+T11837,T11273,2021,0.053566191882006814,0,Iron and Steelmaking Processes,Advanced Graph Neural Networks
+T12581,T11206,2021,0.05350435007766768,0,Engineering Structural Analysis Methods,Model Reduction and Neural Networks
+T11143,T11799,2021,0.05313201769652362,0,High Entropy Alloys Studies,"Adhesion, Friction, and Surface Interactions"
+T11774,T11784,2021,0.05302330849420622,0,Adsorption and Cooling Systems,CO2 Reduction Techniques and Catalysts
+T10763,T11325,2021,0.05241340360369965,0,Digital Transformation in Industry,Inertial Sensor and Navigation
+T10763,T14171,2021,0.05189388064651403,0,Digital Transformation in Industry,"Education, Law, and Society"
+T10633,T11652,2021,0.05145766067212801,0,Metallic Glasses and Amorphous Alloys,Imbalanced Data Classification Techniques
+T12111,T13038,2021,0.05103949484921881,0,Industrial Vision Systems and Defect Detection,Internet of Things and AI
+T10763,T10331,2021,0.05099372824198395,0,Digital Transformation in Industry,Video Surveillance and Tracking Methods
+T13287,T11147,2021,0.05005244604750214,0,Robotic Process Automation Applications,Misinformation and Its Impacts
+T11138,T10462,2021,0.05005125804559994,0,Tribology and Lubrication Engineering,Reinforcement Learning in Robotics
+T11317,T10220,2021,0.04989212489793643,0,Fire dynamics and safety research,Machine Fault Diagnosis Techniques
+T12362,T12529,2021,0.04943892052056558,0,Tribology and Wear Analysis,Ga2O3 and related materials
+T10705,T11754,2021,0.04938192325808153,0,Additive Manufacturing Materials and Processes,SARS-CoV-2 detection and testing
+T10370,T14240,2021,0.049346188969732516,0,Traffic and Road Safety,E-Learning and COVID-19
+T13298,T10247,2021,0.04871309090378775,0,Solar Energy Systems and Technologies,Perovskite Materials and Applications
+T10763,T13341,2021,0.048539028423008716,1,Digital Transformation in Industry,Belt Conveyor Systems Engineering
+T10763,T11444,2021,0.04841932043543505,0,Digital Transformation in Industry,Electromagnetic Compatibility and Noise Suppression
+T13295,T13702,2021,0.04826923575986657,0,Safety Systems Engineering in Autonomy,Machine Learning in Healthcare
+T11223,T10753,2021,0.04802912329283855,0,Maritime Ports and Logistics,Microplastics and Plastic Pollution
+T11856,T12026,2021,0.047423673028156824,0,Thermography and Photoacoustic Techniques,Explainable Artificial Intelligence (XAI)
+T10763,T10775,2021,0.04699357812064794,0,Digital Transformation in Industry,Generative Adversarial Networks and Image Synthesis
+T11583,T11948,2021,0.04688945038830679,0,Advanced Measurement and Metrology Techniques,Machine Learning in Materials Science
+T10938,T12126,2021,0.046820018181401024,0,Phase Change Materials Research,Maritime Transport Emissions and Efficiency
+T11143,T12085,2021,0.046731616557052796,0,High Entropy Alloys Studies,Collagen: Extraction and Characterization
+T14091,T14240,2021,0.04659459935254741,0,Industrial and Mining Safety,E-Learning and COVID-19
+T13027,T14474,2021,0.04652320029782218,0,Applied Advanced Technologies,Industrial Technology and Control Systems
+T10763,T14213,2021,0.046435395553925146,0,Digital Transformation in Industry,Global Politics and Economy
+T11138,T10653,2021,0.04641819429074888,0,Tribology and Lubrication Engineering,Robot Manipulation and Learning
+T11230,T11458,2021,0.04573713839803668,0,Innovative Energy Harvesting Technologies,Advanced Wireless Communication Technologies
+T10551,T11652,2021,0.045713781294945285,0,Scheduling and Optimization Algorithms,Imbalanced Data Classification Techniques
+T10763,T12932,2021,0.04547020975037358,0,Digital Transformation in Industry,Powder Metallurgy Techniques and Materials
+T10763,T12565,2021,0.04538749311652284,0,Digital Transformation in Industry,Physics and Engineering Research Articles
+T11159,T12026,2021,0.045235563190420436,0,Manufacturing Process and Optimization,Explainable Artificial Intelligence (XAI)
+T12111,T12651,2021,0.04507032593155359,0,Industrial Vision Systems and Defect Detection,Halal products and consumer behavior
+T14091,T11652,2021,0.04461364282449594,0,Industrial and Mining Safety,Imbalanced Data Classification Techniques
+T12907,T11206,2021,0.04449502700407806,0,Mechanical Engineering and Vibrations Research,Model Reduction and Neural Networks
+T12111,T14368,2021,0.04423811463582381,0,Industrial Vision Systems and Defect Detection,Evaluation and Optimization Models
+T13045,T10768,2021,0.044199017024498514,0,Industrial Engineering and Technologies,Electric Vehicles and Infrastructure
+T13027,T11023,2021,0.04418608457400428,0,Applied Advanced Technologies,Prosthetics and Rehabilitation Robotics
+T12282,T11652,2021,0.044122637307206045,0,Mineral Processing and Grinding,Imbalanced Data Classification Techniques
+T10568,T10462,2021,0.04411964530018775,0,Thermodynamic and Exergetic Analyses of Power and Cooling Systems,Reinforcement Learning in Robotics
+T12111,T12406,2021,0.044068814924419025,0,Industrial Vision Systems and Defect Detection,IoT and GPS-based Vehicle Safety Systems
+T10763,T12838,2021,0.04403124427003833,0,Digital Transformation in Industry,Photovoltaic Systems and Sustainability
+T11143,T10478,2021,0.04389285566730039,0,High Entropy Alloys Studies,Diamond and Carbon-based Materials Research
+T12111,T13027,2021,0.04384025112695151,0,Industrial Vision Systems and Defect Detection,Applied Advanced Technologies
+T13045,T14260,2021,0.043535133175487545,0,Industrial Engineering and Technologies,Impact of AI and Big Data on Business and Society
+T13045,T13909,2021,0.04350931118906369,0,Industrial Engineering and Technologies,Environmental Quality and Pollution
+T12111,T10028,2021,0.0433655098303774,0,Industrial Vision Systems and Defect Detection,Topic Modeling
+T11837,T11652,2021,0.043264437229854714,0,Iron and Steelmaking Processes,Imbalanced Data Classification Techniques
+T13027,T11206,2021,0.043250275165722905,0,Applied Advanced Technologies,Model Reduction and Neural Networks
+T10763,T13194,2021,0.04317971597957391,0,Digital Transformation in Industry,ICT in Developing Communities
+T11143,T10059,2021,0.043068765440915056,0,High Entropy Alloys Studies,Bone Tissue Engineering Materials
+T10370,T10775,2021,0.04213820707167628,0,Traffic and Road Safety,Generative Adversarial Networks and Image Synthesis
+T13715,T11307,2021,0.042099231533464836,1,Power Line Inspection Robots,Domain Adaptation and Few-Shot Learning
+T10938,T12503,2021,0.04202961775347486,0,Phase Change Materials Research,Social Acceptance of Renewable Energy
+T11143,T10346,2021,0.041944075430818406,0,High Entropy Alloys Studies,Magnetic confinement fusion research
+T11143,T10859,2021,0.041903254970876096,0,High Entropy Alloys Studies,Polymer Surface Interaction Studies
+T13287,T11365,2021,0.04189978840973713,1,Robotic Process Automation Applications,Islamic Finance and Banking Studies
+T13045,T12165,2021,0.041867546493074746,0,Industrial Engineering and Technologies,Environmental Sustainability and Education
+T11143,T10321,2021,0.04163285283739793,0,High Entropy Alloys Studies,Quantum Dots Synthesis And Properties
+T10938,T12163,2021,0.041507908572834026,0,Phase Change Materials Research,Aerosol Filtration and Electrostatic Precipitation
+T10399,T11206,2021,0.04149750025565373,0,Hydrocarbon exploration and reservoir analysis,Model Reduction and Neural Networks
+T11687,T13038,2021,0.041496208441508434,0,Teleoperation and Haptic Systems,Internet of Things and AI
+T13584,T11206,2021,0.0412682783050811,0,Coal Combustion and Slurry Processing,Model Reduction and Neural Networks
+T14368,T10471,2021,0.041210289031353986,0,Evaluation and Optimization Models,Climate Change Policy and Economics
+T11046,T12026,2021,0.04117096296178191,0,Geotechnical Engineering and Analysis,Explainable Artificial Intelligence (XAI)
+T11143,T12529,2021,0.04116635247298613,0,High Entropy Alloys Studies,Ga2O3 and related materials
+T10707,T11206,2021,0.041122396918162135,1,Cellular and Composite Structures,Model Reduction and Neural Networks
+T12111,T12292,2021,0.04109602162655614,0,Industrial Vision Systems and Defect Detection,Graph Theory and Algorithms
+T10672,T14260,2021,0.04102881037659121,0,Design Education and Practice,Impact of AI and Big Data on Business and Society
+T13045,T12414,2021,0.04088298591609013,0,Industrial Engineering and Technologies,Coastal and Marine Management
+T14368,T10764,2021,0.04080020222974048,0,Evaluation and Optimization Models,Privacy-Preserving Technologies in Data
+T11126,T11273,2021,0.04077898816119964,0,Metallurgical Processes and Thermodynamics,Advanced Graph Neural Networks
+T11687,T13084,2021,0.04053766863103912,0,Teleoperation and Haptic Systems,Education during COVID-19 pandemic
+T10763,T14291,2021,0.040380993085624456,0,Digital Transformation in Industry,Indonesian Legal and Regulatory Studies
+T10763,T13746,2021,0.04027895786524133,0,Digital Transformation in Industry,Mechanical Systems and Engineering
+T13923,T10036,2021,0.03991985115488421,0,Nuclear and radioactivity studies,Advanced Neural Network Applications
+T10161,T10018,2021,0.03987165177017236,0,Rock Mechanics and Modeling,Advancements in Battery Materials
+T12111,T11536,2021,0.039684891651097134,0,Industrial Vision Systems and Defect Detection,Consumer Retail Behavior Studies
+T11143,T11989,2021,0.03961179590538976,0,High Entropy Alloys Studies,Oxidative Organic Chemistry Reactions
+T10763,T10747,2021,0.03923284614405392,0,Digital Transformation in Industry,Disaster Management and Resilience
+T13045,T13278,2021,0.038766182185352153,0,Industrial Engineering and Technologies,Economic and Business Development Strategies
+T10763,T12597,2021,0.03861290956774882,0,Digital Transformation in Industry,Fire Detection and Safety Systems
+T11091,T10036,2021,0.03852685220478501,0,Extraction and Separation Processes,Advanced Neural Network Applications
+T11201,T12046,2021,0.038327215127179876,0,Metallurgy and Material Forming,MXene and MAX Phase Materials
+T11138,T10438,2021,0.03825087335615172,0,Tribology and Lubrication Engineering,"Energy, Environment, Economic Growth"
+T10551,T12026,2021,0.037986543741870736,0,Scheduling and Optimization Algorithms,Explainable Artificial Intelligence (XAI)
+T11837,T10462,2021,0.03776990736202712,1,Iron and Steelmaking Processes,Reinforcement Learning in Robotics
+T10763,T13643,2021,0.03771996438494259,0,Digital Transformation in Industry,Artificial Intelligence in Law
+T10567,T11007,2021,0.03761187581718472,0,Vehicle Routing Optimization Methods,Hybrid Renewable Energy Systems
+T11143,T12808,2021,0.03749943873213936,0,High Entropy Alloys Studies,Ferroelectric and Negative Capacitance Devices
+T10763,T12759,2021,0.037262267650522395,0,Digital Transformation in Industry,Vehicle Noise and Vibration Control
+T13027,T14222,2021,0.03706619109125666,0,Applied Advanced Technologies,Knowledge Management and Technology
+T10938,T12611,2021,0.03692041261140915,0,Phase Change Materials Research,Neural Networks and Reservoir Computing
+T10763,T11920,2021,0.03680734534190613,0,Digital Transformation in Industry,Pulsed Power Technology Applications
+T10763,T12692,2021,0.036804705857900334,0,Digital Transformation in Industry,Magnetic Field Sensors Techniques
+T10850,T12046,2021,0.03677691791333388,0,Heat Transfer and Boiling Studies,MXene and MAX Phase Materials
+T12111,T13271,2021,0.036617818916690296,0,Industrial Vision Systems and Defect Detection,Ukrainian Legal and Forensic Studies
+T11143,T11362,2021,0.036608589037803126,0,High Entropy Alloys Studies,Membrane Separation and Gas Transport
+T12111,T10530,2021,0.03644506667573151,0,Industrial Vision Systems and Defect Detection,Magnesium Alloys: Properties and Applications
+T12111,T11636,2021,0.036436271553042326,0,Industrial Vision Systems and Defect Detection,Artificial Intelligence in Healthcare and Education
+T11143,T12536,2021,0.036384133866505776,0,High Entropy Alloys Studies,Topological and Geometric Data Analysis
+T11143,T12425,2021,0.03617799231952207,0,High Entropy Alloys Studies,Industrial Gas Emission Control
+T11558,T10775,2021,0.03605452819789391,0,Composite Material Mechanics,Generative Adversarial Networks and Image Synthesis
+T12111,T11224,2021,0.035771871244543285,0,Industrial Vision Systems and Defect Detection,Electromagnetic wave absorption materials
+T10763,T10205,2021,0.03576844513012404,0,Digital Transformation in Industry,Advanced Fiber Optic Sensors
+T12111,T11196,2021,0.035761758243231224,0,Industrial Vision Systems and Defect Detection,Non-Invasive Vital Sign Monitoring
+T13295,T11652,2021,0.035749220755750204,0,Safety Systems Engineering in Autonomy,Imbalanced Data Classification Techniques
+T12201,T13386,2021,0.03571020410518909,0,Agricultural Engineering and Mechanization,Educational Methods and Teacher Development
+T11143,T10690,2021,0.035620293423331326,0,High Entropy Alloys Studies,Vibration Control and Rheological Fluids
+T13027,T14042,2021,0.035520309869907625,0,Applied Advanced Technologies,Technology and Security Systems
+T10705,T11711,2021,0.035453872562222766,0,Additive Manufacturing Materials and Processes,COVID-19 Pandemic Impacts
+T13113,T13053,2021,0.035401682831344615,0,Engineering Technology and Methodologies,SMEs Development and Digital Marketing
+T10763,T13732,2021,0.035399159528679155,0,Digital Transformation in Industry,"Aerospace, Electronics, Mathematical Modeling"
+T10763,T12643,2021,0.03530131842128262,0,Digital Transformation in Industry,Sustainability and Ecological Systems Analysis
+T10763,T13049,2021,0.03488509619523616,0,Digital Transformation in Industry,Surface Roughness and Optical Measurements
+T10763,T13459,2021,0.03481241954235935,0,Digital Transformation in Industry,Public Administration and Political Analysis
+T10705,T10663,2021,0.0346763884230562,0,Additive Manufacturing Materials and Processes,Advanced Battery Technologies Research
+T13287,T10539,2021,0.03449999466609172,0,Robotic Process Automation Applications,Sustainable Supply Chain Management
+T12371,T11206,2021,0.03444370327895955,0,Electrical Contact Performance and Analysis,Model Reduction and Neural Networks
+T11583,T11307,2021,0.034280217998581206,0,Advanced Measurement and Metrology Techniques,Domain Adaptation and Few-Shot Learning
+T10763,T12378,2021,0.034237266706936054,0,Digital Transformation in Industry,Accounting Education and Careers
+T13287,T12439,2021,0.03383008758655799,0,Robotic Process Automation Applications,Dental Research and COVID-19
+T12099,T12190,2021,0.033378641164909156,0,Advanced materials and composites,Innovations in Concrete and Construction Materials
+T10763,T13607,2021,0.03329010526699219,0,Digital Transformation in Industry,Academic Publishing and Open Access
+T13045,T10663,2021,0.03324354605282407,0,Industrial Engineering and Technologies,Advanced Battery Technologies Research
+T11091,T10653,2021,0.03323395479280031,0,Extraction and Separation Processes,Robot Manipulation and Learning
+T13045,T12838,2021,0.0331043721548656,0,Industrial Engineering and Technologies,Photovoltaic Systems and Sustainability
+T13287,T11047,2021,0.03309286121586331,0,Robotic Process Automation Applications,Gender Diversity and Inequality
+T10938,T11754,2021,0.03304415317984295,0,Phase Change Materials Research,SARS-CoV-2 detection and testing
+T10763,T13511,2021,0.032928814538629544,0,Digital Transformation in Industry,Geodetic Measurements and Engineering Structures
+T10763,T14158,2021,0.03285137992742118,0,Digital Transformation in Industry,Optical Systems and Laser Technology
+T11143,T11878,2021,0.0325326310683926,0,High Entropy Alloys Studies,Solid-state spectroscopy and crystallography
+T10672,T11133,2021,0.03252126864775156,0,Design Education and Practice,UAV Applications and Optimization
+T10567,T10270,2021,0.03224192808825613,0,Vehicle Routing Optimization Methods,Blockchain Technology Applications and Security
