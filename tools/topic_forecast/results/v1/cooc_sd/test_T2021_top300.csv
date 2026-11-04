@@ -1,0 +1,301 @@
+a,b,T,score,hit,a_name,b_name
+T13045,T12922,2021,0.5487640201758279,0,Industrial Engineering and Technologies,Business and Economic Development
+T10936,T10682,2021,0.5377557151335417,0,Millimeter-Wave Propagation and Modeling,Quantum Computing Algorithms and Architecture
+T13045,T12126,2021,0.5058689310785821,0,Industrial Engineering and Technologies,Maritime Transport Emissions and Efficiency
+T13715,T10812,2021,0.4528046698977724,0,Power Line Inspection Robots,Human Pose and Action Recognition
+T11099,T11652,2021,0.43846431365171284,0,Autonomous Vehicle Technology and Safety,Imbalanced Data Classification Techniques
+T11690,T12126,2021,0.41321593586376126,0,Advanced battery technologies research,Maritime Transport Emissions and Efficiency
+T13045,T13038,2021,0.413131756568262,0,Industrial Engineering and Technologies,Internet of Things and AI
+T10298,T12026,2021,0.4110917053423219,0,Urban Transport and Accessibility,Explainable Artificial Intelligence (XAI)
+T10220,T10462,2021,0.40940148782382196,1,Machine Fault Diagnosis Techniques,Reinforcement Learning in Robotics
+T13429,T13647,2021,0.40600838626718094,0,Electricity Theft Detection Techniques,AI and Big Data Applications
+T13918,T12026,2021,0.39695478805970574,0,Advanced Data and IoT Technologies,Explainable Artificial Intelligence (XAI)
+T11458,T12611,2021,0.39514386663662693,0,Advanced Wireless Communication Technologies,Neural Networks and Reservoir Computing
+T11230,T11948,2021,0.3827937623237293,0,Innovative Energy Harvesting Technologies,Machine Learning in Materials Science
+T12111,T11714,2021,0.3738815148434176,1,Industrial Vision Systems and Defect Detection,Multimodal Machine Learning Applications
+T10705,T11689,2021,0.37322343832794613,0,Additive Manufacturing Materials and Processes,Adversarial Robustness in Machine Learning
+T13918,T13994,2021,0.3661979059577075,0,Advanced Data and IoT Technologies,The Impact of Diversity and Innovation on Society
+T11007,T12916,2021,0.36173289577996154,0,Hybrid Renewable Energy Systems,COVID-19 impact on air quality
+T10663,T13893,2021,0.3585467884641327,0,Advanced Battery Technologies Research,Sustainable Development and Policies
+T10972,T11273,2021,0.35110637397006966,1,Power Systems Fault Detection,Advanced Graph Neural Networks
+T10220,T10812,2021,0.3502882685871585,0,Machine Fault Diagnosis Techniques,Human Pose and Action Recognition
+T10603,T12611,2021,0.34358235550646954,0,Smart Grid Energy Management,Neural Networks and Reservoir Computing
+T10752,T11689,2021,0.3397823292448264,0,Terahertz technology and applications,Adversarial Robustness in Machine Learning
+T13918,T14414,2021,0.3366664235958303,0,Advanced Data and IoT Technologies,Artificial Intelligence in Education
+T10223,T10764,2021,0.33070810745306717,0,Microgrid Control and Optimization,Privacy-Preserving Technologies in Data
+T13429,T12026,2021,0.3256870859831445,0,Electricity Theft Detection Techniques,Explainable Artificial Intelligence (XAI)
+T11606,T11273,2021,0.32470803426605244,1,Infrastructure Maintenance and Monitoring,Advanced Graph Neural Networks
+T13429,T10273,2021,0.3197134085967493,0,Electricity Theft Detection Techniques,IoT and Edge/Fog Computing
+T13045,T13146,2021,0.31610499849479545,0,Industrial Engineering and Technologies,Sustainable Finance and Green Bonds
+T10763,T11491,2021,0.3078567388918533,0,Digital Transformation in Industry,CAR-T cell therapy research
+T10247,T11690,2021,0.30487609454752007,0,Perovskite Materials and Applications,Advanced battery technologies research
+T11942,T12916,2021,0.3028721227602259,0,Transportation and Mobility Innovations,COVID-19 impact on air quality
+T11458,T11946,2021,0.29982513295274527,1,Advanced Wireless Communication Technologies,Antenna Design and Optimization
+T11458,T14071,2021,0.2995633595943127,0,Advanced Wireless Communication Technologies,Healthcare during COVID-19 Pandemic
+T11701,T11307,2021,0.2887112790358213,1,Space Satellite Systems and Control,Domain Adaptation and Few-Shot Learning
+T10281,T10705,2021,0.2828187767747756,0,Advanced Battery Materials and Technologies,Additive Manufacturing Materials and Processes
+T11383,T10682,2021,0.2810295493602657,0,Advanced Antenna and Metasurface Technologies,Quantum Computing Algorithms and Architecture
+T14368,T11689,2021,0.27971405472976413,0,Evaluation and Optimization Models,Adversarial Robustness in Machine Learning
+T13027,T13482,2021,0.2733954191931837,0,Applied Advanced Technologies,Engineering Education and Technology
+T10768,T11133,2021,0.27305069195558584,1,Electric Vehicles and Infrastructure,UAV Applications and Optimization
+T13027,T13062,2021,0.2660702764941454,0,Applied Advanced Technologies,Cognitive Computing and Networks
+T13344,T13994,2021,0.2548748786745216,0,Industrial Automation and Control Systems,The Impact of Diversity and Innovation on Society
+T11458,T11612,2021,0.25338384647968526,0,Advanced Wireless Communication Technologies,Stochastic Gradient Optimization Techniques
+T12111,T11206,2021,0.25318747284795895,0,Industrial Vision Systems and Defect Detection,Model Reduction and Neural Networks
+T11458,T11689,2021,0.24855469448736747,0,Advanced Wireless Communication Technologies,Adversarial Robustness in Machine Learning
+T11458,T10462,2021,0.2448882452317118,0,Advanced Wireless Communication Technologies,Reinforcement Learning in Robotics
+T11606,T12026,2021,0.24436090994259407,1,Infrastructure Maintenance and Monitoring,Explainable Artificial Intelligence (XAI)
+T12111,T11273,2021,0.24205177544330944,0,Industrial Vision Systems and Defect Detection,Advanced Graph Neural Networks
+T11942,T13146,2021,0.24153321463147373,0,Transportation and Mobility Innovations,Sustainable Finance and Green Bonds
+T10502,T12535,2021,0.2401859311163704,0,Advanced Memory and Neural Computing,Machine Learning and Data Classification
+T11185,T12794,2021,0.23966807543911411,0,Integrated Energy Systems Optimization,Adaptive Dynamic Programming Control
+T12737,T11307,2021,0.23315593275713745,0,Electrical Fault Detection and Protection,Domain Adaptation and Few-Shot Learning
+T11099,T10664,2021,0.23247072123595164,0,Autonomous Vehicle Technology and Safety,Sentiment Analysis and Opinion Mining
+T11052,T12131,2021,0.22947418737400402,0,Energy Load and Power Forecasting,Wireless Signal Modulation Classification
+T10663,T10775,2021,0.22870602687410077,0,Advanced Battery Technologies Research,Generative Adversarial Networks and Image Synthesis
+T10454,T10273,2021,0.22754115175290696,1,Optimal Power Flow Distribution,IoT and Edge/Fog Computing
+T13027,T12594,2021,0.22718404639425188,0,Applied Advanced Technologies,Collaboration in agile enterprises
+T11099,T12535,2021,0.2230191072642312,0,Autonomous Vehicle Technology and Safety,Machine Learning and Data Classification
+T10461,T11307,2021,0.2217687510615916,0,Gas Sensing Nanomaterials and Sensors,Domain Adaptation and Few-Shot Learning
+T10603,T13918,2021,0.220254078976218,0,Smart Grid Energy Management,Advanced Data and IoT Technologies
+T11690,T12008,2021,0.2196959911462192,0,Advanced battery technologies research,Solar-Powered Water Purification Methods
+T11458,T10586,2021,0.21879291921433622,1,Advanced Wireless Communication Technologies,Robotic Path Planning Algorithms
+T10018,T11307,2021,0.21768561518837798,1,Advancements in Battery Materials,Domain Adaptation and Few-Shot Learning
+T13295,T14350,2021,0.21595837504664556,0,Safety Systems Engineering in Autonomy,"Innovation, Sustainability, Human-Machine Systems"
+T14270,T11307,2021,0.21259625929488532,0,Simulation and Modeling Applications,Domain Adaptation and Few-Shot Learning
+T12111,T10764,2021,0.21048488434066503,1,Industrial Vision Systems and Defect Detection,Privacy-Preserving Technologies in Data
+T11143,T10097,2021,0.2092766225259368,0,High Entropy Alloys Studies,Luminescence Properties of Advanced Materials
+T11458,T12026,2021,0.2060089614973367,0,Advanced Wireless Communication Technologies,Explainable Artificial Intelligence (XAI)
+T11606,T11714,2021,0.20438587042770376,1,Infrastructure Maintenance and Monitoring,Multimodal Machine Learning Applications
+T10220,T13647,2021,0.20409837942787468,0,Machine Fault Diagnosis Techniques,AI and Big Data Applications
+T13027,T13050,2021,0.20346217696409796,0,Applied Advanced Technologies,Oil and Gas Production Techniques
+T10763,T12535,2021,0.20207927485997365,0,Digital Transformation in Industry,Machine Learning and Data Classification
+T10763,T10682,2021,0.20015828459583285,0,Digital Transformation in Industry,Quantum Computing Algorithms and Architecture
+T11980,T10775,2021,0.19991094975284815,0,Human Mobility and Location-Based Analysis,Generative Adversarial Networks and Image Synthesis
+T10534,T12026,2021,0.19888663361962916,0,Structural Health Monitoring Techniques,Explainable Artificial Intelligence (XAI)
+T12725,T13994,2021,0.19872372493477314,0,transportation and logistics systems,The Impact of Diversity and Innovation on Society
+T11690,T10211,2021,0.19775929735072906,0,Advanced battery technologies research,Computational Drug Discovery Methods
+T11133,T14111,2021,0.1968989006580804,0,UAV Applications and Optimization,Diverse Research Studies Overview
+T12111,T14510,2021,0.196373066053094,0,Industrial Vision Systems and Defect Detection,Medical Imaging and Analysis
+T10851,T11307,2021,0.19513494147399832,1,Optical Wireless Communication Technologies,Domain Adaptation and Few-Shot Learning
+T11052,T11689,2021,0.19361643531770759,0,Energy Load and Power Forecasting,Adversarial Robustness in Machine Learning
+T11458,T10912,2021,0.19359182337724437,0,Advanced Wireless Communication Technologies,Telemedicine and Telehealth Implementation
+T12442,T12529,2021,0.1923586573315758,0,Thermal Radiation and Cooling Technologies,Ga2O3 and related materials
+T11622,T11652,2021,0.1894969725922634,1,Maritime Navigation and Safety,Imbalanced Data Classification Techniques
+T12222,T14414,2021,0.18794462736835685,0,IoT-based Smart Home Systems,Artificial Intelligence in Education
+T11458,T10295,2021,0.18742219624859405,1,Advanced Wireless Communication Technologies,Plasmonic and Surface Plasmon Research
+T10567,T11007,2021,0.18202286976168042,0,Vehicle Routing Optimization Methods,Hybrid Renewable Energy Systems
+T10173,T12026,2021,0.18032483656452303,0,Computational Fluid Dynamics and Aerodynamics,Explainable Artificial Intelligence (XAI)
+T11052,T10273,2021,0.17978040362330716,0,Energy Load and Power Forecasting,IoT and Edge/Fog Computing
+T10502,T11652,2021,0.17890075949292247,0,Advanced Memory and Neural Computing,Imbalanced Data Classification Techniques
+T11458,T10860,2021,0.1783324048684664,1,Advanced Wireless Communication Technologies,Speech and Audio Processing
+T12111,T13287,2021,0.17772170616080307,0,Industrial Vision Systems and Defect Detection,Robotic Process Automation Applications
+T12597,T13647,2021,0.17744473422950363,0,Fire Detection and Safety Systems,AI and Big Data Applications
+T12406,T10812,2021,0.17703273198228084,0,IoT and GPS-based Vehicle Safety Systems,Human Pose and Action Recognition
+T12277,T10462,2021,0.17582078360545875,0,Frequency Control in Power Systems,Reinforcement Learning in Robotics
+T12362,T12529,2021,0.1754454641279408,0,Tribology and Wear Analysis,Ga2O3 and related materials
+T11143,T11009,2021,0.17523345770629503,0,High Entropy Alloys Studies,Catalysis for Biomass Conversion
+T13715,T11714,2021,0.17496877017711113,0,Power Line Inspection Robots,Multimodal Machine Learning Applications
+T11458,T10270,2021,0.17487941054534262,1,Advanced Wireless Communication Technologies,Blockchain Technology Applications and Security
+T10534,T11273,2021,0.17158508951107773,0,Structural Health Monitoring Techniques,Advanced Graph Neural Networks
+T11741,T11307,2021,0.1704300346228275,0,Flexible and Reconfigurable Manufacturing Systems,Domain Adaptation and Few-Shot Learning
+T13045,T12838,2021,0.16941285193689704,0,Industrial Engineering and Technologies,Photovoltaic Systems and Sustainability
+T10783,T12958,2021,0.16850832229332904,0,Additive Manufacturing and 3D Printing Technologies,Digital Economy and Transformation
+T10468,T13429,2021,0.16834537861545815,0,Photovoltaic System Optimization Techniques,Electricity Theft Detection Techniques
+T10663,T13038,2021,0.16764726151198614,0,Advanced Battery Technologies Research,Internet of Things and AI
+T10018,T10775,2021,0.16758403641287403,0,Advancements in Battery Materials,Generative Adversarial Networks and Image Synthesis
+T10851,T10462,2021,0.16757191670286845,0,Optical Wireless Communication Technologies,Reinforcement Learning in Robotics
+T10905,T13146,2021,0.16590696559074888,0,Solar Thermal and Photovoltaic Systems,Sustainable Finance and Green Bonds
+T10045,T11869,2021,0.16580073508454174,0,Organic Electronics and Photovoltaics,Per- and polyfluoroalkyl substances research
+T10590,T12046,2021,0.16530305547815713,0,Chalcogenide Semiconductor Thin Films,MXene and MAX Phase Materials
+T11115,T10288,2021,0.16496566232213794,0,Topology Optimization in Engineering,Fractional Differential Equations Solutions
+T10763,T12026,2021,0.16475897538518386,1,Digital Transformation in Industry,Explainable Artificial Intelligence (XAI)
+T10500,T12026,2021,0.16413864112213417,0,Sparse and Compressive Sensing Techniques,Explainable Artificial Intelligence (XAI)
+T11143,T10059,2021,0.16372148736771838,0,High Entropy Alloys Studies,Bone Tissue Engineering Materials
+T13121,T10682,2021,0.1630659426438421,0,Radio Wave Propagation Studies,Quantum Computing Algorithms and Architecture
+T10783,T12920,2021,0.1626111709725221,0,Additive Manufacturing and 3D Printing Technologies,Healthcare and Environmental Waste Management
+T11159,T12026,2021,0.16198875018407058,0,Manufacturing Process and Optimization,Explainable Artificial Intelligence (XAI)
+T10220,T10705,2021,0.16111962145307626,0,Machine Fault Diagnosis Techniques,Additive Manufacturing Materials and Processes
+T13429,T12131,2021,0.16029803338856835,0,Electricity Theft Detection Techniques,Wireless Signal Modulation Classification
+T11690,T10275,2021,0.15974041376399442,0,Advanced battery technologies research,2D Materials and Applications
+T10161,T11652,2021,0.15914327814273713,0,Rock Mechanics and Modeling,Imbalanced Data Classification Techniques
+T12079,T12943,2021,0.1579676311294485,0,IoT Networks and Protocols,COVID-19 Digital Contact Tracing
+T10534,T11714,2021,0.1568074332320477,0,Structural Health Monitoring Techniques,Multimodal Machine Learning Applications
+T11622,T12916,2021,0.15638604046400761,0,Maritime Navigation and Safety,COVID-19 impact on air quality
+T12984,T13027,2021,0.15606708159308472,0,Transport and Logistics Innovations,Applied Advanced Technologies
+T10326,T11273,2021,0.15522008760572,0,Indoor and Outdoor Localization Technologies,Advanced Graph Neural Networks
+T10783,T12008,2021,0.15483452573987927,0,Additive Manufacturing and 3D Printing Technologies,Solar-Powered Water Purification Methods
+T14423,T10682,2021,0.15087352820645625,0,Military Technology and Strategies,Quantum Computing Algorithms and Architecture
+T10891,T11273,2021,0.15044162442133857,0,Radar Systems and Signal Processing,Advanced Graph Neural Networks
+T10967,T13045,2021,0.14984843755737687,0,Carbon Dioxide Capture Technologies,Industrial Engineering and Technologies
+T13287,T10462,2021,0.1498453163172788,0,Robotic Process Automation Applications,Reinforcement Learning in Robotics
+T11236,T12026,2021,0.1494032627791994,0,Control Systems and Identification,Explainable Artificial Intelligence (XAI)
+T11052,T13146,2021,0.14906854825480273,0,Energy Load and Power Forecasting,Sustainable Finance and Green Bonds
+T10424,T10273,2021,0.14858119553787238,0,Electric Power System Optimization,IoT and Edge/Fog Computing
+T11052,T11652,2021,0.14730213311704016,0,Energy Load and Power Forecasting,Imbalanced Data Classification Techniques
+T10534,T11652,2021,0.14472255142919946,0,Structural Health Monitoring Techniques,Imbalanced Data Classification Techniques
+T11230,T11458,2021,0.14468286116696466,0,Innovative Energy Harvesting Technologies,Advanced Wireless Communication Technologies
+T14224,T12916,2021,0.14417974063170932,0,"Oil, Gas, and Environmental Issues",COVID-19 impact on air quality
+T12451,T12922,2021,0.14143145920925212,0,Smart Grid and Power Systems,Business and Economic Development
+T10223,T13429,2021,0.14113119880349892,0,Microgrid Control and Optimization,Electricity Theft Detection Techniques
+T13027,T12698,2021,0.14010783572037178,0,Applied Advanced Technologies,3D Modeling in Geospatial Applications
+T10719,T12535,2021,0.14004865788254156,0,3D Shape Modeling and Analysis,Machine Learning and Data Classification
+T10851,T12026,2021,0.13810989440435997,0,Optical Wireless Communication Technologies,Explainable Artificial Intelligence (XAI)
+T11185,T10682,2021,0.13791892596572625,0,Integrated Energy Systems Optimization,Quantum Computing Algorithms and Architecture
+T11133,T11307,2021,0.13772278067430468,0,UAV Applications and Optimization,Domain Adaptation and Few-Shot Learning
+T12169,T11307,2021,0.1375203616474739,1,Non-Destructive Testing Techniques,Domain Adaptation and Few-Shot Learning
+T13027,T13181,2021,0.1353461315222527,0,Applied Advanced Technologies,Economic and Technological Systems Analysis
+T10500,T11775,2021,0.13485715018953404,0,Sparse and Compressive Sensing Techniques,COVID-19 diagnosis using AI
+T10624,T11143,2021,0.13435178875142786,0,Silicon and Solar Cell Technologies,High Entropy Alloys Studies
+T11143,T10478,2021,0.13427762342851385,0,High Entropy Alloys Studies,Diamond and Carbon-based Materials Research
+T13918,T12376,2021,0.13341974381210106,0,Advanced Data and IoT Technologies,Corporate Management and Leadership
+T11133,T11819,2021,0.13334148885415256,0,UAV Applications and Optimization,Data-Driven Disease Surveillance
+T12709,T11652,2021,0.1332778226476463,0,Optimization and Mathematical Programming,Imbalanced Data Classification Techniques
+T14164,T12026,2021,0.13276931308046905,0,Marine and Offshore Engineering Studies,Explainable Artificial Intelligence (XAI)
+T11362,T10753,2021,0.13254504374745352,1,Membrane Separation and Gas Transport,Microplastics and Plastic Pollution
+T10768,T11959,2021,0.13252396599303695,0,Electric Vehicles and Infrastructure,Employment and Welfare Studies
+T14444,T10438,2021,0.13250084813663707,0,Power Systems and Renewable Energy,"Energy, Environment, Economic Growth"
+T11185,T11490,2021,0.13184729724244898,0,Integrated Energy Systems Optimization,Hydrological Forecasting Using AI
+T11143,T12299,2021,0.13150606969337558,1,High Entropy Alloys Studies,Radiation Shielding Materials Analysis
+T11784,T11869,2021,0.13066854459603544,0,CO2 Reduction Techniques and Catalysts,Per- and polyfluoroalkyl substances research
+T11143,T10245,2021,0.13050581093585814,0,High Entropy Alloys Studies,Metamaterials and Metasurfaces Applications
+T12022,T12126,2021,0.13029974577567013,0,Hydraulic flow and structures,Maritime Transport Emissions and Efficiency
+T10653,T13027,2021,0.12966825288463016,0,Robot Manipulation and Learning,Applied Advanced Technologies
+T10305,T11007,2021,0.12955351482387253,0,Power System Optimization and Stability,Hybrid Renewable Energy Systems
+T10220,T11714,2021,0.12933419392406337,0,Machine Fault Diagnosis Techniques,Multimodal Machine Learning Applications
+T11143,T10661,2021,0.12840178107840047,0,High Entropy Alloys Studies,biodegradable polymer synthesis and properties
+T11980,T12131,2021,0.12804474592545495,0,Human Mobility and Location-Based Analysis,Wireless Signal Modulation Classification
+T10891,T10812,2021,0.12774616698086208,0,Radar Systems and Signal Processing,Human Pose and Action Recognition
+T11038,T12111,2021,0.12526569986911912,0,Advanced SAR Imaging Techniques,Industrial Vision Systems and Defect Detection
+T12139,T10462,2021,0.12478203676599399,0,Advanced Thermodynamic Systems and Engines,Reinforcement Learning in Robotics
+T10808,T12916,2021,0.12466654521762777,0,Electric and Hybrid Vehicle Technologies,COVID-19 impact on air quality
+T10768,T10883,2021,0.12439200632581432,0,Electric Vehicles and Infrastructure,Ethics and Social Impacts of AI
+T14368,T10764,2021,0.12422914203812474,0,Evaluation and Optimization Models,Privacy-Preserving Technologies in Data
+T11159,T11307,2021,0.12381409752474677,0,Manufacturing Process and Optimization,Domain Adaptation and Few-Shot Learning
+T11038,T12611,2021,0.12292169066436838,0,Advanced SAR Imaging Techniques,Neural Networks and Reservoir Computing
+T11980,T14200,2021,0.12252675499575541,0,Human Mobility and Location-Based Analysis,"Medical, Sociocultural, and Biopolitical Studies"
+T10298,T12943,2021,0.12180347043046287,0,Urban Transport and Accessibility,COVID-19 Digital Contact Tracing
+T11980,T12260,2021,0.12156209591765389,0,Human Mobility and Location-Based Analysis,Educational Technology and Pedagogy
+T13382,T10753,2021,0.12149582990522083,0,Robotics and Automated Systems,Microplastics and Plastic Pollution
+T11143,T10131,2021,0.1214111650933883,0,High Entropy Alloys Studies,Gold and Silver Nanoparticles Synthesis and Applications
+T10964,T11612,2021,0.1211218956090947,0,Wireless Communication Security Techniques,Stochastic Gradient Optimization Techniques
+T11489,T14071,2021,0.12058461642926316,0,Air Traffic Management and Optimization,Healthcare during COVID-19 Pandemic
+T10768,T11273,2021,0.1202356208896853,0,Electric Vehicles and Infrastructure,Advanced Graph Neural Networks
+T10719,T11775,2021,0.1199890891836336,0,3D Shape Modeling and Analysis,COVID-19 diagnosis using AI
+T13287,T13398,2021,0.11983161489468287,0,Robotic Process Automation Applications,Data Analysis with R
+T12784,T11689,2021,0.11962987225333825,0,Modular Robots and Swarm Intelligence,Adversarial Robustness in Machine Learning
+T13562,T12943,2021,0.11953459821141213,0,Cruise Tourism Development and Management,COVID-19 Digital Contact Tracing
+T11201,T10462,2021,0.1181585433055038,0,Metallurgy and Material Forming,Reinforcement Learning in Robotics
+T12451,T13331,2021,0.11714179558301159,0,Smart Grid and Power Systems,Energy and Environmental Sustainability
+T11799,T10753,2021,0.11663648124080488,0,"Adhesion, Friction, and Surface Interactions",Microplastics and Plastic Pollution
+T12080,T11307,2021,0.11657892607906781,0,Injection Molding Process and Properties,Domain Adaptation and Few-Shot Learning
+T10502,T11775,2021,0.11625668662755112,0,Advanced Memory and Neural Computing,COVID-19 diagnosis using AI
+T11126,T12026,2021,0.11623436333019298,0,Metallurgical Processes and Thermodynamics,Explainable Artificial Intelligence (XAI)
+T11622,T12111,2021,0.11613047557253767,0,Maritime Navigation and Safety,Industrial Vision Systems and Defect Detection
+T11143,T10321,2021,0.11572569511698547,0,High Entropy Alloys Studies,Quantum Dots Synthesis And Properties
+T10850,T12046,2021,0.11566781609727805,0,Heat Transfer and Boiling Studies,MXene and MAX Phase Materials
+T11284,T11948,2021,0.11489294756095021,0,Coal Properties and Utilization,Machine Learning in Materials Science
+T11942,T11864,2021,0.11467379899849747,0,Transportation and Mobility Innovations,Supply Chain Resilience and Risk Management
+T10370,T11273,2021,0.11458695862621383,1,Traffic and Road Safety,Advanced Graph Neural Networks
+T10454,T10682,2021,0.11422069403349513,1,Optimal Power Flow Distribution,Quantum Computing Algorithms and Architecture
+T10752,T10862,2021,0.11379306875294484,0,Terahertz technology and applications,AI in cancer detection
+T11701,T13398,2021,0.11218057075476735,0,Space Satellite Systems and Control,Data Analysis with R
+T10603,T13398,2021,0.11213914251754635,0,Smart Grid Energy Management,Data Analysis with R
+T11774,T11206,2021,0.11163805353420314,0,Adsorption and Cooling Systems,Model Reduction and Neural Networks
+T10783,T10288,2021,0.11160178115498019,0,Additive Manufacturing and 3D Printing Technologies,Fractional Differential Equations Solutions
+T10603,T10883,2021,0.11138696888881247,0,Smart Grid Energy Management,Ethics and Social Impacts of AI
+T10247,T12112,2021,0.11079783446719677,0,Perovskite Materials and Applications,Ammonia Synthesis and Nitrogen Reduction
+T10534,T12535,2021,0.11072364015045405,0,Structural Health Monitoring Techniques,Machine Learning and Data Classification
+T10780,T11307,2021,0.11005116766812664,1,Reliability and Maintenance Optimization,Domain Adaptation and Few-Shot Learning
+T10635,T12794,2021,0.10914659087096405,0,Hydraulic Fracturing and Reservoir Analysis,Adaptive Dynamic Programming Control
+T11115,T12611,2021,0.10911259504765675,0,Topology Optimization in Engineering,Neural Networks and Reservoir Computing
+T11458,T13194,2021,0.10869901274935335,0,Advanced Wireless Communication Technologies,ICT in Developing Communities
+T11604,T12794,2021,0.10846180149853901,0,Ship Hydrodynamics and Maneuverability,Adaptive Dynamic Programming Control
+T12111,T14368,2021,0.10823830268753319,0,Industrial Vision Systems and Defect Detection,Evaluation and Optimization Models
+T12888,T10682,2021,0.10819515461898004,0,Military Strategy and Technology,Quantum Computing Algorithms and Architecture
+T10783,T14414,2021,0.10799867475147247,0,Additive Manufacturing and 3D Printing Technologies,Artificial Intelligence in Education
+T12222,T11307,2021,0.10781448053567208,0,IoT-based Smart Home Systems,Domain Adaptation and Few-Shot Learning
+T11185,T13045,2021,0.10775300010534175,0,Integrated Energy Systems Optimization,Industrial Engineering and Technologies
+T10018,T12535,2021,0.10719911893817421,0,Advancements in Battery Materials,Machine Learning and Data Classification
+T10663,T10682,2021,0.10716947044821647,0,Advanced Battery Technologies Research,Quantum Computing Algorithms and Architecture
+T10780,T13027,2021,0.10711449141598928,1,Reliability and Maintenance Optimization,Applied Advanced Technologies
+T10298,T11652,2021,0.1069746374395232,0,Urban Transport and Accessibility,Imbalanced Data Classification Techniques
+T10220,T13702,2021,0.10665022850835176,0,Machine Fault Diagnosis Techniques,Machine Learning in Healthcare
+T11133,T12111,2021,0.10645445114835925,0,UAV Applications and Optimization,Industrial Vision Systems and Defect Detection
+T14444,T13146,2021,0.10575405783388751,0,Power Systems and Renewable Energy,Sustainable Finance and Green Bonds
+T10468,T11512,2021,0.10562994564758463,1,Photovoltaic System Optimization Techniques,Anomaly Detection Techniques and Applications
+T11201,T12046,2021,0.1055779491973008,0,Metallurgy and Material Forming,MXene and MAX Phase Materials
+T11230,T12131,2021,0.10551359209115439,0,Innovative Energy Harvesting Technologies,Wireless Signal Modulation Classification
+T13183,T13429,2021,0.10527125645704988,0,Islanding Detection in Power Systems,Electricity Theft Detection Techniques
+T12451,T11490,2021,0.10450949860483565,0,Smart Grid and Power Systems,Hydrological Forecasting Using AI
+T10905,T13398,2021,0.1037612069605576,0,Solar Thermal and Photovoltaic Systems,Data Analysis with R
+T10363,T11458,2021,0.1034835122362562,0,Low-power high-performance VLSI design,Advanced Wireless Communication Technologies
+T11622,T10775,2021,0.10339328355612132,0,Maritime Navigation and Safety,Generative Adversarial Networks and Image Synthesis
+T11500,T12794,2021,0.10322550554895621,0,Evacuation and Crowd Dynamics,Adaptive Dynamic Programming Control
+T10705,T10810,2021,0.10314493572179528,0,Additive Manufacturing Materials and Processes,Polymer composites and self-healing
+T13045,T14260,2021,0.10302587335233866,0,Industrial Engineering and Technologies,Impact of AI and Big Data on Business and Society
+T13382,T11775,2021,0.10256549574028136,0,Robotics and Automated Systems,COVID-19 diagnosis using AI
+T10454,T13647,2021,0.1019335843898097,0,Optimal Power Flow Distribution,AI and Big Data Applications
+T11604,T10288,2021,0.10126301827751749,0,Ship Hydrodynamics and Maneuverability,Fractional Differential Equations Solutions
+T10808,T11512,2021,0.10125127307919127,0,Electric and Hybrid Vehicle Technologies,Anomaly Detection Techniques and Applications
+T11143,T11351,2021,0.10087273987881372,0,High Entropy Alloys Studies,Catalysis and Hydrodesulfurization Studies
+T10502,T12111,2021,0.10036532382730856,0,Advanced Memory and Neural Computing,Industrial Vision Systems and Defect Detection
+T14163,T10775,2021,0.09974820534657158,0,Astronomical Observations and Instrumentation,Generative Adversarial Networks and Image Synthesis
+T10680,T10768,2021,0.09968328347538939,0,Wind Energy Research and Development,Electric Vehicles and Infrastructure
+T10046,T12126,2021,0.09902580454501057,0,Stability and Control of Uncertain Systems,Maritime Transport Emissions and Efficiency
+T10370,T11689,2021,0.09899411450823062,1,Traffic and Road Safety,Adversarial Robustness in Machine Learning
+T14250,T12943,2021,0.09857855156157204,0,Energy and Environmental Systems,COVID-19 Digital Contact Tracing
+T11458,T13038,2021,0.09844651960285129,0,Advanced Wireless Communication Technologies,Internet of Things and AI
+T10680,T12916,2021,0.09784552058806074,0,Wind Energy Research and Development,COVID-19 impact on air quality
+T10763,T14436,2021,0.09753700885489346,0,Digital Transformation in Industry,Employee Performance and Leadership
+T10805,T11689,2021,0.09753670248834022,0,Vehicle Dynamics and Control Systems,Adversarial Robustness in Machine Learning
+T11185,T11259,2021,0.09732556188607892,0,Integrated Energy Systems Optimization,Agriculture Sustainability and Environmental Impact
+T11980,T12026,2021,0.09720953519917166,0,Human Mobility and Location-Based Analysis,Explainable Artificial Intelligence (XAI)
+T11904,T11307,2021,0.09693447114255928,0,Spatial Cognition and Navigation,Domain Adaptation and Few-Shot Learning
+T13382,T11714,2021,0.0968455108357703,0,Robotics and Automated Systems,Multimodal Machine Learning Applications
+T11458,T10320,2021,0.09673384570517196,0,Advanced Wireless Communication Technologies,Neural Networks and Applications
+T12271,T11244,2021,0.09654187465740795,0,Renewable energy and sustainable power systems,Climate Change and Health Impacts
+T10468,T12794,2021,0.09632929195099764,0,Photovoltaic System Optimization Techniques,Adaptive Dynamic Programming Control
+T10768,T13398,2021,0.0962586370750264,0,Electric Vehicles and Infrastructure,Data Analysis with R
+T10936,T11344,2021,0.09612633352815854,0,Millimeter-Wave Propagation and Modeling,Traffic Prediction and Management Techniques
+T11980,T11714,2021,0.09610291331650525,0,Human Mobility and Location-Based Analysis,Multimodal Machine Learning Applications
+T10663,T14462,2021,0.0958143930727736,0,Advanced Battery Technologies Research,Educational Methods and Impacts
+T10851,T11344,2021,0.0953693133673284,0,Optical Wireless Communication Technologies,Traffic Prediction and Management Techniques
+T10298,T10462,2021,0.095262251860047,0,Urban Transport and Accessibility,Reinforcement Learning in Robotics
+T10370,T13647,2021,0.09521276574875524,0,Traffic and Road Safety,AI and Big Data Applications
+T10791,T10273,2021,0.0951947650776346,1,Advanced Control Systems Optimization,IoT and Edge/Fog Computing
+T12238,T13647,2021,0.09495912895031204,0,Green IT and Sustainability,AI and Big Data Applications
+T10719,T10667,2021,0.09442375999618036,0,3D Shape Modeling and Analysis,Emotion and Mood Recognition
+T10783,T13696,2021,0.09369130063425798,0,Additive Manufacturing and 3D Printing Technologies,Technology's Impact on Media
+T11046,T12535,2021,0.09303290943017997,0,Geotechnical Engineering and Analysis,Machine Learning and Data Classification
+T10370,T11490,2021,0.09291601614728065,0,Traffic and Road Safety,Hydrological Forecasting Using AI
+T11038,T12260,2021,0.09243379593007824,0,Advanced SAR Imaging Techniques,Educational Technology and Pedagogy
+T10212,T12529,2021,0.09243227360899924,0,Electrochemical sensors and biosensors,Ga2O3 and related materials
+T14225,T12943,2021,0.09237396829964713,0,Advanced Sensor and Control Systems,COVID-19 Digital Contact Tracing
+T11778,T11948,2021,0.09200069618740465,0,Electrical and Bioimpedance Tomography,Machine Learning in Materials Science
+T11220,T12026,2021,0.09187094721033062,0,Water Systems and Optimization,Explainable Artificial Intelligence (XAI)
+T12238,T11864,2021,0.09177699362658033,0,Green IT and Sustainability,Supply Chain Resilience and Risk Management
+T11185,T11326,2021,0.09122895185403945,0,Integrated Energy Systems Optimization,Stock Market Forecasting Methods
+T13027,T11206,2021,0.09119181080818575,0,Applied Advanced Technologies,Model Reduction and Neural Networks
+T12597,T11775,2021,0.0910833790032417,0,Fire Detection and Safety Systems,COVID-19 diagnosis using AI
+T11458,T10237,2021,0.09035463090804798,0,Advanced Wireless Communication Technologies,Cryptography and Data Security
+T10967,T13893,2021,0.08993250585184219,0,Carbon Dioxide Capture Technologies,Sustainable Development and Policies
+T11099,T13647,2021,0.08944311150183586,0,Autonomous Vehicle Technology and Safety,AI and Big Data Applications
+T12163,T11864,2021,0.08935481149214652,0,Aerosol Filtration and Electrostatic Precipitation,Supply Chain Resilience and Risk Management
+T10687,T10753,2021,0.08913244877443277,0,Innovative concrete reinforcement materials,Microplastics and Plastic Pollution
+T13027,T14042,2021,0.08882376126731595,0,Applied Advanced Technologies,Technology and Security Systems
+T13856,T13146,2021,0.08880908441196173,0,Advanced Power Generation Technologies,Sustainable Finance and Green Bonds
+T10551,T11612,2021,0.08880815560889153,0,Scheduling and Optimization Algorithms,Stochastic Gradient Optimization Techniques
+T10018,T11864,2021,0.0886158438877693,0,Advancements in Battery Materials,Supply Chain Resilience and Risk Management
+T10768,T13183,2021,0.08807277746914177,0,Electric Vehicles and Infrastructure,Islanding Detection in Power Systems
+T10768,T10876,2021,0.08803355631750998,0,Electric Vehicles and Infrastructure,Fault Detection and Control Systems
+T10502,T10764,2021,0.08799483101353943,1,Advanced Memory and Neural Computing,Privacy-Preserving Technologies in Data
+T10680,T13038,2021,0.08778724556473405,0,Wind Energy Research and Development,Internet of Things and AI
+T11230,T13038,2021,0.08757605200187914,0,Innovative Energy Harvesting Technologies,Internet of Things and AI
+T12163,T11490,2021,0.08751541440992822,0,Aerosol Filtration and Electrostatic Precipitation,Hydrological Forecasting Using AI
+T10590,T10705,2021,0.08731167343894079,0,Chalcogenide Semiconductor Thin Films,Additive Manufacturing Materials and Processes
+T10033,T11007,2021,0.08726319106740903,1,Concrete and Cement Materials Research,Hybrid Renewable Energy Systems
+T10046,T12101,2021,0.08683289358043259,1,Stability and Control of Uncertain Systems,Advanced Bandit Algorithms Research
+T10326,T10682,2021,0.08658317451503632,0,Indoor and Outdoor Localization Technologies,Quantum Computing Algorithms and Architecture
+T12095,T11206,2021,0.08631796287378438,0,Vehicle emissions and performance,Model Reduction and Neural Networks
+T10763,T13084,2021,0.0862273725112012,0,Digital Transformation in Industry,Education during COVID-19 pandemic

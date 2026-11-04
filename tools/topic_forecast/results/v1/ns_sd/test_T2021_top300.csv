@@ -1,0 +1,301 @@
+a,b,T,score,hit,a_name,b_name
+T11690,T11948,2021,0.7446586354111818,1,Advanced battery technologies research,Machine Learning in Materials Science
+T10030,T10207,2021,0.7231826599414791,0,Electrocatalysts for Energy Conversion,Advanced biosensing and bioanalysis techniques
+T11143,T11784,2021,0.7105485909665447,1,High Entropy Alloys Studies,CO2 Reduction Techniques and Catalysts
+T10633,T13645,2021,0.7055960392779271,1,Metallic Glasses and Amorphous Alloys,Thermodynamic and Structural Properties of Metals and Alloys
+T11687,T10462,2021,0.704930081897088,1,Teleoperation and Haptic Systems,Reinforcement Learning in Robotics
+T11192,T10462,2021,0.6966179244478742,1,Underwater Vehicles and Communication Systems,Reinforcement Learning in Robotics
+T10424,T11007,2021,0.6855010417771343,1,Electric Power System Optimization,Hybrid Renewable Energy Systems
+T11690,T12038,2021,0.6845212745401962,0,Advanced battery technologies research,Covalent Organic Framework Applications
+T11200,T11784,2021,0.6786927817721388,1,Electrodeposition and Electroless Coatings,CO2 Reduction Techniques and Catalysts
+T10653,T11398,2021,0.6747993460845797,1,Robot Manipulation and Learning,Hand Gesture Recognition Systems
+T10247,T10338,2021,0.6738713764178015,0,Perovskite Materials and Applications,Advanced Sensor and Energy Harvesting Materials
+T10377,T10633,2021,0.6692771804515406,0,Metal and Thin Film Mechanics,Metallic Glasses and Amorphous Alloys
+T10663,T12074,2021,0.6668957637798737,0,Advanced Battery Technologies Research,Membrane-based Ion Separation Techniques
+T11007,T10471,2021,0.6599766043920214,1,Hybrid Renewable Energy Systems,Climate Change Policy and Economics
+T11687,T13382,2021,0.6522697023658592,1,Teleoperation and Haptic Systems,Robotics and Automated Systems
+T10502,T11005,2021,0.6492982749453693,0,Advanced Memory and Neural Computing,Radiation Effects in Electronics
+T11500,T10462,2021,0.6451272014619568,0,Evacuation and Crowd Dynamics,Reinforcement Learning in Robotics
+T10247,T11758,2021,0.6387490625296235,0,Perovskite Materials and Applications,Organic and Molecular Conductors Research
+T10611,T10798,2021,0.6366476294450075,1,Organic Light-Emitting Diodes Research,Crystallography and molecular interactions
+T10247,T12442,2021,0.6338068326891279,0,Perovskite Materials and Applications,Thermal Radiation and Cooling Technologies
+T11626,T10096,2021,0.6306463716356685,0,Metalloenzymes and iron-sulfur proteins,Metal-Organic Frameworks: Synthesis and Applications
+T10247,T11393,2021,0.6274274284604383,0,Perovskite Materials and Applications,Biosensors and Analytical Detection
+T11143,T12442,2021,0.6272318204231341,0,High Entropy Alloys Studies,Thermal Radiation and Cooling Technologies
+T10018,T11129,2021,0.6224998017518131,0,Advancements in Battery Materials,Photochemistry and Electron Transfer Studies
+T10905,T10938,2021,0.6197692860138737,1,Solar Thermal and Photovoltaic Systems,Phase Change Materials Research
+T10624,T11276,2021,0.6196435235206219,0,Silicon and Solar Cell Technologies,Solar Radiation and Photovoltaics
+T10045,T10002,2021,0.6158816394637553,1,Organic Electronics and Photovoltaics,Advanced Chemical Physics Studies
+T10663,T12046,2021,0.613389299598481,0,Advanced Battery Technologies Research,MXene and MAX Phase Materials
+T10024,T10957,2021,0.6077878988388332,0,TiO2 Photocatalysis and Solar Cells,Photodynamic Therapy Research Studies
+T11143,T11737,2021,0.6047280525566006,0,High Entropy Alloys Studies,Advanced Materials and Mechanics
+T11784,T12046,2021,0.6028085944995926,0,CO2 Reduction Techniques and Catalysts,MXene and MAX Phase Materials
+T10846,T10295,2021,0.6004993925965652,1,Photonic Crystal and Fiber Optics,Plasmonic and Surface Plasmon Research
+T11383,T11932,2021,0.6003365055601451,0,Advanced Antenna and Metasurface Technologies,Wireless Body Area Networks
+T11143,T12099,2021,0.5995280907402493,1,High Entropy Alloys Studies,Advanced materials and composites
+T11185,T14296,2021,0.5986308259583192,0,Integrated Energy Systems Optimization,Climate Change and Sustainable Development
+T12095,T10438,2021,0.5984169428567518,1,Vehicle emissions and performance,"Energy, Environment, Economic Growth"
+T13382,T10249,2021,0.5976582095056574,0,Robotics and Automated Systems,Distributed Control Multi-Agent Systems
+T10247,T10798,2021,0.5951518189958888,1,Perovskite Materials and Applications,Crystallography and molecular interactions
+T10299,T11393,2021,0.5915586116770117,0,Photonic and Optical Devices,Biosensors and Analytical Detection
+T11429,T12309,2021,0.5897361107495155,0,Semiconductor Lasers and Optical Devices,solar cell performance optimization
+T11690,T12136,2021,0.5895969852294305,0,Advanced battery technologies research,Vanadium and Halogenation Chemistry
+T12125,T11206,2021,0.5871308181265841,1,Aerospace and Aviation Technology,Model Reduction and Neural Networks
+T11615,T10462,2021,0.5861008303814831,1,Control and Dynamics of Mobile Robots,Reinforcement Learning in Robotics
+T10078,T10419,2021,0.5840496655545397,0,Advanced Photocatalysis Techniques,Pharmaceutical and Antibiotic Environmental Impacts
+T10247,T11407,2021,0.5827076881718679,0,Perovskite Materials and Applications,Innovative Microfluidic and Catalytic Techniques Innovation
+T10024,T13217,2021,0.5792475513452012,0,TiO2 Photocatalysis and Solar Cells,Pigment Synthesis and Properties
+T10281,T10002,2021,0.5789050253436799,1,Advanced Battery Materials and Technologies,Advanced Chemical Physics Studies
+T10716,T12792,2021,0.5785891599165984,0,Soil and Unsaturated Flow,Soil Management and Crop Yield
+T10603,T11007,2021,0.5776499978586803,1,Smart Grid Energy Management,Hybrid Renewable Energy Systems
+T11565,T13261,2021,0.576997693032233,0,Thermoelastic and Magnetoelastic Phenomena,Elasticity and Wave Propagation
+T10369,T10822,2021,0.5763901572848891,1,Advanced MEMS and NEMS Technologies,Acoustic Wave Phenomena Research
+T11133,T11458,2021,0.5746401898502853,0,UAV Applications and Optimization,Advanced Wireless Communication Technologies
+T10281,T11784,2021,0.5740270984875218,1,Advanced Battery Materials and Technologies,CO2 Reduction Techniques and Catalysts
+T10247,T11996,2021,0.5724574206683555,0,Perovskite Materials and Applications,Random lasers and scattering media
+T11690,T10002,2021,0.5693172886766947,1,Advanced battery technologies research,Advanced Chemical Physics Studies
+T11687,T11737,2021,0.5680431738014329,0,Teleoperation and Haptic Systems,Advanced Materials and Mechanics
+T11523,T13251,2021,0.5648001652922188,1,Nanomaterials and Printing Technologies,Electrical and Thermal Properties of Materials
+T12808,T13251,2021,0.5643362690872696,1,Ferroelectric and Negative Capacitance Devices,Electrical and Thermal Properties of Materials
+T10247,T12224,2021,0.5643065075939315,1,Perovskite Materials and Applications,Nanofabrication and Lithography Techniques
+T10611,T10807,2021,0.5642243252662934,0,Organic Light-Emitting Diodes Research,Synthesis and characterization of novel inorganic/organometallic compounds
+T11052,T11276,2021,0.5632153581593582,1,Energy Load and Power Forecasting,Solar Radiation and Photovoltaics
+T11626,T10275,2021,0.5619332544391675,1,Metalloenzymes and iron-sulfur proteins,2D Materials and Applications
+T11784,T10701,2021,0.5586429794909487,1,CO2 Reduction Techniques and Catalysts,Radical Photochemical Reactions
+T10611,T12748,2021,0.5577765839868406,0,Organic Light-Emitting Diodes Research,Molecular spectroscopy and chirality
+T10175,T10468,2021,0.5572128672183031,0,Advanced DC-DC Converters,Photovoltaic System Optimization Techniques
+T10247,T12611,2021,0.5554125735803329,1,Perovskite Materials and Applications,Neural Networks and Reservoir Computing
+T10624,T10099,2021,0.5540586272803049,0,Silicon and Solar Cell Technologies,GaN-based semiconductor devices and materials
+T10299,T10752,2021,0.549679684326074,1,Photonic and Optical Devices,Terahertz technology and applications
+T11954,T10471,2021,0.5487951376395098,1,Energy Efficiency and Management,Climate Change Policy and Economics
+T10247,T11025,2021,0.5461557983979966,0,Perovskite Materials and Applications,Nonlinear Optical Materials Research
+T10611,T10002,2021,0.54607468331558,0,Organic Light-Emitting Diodes Research,Advanced Chemical Physics Studies
+T10698,T12546,2021,0.5451830284469844,0,Transportation Planning and Optimization,Smart Parking Systems Research
+T11877,T10886,2021,0.5449924288403077,0,Iron oxide chemistry and applications,Multiferroics and related materials
+T10247,T11737,2021,0.5437233840803667,1,Perovskite Materials and Applications,Advanced Materials and Mechanics
+T10768,T11249,2021,0.5412598990301156,1,Electric Vehicles and Infrastructure,Wireless Power Transfer Systems
+T10247,T10532,2021,0.5405875458632936,0,Perovskite Materials and Applications,Molecular Sensors and Ion Detection
+T10603,T12503,2021,0.5396365621672664,1,Smart Grid Energy Management,Social Acceptance of Renewable Energy
+T10611,T11790,2021,0.5375915725656392,1,Organic Light-Emitting Diodes Research,N-Heterocyclic Carbenes in Organic and Inorganic Chemistry
+T10801,T11038,2021,0.5372680191696353,0,Synthetic Aperture Radar (SAR) Applications and Techniques,Advanced SAR Imaging Techniques
+T10078,T10590,2021,0.5369804863383305,1,Advanced Photocatalysis Techniques,Chalcogenide Semiconductor Thin Films
+T11774,T11277,2021,0.536216347639676,0,Adsorption and Cooling Systems,Thermal properties of materials
+T11143,T12046,2021,0.5353478374765812,1,High Entropy Alloys Studies,MXene and MAX Phase Materials
+T10468,T11007,2021,0.5352932220220546,0,Photovoltaic System Optimization Techniques,Hybrid Renewable Energy Systems
+T11091,T11401,2021,0.5349559502966164,0,Extraction and Separation Processes,Minerals Flotation and Separation Techniques
+T10663,T11249,2021,0.5338560583748483,0,Advanced Battery Technologies Research,Wireless Power Transfer Systems
+T10018,T10002,2021,0.5332781250888137,1,Advancements in Battery Materials,Advanced Chemical Physics Studies
+T10045,T12838,2021,0.532806757605253,1,Organic Electronics and Photovoltaics,Photovoltaic Systems and Sustainability
+T12282,T11073,2021,0.5323233446920594,0,Mineral Processing and Grinding,Metal Extraction and Bioleaching
+T11143,T10530,2021,0.5322009844923716,0,High Entropy Alloys Studies,Magnesium Alloys: Properties and Applications
+T10767,T10851,2021,0.5303194455761954,1,Advanced Photonic Communication Systems,Optical Wireless Communication Technologies
+T11133,T12042,2021,0.5259912012776349,0,UAV Applications and Optimization,Satellite Communication Systems
+T12290,T11398,2021,0.5248408474576902,1,Human Motion and Animation,Hand Gesture Recognition Systems
+T10680,T11276,2021,0.5223617854780719,0,Wind Energy Research and Development,Solar Radiation and Photovoltaics
+T10783,T10389,2021,0.5199474749835502,0,Additive Manufacturing and 3D Printing Technologies,Polymer crystallization and properties
+T10247,T10939,2021,0.5193214813862327,1,Perovskite Materials and Applications,Crystal Structures and Properties
+T10396,T10736,2021,0.5193153098246068,1,Fatigue and fracture mechanics,Hydrogen embrittlement and corrosion behaviors in metals
+T10363,T13182,2021,0.5175236393740097,0,Low-power high-performance VLSI design,Quantum-Dot Cellular Automata
+T10461,T13251,2021,0.5168360305731682,0,Gas Sensing Nanomaterials and Sensors,Electrical and Thermal Properties of Materials
+T10663,T11774,2021,0.515280629950931,0,Advanced Battery Technologies Research,Adsorption and Cooling Systems
+T10361,T12309,2021,0.5144959174573901,1,Silicon Carbide Semiconductor Technologies,solar cell performance optimization
+T10624,T10321,2021,0.5144052956059203,0,Silicon and Solar Cell Technologies,Quantum Dots Synthesis And Properties
+T10732,T11523,2021,0.5143255626061921,1,Laser Material Processing Techniques,Nanomaterials and Printing Technologies
+T10840,T11201,2021,0.513637407778253,0,High Temperature Alloys and Creep,Metallurgy and Material Forming
+T10369,T12692,2021,0.5136124705305033,1,Advanced MEMS and NEMS Technologies,Magnetic Field Sensors Techniques
+T10969,T11490,2021,0.5134472215642449,1,Water resources management and optimization,Hydrological Forecasting Using AI
+T11500,T13800,2021,0.5112840506439239,0,Evacuation and Crowd Dynamics,Earthquake and Disaster Impact Studies
+T10633,T10732,2021,0.5092594307603296,1,Metallic Glasses and Amorphous Alloys,Laser Material Processing Techniques
+T11784,T11281,2021,0.5082808833104611,0,CO2 Reduction Techniques and Catalysts,Asymmetric Hydrogenation and Catalysis
+T11382,T11206,2021,0.5079548217884137,0,Fluid Dynamics and Heat Transfer,Model Reduction and Neural Networks
+T11980,T11344,2021,0.5051326449716388,0,Human Mobility and Location-Based Analysis,Traffic Prediction and Management Techniques
+T10559,T10346,2021,0.5044858324201561,0,Particle Accelerators and Free-Electron Lasers,Magnetic confinement fusion research
+T13331,T12503,2021,0.5039289820230224,0,Energy and Environmental Sustainability,Social Acceptance of Renewable Energy
+T10905,T11945,2021,0.4992999425460323,0,Solar Thermal and Photovoltaic Systems,Heat Transfer Mechanisms
+T10558,T11522,2021,0.4984772484975864,0,Advancements in Semiconductor Devices and Circuit Design,VLSI and FPGA Design Techniques
+T10205,T10767,2021,0.49685020429742355,1,Advanced Fiber Optic Sensors,Advanced Photonic Communication Systems
+T10247,T10211,2021,0.4966910895867274,1,Perovskite Materials and Applications,Computational Drug Discovery Methods
+T11200,T14382,2021,0.4955137659828951,0,Electrodeposition and Electroless Coatings,Electrophoretic Deposition in Materials Science
+T10633,T10592,2021,0.49533854502853525,0,Metallic Glasses and Amorphous Alloys,Fusion materials and technologies
+T10024,T10083,2021,0.4944078815804922,0,TiO2 Photocatalysis and Solar Cells,Graphene research and applications
+T10187,T10363,2021,0.49386768191116587,1,Radio Frequency Integrated Circuit Design,Low-power high-performance VLSI design
+T11870,T12449,2021,0.4926200837471825,1,Structural Analysis and Optimization,Spacecraft Design and Technology
+T11690,T11272,2021,0.49222881729347845,0,Advanced battery technologies research,Nanowire Synthesis and Applications
+T10851,T11458,2021,0.4922200338794125,0,Optical Wireless Communication Technologies,Advanced Wireless Communication Technologies
+T10045,T10548,2021,0.49213553486694206,1,Organic Electronics and Photovoltaics,Catalytic Cross-Coupling Reactions
+T10662,T12015,2021,0.49158507347286673,1,Ultrasonics and Acoustic Wave Propagation,Photoacoustic and Ultrasonic Imaging
+T10247,T10131,2021,0.4910445475765795,0,Perovskite Materials and Applications,Gold and Silver Nanoparticles Synthesis and Applications
+T10191,T11099,2021,0.4902328132360119,1,Robotics and Sensor-Based Localization,Autonomous Vehicle Technology and Safety
+T10018,T11784,2021,0.4894435710412975,1,Advancements in Battery Materials,CO2 Reduction Techniques and Catalysts
+T11980,T14248,2021,0.4893175386879029,1,Human Mobility and Location-Based Analysis,Social impacts of COVID-19
+T11170,T11250,2021,0.48923194232689526,0,Biomimetic flight and propulsion mechanisms,Wave and Wind Energy Systems
+T10653,T10249,2021,0.48910777368782443,0,Robot Manipulation and Learning,Distributed Control Multi-Agent Systems
+T10936,T11458,2021,0.4889100420079696,1,Millimeter-Wave Propagation and Modeling,Advanced Wireless Communication Technologies
+T11690,T14382,2021,0.4881115215254392,0,Advanced battery technologies research,Electrophoretic Deposition in Materials Science
+T11784,T11434,2021,0.48795311208059966,1,CO2 Reduction Techniques and Catalysts,Electrochemical Analysis and Applications
+T11525,T10868,2021,0.48699882854738924,0,Piezoelectric Actuators and Control,Soft Robotics and Applications
+T10247,T12038,2021,0.4864856243426208,0,Perovskite Materials and Applications,Covalent Organic Framework Applications
+T12129,T12432,2021,0.4858699624176646,1,Global Energy Security and Policy,Arctic and Russian Policy Studies
+T10624,T10905,2021,0.4848339674859355,0,Silicon and Solar Cell Technologies,Solar Thermal and Photovoltaic Systems
+T10502,T11853,2021,0.48440361750849503,0,Advanced Memory and Neural Computing,Semiconductor materials and interfaces
+T10361,T11527,2021,0.483377872780248,0,Silicon Carbide Semiconductor Technologies,3D IC and TSV technologies
+T10603,T12916,2021,0.4827588567657028,0,Smart Grid Energy Management,COVID-19 impact on air quality
+T11230,T11513,2021,0.48265581148114856,0,Innovative Energy Harvesting Technologies,stochastic dynamics and bifurcation
+T11565,T11646,2021,0.48260349643357453,0,Thermoelastic and Magnetoelastic Phenomena,Nonlocal and gradient elasticity in micro/nano structures
+T10663,T10938,2021,0.4814667845651107,0,Advanced Battery Technologies Research,Phase Change Materials Research
+T14257,T10638,2021,0.48084408802706075,0,Advanced Measurement and Detection Methods,Optical measurement and interference techniques
+T10623,T11907,2021,0.4802370934920948,1,Thin-Film Transistor Technologies,Copper-based nanomaterials and applications
+T11690,T10530,2021,0.47977459474419426,1,Advanced battery technologies research,Magnesium Alloys: Properties and Applications
+T10247,T10810,2021,0.47973448404204294,1,Perovskite Materials and Applications,Polymer composites and self-healing
+T12071,T10753,2021,0.47945964669025387,1,Marine Biology and Environmental Chemistry,Microplastics and Plastic Pollution
+T11143,T11782,2021,0.479234091782318,1,High Entropy Alloys Studies,Magnetic Properties of Alloys
+T12452,T11408,2021,0.47875743695715994,0,Electrowetting and Microfluidic Technologies,Advanced Optical Imaging Technologies
+T10590,T13889,2021,0.47839885877229793,0,Chalcogenide Semiconductor Thin Films,Advanced Materials and Semiconductor Technologies
+T11523,T10412,2021,0.47825586264862996,0,Nanomaterials and Printing Technologies,Microfluidic and Capillary Electrophoresis Applications
+T11007,T12838,2021,0.47796784109714446,1,Hybrid Renewable Energy Systems,Photovoltaic Systems and Sustainability
+T10247,T10544,2021,0.47786804665960747,1,Perovskite Materials and Applications,Glass properties and applications
+T11500,T10410,2021,0.4775044689209594,0,Evacuation and Crowd Dynamics,COVID-19 epidemiological studies
+T10705,T10723,2021,0.47698915109519924,0,Additive Manufacturing Materials and Processes,Advanced Welding Techniques Analysis
+T11143,T11315,2021,0.47677504414683985,1,High Entropy Alloys Studies,Phase-change materials and chalcogenides
+T11200,T11948,2021,0.47623870348124525,0,Electrodeposition and Electroless Coatings,Machine Learning in Materials Science
+T10363,T10049,2021,0.47544464388553054,1,Low-power high-performance VLSI design,Magnetic properties of thin films
+T12206,T10338,2021,0.47514971002964834,0,Vibration and Dynamic Analysis,Advanced Sensor and Energy Harvesting Materials
+T11007,T10435,2021,0.4735997112438828,1,Hybrid Renewable Energy Systems,Environmental Impact and Sustainability
+T12290,T10462,2021,0.4734634702992557,1,Human Motion and Animation,Reinforcement Learning in Robotics
+T10030,T12425,2021,0.47335853705573816,1,Electrocatalysts for Energy Conversion,Industrial Gas Emission Control
+T11877,T10210,2021,0.4732544961772752,1,Iron oxide chemistry and applications,Advanced oxidation water treatment
+T10024,T10461,2021,0.472911894395677,0,TiO2 Photocatalysis and Solar Cells,Gas Sensing Nanomaterials and Sensors
+T11096,T11206,2021,0.4722320021409661,0,Aeroelasticity and Vibration Control,Model Reduction and Neural Networks
+T10752,T11739,2021,0.4721620172837358,1,Terahertz technology and applications,Microwave Imaging and Scattering Analysis
+T10247,T10956,2021,0.47207323300384035,0,Perovskite Materials and Applications,Fullerene Chemistry and Applications
+T12808,T11853,2021,0.4715821916390275,1,Ferroelectric and Negative Capacitance Devices,Semiconductor materials and interfaces
+T10281,T10275,2021,0.4710877888388895,0,Advanced Battery Materials and Technologies,2D Materials and Applications
+T10247,T11809,2021,0.4710661744264275,1,Perovskite Materials and Applications,Advanced NMR Techniques and Applications
+T10611,T10548,2021,0.4708424568208802,0,Organic Light-Emitting Diodes Research,Catalytic Cross-Coupling Reactions
+T12510,T10666,2021,0.4706173503887841,0,Magneto-Optical Properties and Applications,Photonic Crystals and Applications
+T11690,T10701,2021,0.470373998923419,0,Advanced battery technologies research,Radical Photochemical Reactions
+T11143,T12932,2021,0.4702573896974697,1,High Entropy Alloys Studies,Powder Metallurgy Techniques and Materials
+T11200,T10478,2021,0.4685778938373329,0,Electrodeposition and Electroless Coatings,Diamond and Carbon-based Materials Research
+T10232,T10851,2021,0.4685279164662063,1,Optical Network Technologies,Optical Wireless Communication Technologies
+T11143,T11087,2021,0.46686522988953116,0,High Entropy Alloys Studies,Solidification and crystal growth phenomena
+T11500,T11344,2021,0.4654157308119748,0,Evacuation and Crowd Dynamics,Traffic Prediction and Management Techniques
+T10247,T12613,2021,0.464932699844273,0,Perovskite Materials and Applications,X-ray Diffraction in Crystallography
+T11458,T10020,2021,0.463457190867365,0,Advanced Wireless Communication Technologies,Quantum Information and Cryptography
+T10767,T13493,2021,0.4634262940026616,0,Advanced Photonic Communication Systems,Optical and Acousto-Optic Technologies
+T10851,T12029,2021,0.4629332219601497,1,Optical Wireless Communication Technologies,DNA and Biological Computing
+T12008,T11277,2021,0.4626714902744413,1,Solar-Powered Water Purification Methods,Thermal properties of materials
+T11784,T10642,2021,0.4623220861224722,0,CO2 Reduction Techniques and Catalysts,Plasma Applications and Diagnostics
+T11091,T12524,2021,0.4622683650252612,1,Extraction and Separation Processes,Chemical Synthesis and Characterization
+T10247,T12646,2021,0.4620970177728671,0,Perovskite Materials and Applications,Inorganic Fluorides and Related Compounds
+T11690,T12112,2021,0.461126589002679,0,Advanced battery technologies research,Ammonia Synthesis and Nitrogen Reduction
+T10030,T11608,2021,0.4610756619169317,0,Electrocatalysts for Energy Conversion,Dielectric materials and actuators
+T10363,T11992,2021,0.4609718812870416,0,Low-power high-performance VLSI design,CCD and CMOS Imaging Sensors
+T11429,T11484,2021,0.46032016936412434,0,Semiconductor Lasers and Optical Devices,Adaptive optics and wavefront sensing
+T10752,T10490,2021,0.4601496093729371,1,Terahertz technology and applications,Orbital Angular Momentum in Optics
+T12442,T11948,2021,0.4597580866061215,1,Thermal Radiation and Cooling Technologies,Machine Learning in Materials Science
+T10752,T11224,2021,0.4587560181294347,1,Terahertz technology and applications,Electromagnetic wave absorption materials
+T10024,T10607,2021,0.4574096487106098,0,TiO2 Photocatalysis and Solar Cells,Magnetic and transport properties of perovskites and related materials
+T13282,T10689,2021,0.456940795263771,0,Automated Road and Building Extraction,Remote-Sensing Image Classification
+T10680,T14444,2021,0.45688634244697374,1,Wind Energy Research and Development,Power Systems and Renewable Energy
+T11007,T12126,2021,0.4567829369115992,1,Hybrid Renewable Energy Systems,Maritime Transport Emissions and Efficiency
+T10212,T10432,2021,0.4558907771361349,0,Electrochemical sensors and biosensors,DNA and Nucleic Acid Chemistry
+T10626,T11143,2021,0.45500311821472744,1,High-Temperature Coating Behaviors,High Entropy Alloys Studies
+T10851,T12611,2021,0.45459660841857613,1,Optical Wireless Communication Technologies,Neural Networks and Reservoir Computing
+T10030,T11128,2021,0.4528150054870296,0,Electrocatalysts for Energy Conversion,Transition Metal Oxide Nanomaterials
+T10964,T11458,2021,0.45210528900621305,1,Wireless Communication Security Techniques,Advanced Wireless Communication Technologies
+T10571,T11687,2021,0.4519821867649673,0,Robotic Mechanisms and Dynamics,Teleoperation and Haptic Systems
+T10768,T12126,2021,0.4513023907298281,1,Electric Vehicles and Infrastructure,Maritime Transport Emissions and Efficiency
+T10698,T10410,2021,0.45087902147105474,0,Transportation Planning and Optimization,COVID-19 epidemiological studies
+T10502,T12046,2021,0.4507071455857124,1,Advanced Memory and Neural Computing,MXene and MAX Phase Materials
+T10502,T10904,2021,0.4496255293358854,0,Advanced Memory and Neural Computing,Embedded Systems Design Techniques
+T10851,T11192,2021,0.44956920811171,0,Optical Wireless Communication Technologies,Underwater Vehicles and Communication Systems
+T10033,T13039,2021,0.44925752574116024,1,Concrete and Cement Materials Research,Magnesium Oxide Properties and Applications
+T10205,T10232,2021,0.4487885204350949,1,Advanced Fiber Optic Sensors,Optical Network Technologies
+T10298,T12259,2021,0.44781767990247723,1,Urban Transport and Accessibility,Environmental Justice and Health Disparities
+T10281,T10107,2021,0.4465151194360828,1,Advanced Battery Materials and Technologies,Ferroelectric and Piezoelectric Materials
+T10078,T10735,2021,0.44614538608673865,0,Advanced Photocatalysis Techniques,Mesoporous Materials and Catalysis
+T11690,T10810,2021,0.44562931897383795,0,Advanced battery technologies research,Polymer composites and self-healing
+T10377,T10472,2021,0.4449439831054002,0,Metal and Thin Film Mechanics,Semiconductor materials and devices
+T10212,T12867,2021,0.44384879474707134,1,Electrochemical sensors and biosensors,Advanced Biosensing Techniques and Applications
+T11690,T10090,2021,0.44342384138399554,1,Advanced battery technologies research,ZnO doping and properties
+T10752,T10338,2021,0.443176956353219,1,Terahertz technology and applications,Advanced Sensor and Energy Harvesting Materials
+T10783,T12362,2021,0.44313956603322857,0,Additive Manufacturing and 3D Printing Technologies,Tribology and Wear Analysis
+T10161,T11284,2021,0.4418716942357838,0,Rock Mechanics and Modeling,Coal Properties and Utilization
+T10662,T10107,2021,0.4416139930104637,1,Ultrasonics and Acoustic Wave Propagation,Ferroelectric and Piezoelectric Materials
+T11099,T11307,2021,0.441292354136386,1,Autonomous Vehicle Technology and Safety,Domain Adaptation and Few-Shot Learning
+T11737,T11401,2021,0.44109457090081877,0,Advanced Materials and Mechanics,Minerals Flotation and Separation Techniques
+T12442,T10782,2021,0.4409568020048249,0,Thermal Radiation and Cooling Technologies,Nanoplatforms for cancer theranostics
+T11500,T10747,2021,0.4409372277534048,0,Evacuation and Crowd Dynamics,Disaster Management and Resilience
+T11500,T10036,2021,0.4408865880673977,0,Evacuation and Crowd Dynamics,Advanced Neural Network Applications
+T10468,T14444,2021,0.4406627902961906,0,Photovoltaic System Optimization Techniques,Power Systems and Renewable Energy
+T10663,T10850,2021,0.44048819380853427,0,Advanced Battery Technologies Research,Heat Transfer and Boiling Studies
+T11115,T10822,2021,0.44017085945883794,0,Topology Optimization in Engineering,Acoustic Wave Phenomena Research
+T10752,T12994,2021,0.4398959911997056,0,Terahertz technology and applications,Infrared Thermography in Medicine
+T10030,T11091,2021,0.43976289919663,1,Electrocatalysts for Energy Conversion,Extraction and Separation Processes
+T12125,T10255,2021,0.4381277445925012,0,Aerospace and Aviation Technology,Oceanographic and Atmospheric Processes
+T10611,T10092,2021,0.43723416093745454,0,Organic Light-Emitting Diodes Research,Organometallic Complex Synthesis and Catalysis
+T10558,T11005,2021,0.4370987463515406,0,Advancements in Semiconductor Devices and Circuit Design,Radiation Effects in Electronics
+T10262,T11383,2021,0.4370755757907903,1,Microwave Engineering and Waveguides,Advanced Antenna and Metasurface Technologies
+T11185,T10495,2021,0.4370456192732577,0,Integrated Energy Systems Optimization,Catalysts for Methane Reforming
+T10024,T10886,2021,0.43678026395812586,0,TiO2 Photocatalysis and Solar Cells,Multiferroics and related materials
+T10663,T11947,2021,0.43660903365689724,0,Advanced Battery Technologies Research,Molten salt chemistry and electrochemical processes
+T11230,T11932,2021,0.4365074086794977,0,Innovative Energy Harvesting Technologies,Wireless Body Area Networks
+T10846,T11472,2021,0.43639070492295023,0,Photonic Crystal and Fiber Optics,Analytical Chemistry and Sensors
+T11992,T11044,2021,0.4361595598758438,1,CCD and CMOS Imaging Sensors,Particle Detector Development and Performance
+T10369,T11338,2021,0.43522006128053303,0,Advanced MEMS and NEMS Technologies,Advancements in Photolithography Techniques
+T10717,T12362,2021,0.43519770862799634,0,Aluminum Alloys Composites Properties,Tribology and Wear Analysis
+T11637,T11315,2021,0.4349283132792759,0,Advanced Semiconductor Detectors and Materials,Phase-change materials and chalcogenides
+T10361,T11160,2021,0.4343651177793975,1,Silicon Carbide Semiconductor Technologies,Acoustic Wave Resonator Technologies
+T10369,T11565,2021,0.43428563021870353,0,Advanced MEMS and NEMS Technologies,Thermoelastic and Magnetoelastic Phenomena
+T12350,T10990,2021,0.4341549006853792,0,Particle Dynamics in Fluid Flows,Infection Control and Ventilation
+T11690,T10343,2021,0.4333335479601342,1,Advanced battery technologies research,"Hydrogels: synthesis, properties, applications"
+T12617,T14296,2021,0.43331983516770106,1,"Energy, Environment, and Transportation Policies",Climate Change and Sustainable Development
+T10472,T14117,2021,0.4329811207339238,0,Semiconductor materials and devices,Integrated Circuits and Semiconductor Failure Analysis
+T10018,T10938,2021,0.4327074088800313,0,Advancements in Battery Materials,Phase Change Materials Research
+T10653,T11714,2021,0.43258365089534556,0,Robot Manipulation and Learning,Multimodal Machine Learning Applications
+T10247,T12039,2021,0.4320158427439673,0,Perovskite Materials and Applications,Electron and X-Ray Spectroscopy Techniques
+T10018,T10783,2021,0.43200544364180055,0,Advancements in Battery Materials,Additive Manufacturing and 3D Printing Technologies
+T10783,T11023,2021,0.43192843722446306,0,Additive Manufacturing and 3D Printing Technologies,Prosthetics and Rehabilitation Robotics
+T10663,T11143,2021,0.43182342355513625,0,Advanced Battery Technologies Research,High Entropy Alloys Studies
+T12639,T13530,2021,0.431607717243838,0,Global Energy and Sustainability Research,Climate Change and Environmental Impact
+T10078,T11869,2021,0.4316008245179066,1,Advanced Photocatalysis Techniques,Per- and polyfluoroalkyl substances research
+T12282,T11401,2021,0.43138418419473595,0,Mineral Processing and Grinding,Minerals Flotation and Separation Techniques
+T10502,T10288,2021,0.4310797380525111,0,Advanced Memory and Neural Computing,Fractional Differential Equations Solutions
+T11143,T10886,2021,0.4302601084310848,0,High Entropy Alloys Studies,Multiferroics and related materials
+T13331,T12013,2021,0.42995751599885756,0,Energy and Environmental Sustainability,Sustainable Development and Environmental Policy
+T10212,T11907,2021,0.4297523418975435,0,Electrochemical sensors and biosensors,Copper-based nanomaterials and applications
+T12290,T11448,2021,0.4294774657002373,0,Human Motion and Animation,Face recognition and analysis
+T12290,T10868,2021,0.4294059208261106,0,Human Motion and Animation,Soft Robotics and Applications
+T10568,T11529,2021,0.42939344651489336,1,Thermodynamic and Exergetic Analyses of Power and Cooling Systems,Refrigeration and Air Conditioning Technologies
+T10024,T12526,2021,0.42855201774709356,0,TiO2 Photocatalysis and Solar Cells,Antimicrobial agents and applications
+T10663,T11317,2021,0.42841765525609343,0,Advanced Battery Technologies Research,Fire dynamics and safety research
+T11523,T11690,2021,0.4275068489813512,0,Nanomaterials and Printing Technologies,Advanced battery technologies research
+T10806,T10002,2021,0.4270288580759168,0,Energetic Materials and Combustion,Advanced Chemical Physics Studies
+T10369,T10732,2021,0.4268627685180798,0,Advanced MEMS and NEMS Technologies,Laser Material Processing Techniques
+T12808,T11181,2021,0.426689840924965,0,Ferroelectric and Negative Capacitance Devices,Advanced Data Storage Technologies
+T11523,T11393,2021,0.42660857801072516,0,Nanomaterials and Printing Technologies,Biosensors and Analytical Detection
+T10846,T12760,2021,0.42611334233950965,0,Photonic Crystal and Fiber Optics,Laser Design and Applications
+T11143,T10857,2021,0.42594554911544796,1,High Entropy Alloys Studies,Advanced Electron Microscopy Techniques and Applications
+T13800,T11573,2021,0.4258659160359709,0,Earthquake and Disaster Impact Studies,Risk Perception and Management
+T10326,T11980,2021,0.42564568131126673,1,Indoor and Outdoor Localization Technologies,Human Mobility and Location-Based Analysis
+T11687,T10249,2021,0.4250050737720891,0,Teleoperation and Haptic Systems,Distributed Control Multi-Agent Systems
+T14444,T11276,2021,0.42494513739025114,0,Power Systems and Renewable Energy,Solar Radiation and Photovoltaics
+T10247,T10480,2021,0.424117143077199,0,Perovskite Materials and Applications,Ionic liquids properties and applications
+T11737,T13477,2021,0.42272319764576755,1,Advanced Materials and Mechanics,Sustainable Design and Development
+T12309,T13298,2021,0.42251053755895,1,solar cell performance optimization,Solar Energy Systems and Technologies
+T10078,T13217,2021,0.4223366701768552,0,Advanced Photocatalysis Techniques,Pigment Synthesis and Properties
+T13251,T10607,2021,0.42190492590390666,0,Electrical and Thermal Properties of Materials,Magnetic and transport properties of perovskites and related materials
+T10670,T10705,2021,0.42181973139271123,1,Aluminum Alloy Microstructure Properties,Additive Manufacturing Materials and Processes
+T10768,T12306,2021,0.42101351655801056,0,Electric Vehicles and Infrastructure,Urban and Freight Transport Logistics
+T10653,T11615,2021,0.42071338018584165,0,Robot Manipulation and Learning,Control and Dynamics of Mobile Robots
+T12008,T12038,2021,0.4206674954910548,1,Solar-Powered Water Purification Methods,Covalent Organic Framework Applications
+T10363,T10682,2021,0.4205714069393522,1,Low-power high-performance VLSI design,Quantum Computing Algorithms and Architecture
+T10377,T11160,2021,0.41912784065005615,1,Metal and Thin Film Mechanics,Acoustic Wave Resonator Technologies
+T14158,T12153,2021,0.41888752689654496,1,Optical Systems and Laser Technology,Advanced Optical Sensing Technologies
+T10850,T12452,2021,0.41812902915269806,0,Heat Transfer and Boiling Studies,Electrowetting and Microfluidic Technologies
+T10361,T11272,2021,0.41750530831727767,0,Silicon Carbide Semiconductor Technologies,Nanowire Synthesis and Applications
+T11737,T12302,2021,0.41744922868680173,0,Advanced Materials and Mechanics,Advanced Nanomaterials in Catalysis
+T10690,T11230,2021,0.4171585239702045,0,Vibration Control and Rheological Fluids,Innovative Energy Harvesting Technologies
+T11143,T12252,2021,0.41672435027666155,0,High Entropy Alloys Studies,Mechanical stress and fatigue analysis
+T11523,T11666,2021,0.41659455382881694,0,Nanomaterials and Printing Technologies,Color Science and Applications
+T13619,T13885,2021,0.41553610705693916,0,Geotechnical and Geomechanical Engineering,Geophysics and Sensor Technology

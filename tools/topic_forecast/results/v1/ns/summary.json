@@ -1,0 +1,29 @@
+{
+ "K1_pass": true,
+ "best_iter": 103,
+ "K3": {
+  "distinct_pairs": 1559,
+  "new_at_2020": 670,
+  "new_in_candidate_set": 635,
+  "mean_percentile_model": 0.9307787816761899,
+  "share_top10pct_model": 0.8094488188976378,
+  "mean_percentile_PA": 0.6373316645622253,
+  "share_top10pct_PA": 0.1700787401574803
+ },
+ "n_topics": 4516,
+ "n_mech": 485,
+ "years": [
+  2008,
+  2025
+ ],
+ "rules": {
+  "NEW_MAX": 3,
+  "HIT": 10,
+  "H": 3,
+  "MIN_N": 20
+ },
+ "target": "ns",
+ "scidata_features": false,
+ "share_generic_ai_top100": 0.07,
+ "runtime_s": 783
+}
