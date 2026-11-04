@@ -1,0 +1,26 @@
+# ULT freezers (Huang et al., Sci Data 2023, doi 10.1038/s41597-023-02808-6; figshare 10.6084/m9.figshare.24033324, CC0)
+# Reproduces triage/ult_baseline_result.md (commit 99e4a10).
+timeseries:
+  path: /mnt/d/audit_data/ult_freezer/dataset/Revco/{unit}_temp.parquet
+  time_col: Datetime
+event_log:
+  path: /mnt/d/audit_data/ult_freezer/dataset/Revco/{unit}_events.parquet
+  time_col: Datetime
+events:
+  path: /mnt/d/audit_data/ult_freezer/other_data/freezer_faults.csv
+  unit_col: freezer_id
+  date_col: registered_date
+  date_format: "%m/%d/%Y"
+avoid_dates_json: /mnt/d/audit_data/ult_freezer/other_data/service_visit_dates.json
+exclude_cols: [State, SetPoint]
+diff_std_cols: [RTD]
+coverage: distinct_minutes
+params:
+  pre_days: 14
+  min_pre: 10
+  gap_days: 60
+  min_ctrl: 60
+  min_coverage: 0.5
+  n_placebo: 1000
+  alpha: 0.05
+  seed: 20261103

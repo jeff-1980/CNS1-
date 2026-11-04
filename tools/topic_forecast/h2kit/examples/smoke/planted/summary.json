@@ -1,0 +1,64 @@
+{
+ "evaluation_type": "retrospective_real_gt_within_unit_no_model",
+ "units_with_data": 20,
+ "events_listed": 40,
+ "events_usable": 40,
+ "n_features": 4,
+ "bonferroni_alpha": 0.0125,
+ "n_beating_placebo": 1,
+ "passing_features": [
+  "x_mean"
+ ],
+ "config": {
+  "pre_days": 14,
+  "min_pre": 10,
+  "gap_days": 60,
+  "min_ctrl": 60,
+  "min_coverage": 0.5,
+  "n_placebo": 300,
+  "alpha": 0.05,
+  "seed": 20261103,
+  "coverage": "relative_count",
+  "exclude_cols": [],
+  "diff_std_cols": []
+ },
+ "top5": [
+  {
+   "feature": "x_mean",
+   "S_obs_mean_abs_auc_dev": 0.4084,
+   "mean_signed_auc": 0.9084,
+   "placebo_S_2.5pct": 0.2042,
+   "placebo_S_97.5pct": 0.2917,
+   "p_placebo": 0.0033,
+   "beats_placebo_bonferroni": true
+  },
+  {
+   "feature": "y_mean",
+   "S_obs_mean_abs_auc_dev": 0.2343,
+   "mean_signed_auc": 0.5227,
+   "placebo_S_2.5pct": 0.1845,
+   "placebo_S_97.5pct": 0.2625,
+   "p_placebo": 0.2591,
+   "beats_placebo_bonferroni": false
+  },
+  {
+   "feature": "x_std",
+   "S_obs_mean_abs_auc_dev": 0.0603,
+   "mean_signed_auc": 0.4849,
+   "placebo_S_2.5pct": 0.0506,
+   "placebo_S_97.5pct": 0.0763,
+   "p_placebo": 0.6146,
+   "beats_placebo_bonferroni": false
+  },
+  {
+   "feature": "y_std",
+   "S_obs_mean_abs_auc_dev": 0.0496,
+   "mean_signed_auc": 0.4767,
+   "placebo_S_2.5pct": 0.0502,
+   "placebo_S_97.5pct": 0.078,
+   "p_placebo": 0.9767,
+   "beats_placebo_bonferroni": false
+  }
+ ],
+ "notes": []
+}

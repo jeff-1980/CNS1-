@@ -1,0 +1,94 @@
+{
+ "evaluation_type": "retrospective_real_gt_within_unit_no_model",
+ "units_with_data": 24,
+ "events_listed": 46,
+ "events_usable": 29,
+ "n_features": 22,
+ "bonferroni_alpha": 0.002272727272727273,
+ "n_beating_placebo": 0,
+ "passing_features": [],
+ "config": {
+  "pre_days": 14,
+  "min_pre": 10,
+  "gap_days": 60,
+  "min_ctrl": 60,
+  "min_coverage": 0.5,
+  "n_placebo": 1000,
+  "alpha": 0.05,
+  "seed": 20261103,
+  "coverage": "distinct_minutes",
+  "exclude_cols": [
+   "State",
+   "SetPoint"
+  ],
+  "diff_std_cols": [
+   "RTD"
+  ]
+ },
+ "top5": [
+  {
+   "feature": "n_events",
+   "S_obs_mean_abs_auc_dev": 0.0965,
+   "mean_signed_auc": 0.5656,
+   "placebo_S_2.5pct": 0.0379,
+   "placebo_S_97.5pct": 0.0758,
+   "p_placebo": 0.003,
+   "beats_placebo_bonferroni": false
+  },
+  {
+   "feature": "1st Suc._mean",
+   "S_obs_mean_abs_auc_dev": 0.3261,
+   "mean_signed_auc": 0.4304,
+   "placebo_S_2.5pct": 0.2026,
+   "placebo_S_97.5pct": 0.3019,
+   "p_placebo": 0.005,
+   "beats_placebo_bonferroni": false
+  },
+  {
+   "feature": "Evap. Out_mean",
+   "S_obs_mean_abs_auc_dev": 0.3011,
+   "mean_signed_auc": 0.501,
+   "placebo_S_2.5pct": 0.1968,
+   "placebo_S_97.5pct": 0.3066,
+   "p_placebo": 0.036,
+   "beats_placebo_bonferroni": false
+  },
+  {
+   "feature": "2nd Suc._mean",
+   "S_obs_mean_abs_auc_dev": 0.3025,
+   "mean_signed_auc": 0.4071,
+   "placebo_S_2.5pct": 0.2021,
+   "placebo_S_97.5pct": 0.3107,
+   "p_placebo": 0.043,
+   "beats_placebo_bonferroni": false
+  },
+  {
+   "feature": "2nd Sump_mean",
+   "S_obs_mean_abs_auc_dev": 0.2952,
+   "mean_signed_auc": 0.2781,
+   "placebo_S_2.5pct": 0.2002,
+   "placebo_S_97.5pct": 0.3028,
+   "p_placebo": 0.0649,
+   "beats_placebo_bonferroni": false
+  }
+ ],
+ "notes": [
+  "806017 2015-03-19: unusable (pre days 6, control days 3427)",
+  "806023 2015-04-21: unusable (pre days 0, control days 472)",
+  "806023 2016-12-16: unusable (pre days 0, control days 472)",
+  "806023 2017-05-10: unusable (pre days 0, control days 472)",
+  "806029 2021-03-09: unusable (pre days 0, control days 2908)",
+  "806030 2015-01-28: unusable (pre days 1, control days 3510)",
+  "806031 2017-02-23: unusable (pre days 7, control days 3168)",
+  "806031 2017-09-20: unusable (pre days 0, control days 3168)",
+  "806033 2016-03-21: unusable (pre days 5, control days 3436)",
+  "806269 2015-05-19: unusable (pre days 0, control days 3306)",
+  "806269 2015-07-03: unusable (pre days 0, control days 3306)",
+  "806273 2015-11-24: unusable (pre days 3, control days 3425)",
+  "806274 2017-03-07: unusable (pre days 0, control days 3417)",
+  "806277 2023-04-12: unusable (pre days 8, control days 3430)",
+  "806279 2022-06-28: unusable (pre days 9, control days 1801)",
+  "806281 2014-07-29: unusable (pre days 0, control days 2553)",
+  "806026 2016-06-09: unusable (pre days 9, control days 3396)"
+ ]
+}
