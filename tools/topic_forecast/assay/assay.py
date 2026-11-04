@@ -53,6 +53,7 @@ def replay(ledger_path, out_csv, failed_ideas=None):
         for l in open(failed_ideas, encoding="utf-8"):
             r = json.loads(l) if l.strip() else None
             if r and "data" in r and "lever" in r:
+                r.setdefault("id", r.get("seed_id") or r.get("idea", "")[:40]); r.setdefault("object", r.get("idea", ""))
                 r.setdefault("outcome", "dropped"); r.setdefault("death_code", r.get("reason_code", ""))
                 rows.append(r)
     scored = []
@@ -136,15 +137,25 @@ def score_pairs(forecast_csv, topics_all, priors, default, out_csv, top=50):
 
 
 def main():
-    ext = len(sys.argv) > 1 and sys.argv[1] == "ext"   # python assay.py ext -> use results/ext/ forecast, write *_ext files
-    suf = "_ext" if ext else ""
+    ext = len(sys.argv) > 1 and sys.argv[1] in ("ext", "v1")   # ext -> results/ext/ forecast; v1 -> results/v1/ns (NS-label radar, non-AI partners, mech-core sources only)
+    v1 = len(sys.argv) > 1 and sys.argv[1] == "v1"
+    suf = "_v1" if v1 else ("_ext" if ext else "")
     rep = replay(os.path.join(HERE, "ledger.jsonl"), os.path.join(HERE, f"replay_ledger{suf}.csv"),
                  failed_ideas="/mnt/project-files/scan_daily/failed_ideas.jsonl")
     print("replay:", json.dumps(rep, ensure_ascii=False))
     topics_all = json.load(open(os.path.join(ROOT, "data/openalex/topics_all.json"), encoding="utf-8"))
     priors, default = topic_priors(os.path.join(ROOT, "cards/ncsa_cards.jsonl"),
                                    os.path.join(ROOT, "data/k3_ncsa_abstracts.jsonl"))
-    top = score_pairs(os.path.join(ROOT, "results/ext/forecast_T2025_top2000.csv" if ext else "results/forecast_T2025_top2000.csv"), topics_all, priors, default,
+    fc = os.path.join(ROOT, "results/v1/ns/forecast_T2025_top2000_nonAI.csv" if v1 else
+                      ("results/ext/forecast_T2025_top2000.csv" if ext else "results/forecast_T2025_top2000.csv"))
+    if v1:   # keep only pairs whose source topic is in the mechanical core set
+        mech_ids = set(json.load(open(os.path.join(ROOT, "data/openalex/mech_topics.json"), encoding="utf-8")))
+        rows = [r for r in csv.DictReader(open(fc, encoding="utf-8")) if r["a"] in mech_ids]
+        fc = os.path.join(HERE, "_v1_mech_input.csv")
+        with open(fc, "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=list(rows[0].keys())); w.writeheader(); w.writerows(rows)
+        print("v1 mech-core pairs:", len(rows))
+    top = score_pairs(fc, topics_all, priors, default,
                       os.path.join(HERE, f"assayed_top50{suf}.csv"))
     for t in top:
         print(*t, sep=" | ")

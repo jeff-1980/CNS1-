@@ -1,0 +1,127 @@
+{
+ "evaluation_type": {
+  "replay": "relative_only",
+  "radar_K1_K3": "real_gt",
+  "assayed_pairs": "prospective_no_gt"
+ },
+ "replay": {
+  "n": 39,
+  "n_alive": 3,
+  "auc_alive_vs_rest": 0.963,
+  "survivor_ranks": {
+   "S2-aeroup": 1,
+   "S3-audit": 3,
+   "S1-backblaze": 5
+  },
+  "top5": [
+   "S2-aeroup",
+   "ULT freezer (Danish biobank, 24 units, 2",
+   "S3-audit",
+   "D4-weld-smallstudy",
+   "S1-backblaze"
+  ]
+ },
+ "n_topics_with_priors": 588,
+ "assayed_top20": [
+  [
+   "0.1241",
+   "Tree Root and Stability Studies",
+   "Forest Management and Policy"
+  ],
+  [
+   "0.1155",
+   "Elasticity and Wave Propagation",
+   "Geotechnical and Geomechanical Engineering"
+  ],
+  [
+   "0.0976",
+   "Geotechnical and Geomechanical Engineering",
+   "High-Velocity Impact and Material Behavior"
+  ],
+  [
+   "0.0955",
+   "Geotechnical and Geomechanical Engineering",
+   "Theoretical and Computational Physics"
+  ],
+  [
+   "0.0874",
+   "Ultrasonics and Acoustic Wave Propagation",
+   "Seismic Waves and Analysis"
+  ],
+  [
+   "0.0863",
+   "Phase Change Materials Research",
+   "Integrated Energy Systems Optimization"
+  ],
+  [
+   "0.0825",
+   "Geotechnical and Geomechanical Engineering",
+   "Geotechnical and Mining Engineering"
+  ],
+  [
+   "0.0797",
+   "Refrigeration and Air Conditioning Technologies",
+   "Solar-Powered Water Purification Methods"
+  ],
+  [
+   "0.0779",
+   "Additive Manufacturing Materials and Processes",
+   "Environmental Impact and Sustainability"
+  ],
+  [
+   "0.0757",
+   "Geotechnical and Geomechanical Engineering",
+   "Geophysics and Sensor Technology"
+  ],
+  [
+   "0.0730",
+   "Heat Transfer and Optimization",
+   "Refrigeration and Air Conditioning Technologies"
+  ],
+  [
+   "0.0721",
+   "Sustainable Industrial Ecology",
+   "Sustainability and Ecological Systems Analysis"
+  ],
+  [
+   "0.0711",
+   "Heat Transfer and Boiling Studies",
+   "Refrigeration and Air Conditioning Technologies"
+  ],
+  [
+   "0.0707",
+   "Traffic and Road Safety",
+   "Traffic Prediction and Management Techniques"
+  ],
+  [
+   "0.0670",
+   "Sustainable Industrial Ecology",
+   "Sustainable Development and Policies"
+  ],
+  [
+   "0.0612",
+   "Geotechnical and Geomechanical Engineering",
+   "Geomechanics and Mining Engineering"
+  ],
+  [
+   "0.0582",
+   "Fiber-reinforced polymer composites",
+   "Environmental Impact and Sustainability"
+  ],
+  [
+   "0.0568",
+   "Tree Root and Stability Studies",
+   "Tree-ring climate responses"
+  ],
+  [
+   "0.0546",
+   "Sustainable Industrial Ecology",
+   "Chemistry and Chemical Engineering"
+  ],
+  [
+   "0.0468",
+   "Iron and Steelmaking Processes",
+   "Thermodynamic and Structural Properties of Metals and Alloys"
+  ]
+ ]
+}

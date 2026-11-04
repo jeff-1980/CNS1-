@@ -1,0 +1,51 @@
+rank,assay,p_emerge,a_name,b_name,b_subfield,cum_ab,n_a,n_b,field_w,feas,ceiling,realw,crowd,mech
+1,0.1241,0.409,Tree Root and Stability Studies,Forest Management and Policy,Global and Planetary Change,1124.0,2795,7657,1.00,0.51,0.58,0.58,0.38,0.20
+2,0.1155,0.240,Elasticity and Wave Propagation,Geotechnical and Geomechanical Engineering,Mechanics of Materials,1984.0,3392,2751,1.00,0.36,0.66,0.65,0.14,0.62
+3,0.0976,0.386,Geotechnical and Geomechanical Engineering,High-Velocity Impact and Material Behavior,Materials Chemistry,1311.0,2751,4881,1.00,0.34,0.66,0.65,0.24,0.17
+4,0.0955,0.273,Geotechnical and Geomechanical Engineering,Theoretical and Computational Physics,Condensed Matter Physics,104.0,2751,3857,1.00,0.45,0.66,0.65,0.19,0.17
+5,0.0874,0.359,Ultrasonics and Acoustic Wave Propagation,Seismic Waves and Analysis,Geophysics,2004.0,6485,3967,1.00,0.28,0.55,0.62,0.20,0.35
+6,0.0863,0.519,Phase Change Materials Research,Integrated Energy Systems Optimization,Electrical and Electronic Engineering,1647.0,5803,12199,1.00,0.37,0.72,0.41,0.61,0.21
+7,0.0825,0.261,Geotechnical and Geomechanical Engineering,Geotechnical and Mining Engineering,Civil and Structural Engineering,1834.0,2751,2112,1.00,0.38,0.66,0.65,0.11,0.17
+8,0.0797,0.411,Refrigeration and Air Conditioning Technologies,Solar-Powered Water Purification Methods,"Renewable Energy, Sustainability and the Environment",1289.0,5683,3494,1.00,0.30,0.60,0.41,0.17,0.23
+9,0.0779,0.217,Additive Manufacturing Materials and Processes,Environmental Impact and Sustainability,Environmental Engineering,125.0,12830,10370,1.00,0.38,0.73,0.42,0.52,0.82
+10,0.0757,0.233,Geotechnical and Geomechanical Engineering,Geophysics and Sensor Technology,Ocean Engineering,535.0,2751,1368,1.00,0.38,0.66,0.65,0.07,0.17
+11,0.0730,0.244,Heat Transfer and Optimization,Refrigeration and Air Conditioning Technologies,Mechanical Engineering,11565.0,10749,5683,1.00,0.33,0.60,0.41,0.28,0.66
+12,0.0721,0.325,Sustainable Industrial Ecology,Sustainability and Ecological Systems Analysis,Environmental Engineering,1345.0,1615,1685,1.00,0.44,0.44,0.31,0.08,0.19
+13,0.0711,0.226,Heat Transfer and Boiling Studies,Refrigeration and Air Conditioning Technologies,Mechanical Engineering,8523.0,4607,5683,1.00,0.33,0.60,0.41,0.28,0.70
+14,0.0707,0.442,Traffic and Road Safety,Traffic Prediction and Management Techniques,Building and Construction,3359.0,9608,6096,1.00,0.31,0.50,0.62,0.30,0.09
+15,0.0670,0.415,Sustainable Industrial Ecology,Sustainable Development and Policies,"Management, Monitoring, Policy and Law",347.0,1615,3899,1.00,0.35,0.44,0.31,0.19,0.19
+16,0.0612,0.244,Geotechnical and Geomechanical Engineering,Geomechanics and Mining Engineering,Mechanics of Materials,10568.0,2751,7542,1.00,0.38,0.66,0.65,0.38,0.17
+17,0.0582,0.232,Fiber-reinforced polymer composites,Environmental Impact and Sustainability,Environmental Engineering,262.0,6157,10370,1.00,0.38,0.73,0.42,0.52,0.41
+18,0.0568,0.217,Tree Root and Stability Studies,Tree-ring climate responses,Atmospheric Science,416.0,2795,1818,1.00,0.35,0.58,0.58,0.09,0.20
+19,0.0546,0.396,Sustainable Industrial Ecology,Chemistry and Chemical Engineering,Environmental Chemistry,647.0,1615,1817,1.00,0.28,0.44,0.31,0.09,0.19
+20,0.0468,0.251,Iron and Steelmaking Processes,Thermodynamic and Structural Properties of Metals and Alloys,Mechanical Engineering,887.0,3939,1873,1.00,0.45,0.47,0.25,0.09,0.11
+21,0.0455,0.349,Forest Biomass Utilization and Management,Forest ecology and management,Nature and Landscape Conservation,5045.0,1742,6950,1.00,0.35,0.44,0.25,0.35,0.19
+22,0.0433,0.225,Traffic and Road Safety,Impact of Light on Environment and Health,Global and Planetary Change,502.0,9608,1506,1.00,0.31,0.50,0.62,0.08,0.09
+23,0.0424,0.245,Fire Detection and Safety Systems,Forest Management and Policy,Global and Planetary Change,237.0,2879,7657,1.00,0.42,0.44,0.39,0.38,0.17
+24,0.0419,0.229,Fire dynamics and safety research,Polymer Science and PVC,Polymers and Plastics,1530.0,6457,2073,1.00,0.31,0.50,0.50,0.10,0.14
+25,0.0416,0.229,Adsorption and Cooling Systems,Environmental Impact and Sustainability,Environmental Engineering,60.0,7725,10370,1.00,0.38,0.73,0.42,0.52,0.16
+26,0.0355,0.223,Traffic and Road Safety,Climate Change and Health Impacts,"Health, Toxicology and Mutagenesis",106.0,9608,6173,1.00,0.31,0.50,0.62,0.31,0.09
+27,0.0335,0.255,Fire Detection and Safety Systems,Model Reduction and Neural Networks,Statistical and Nonlinear Physics,45.0,2879,8860,1.00,0.36,0.39,0.39,0.44,0.17
+28,0.0331,0.249,Iron and Steelmaking Processes,Solidification and crystal growth phenomena,Materials Chemistry,1261.0,3939,3170,1.00,0.34,0.47,0.25,0.16,0.11
+29,0.0319,0.265,Iron and Steelmaking Processes,Model Reduction and Neural Networks,Statistical and Nonlinear Physics,27.0,3939,8860,1.00,0.39,0.47,0.25,0.44,0.11
+30,0.0317,0.235,Iron and Steelmaking Processes,Glass properties and applications,Ceramics and Composites,407.0,3939,4673,1.00,0.36,0.47,0.25,0.23,0.11
+31,0.0312,0.346,Carbon Dioxide Capture Technologies,Maritime Transport Emissions and Efficiency,Environmental Engineering,298.0,8051,3174,1.00,0.31,0.44,0.19,0.16,0.01
+32,0.0307,0.318,Phase Change Materials Research,Photovoltaic Systems and Sustainability,Environmental Engineering,145.0,5803,4854,1.00,0.24,0.46,0.21,0.24,0.21
+33,0.0302,0.233,Advanced Thermodynamic Systems and Engines,Power Systems and Renewable Energy,Energy Engineering and Power Technology,302.0,2606,9329,1.00,0.31,0.36,0.36,0.47,0.34
+34,0.0300,0.317,Extraction and Separation Processes,Thermodynamic and Structural Properties of Metals and Alloys,Mechanical Engineering,147.0,11393,1873,1.00,0.31,0.43,0.18,0.09,0.01
+35,0.0286,0.311,Innovative Energy Harvesting Technologies,Photovoltaic Systems and Sustainability,Environmental Engineering,88.0,4360,4854,1.00,0.24,0.46,0.21,0.24,0.17
+36,0.0285,0.268,Iron and Steelmaking Processes,Ammonia Synthesis and Nitrogen Reduction,Catalysis,43.0,3939,3521,1.00,0.27,0.47,0.25,0.18,0.11
+37,0.0274,0.232,Sustainable Industrial Ecology,Sustainability and Climate Change Governance,Global and Planetary Change,131.0,1615,5654,1.00,0.28,0.44,0.31,0.28,0.19
+38,0.0272,0.646,Extraction and Separation Processes,Minerals Flotation and Separation Techniques,Water Science and Technology,5835.0,11393,5430,1.00,0.21,0.22,0.18,0.27,0.01
+39,0.0270,0.323,Heat Transfer and Optimization,Model Reduction and Neural Networks,Statistical and Nonlinear Physics,235.0,10749,8860,1.00,0.19,0.32,0.19,0.44,0.66
+40,0.0254,0.453,Ultrasonics and Acoustic Wave Propagation,Model Reduction and Neural Networks,Statistical and Nonlinear Physics,106.0,6485,8860,1.00,0.17,0.32,0.19,0.44,0.35
+41,0.0246,0.293,Sustainable Industrial Ecology,Bioeconomy and Sustainability Development,General Agricultural and Biological Sciences,768.0,1615,2877,0.50,0.35,0.44,0.31,0.14,0.19
+42,0.0246,0.430,Phase Change Materials Research,Building Energy and Comfort Optimization,Building and Construction,4192.0,5803,14063,1.00,0.22,0.43,0.27,0.70,0.21
+43,0.0237,0.542,High Entropy Alloys Studies,Solidification and crystal growth phenomena,Materials Chemistry,190.0,6797,3170,1.00,0.14,0.21,0.02,0.16,0.44
+44,0.0235,0.299,Rock Mechanics and Modeling,Atmospheric and Environmental Gas Dynamics,Global and Planetary Change,319.0,12072,3383,1.00,0.17,0.22,0.36,0.17,0.34
+45,0.0230,0.400,Metallic Glasses and Amorphous Alloys,Fusion materials and technologies,Materials Chemistry,542.0,2857,5565,1.00,0.22,0.23,0.02,0.28,0.36
+46,0.0228,0.490,Extraction and Separation Processes,CO2 Sequestration and Geologic Interactions,Environmental Engineering,269.0,11393,5708,1.00,0.22,0.25,0.18,0.29,0.01
+47,0.0226,0.362,Forest Biomass Utilization and Management,Thermochemical Biomass Conversion Processes,Biomedical Engineering,8021.0,1742,12828,1.00,0.25,0.44,0.19,0.64,0.19
+48,0.0226,0.314,Fire Detection and Safety Systems,Remote Sensing in Agriculture,Ecology,1077.0,2879,13303,1.00,0.25,0.39,0.39,0.67,0.17
+49,0.0224,0.372,Energetic Materials and Combustion,Advanced Chemical Physics Studies,"Atomic and Molecular Physics, and Optics",2657.0,3975,10748,1.00,0.31,0.51,0.06,0.54,0.06
+50,0.0221,0.272,Industrial Gas Emission Control,Maritime Transport Emissions and Efficiency,Environmental Engineering,910.0,5093,3174,1.00,0.27,0.44,0.19,0.16,0.03
