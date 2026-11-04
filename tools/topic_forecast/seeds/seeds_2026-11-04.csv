@@ -1,0 +1,301 @@
+rank,topic_a,topic_b,score,p_emerge,a_id,b_id,a_in_mech_core,b_field,cum_ab,n_a,n_b,crowd_b,already_assayed_flag,overlap_terms
+1,Electric Vehicles and Infrastructure,Adversarial Robustness in Machine Learning,0.0785,0.451,T10768,T11689,0,Artificial Intelligence,2,9472,8246,0.41,,machine
+2,Electric Vehicles and Infrastructure,Advanced Graph Neural Networks,0.0597,0.340,T10768,T11273,0,Artificial Intelligence,2,9472,5174,0.26,,
+3,Refrigeration and Air Conditioning Technologies,Explainable Artificial Intelligence (XAI),0.0496,0.254,T11529,T12026,1,Artificial Intelligence,2,5683,6264,0.31,,refrigeration
+4,Robot Manipulation and Learning,Fire Detection and Safety Systems,0.0416,0.209,T10653,T12597,0,"Safety, Risk, Reliability and Quality",2,5121,2879,0.14,,
+5,Autonomous Vehicle Technology and Safety,Infrastructure Resilience and Vulnerability Analysis,0.0401,0.179,T11099,T11807,0,Civil and Structural Engineering,2,8115,4037,0.20,,vehicle
+6,Power Line Inspection Robots,Adversarial Robustness in Machine Learning,0.0390,0.554,T13715,T11689,1,Artificial Intelligence,2,1368,8246,0.41,possible_overlap,line;machine
+7,Machine Fault Diagnosis Techniques,Electric Vehicles and Infrastructure,0.0356,0.168,T10220,T10768,0,Electrical and Electronic Engineering,2,12977,9472,0.47,,fault;machine
+8,Autonomous Vehicle Technology and Safety,Green IT and Sustainability,0.0352,0.246,T11099,T12238,0,Electrical and Electronic Engineering,2,8115,2037,0.10,,vehicle
+9,Electric Vehicles and Infrastructure,Energy Efficiency in Computing,0.0325,0.174,T10768,T14098,0,Hardware and Architecture,2,9472,3703,0.19,,energy
+10,Electric Vehicles and Infrastructure,Climate Change and Environmental Impact,0.0303,0.168,T10768,T13530,0,Global and Planetary Change,2,9472,4511,0.23,,
+11,Electric Vehicles and Infrastructure,Scientific Innovation and Industrial Efficiency,0.0293,0.137,T10768,T14346,0,General Decision Sciences,1,9472,66,0.00,,
+12,Electric Vehicles and Infrastructure,Industrial Engineering and Technologies,0.0293,0.137,T10768,T13045,0,Mechanical Engineering,2,9472,119,0.01,,
+13,Geothermal Energy Systems and Applications,Explainable Artificial Intelligence (XAI),0.0270,0.320,T11225,T12026,0,Artificial Intelligence,2,2713,6264,0.31,,energy
+14,Electric Vehicles and Infrastructure,Climate Change and Health Impacts,0.0263,0.157,T10768,T11244,0,"Health, Toxicology and Mutagenesis",2,9472,6173,0.31,,
+15,Electric Vehicles and Infrastructure,Data Stream Mining Techniques,0.0263,0.128,T10768,T12761,0,Artificial Intelligence,2,9472,1133,0.06,,data
+16,Energy Efficiency and Management,Model Reduction and Neural Networks,0.0254,0.376,T11954,T11206,0,Statistical and Nonlinear Physics,2,3438,8860,0.44,,energy
+17,Electric Vehicles and Infrastructure,Digital and Cyber Forensics,0.0252,0.126,T10768,T12034,0,Information Systems,2,9472,1939,0.10,,
+18,Electric Vehicles and Infrastructure,Advanced Bandit Algorithms Research,0.0242,0.121,T10768,T12101,0,Management Science and Operations Research,2,9472,1915,0.10,,
+19,"Adhesion, Friction, and Surface Interactions",Model Reduction and Neural Networks,0.0232,0.300,T11799,T11206,1,Statistical and Nonlinear Physics,2,1937,8860,0.44,,
+20,Fire Detection and Safety Systems,Multimodal Machine Learning Applications,0.0229,0.226,T12597,T11714,1,Computer Vision and Pattern Recognition,2,2879,7046,0.35,,machine
+21,Power Systems and Renewable Energy,Reinforcement Learning in Robotics,0.0227,0.211,T14444,T10462,0,Artificial Intelligence,2,9329,7933,0.40,,energy;renewable
+22,Power Systems and Renewable Energy,Network Time Synchronization Technologies,0.0209,0.169,T14444,T12216,0,Computer Networks and Communications,2,9329,750,0.04,possible_overlap,energy;renewable;time
+23,Digital Transformation in Industry,Adversarial Robustness in Machine Learning,0.0205,0.415,T10763,T11689,1,Artificial Intelligence,2,13073,8246,0.41,,machine
+24,Traffic and Road Safety,Artificial Intelligence Applications,0.0203,0.268,T10370,T13904,1,Artificial Intelligence,2,9608,22822,1.00,,
+25,Electric Vehicles and Infrastructure,Air Quality Monitoring and Forecasting,0.0201,0.124,T10768,T12120,0,Environmental Engineering,2,9472,6939,0.35,,
+26,Power Line Inspection Robots,Adaptive Dynamic Programming Control,0.0201,0.294,T13715,T12794,1,Computational Theory and Mathematics,2,1368,2104,0.11,possible_overlap,line;control
+27,Hybrid Renewable Energy Systems,Impact of Light on Environment and Health,0.0199,0.159,T11007,T11963,0,Global and Planetary Change,2,10094,1506,0.08,,energy;renewable
+28,Fire dynamics and safety research,Topic Modeling,0.0193,0.176,T11317,T10028,1,Artificial Intelligence,2,6457,17390,0.87,,topic
+29,Autonomous Vehicle Technology and Safety,Topological and Geometric Data Analysis,0.0193,0.132,T11099,T12536,0,Computational Theory and Mathematics,2,8115,1481,0.07,possible_overlap,vehicle;data
+30,Power Systems and Renewable Energy,Machine Learning in Materials Science,0.0193,0.243,T14444,T11948,0,Materials Chemistry,2,9329,17114,0.86,possible_overlap,energy;renewable;machine;materials;science
+31,Fire dynamics and safety research,Imbalanced Data Classification Techniques,0.0192,0.120,T11317,T11652,1,Artificial Intelligence,2,6457,5412,0.27,,data
+32,Integrated Energy Systems Optimization,Robotics and Automated Systems,0.0190,0.077,T11185,T13382,0,Control and Systems Engineering,1,12199,2788,0.14,,energy
+33,Topology Optimization in Engineering,Environmental Impact and Sustainability,0.0180,0.036,T11115,T10435,0,Environmental Engineering,2,4155,10370,0.52,,
+34,Traffic control and management,Multimodal Machine Learning Applications,0.0180,0.226,T10524,T11714,0,Computer Vision and Pattern Recognition,2,8881,7046,0.35,possible_overlap,control;machine
+35,Topology Optimization in Engineering,Explainable Artificial Intelligence (XAI),0.0171,0.147,T11115,T12026,0,Artificial Intelligence,1,4155,6264,0.31,,
+36,Geotechnical and Geomechanical Engineering,Model Reduction and Neural Networks,0.0171,0.057,T13619,T11206,1,Statistical and Nonlinear Physics,2,2751,8860,0.44,,
+37,Power Systems and Renewable Energy,Model Reduction and Neural Networks,0.0169,0.134,T14444,T11206,0,Statistical and Nonlinear Physics,1,9329,8860,0.44,,energy;renewable
+38,Electric Vehicles and Infrastructure,Urban Green Space and Health,0.0169,0.104,T10768,T10692,0,"Health, Toxicology and Mutagenesis",2,9472,7054,0.35,,
+39,Digital Transformation in Industry,Educational and Technological Research,0.0168,0.465,T10763,T13676,1,Information Systems,2,13073,178,0.01,,
+40,Hybrid Renewable Energy Systems,Underground infrastructure and sustainability,0.0166,0.128,T11007,T13689,0,Building and Construction,2,10094,503,0.03,,energy;renewable
+41,Electric Vehicles and Infrastructure,AI-based Problem Solving and Planning,0.0165,0.082,T10768,T10906,0,Artificial Intelligence,2,9472,1603,0.08,,
+42,Traffic and Road Safety,Natural Language Processing Techniques,0.0164,0.123,T10370,T10181,1,Artificial Intelligence,2,9608,9782,0.49,,
+43,Satellite Communication Systems,Explainable Artificial Intelligence (XAI),0.0162,0.557,T12042,T12026,0,Artificial Intelligence,2,3146,6264,0.31,,communication
+44,Safety Systems Engineering in Autonomy,Multimodal Machine Learning Applications,0.0161,0.336,T13295,T11714,1,Computer Vision and Pattern Recognition,2,1618,7046,0.35,,machine
+45,Electric Vehicles and Infrastructure,Web Application Security Vulnerabilities,0.0160,0.082,T10768,T12479,0,Information Systems,2,9472,2588,0.13,,
+46,Electric Vehicles and Infrastructure,Advanced Graph Theory Research,0.0159,0.091,T10768,T10374,0,Computational Theory and Mathematics,2,9472,5338,0.27,,
+47,Integrated Energy Systems Optimization,Advanced Data and IoT Technologies,0.0158,0.061,T11185,T13918,0,Electrical and Electronic Engineering,2,12199,1544,0.08,possible_overlap,energy;data
+48,Evacuation and Crowd Dynamics,Adversarial Robustness in Machine Learning,0.0156,0.226,T11500,T11689,0,Artificial Intelligence,2,2773,8246,0.41,possible_overlap,crowd;machine
+49,Topology Optimization in Engineering,Infrastructure Maintenance and Monitoring,0.0152,0.142,T11115,T11606,0,Civil and Structural Engineering,2,4155,11197,0.56,,
+50,Power Line Inspection Robots,Photovoltaic Systems and Sustainability,0.0148,0.088,T13715,T12838,1,Environmental Engineering,1,1368,4854,0.24,,line
+51,Electric Power System Optimization,Artificial Intelligence Applications,0.0148,0.264,T10424,T13904,0,Artificial Intelligence,2,8167,22822,1.00,,
+52,Cellular and Composite Structures,Photovoltaic Systems and Sustainability,0.0147,0.072,T10707,T12838,1,Environmental Engineering,2,10213,4854,0.24,,
+53,UAV Applications and Optimization,Explainable Artificial Intelligence (XAI),0.0145,0.499,T11133,T12026,0,Artificial Intelligence,2,4757,6264,0.31,,
+54,Industrial Automation and Control Systems,Topic Modeling,0.0143,0.308,T13344,T10028,0,Artificial Intelligence,2,5527,17390,0.87,possible_overlap,control;topic
+55,Integrated Energy Systems Optimization,Q Methodology Applications,0.0140,0.052,T11185,T13587,0,Management Science and Operations Research,2,12199,335,0.02,,energy
+56,Electric Motor Design and Analysis,Explainable Artificial Intelligence (XAI),0.0140,0.195,T10278,T12026,0,Artificial Intelligence,1,7252,6264,0.31,,
+57,Vehicle emissions and performance,Advanced Graph Neural Networks,0.0139,0.214,T12095,T11273,0,Artificial Intelligence,2,3505,5174,0.26,,vehicle
+58,Electric Vehicles and Infrastructure,Augmented Reality Applications,0.0139,0.079,T10768,T10888,0,Computer Vision and Pattern Recognition,2,9472,8889,0.44,,
+59,Autonomous Vehicle Technology and Safety,Artificial Intelligence in Education,0.0139,0.300,T11099,T14414,0,Information Systems,2,8115,39117,1.00,,vehicle
+60,Integrated Energy Systems Optimization,Advanced Bandit Algorithms Research,0.0138,0.054,T11185,T12101,0,Management Science and Operations Research,2,12199,1915,0.10,,energy
+61,Additive Manufacturing Materials and Processes,Hybrid Renewable Energy Systems,0.0137,0.087,T10705,T11007,1,Energy Engineering and Power Technology,2,12830,10094,0.50,possible_overlap,materials;energy;renewable
+62,Integrated Energy Systems Optimization,Generative Adversarial Networks and Image Synthesis,0.0135,0.066,T11185,T10775,0,Computer Vision and Pattern Recognition,2,12199,7319,0.37,,energy
+63,Industrial Automation and Control Systems,Environmental Impact and Sustainability,0.0134,0.055,T13344,T10435,0,Environmental Engineering,2,5527,10370,0.52,,control
+64,Advanced Algorithms and Applications,Model Reduction and Neural Networks,0.0134,0.199,T13717,T11206,0,Statistical and Nonlinear Physics,2,624,8860,0.44,,
+65,Hydraulic Fracturing and Reservoir Analysis,Reinforcement Learning in Robotics,0.0132,0.083,T10635,T10462,1,Artificial Intelligence,2,4721,7933,0.40,,
+66,High Entropy Alloys Studies,Iron and Steelmaking Processes,0.0132,0.082,T11143,T11837,1,Mechanical Engineering,2,6797,3939,0.20,,
+67,Power System Reliability and Maintenance,Natural Language Processing Techniques,0.0132,0.087,T11941,T10181,1,Artificial Intelligence,2,3300,9782,0.49,,
+68,Hybrid Renewable Energy Systems,Aerospace Engineering and Applications,0.0131,0.105,T11007,T13954,0,Control and Systems Engineering,2,10094,1446,0.07,,energy;renewable
+69,Refrigeration and Air Conditioning Technologies,Domain Adaptation and Few-Shot Learning,0.0129,0.095,T11529,T11307,1,Artificial Intelligence,2,5683,13398,0.67,,refrigeration
+70,Infrastructure Resilience and Vulnerability Analysis,Quantum Computing Algorithms and Architecture,0.0129,0.112,T11807,T10682,0,Artificial Intelligence,1,4037,8980,0.45,,
+71,Geotechnical and Geomechanical Engineering,Underground infrastructure and sustainability,0.0127,0.038,T13619,T13689,1,Building and Construction,2,2751,503,0.03,,
+72,Electric Vehicles and Infrastructure,Tunneling and Rock Mechanics,0.0126,0.069,T10768,T12482,0,Civil and Structural Engineering,2,9472,4136,0.21,,
+73,Machine Fault Diagnosis Techniques,Fire dynamics and safety research,0.0125,0.058,T10220,T11317,0,"Safety, Risk, Reliability and Quality",2,12977,6457,0.32,,fault;machine
+74,Hybrid Renewable Energy Systems,Polyoxometalates: Synthesis and Applications,0.0123,0.101,T11007,T11286,0,Materials Chemistry,2,10094,1455,0.07,,energy;renewable
+75,Control and Dynamics of Mobile Robots,Artificial Intelligence Applications,0.0122,0.567,T11615,T13904,0,Artificial Intelligence,2,4938,22822,1.00,,control
+76,Teleoperation and Haptic Systems,Model Reduction and Neural Networks,0.0121,0.179,T11687,T11206,1,Statistical and Nonlinear Physics,2,2248,8860,0.44,,
+77,Mechatronics Education and Applications,Reinforcement Learning in Robotics,0.0120,0.264,T13827,T10462,1,Artificial Intelligence,2,1203,7933,0.40,,
+78,Concrete and Cement Materials Research,Landslides and related hazards,0.0120,0.053,T10033,T10535,0,"Management, Monitoring, Policy and Law",2,20618,7850,0.39,,materials
+79,Power Line Inspection Robots,Quantum Computing Algorithms and Architecture,0.0119,0.235,T13715,T10682,1,Artificial Intelligence,1,1368,8980,0.45,,line
+80,Space Satellite Systems and Control,Topic Modeling,0.0118,0.232,T11701,T10028,0,Artificial Intelligence,2,4765,17390,0.87,possible_overlap,control;topic
+81,Transport and Logistics Innovations,Topic Modeling,0.0117,0.192,T12984,T10028,1,Artificial Intelligence,2,8252,17390,0.87,,topic
+82,Maritime Ports and Logistics,Research Data Management Practices,0.0117,0.122,T11223,T11937,1,Information Systems,2,5249,6827,0.34,possible_overlap,ports;data
+83,Electric Vehicles and Infrastructure,Generative Adversarial Networks and Image Synthesis,0.0117,0.073,T10768,T10775,0,Computer Vision and Pattern Recognition,1,9472,7319,0.37,,
+84,Robot Manipulation and Learning,Electric and Hybrid Vehicle Technologies,0.0116,0.099,T10653,T10808,0,Automotive Engineering,2,5121,7599,0.38,,vehicle
+85,Traffic and Road Safety,UAV Applications and Optimization,0.0116,0.069,T10370,T11133,1,Aerospace Engineering,2,9608,4757,0.24,,
+86,Integrated Energy Systems Optimization,Air Traffic Management and Optimization,0.0116,0.049,T11185,T11489,0,Aerospace Engineering,2,12199,3852,0.19,,energy
+87,Electric Vehicles and Infrastructure,demographic modeling and climate adaptation,0.0116,0.055,T10768,T14509,0,Management Science and Operations Research,2,9472,572,0.03,,
+88,Fire Detection and Safety Systems,Adversarial Robustness in Machine Learning,0.0115,0.099,T12597,T11689,1,Artificial Intelligence,1,2879,8246,0.41,,machine
+89,Electric Power System Optimization,Advanced Graph Neural Networks,0.0114,0.095,T10424,T11273,0,Artificial Intelligence,2,8167,5174,0.26,,
+90,Optical Wireless Communication Technologies,Adversarial Robustness in Machine Learning,0.0114,0.276,T10851,T11689,0,Artificial Intelligence,2,4718,8246,0.41,possible_overlap,communication;machine
+91,Robotics and Sensor-Based Localization,Explainable Artificial Intelligence (XAI),0.0113,0.387,T10191,T12026,0,Artificial Intelligence,2,5285,6264,0.31,,
+92,Electric Vehicles and Infrastructure,Sustainable Development and Environmental Management,0.0112,0.065,T10768,T12883,0,"Management, Monitoring, Policy and Law",2,9472,5661,0.28,,
+93,Electric Vehicles and Infrastructure,Fire Detection and Safety Systems,0.0112,0.036,T10768,T12597,0,"Safety, Risk, Reliability and Quality",1,9472,2879,0.14,,
+94,Tree Root and Stability Studies,Reinforcement Learning in Robotics,0.0112,0.049,T12729,T10462,1,Artificial Intelligence,2,2795,7933,0.40,,
+95,Integrated Energy Systems Optimization,Industrial and Mining Safety,0.0111,0.050,T11185,T14091,0,"Safety, Risk, Reliability and Quality",1,12199,5483,0.27,,energy
+96,Electric Vehicles and Infrastructure,Gaussian Processes and Bayesian Inference,0.0111,0.055,T10768,T12814,0,Artificial Intelligence,2,9472,1793,0.09,,
+97,Earthquake and Disaster Impact Studies,Artificial Intelligence Applications,0.0109,0.326,T13800,T13904,0,Artificial Intelligence,2,4935,22822,1.00,,
+98,Rock Mechanics and Modeling,Explainable Artificial Intelligence (XAI),0.0108,0.330,T10161,T12026,1,Artificial Intelligence,2,12072,6264,0.31,,
+99,Energy Efficiency and Management,Explainable Artificial Intelligence (XAI),0.0108,0.372,T11954,T12026,0,Artificial Intelligence,2,3438,6264,0.31,,energy
+100,Vehicle emissions and performance,Privacy-Preserving Technologies in Data,0.0108,0.229,T12095,T10764,0,Artificial Intelligence,2,3505,10712,0.54,possible_overlap,vehicle;data
+101,Hybrid Renewable Energy Systems,Maritime Navigation and Safety,0.0107,0.097,T11007,T11622,0,Ocean Engineering,2,10094,4649,0.23,,energy;renewable
+102,Air Traffic Management and Optimization,Model Reduction and Neural Networks,0.0106,0.157,T11489,T11206,0,Statistical and Nonlinear Physics,2,3852,8860,0.44,,
+103,Energy and Environmental Systems,Imbalanced Data Classification Techniques,0.0105,0.396,T14250,T11652,0,Artificial Intelligence,2,1034,5412,0.27,possible_overlap,energy;data
+104,Topology Optimization in Engineering,Photovoltaic Systems and Sustainability,0.0105,0.037,T11115,T12838,0,Environmental Engineering,1,4155,4854,0.24,,
+105,Smart Grid Security and Resilience,Fire Detection and Safety Systems,0.0104,0.071,T10917,T12597,0,"Safety, Risk, Reliability and Quality",2,3682,2879,0.14,,
+106,Reliability and Maintenance Optimization,Multimodal Machine Learning Applications,0.0104,0.218,T10780,T11714,1,Computer Vision and Pattern Recognition,1,10406,7046,0.35,,machine
+107,Electric and Hybrid Vehicle Technologies,Advanced Neural Network Applications,0.0104,0.293,T10808,T10036,0,Computer Vision and Pattern Recognition,2,7599,53011,1.00,,vehicle
+108,Arduino and IoT Applications,Model Reduction and Neural Networks,0.0103,0.153,T13420,T11206,0,Statistical and Nonlinear Physics,2,13030,8860,0.44,,
+109,Satellite Communication Systems,Power Systems and Renewable Energy,0.0103,0.108,T12042,T14444,0,Energy Engineering and Power Technology,2,3146,9329,0.47,possible_overlap,communication;energy;renewable
+110,Power Systems and Renewable Energy,Impact of AI and Big Data on Business and Society,0.0103,0.167,T14444,T14260,0,Management Science and Operations Research,2,9329,14646,0.73,possible_overlap,energy;renewable;data;society
+111,Hybrid Renewable Energy Systems,Bauxite Residue and Utilization,0.0102,0.082,T11007,T12774,0,Mechanical Engineering,1,10094,1200,0.06,,energy;renewable
+112,Autonomous Vehicle Technology and Safety,Blockchain Technology in Education and Learning,0.0102,0.080,T11099,T13913,0,Information Systems,2,8115,4844,0.24,,vehicle
+113,Traffic and Road Safety,Machine Learning in Healthcare,0.0102,0.071,T10370,T13702,1,Artificial Intelligence,1,9608,8485,0.42,,machine
+114,Transport Systems and Technology,Model Reduction and Neural Networks,0.0102,0.151,T14304,T11206,1,Statistical and Nonlinear Physics,2,578,8860,0.44,,
+115,Integrated Energy Systems Optimization,Architecture and Computational Design,0.0101,0.045,T11185,T13518,0,Architecture,2,12199,4418,0.22,,energy
+116,Hybrid Renewable Energy Systems,Adversarial Robustness in Machine Learning,0.0101,0.091,T11007,T11689,0,Artificial Intelligence,0,10094,8246,0.41,possible_overlap,energy;renewable;machine
+117,Autonomous Vehicle Technology and Safety,Complex Systems and Dynamics,0.0100,0.074,T11099,T14299,0,Statistical and Nonlinear Physics,2,8115,2504,0.13,,vehicle
+118,Geomechanics and Mining Engineering,Model Reduction and Neural Networks,0.0100,0.148,T13772,T11206,1,Statistical and Nonlinear Physics,2,7542,8860,0.44,,
+119,Underwater Vehicles and Communication Systems,Artificial Intelligence Applications,0.0099,0.420,T11192,T13904,0,Artificial Intelligence,2,4768,22822,1.00,,communication
+120,Autonomous Vehicle Technology and Safety,Scientific Innovation and Industrial Efficiency,0.0099,0.065,T11099,T14346,0,General Decision Sciences,2,8115,66,0.00,,vehicle
+121,Transportation Systems and Logistics,Privacy-Preserving Technologies in Data,0.0099,0.209,T13527,T10764,0,Artificial Intelligence,2,8158,10712,0.54,,data
+122,Dam Engineering and Safety,Artificial Intelligence Applications,0.0098,0.484,T12293,T13904,0,Artificial Intelligence,2,3571,22822,1.00,,
+123,Robotics and Automated Systems,Topic Modeling,0.0098,0.212,T13382,T10028,0,Artificial Intelligence,1,2788,17390,0.87,,topic
+124,Hybrid Renewable Energy Systems,Layered Double Hydroxides Synthesis and Applications,0.0098,0.081,T11007,T11940,0,Materials Chemistry,2,10094,2480,0.12,,energy;renewable
+125,Evacuation and Crowd Dynamics,Artificial Intelligence Applications,0.0098,0.302,T11500,T13904,0,Artificial Intelligence,2,2773,22822,1.00,,crowd
+126,Power Systems and Renewable Energy,Quantum Computing Algorithms and Architecture,0.0098,0.113,T14444,T10682,0,Artificial Intelligence,1,9329,8980,0.45,,energy;renewable
+127,Underwater Vehicles and Communication Systems,Green IT and Sustainability,0.0097,0.295,T11192,T12238,0,Electrical and Electronic Engineering,2,4768,2037,0.10,,communication
+128,Smart Grid Security and Resilience,Power Line Inspection Robots,0.0097,0.123,T10917,T13715,0,Mechanical Engineering,2,3682,1368,0.07,,line
+129,Integrated Energy Systems Optimization,Marine and Offshore Engineering Studies,0.0097,0.037,T11185,T14164,0,Ocean Engineering,2,12199,1108,0.06,possible_overlap,energy;marine
+130,Hybrid Renewable Energy Systems,Fire Detection and Safety Systems,0.0097,0.043,T11007,T12597,0,"Safety, Risk, Reliability and Quality",1,10094,2879,0.14,,energy;renewable
+131,Industrial Engineering and Technologies,Environmental Impact and Sustainability,0.0096,0.039,T13045,T10435,1,Environmental Engineering,2,119,10370,0.52,,
+132,Topology Optimization in Engineering,High Entropy Alloys Studies,0.0095,0.123,T11115,T11143,0,Mechanical Engineering,2,4155,6797,0.34,,
+133,Dam Engineering and Safety,Machine Learning in Materials Science,0.0095,0.234,T12293,T11948,0,Materials Chemistry,2,3571,17114,0.86,,machine;materials;science
+134,Tree Root and Stability Studies,Wetland Management and Conservation,0.0095,0.037,T12729,T14359,1,Ocean Engineering,2,2795,2138,0.11,,
+135,Structural Health Monitoring Techniques,Maritime Transport Emissions and Efficiency,0.0095,0.061,T10534,T12126,0,Environmental Engineering,2,8393,3174,0.16,,
+136,Radar Systems and Signal Processing,Topic Modeling,0.0094,0.203,T10891,T10028,0,Artificial Intelligence,2,5792,17390,0.87,,topic
+137,Hybrid Renewable Energy Systems,Zeolite Catalysis and Synthesis,0.0092,0.103,T11007,T10353,0,Inorganic Chemistry,2,10094,5610,0.28,,energy;renewable
+138,Electric Vehicles and Infrastructure,Magnetic Properties and Applications,0.0092,0.051,T10768,T11222,0,"Electronic, Optical and Magnetic Materials",2,9472,4347,0.22,,
+139,Space Satellite Systems and Control,Machine Learning in Materials Science,0.0092,0.211,T11701,T11948,0,Materials Chemistry,2,4765,17114,0.86,possible_overlap,control;machine;materials;science
+140,Automated Road and Building Extraction,Multimodal Machine Learning Applications,0.0092,0.153,T13282,T11714,0,Computer Vision and Pattern Recognition,1,1672,7046,0.35,,machine
+141,Advanced Measurement and Detection Methods,Model Reduction and Neural Networks,0.0092,0.136,T14257,T11206,0,Statistical and Nonlinear Physics,2,2925,8860,0.44,,
+142,Fire dynamics and safety research,Power Line Inspection Robots,0.0091,0.041,T11317,T13715,1,Mechanical Engineering,2,6457,1368,0.07,,line
+143,UAV Applications and Optimization,Safety Systems Engineering in Autonomy,0.0091,0.142,T11133,T13295,0,"Safety, Risk, Reliability and Quality",2,4757,1618,0.08,,
+144,Icing and De-icing Technologies,Photovoltaic Systems and Sustainability,0.0091,0.069,T12696,T12838,0,Environmental Engineering,2,1884,4854,0.24,,
+145,Vehicle Routing Optimization Methods,Privacy-Preserving Technologies in Data,0.0091,0.208,T10567,T10764,1,Artificial Intelligence,2,5347,10712,0.54,possible_overlap,vehicle;data
+146,Electromagnetic Compatibility and Noise Suppression,Explainable Artificial Intelligence (XAI),0.0090,0.308,T11444,T12026,0,Artificial Intelligence,2,3624,6264,0.31,,
+147,Electric Vehicles and Infrastructure,Q Methodology Applications,0.0090,0.042,T10768,T13587,0,Management Science and Operations Research,2,9472,335,0.02,,
+148,Non-Destructive Testing Techniques,Safety Systems Engineering in Autonomy,0.0089,0.127,T12169,T13295,1,"Safety, Risk, Reliability and Quality",2,5507,1618,0.08,,
+149,Hybrid Renewable Energy Systems,Smart Parking Systems Research,0.0089,0.071,T11007,T12546,0,Building and Construction,2,10094,1268,0.06,,energy;renewable
+150,Energy and Environmental Systems,Topic Modeling,0.0089,0.192,T14250,T10028,0,Artificial Intelligence,1,1034,17390,0.87,possible_overlap,energy;topic
+151,Geotechnical Engineering and Analysis,Generative Adversarial Networks and Image Synthesis,0.0089,0.121,T11046,T10775,1,Computer Vision and Pattern Recognition,2,9226,7319,0.37,,
+152,Electric and Hybrid Vehicle Technologies,Impact of AI and Big Data on Business and Society,0.0089,0.173,T10808,T14260,0,Management Science and Operations Research,2,7599,14646,0.73,possible_overlap,vehicle;data;society
+153,Electric Vehicles and Infrastructure,Topological and Geometric Data Analysis,0.0088,0.043,T10768,T12536,0,Computational Theory and Mathematics,2,9472,1481,0.07,,data
+154,IoT and GPS-based Vehicle Safety Systems,Multimodal Machine Learning Applications,0.0088,0.147,T12406,T11714,1,Computer Vision and Pattern Recognition,1,3582,7046,0.35,possible_overlap,vehicle;machine
+155,Maritime Ports and Logistics,Multimodal Machine Learning Applications,0.0087,0.091,T11223,T11714,1,Computer Vision and Pattern Recognition,1,5249,7046,0.35,possible_overlap,ports;machine
+156,Topology Optimization in Engineering,Tunneling and Rock Mechanics,0.0087,0.081,T11115,T12482,0,Civil and Structural Engineering,2,4155,4136,0.21,,
+157,Vehicle Dynamics and Control Systems,Explainable Artificial Intelligence (XAI),0.0087,0.297,T10805,T12026,0,Artificial Intelligence,2,5147,6264,0.31,,control;vehicle
+158,Electric Vehicles and Infrastructure,Experimental Learning in Engineering,0.0086,0.047,T10768,T11283,0,Media Technology,2,9472,4392,0.22,,
+159,Electric Vehicles and Infrastructure,Transport Systems and Technology,0.0086,0.041,T10768,T14304,0,Mechanical Engineering,2,9472,578,0.03,,
+160,Iterative Learning Control Systems,Model Reduction and Neural Networks,0.0086,0.127,T11749,T11206,0,Statistical and Nonlinear Physics,2,750,8860,0.44,,control
+161,Aerospace Engineering and Applications,Explainable Artificial Intelligence (XAI),0.0086,0.293,T13954,T12026,0,Artificial Intelligence,2,1446,6264,0.31,,
+162,Hydraulic and Pneumatic Systems,Artificial Intelligence Applications,0.0085,0.388,T11372,T13904,1,Artificial Intelligence,2,2867,22822,1.00,,
+163,Fire Detection and Safety Systems,Advanced Graph Neural Networks,0.0085,0.077,T12597,T11273,1,Artificial Intelligence,1,2879,5174,0.26,,
+164,Machine Fault Diagnosis Techniques,Stochastic Gradient Optimization Techniques,0.0084,0.220,T10220,T11612,0,Artificial Intelligence,2,12977,2885,0.14,,fault;machine
+165,Electric Vehicles and Infrastructure,Ecosystem dynamics and resilience,0.0084,0.043,T10768,T13377,0,Global and Planetary Change,2,9472,2386,0.12,,
+166,Civil and Structural Engineering Research,Topic Modeling,0.0084,0.181,T13031,T10028,0,Artificial Intelligence,2,13187,17390,0.87,,topic
+167,Mechanical Behavior of Composites,Reinforcement Learning in Robotics,0.0084,0.167,T10219,T10462,1,Artificial Intelligence,2,10184,7933,0.40,,
+168,Applied Advanced Technologies,Machine Learning in Materials Science,0.0083,0.204,T13027,T11948,1,Materials Chemistry,2,359,17114,0.86,possible_overlap,applied;machine;materials;science
+169,Geotechnical Engineering and Soil Mechanics,Explainable Artificial Intelligence (XAI),0.0083,0.284,T10233,T12026,0,Artificial Intelligence,2,12323,6264,0.31,,
+170,Industrial Vision Systems and Defect Detection,IoT and GPS-based Vehicle Safety Systems,0.0083,0.135,T12111,T12406,1,Mechanical Engineering,2,13189,3582,0.18,,vehicle
+171,Smart Grid and Power Systems,Model Reduction and Neural Networks,0.0083,0.123,T12451,T11206,0,Statistical and Nonlinear Physics,2,4806,8860,0.44,,
+172,Infrastructure Resilience and Vulnerability Analysis,Blockchain Technology in Education and Learning,0.0082,0.059,T11807,T13913,0,Information Systems,2,4037,4844,0.24,,
+173,Infrastructure Resilience and Vulnerability Analysis,Spacecraft and Cryogenic Technologies,0.0082,0.052,T11807,T13200,0,Aerospace Engineering,2,4037,1444,0.07,,
+174,Innovative concrete reinforcement materials,Model Reduction and Neural Networks,0.0081,0.110,T10687,T11206,0,Statistical and Nonlinear Physics,2,13526,8860,0.44,,materials
+175,Electric and Hybrid Vehicle Technologies,Adversarial Robustness in Machine Learning,0.0081,0.087,T10808,T11689,0,Artificial Intelligence,0,7599,8246,0.41,possible_overlap,vehicle;machine
+176,Hybrid Renewable Energy Systems,Parallel Computing and Optimization Techniques,0.0081,0.074,T11007,T10054,0,Hardware and Architecture,2,10094,5096,0.25,,energy;renewable
+177,Robot Manipulation and Learning,Digital Media and Visual Art,0.0080,0.164,T10653,T14254,0,Computer Graphics and Computer-Aided Design,2,5121,11846,0.59,,
+178,Integrated Circuits and Semiconductor Failure Analysis,Machine Learning in Materials Science,0.0080,0.196,T14117,T11948,0,Materials Chemistry,2,639,17114,0.86,,machine;materials;science
+179,Structural Health Monitoring Techniques,Adversarial Robustness in Machine Learning,0.0080,0.143,T10534,T11689,0,Artificial Intelligence,2,8393,8246,0.41,,machine
+180,Electric and Hybrid Vehicle Technologies,Scientific Innovation and Industrial Efficiency,0.0079,0.075,T10808,T14346,0,General Decision Sciences,2,7599,66,0.00,,vehicle
+181,Space Satellite Systems and Control,Multimodal Machine Learning Applications,0.0079,0.308,T11701,T11714,0,Computer Vision and Pattern Recognition,2,4765,7046,0.35,possible_overlap,control;machine
+182,Global Energy Security and Policy,Quantum Computing Algorithms and Architecture,0.0079,0.091,T12129,T10682,0,Artificial Intelligence,2,5715,8980,0.45,,energy
+183,Traffic control and management,Topic Modeling,0.0079,0.124,T10524,T10028,0,Artificial Intelligence,1,8881,17390,0.87,possible_overlap,control;topic
+184,Wind Energy Research and Development,Explainable Artificial Intelligence (XAI),0.0078,0.266,T10680,T12026,0,Artificial Intelligence,2,5268,6264,0.31,,energy;wind
+185,Military Technology and Strategies,Privacy-Preserving Technologies in Data,0.0077,0.330,T14423,T10764,0,Artificial Intelligence,2,5354,10712,0.54,,data
+186,Hybrid Renewable Energy Systems,Game Theory and Applications,0.0077,0.066,T11007,T11031,0,Management Science and Operations Research,2,10094,3348,0.17,,energy;renewable
+187,Autonomous Vehicle Technology and Safety,Space Satellite Systems and Control,0.0077,0.062,T11099,T11701,0,Aerospace Engineering,1,8115,4765,0.24,possible_overlap,vehicle;control
+188,Traffic and Road Safety,Stochastic Gradient Optimization Techniques,0.0077,0.042,T10370,T11612,1,Artificial Intelligence,2,9608,2885,0.14,,
+189,Traffic and Road Safety,Urban Heat Island Mitigation,0.0076,0.052,T10370,T10766,1,Environmental Engineering,2,9608,8052,0.40,,
+190,Topology Optimization in Engineering,Privacy-Preserving Technologies in Data,0.0076,0.081,T11115,T10764,0,Artificial Intelligence,1,4155,10712,0.54,,data
+191,Space Technology and Applications,Model Reduction and Neural Networks,0.0076,0.112,T13436,T11206,0,Statistical and Nonlinear Physics,1,748,8860,0.44,,
+192,Green IT and Sustainability,Adversarial Robustness in Machine Learning,0.0075,0.182,T12238,T11689,0,Artificial Intelligence,2,2037,8246,0.41,,machine
+193,Sensorless Control of Electric Motors,Electric Vehicles and Infrastructure,0.0075,0.039,T10504,T10768,0,Electrical and Electronic Engineering,2,5420,9472,0.47,,control
+194,Fire dynamics and safety research,Advanced Image Processing Techniques,0.0075,0.046,T11317,T11105,1,Computer Vision and Pattern Recognition,1,6457,5345,0.27,,
+195,Fire dynamics and safety research,Advanced Graph Neural Networks,0.0074,0.046,T11317,T11273,1,Artificial Intelligence,1,6457,5174,0.26,,
+196,Electric Power System Optimization,Imbalanced Data Classification Techniques,0.0074,0.062,T10424,T11652,0,Artificial Intelligence,2,8167,5412,0.27,,data
+197,Underwater Vehicles and Communication Systems,Adversarial Robustness in Machine Learning,0.0074,0.155,T11192,T11689,0,Artificial Intelligence,1,4768,8246,0.41,possible_overlap,communication;machine
+198,Power Quality and Harmonics,Explainable Artificial Intelligence (XAI),0.0073,0.251,T10573,T12026,0,Artificial Intelligence,2,5416,6264,0.31,,
+199,Maritime Ports and Logistics,Fire Detection and Safety Systems,0.0073,0.037,T11223,T12597,1,"Safety, Risk, Reliability and Quality",2,5249,2879,0.14,,ports
+200,Renewable energy and sustainable power systems,Environmental and Biological Research in Conflict Zones,0.0073,0.100,T12271,T14372,0,"Management, Monitoring, Policy and Law",2,8169,2181,0.11,,energy;renewable
+201,Hybrid Renewable Energy Systems,Coal Combustion and Slurry Processing,0.0073,0.062,T11007,T13584,0,Mechanical Engineering,2,10094,2288,0.11,,energy;renewable
+202,Electric Vehicles and Infrastructure,Software System Performance and Reliability,0.0072,0.044,T10768,T12127,0,Computer Networks and Communications,1,9472,6763,0.34,,
+203,Fire Detection and Safety Systems,Safety Systems Engineering in Autonomy,0.0072,0.044,T12597,T13295,1,"Safety, Risk, Reliability and Quality",1,2879,1618,0.08,,
+204,Infrastructure Resilience and Vulnerability Analysis,Spam and Phishing Detection,0.0072,0.054,T11807,T11644,0,Information Systems,1,4037,5624,0.28,,
+205,Infrastructure Resilience and Vulnerability Analysis,Tunneling and Rock Mechanics,0.0072,0.050,T11807,T12482,0,Civil and Structural Engineering,2,4037,4136,0.21,,
+206,Diverse Scientific and Engineering Research,"Law, AI, and Intellectual Property",0.0072,0.261,T13307,T13851,0,Artificial Intelligence,2,353,4595,0.23,,
+207,Advanced Measurement and Metrology Techniques,Artificial Intelligence Applications,0.0071,0.327,T11583,T13904,1,Artificial Intelligence,2,3548,22822,1.00,,
+208,Infrastructure Resilience and Vulnerability Analysis,Electrical Fault Detection and Protection,0.0071,0.049,T11807,T12737,0,Electrical and Electronic Engineering,2,4037,3548,0.18,,fault
+209,Thermography and Photoacoustic Techniques,Photovoltaic Systems and Sustainability,0.0071,0.072,T11856,T12838,1,Environmental Engineering,2,2262,4854,0.24,,
+210,Electric and Hybrid Vehicle Technologies,Industrial Vision Systems and Defect Detection,0.0071,0.120,T10808,T12111,0,Industrial and Manufacturing Engineering,2,7599,13189,0.66,,vehicle
+211,Electric Vehicles and Infrastructure,Imbalanced Data Classification Techniques,0.0071,0.041,T10768,T11652,0,Artificial Intelligence,0,9472,5412,0.27,,data
+212,Powder Metallurgy Techniques and Materials,Model Reduction and Neural Networks,0.0070,0.098,T12932,T11206,1,Statistical and Nonlinear Physics,2,3210,8860,0.44,,materials
+213,Integrated Circuits and Semiconductor Failure Analysis,Anomaly Detection Techniques and Applications,0.0070,0.258,T14117,T11512,0,Artificial Intelligence,2,639,4793,0.24,,
+214,Electric Motor Design and Analysis,Domain Adaptation and Few-Shot Learning,0.0070,0.169,T10278,T11307,0,Artificial Intelligence,2,7252,13398,0.67,,
+215,Safety Systems Engineering in Autonomy,Machine Learning in Materials Science,0.0069,0.143,T13295,T11948,1,Materials Chemistry,2,1618,17114,0.86,,machine;materials;science
+216,Railway Engineering and Dynamics,Generative Adversarial Networks and Image Synthesis,0.0069,0.188,T10842,T10775,1,Computer Vision and Pattern Recognition,2,5356,7319,0.37,,
+217,Engineering Technology and Methodologies,Topic Modeling,0.0069,0.149,T13113,T10028,1,Artificial Intelligence,2,5315,17390,0.87,,topic
+218,Fire Detection and Safety Systems,Wireless Signal Modulation Classification,0.0069,0.055,T12597,T12131,1,Artificial Intelligence,2,2879,1968,0.10,,
+219,Industrial Automation and Control Systems,Privacy-Preserving Technologies in Data,0.0069,0.296,T13344,T10764,0,Artificial Intelligence,2,5527,10712,0.54,possible_overlap,control;data
+220,Electric Vehicles and Infrastructure,Robotic Process Automation Applications,0.0069,0.039,T10768,T13287,0,Industrial and Manufacturing Engineering,0,9472,4756,0.24,,
+221,Industrial Vision Systems and Defect Detection,Advanced Multi-Objective Optimization Algorithms,0.0069,0.275,T12111,T10848,1,Computational Theory and Mathematics,2,13189,5258,0.26,,
+222,Spacecraft Design and Technology,Photovoltaic Systems and Sustainability,0.0068,0.052,T12449,T12838,0,Environmental Engineering,2,2776,4854,0.24,,
+223,Green IT and Sustainability,Waste Management and Environmental Impact,0.0068,0.087,T12238,T13790,0,Mechanical Engineering,2,2037,2103,0.11,,
+224,IoT-based Smart Home Systems,Topic Modeling,0.0068,0.147,T12222,T10028,0,Artificial Intelligence,2,4352,17390,0.87,,topic
+225,Modular Robots and Swarm Intelligence,Artificial Intelligence Applications,0.0068,0.306,T12784,T13904,1,Artificial Intelligence,2,1380,22822,1.00,,
+226,Electric Vehicles and Infrastructure,Research Data Management Practices,0.0067,0.041,T10768,T11937,0,Information Systems,1,9472,6827,0.34,,data
+227,Metallurgical Processes and Thermodynamics,Artificial Intelligence Applications,0.0067,0.287,T11126,T13904,1,Artificial Intelligence,2,6255,22822,1.00,,
+228,Geothermal Energy Systems and Applications,"Energy, Economy, and Technology Trends",0.0067,0.061,T11225,T13975,0,"Renewable Energy, Sustainability and the Environment",2,2713,626,0.03,possible_overlap,energy;energy
+229,Vehicle Routing Optimization Methods,Topic Modeling,0.0067,0.110,T10567,T10028,1,Artificial Intelligence,1,5347,17390,0.87,possible_overlap,vehicle;topic
+230,Electric and Hybrid Vehicle Technologies,Mobile and Web Applications,0.0067,0.091,T10808,T12799,0,Information Systems,2,7599,8553,0.43,,vehicle
+231,Maritime Security and History,Mining and Resource Management,0.0067,0.041,T12985,T11933,0,Building and Construction,2,3154,4630,0.23,,
+232,Electrical Contact Performance and Analysis,Photovoltaic Systems and Sustainability,0.0067,0.046,T12371,T12838,1,Environmental Engineering,2,1447,4854,0.24,,
+233,Railway Systems and Energy Efficiency,Adversarial Robustness in Machine Learning,0.0067,0.090,T11568,T11689,1,Artificial Intelligence,1,2466,8246,0.41,possible_overlap,energy;machine
+234,Synthetic Aperture Radar (SAR) Applications and Techniques,Anomaly Detection Techniques and Applications,0.0066,0.100,T10801,T11512,0,Artificial Intelligence,2,3861,4793,0.24,,
+235,Engineering Diagnostics and Reliability,Machine Learning in Materials Science,0.0066,0.163,T13891,T11948,1,Materials Chemistry,2,2256,17114,0.86,,machine;materials;science
+236,Aerospace and Aviation Technology,Quantum Computing Algorithms and Architecture,0.0066,0.283,T12125,T10682,0,Artificial Intelligence,2,4030,8980,0.45,,
+237,Control and Dynamics of Mobile Robots,Maritime Transport Emissions and Efficiency,0.0066,0.046,T11615,T12126,0,Environmental Engineering,2,4938,3174,0.16,,control
+238,Aerospace Engineering and Control Systems,Explainable Artificial Intelligence (XAI),0.0066,0.226,T13855,T12026,0,Artificial Intelligence,1,2520,6264,0.31,,control
+239,transportation and logistics systems,Environmental and Biological Research in Conflict Zones,0.0066,0.090,T12725,T14372,0,"Management, Monitoring, Policy and Law",2,6510,2181,0.11,,
+240,Refrigeration and Air Conditioning Technologies,AI in Service Interactions,0.0065,0.042,T11529,T12128,1,Artificial Intelligence,2,5683,11395,0.57,possible_overlap,refrigeration;service
+241,Construction Engineering and Safety,Artificial Intelligence Applications,0.0065,0.320,T13808,T13904,0,Artificial Intelligence,2,5809,22822,1.00,,
+242,Advanced Wireless Network Optimization,Adversarial Robustness in Machine Learning,0.0065,0.157,T11409,T11689,0,Artificial Intelligence,2,2366,8246,0.41,,machine
+243,Laser Material Processing Techniques,Reinforcement Learning in Robotics,0.0064,0.127,T10732,T10462,0,Artificial Intelligence,2,5198,7933,0.40,,material
+244,Millimeter-Wave Propagation and Modeling,Reinforcement Learning in Robotics,0.0064,0.152,T10936,T10462,0,Artificial Intelligence,2,3612,7933,0.40,,
+245,Control and Dynamics of Mobile Robots,Privacy-Preserving Technologies in Data,0.0064,0.273,T11615,T10764,0,Artificial Intelligence,2,4938,10712,0.54,possible_overlap,control;data
+246,Lubricants and Their Additives,Artificial Intelligence Applications,0.0064,0.200,T11557,T13904,1,Artificial Intelligence,2,4855,22822,1.00,,
+247,Green IT and Sustainability,Military Strategy and Technology,0.0064,0.228,T12238,T12888,0,Control and Systems Engineering,2,2037,4105,0.21,,
+248,Industrial Engineering and Technologies,Artificial Intelligence Applications,0.0064,0.313,T13045,T13904,1,Artificial Intelligence,2,119,22822,1.00,,
+249,Transportation Safety and Impact Analysis,Explainable Artificial Intelligence (XAI),0.0063,0.217,T14445,T12026,0,Artificial Intelligence,2,1326,6264,0.31,,
+250,Autonomous Vehicle Technology and Safety,Quantum Information and Cryptography,0.0063,0.065,T11099,T10020,0,Artificial Intelligence,1,8115,13080,0.65,,vehicle
+251,Technical Engine Diagnostics and Monitoring,Artificial Intelligence Applications,0.0063,0.310,T13858,T13904,0,Artificial Intelligence,2,2474,22822,1.00,,engine
+252,Space Satellite Systems and Control,Advanced Aircraft Design and Technologies,0.0063,0.099,T11701,T11524,0,Global and Planetary Change,2,4765,3141,0.16,,control
+253,Green IT and Sustainability,Space Technology and Applications,0.0063,0.199,T12238,T13436,0,Electrical and Electronic Engineering,2,2037,748,0.04,,
+254,Transportation Systems and Logistics,Generative Adversarial Networks and Image Synthesis,0.0063,0.107,T13527,T10775,0,Computer Vision and Pattern Recognition,1,8158,7319,0.37,,
+255,Hybrid Renewable Energy Systems,Multi-Agent Systems and Negotiation,0.0063,0.050,T11007,T10456,0,Artificial Intelligence,1,10094,1494,0.07,,energy;renewable
+256,Optimal Power Flow Distribution,Artificial Intelligence Applications,0.0063,0.188,T10454,T13904,0,Artificial Intelligence,2,6673,22822,1.00,,
+257,Energy and Environmental Sustainability,Mining and Resource Management,0.0063,0.038,T13331,T11933,0,Building and Construction,1,2824,4630,0.23,,energy
+258,"Energy, Environment, and Transportation Policies",Explainable Artificial Intelligence (XAI),0.0063,0.215,T12617,T12026,0,Artificial Intelligence,2,3661,6264,0.31,,energy
+259,Oil and Gas Production Techniques,Explainable Artificial Intelligence (XAI),0.0063,0.214,T13050,T12026,0,Artificial Intelligence,2,2290,6264,0.31,,
+260,Power Systems and Renewable Energy,Advanced Graph Neural Networks,0.0062,0.060,T14444,T11273,0,Artificial Intelligence,1,9329,5174,0.26,,energy;renewable
+261,Refrigeration and Air Conditioning Technologies,Quantum Computing Algorithms and Architecture,0.0062,0.035,T11529,T10682,1,Artificial Intelligence,1,5683,8980,0.45,,refrigeration
+262,Smart Grid and Power Systems,Sustainable Industrial Ecology,0.0062,0.038,T12451,T12746,0,Industrial and Manufacturing Engineering,1,4806,1615,0.08,,
+263,Infrastructure Resilience and Vulnerability Analysis,Diverse Interdisciplinary Research Innovations,0.0062,0.037,T11807,T14369,0,Management Science and Operations Research,0,4037,157,0.01,,
+264,Structural Integrity and Reliability Analysis,Reinforcement Learning in Robotics,0.0062,0.083,T12086,T10462,1,Artificial Intelligence,2,6570,7933,0.40,,
+265,Green IT and Sustainability,Forest Management and Policy,0.0062,0.049,T12238,T11753,0,Global and Planetary Change,2,2037,7657,0.38,,
+266,3D Shape Modeling and Analysis,Privacy-Preserving Technologies in Data,0.0062,0.264,T10719,T10764,0,Artificial Intelligence,2,5960,10712,0.54,,data
+267,Robotics and Sensor-Based Localization,Model Reduction and Neural Networks,0.0061,0.091,T10191,T11206,0,Statistical and Nonlinear Physics,2,5285,8860,0.44,,
+268,Engineering and Test Systems,Power Line Inspection Robots,0.0061,0.077,T13293,T13715,0,Mechanical Engineering,2,1275,1368,0.07,possible_overlap,test;line
+269,Space Satellite Systems and Control,Explainable Artificial Intelligence (XAI),0.0061,0.207,T11701,T12026,0,Artificial Intelligence,1,4765,6264,0.31,,control
+270,Aeroelasticity and Vibration Control,Maritime Transport Emissions and Efficiency,0.0060,0.044,T11096,T12126,0,Environmental Engineering,2,4278,3174,0.16,,control
+271,Transport and Logistics Innovations,Artificial Intelligence in Education,0.0060,0.272,T12984,T14414,1,Information Systems,2,8252,39117,1.00,,
+272,Electromagnetic Compatibility and Measurements,Explainable Artificial Intelligence (XAI),0.0060,0.205,T11851,T12026,0,Artificial Intelligence,2,1881,6264,0.31,,
+273,Flexible and Reconfigurable Manufacturing Systems,Multimodal Machine Learning Applications,0.0060,0.243,T11741,T11714,1,Computer Vision and Pattern Recognition,2,2149,7046,0.35,,machine
+274,Transportation Systems and Logistics,Imbalanced Data Classification Techniques,0.0060,0.093,T13527,T11652,0,Artificial Intelligence,1,8158,5412,0.27,,data
+275,Arduino and IoT Applications,Topic Modeling,0.0059,0.128,T13420,T10028,0,Artificial Intelligence,1,13030,17390,0.87,,topic
+276,Fire Detection and Safety Systems,Speech Recognition and Synthesis,0.0059,0.053,T12597,T10201,1,Artificial Intelligence,2,2879,4903,0.25,,
+277,Advanced Wireless Network Optimization,Topic Modeling,0.0059,0.126,T11409,T10028,0,Artificial Intelligence,2,2366,17390,0.87,,topic
+278,Safety Systems Engineering in Autonomy,Recommender Systems and Techniques,0.0059,0.124,T13295,T10203,1,Information Systems,2,1618,7362,0.37,,
+279,Fire dynamics and safety research,IoT and Edge/Fog Computing,0.0058,0.049,T11317,T10273,1,Computer Networks and Communications,2,6457,11506,0.58,,
+280,Optical Systems and Laser Technology,Reinforcement Learning in Robotics,0.0058,0.137,T14158,T10462,0,Artificial Intelligence,2,1840,7933,0.40,,
+281,Power Transformer Diagnostics and Insulation,Explainable Artificial Intelligence (XAI),0.0058,0.199,T11343,T12026,0,Artificial Intelligence,2,2241,6264,0.31,,
+282,Power Systems and Renewable Energy,Privacy-Preserving Technologies in Data,0.0058,0.076,T14444,T10764,0,Artificial Intelligence,0,9329,10712,0.54,possible_overlap,energy;renewable;data
+283,Engineering and Test Systems,Adversarial Robustness in Machine Learning,0.0057,0.139,T13293,T11689,0,Artificial Intelligence,2,1275,8246,0.41,possible_overlap,test;machine
+284,Advanced Measurement and Metrology Techniques,Adversarial Robustness in Machine Learning,0.0057,0.130,T11583,T11689,1,Artificial Intelligence,2,3548,8246,0.41,,machine
+285,Power Line Inspection Robots,Natural Language Processing Techniques,0.0057,0.117,T13715,T10181,1,Artificial Intelligence,1,1368,9782,0.49,,line
+286,Energy Efficiency and Management,Topic Modeling,0.0057,0.122,T11954,T10028,0,Artificial Intelligence,1,3438,17390,0.87,possible_overlap,energy;topic
+287,Integrated Energy Systems Optimization,Domain Adaptation and Few-Shot Learning,0.0056,0.039,T11185,T11307,0,Artificial Intelligence,1,12199,13398,0.67,,energy
+288,Satellite Communication Systems,Domain Adaptation and Few-Shot Learning,0.0056,0.322,T12042,T11307,0,Artificial Intelligence,2,3146,13398,0.67,,communication
+289,Power System Optimization and Stability,Maritime Transport Emissions and Efficiency,0.0056,0.039,T10305,T12126,0,Environmental Engineering,2,6485,3174,0.16,,
+290,Green IT and Sustainability,Business and Economic Development,0.0056,0.188,T12238,T12922,0,"Management, Monitoring, Policy and Law",2,2037,2552,0.13,,
+291,Electrical Fault Detection and Protection,Model Reduction and Neural Networks,0.0056,0.082,T12737,T11206,0,Statistical and Nonlinear Physics,1,3548,8860,0.44,,fault
+292,IoT Networks and Protocols,Topic Modeling,0.0056,0.120,T12079,T10028,0,Artificial Intelligence,2,2170,17390,0.87,,topic
+293,Urban Transport and Accessibility,Machine Learning in Healthcare,0.0055,0.226,T10298,T13702,0,Artificial Intelligence,2,9144,8485,0.42,,machine
+294,UAV Applications and Optimization,Semantic Web and Ontologies,0.0055,0.091,T11133,T10215,0,Artificial Intelligence,2,4757,2950,0.15,,
+295,Arduino and IoT Applications,Explainable Artificial Intelligence (XAI),0.0055,0.190,T13420,T12026,0,Artificial Intelligence,1,13030,6264,0.31,,
+296,Energy and Environmental Systems,Reinforcement Learning in Robotics,0.0055,0.130,T14250,T10462,0,Artificial Intelligence,1,1034,7933,0.40,,energy
+297,Power Line Inspection Robots,Imbalanced Data Classification Techniques,0.0055,0.092,T13715,T11652,1,Artificial Intelligence,1,1368,5412,0.27,possible_overlap,line;data
+298,Structural Integrity and Reliability Analysis,Artificial Intelligence Applications,0.0055,0.172,T12086,T13904,1,Artificial Intelligence,2,6570,22822,1.00,,
+299,Thermal Analysis in Power Transmission,Advanced Graph Neural Networks,0.0055,0.106,T12804,T11273,0,Artificial Intelligence,2,844,5174,0.26,,thermal
+300,Manufacturing Process and Optimization,Explainable Artificial Intelligence (XAI),0.0055,0.188,T11159,T12026,1,Artificial Intelligence,2,4611,6264,0.31,,
