@@ -144,6 +144,10 @@ def main():
     ap.add_argument("--probe", action="store_true", help="~8 cheap requests: check subfields, topic counts, group_by paging")
     ap.add_argument("--max-requests", type=int, default=9500, help="stop politely after this many requests")
     ap.add_argument("--ext", action="store_true", help="also fetch co-occurrence for energy/transport topics")
+    ap.add_argument("--ns-cooc", action="store_true",
+                    help="also fetch pair co-occurrence restricted to Nature/Science-family journals -> cooc_ns/")
+    ap.add_argument("--scidata", action="store_true",
+                    help="also fetch per-topic yearly counts of Scientific Data papers (dataset leading indicator)")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
     LOG = open(os.path.join(a.out, "fetch_log.txt"), "a", encoding="utf-8", buffering=1)
@@ -246,6 +250,28 @@ def main():
             if i % 200 == 0:
                 print(f"  {i}/{len(todo)} requests_this_run={N_REQ}", flush=True)
             budget_ok()
+        if a.ns_cooc:  # pair co-occurrence inside the Nature/Science-family venue set
+            todo = [(y, t) for t in focus for y in years
+                    if not os.path.exists(os.path.join(a.out, "cooc_ns", str(y), f"{t}.json"))]
+            print(f"NS co-occurrence queries left: {len(todo)} of {len(years) * len(focus)}", flush=True)
+            for i, (y, t) in enumerate(todo):
+                save(os.path.join(a.out, "cooc_ns", str(y), f"{t}.json"),
+                     group_counts(f"topics.id:{t},publication_year:{y},{art},{ns_filter}"))
+                if i % 500 == 0:
+                    print(f"  ns {i}/{len(todo)} requests_this_run={N_REQ}", flush=True)
+                budget_ok()
+        if a.scidata:  # Scientific Data papers per topic and year
+            f_sd = os.path.join(a.out, "scidata_source.json")
+            if not os.path.exists(f_sd):
+                d = get("/sources", {"filter": "issn:2052-4463", "per_page": 5, "select": "id,display_name"})
+                save(f_sd, {short(x["id"]): x["display_name"] for x in d["results"]})
+            sd_ids = "|".join(json.load(open(f_sd, encoding="utf-8")))
+            for y in years:
+                f = os.path.join(a.out, "scidata", f"{y}.json")
+                if not os.path.exists(f):
+                    save(f, group_counts(f"publication_year:{y},primary_location.source.id:{sd_ids}"))
+                budget_ok()
+            print("Scientific Data counts done", flush=True)
         print("ALL DONE requests_this_run=", N_REQ, flush=True)
     except BudgetExhausted as e:
         print("OpenAlex budget exhausted for today; rerun tomorrow to resume.", str(e)[:200], flush=True)

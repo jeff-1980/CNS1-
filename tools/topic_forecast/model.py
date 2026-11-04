@@ -15,7 +15,15 @@ Splits (frozen before the test set is scored):
 Gate K1: test AUC(model) >= max(AUC of preferential-attachment baselines) + 0.03 AND
          precision@100(model) > the best baseline precision@100.
 
-Usage: python model.py --data DIR --out DIR
+Variants (v1, 2026-11-04):
+  --target ns   label = first co-paper in a Nature/Science-family journal: candidates are pairs with
+                >= 1 co-paper anywhere but 0 in the NS venue set up to T; positive if >= 1 NS co-paper by T+3.
+                Needs cooc_ns/ (fetch_openalex.py --ns-cooc). K3 then counts NC/SA pairs with no NS co-paper by 2020.
+  --scidata     adds Scientific Data paper counts per topic (window T-2..T) and their 3-year growth as features
+                (dataset leading indicator; needs scidata/ from fetch_openalex.py --scidata).
+  Every forecast also gets b_generic_ai (partner in AI / computer vision) and a second list without those partners.
+
+Usage: python model.py --data DIR --out DIR [--ext] [--target cooc|ns] [--scidata]
 """
 import argparse
 import json
@@ -33,9 +41,10 @@ HIT = 10         # "emerged": cumulative co-occurrence >= 10 by T+3
 H = 3            # horizon in years
 MIN_N = 20       # node must have >= 20 articles in year T to be a candidate end
 SEED = 20261102
+GENERIC_AI_SUBFIELDS = {"1702", "1707"}  # Artificial Intelligence; Computer Vision and Pattern Recognition
 
 
-def load(data, ext=False):
+def load(data, ext=False, ns_pairs=False, scidata=False):
     topics = json.load(open(os.path.join(data, "topics_all.json"), encoding="utf-8"))
     mech = json.load(open(os.path.join(data, "mech_topics.json"), encoding="utf-8"))
     if ext:  # energy/transport extension (fetch_openalex.py --ext): these topics become source nodes too
@@ -78,14 +87,37 @@ def load(data, ext=False):
         M_ = M_.maximum(M_.T).tocsr()
         C.append(M_)
     mech_idx = np.array(sorted(idx[t] for t in mech if t in idx))
-    return dict(topics=topics, ids=ids, idx=idx, years=years, tot=tot, ns=ns, C=C, mech_idx=mech_idx)
+    Cns = []
+    if ns_pairs:
+        for y in years:
+            rows, cols, vals = [], [], []
+            for a in mech:
+                f = os.path.join(data, "cooc_ns", str(y), f"{a}.json")
+                if not os.path.exists(f):
+                    raise SystemExit(f"cooc_ns/{y}/{a}.json missing: run fetch_openalex.py --ns-cooc first")
+                for b, c in json.load(open(f)).items():
+                    if b in idx and b != a:
+                        rows.append(idx[a]); cols.append(idx[b]); vals.append(c)
+            M_ = sp.coo_matrix((vals, (rows, cols)), shape=(N, N)).tocsr()
+            Cns.append(M_.maximum(M_.T).tocsr())
+    sd = np.zeros((len(years), N))
+    if scidata:
+        for k, y in enumerate(years):
+            f = os.path.join(data, "scidata", f"{y}.json")
+            if not os.path.exists(f):
+                raise SystemExit(f"scidata/{y}.json missing: run fetch_openalex.py --scidata first")
+            for t, c in json.load(open(f)).items():
+                if t in idx:
+                    sd[k, idx[t]] = c
+    return dict(topics=topics, ids=ids, idx=idx, years=years, tot=tot, ns=ns, C=C, Cns=Cns, sd=sd,
+                use_sd=scidata, mech_idx=mech_idx)
 
 
-def cum(D, T):
+def cum(D, T, key="C"):
     k = D["years"].index(T)
-    out = D["C"][0].copy()
+    out = D[key][0].copy()
     for j in range(1, k + 1):
-        out = out + D["C"][j]
+        out = out + D[key][j]
     return out.tocsr()
 
 
@@ -97,7 +129,7 @@ def recent(D, T, w=3):
     return out.tocsr()
 
 
-def snapshot(D, T, with_label=True):
+def snapshot(D, T, with_label=True, target="cooc"):
     """Candidate pairs + features at year T (and label at T+H if available)."""
     yrs = D["years"]
     k = yrs.index(T)
@@ -118,6 +150,7 @@ def snapshot(D, T, with_label=True):
     COS = (R[mi] @ R.T).toarray() / (Rn[mi][:, None] * Rn[None, :])
     cumM = cumT[mi].toarray()
     curM = D["C"][k][mi].toarray()
+    cumNSM = cum(D, T, "Cns")[mi].toarray() if target == "ns" else None
 
     n = D["tot"]
     nT = n[k]
@@ -138,7 +171,10 @@ def snapshot(D, T, with_label=True):
     for r, a in enumerate(mi):
         if not active[a]:
             continue
-        ok = active & (cumM[r] < NEW_MAX)
+        if target == "ns":  # known in the literature, not yet in the NS venue set
+            ok = active & (cumM[r] >= 1) & (cumNSM[r] == 0)
+        else:
+            ok = active & (cumM[r] < NEW_MAX)
         ok[a] = False
         # mech-mech pairs: keep one orientation
         ok &= ~((mech_pos >= 0) & (mech_pos < r))
@@ -159,14 +195,23 @@ def snapshot(D, T, with_label=True):
         "ns_a": ns_share[a_], "ns_b": ns_share[b_],
         "b_is_mech": (mech_pos[b_] >= 0).astype(int), "field_b": fields[b_],
     })
+    if D.get("use_sd"):
+        sdw = D["sd"][max(0, k - 2):k + 1].sum(0)
+        sdw3 = D["sd"][max(0, k - 5):max(0, k - 2)].sum(0)
+        X["sd_a"], X["sd_b"] = np.log1p(sdw[a_]), np.log1p(sdw[b_])
+        X["sdg_a"] = np.log((sdw[a_] + 1) / (sdw3[a_] + 1))
+        X["sdg_b"] = np.log((sdw[b_] + 1) / (sdw3[b_] + 1))
     num = [c for c in X.columns if c != "field_b"]
     X[num] = X[num].astype(np.float32)
     X["field_b"] = X["field_b"].astype("category")
     meta = pd.DataFrame({"a": [D["ids"][i] for i in a_], "b": [D["ids"][i] for i in b_], "T": T})
     y = None
     if with_label and T + H in yrs:
-        cumH = cum(D, T + H)[mi].toarray()
-        y = (cumH[r_, b_] >= HIT).astype(int)
+        if target == "ns":
+            y = (cum(D, T + H, "Cns")[mi].toarray()[r_, b_] >= 1).astype(int)
+        else:
+            cumH = cum(D, T + H)[mi].toarray()
+            y = (cumH[r_, b_] >= HIT).astype(int)
     return X, y, meta
 
 
@@ -226,17 +271,20 @@ def main():
     ap_.add_argument("--data", required=True)
     ap_.add_argument("--out", required=True)
     ap_.add_argument("--ext", action="store_true", help="include energy/transport topics (ext_topics.json) as source nodes")
+    ap_.add_argument("--target", choices=["cooc", "ns"], default="cooc",
+                     help="cooc: co-occurrence emergence (v0); ns: first Nature/Science-family co-paper")
+    ap_.add_argument("--scidata", action="store_true", help="add Scientific Data leading-indicator features")
     a = ap_.parse_args()
     os.makedirs(a.out, exist_ok=True)
     t0 = time.time()
-    D = load(a.data, ext=a.ext)
+    D = load(a.data, ext=a.ext, ns_pairs=a.target == "ns", scidata=a.scidata)
     yrs = D["years"]
     print(f"loaded {len(D['ids'])} topics, {len(D['mech_idx'])} mech, years {yrs[0]}-{yrs[-1]}", flush=True)
     S = {}
 
     def snap(T):
         if T not in S:
-            S[T] = snapshot(D, T)
+            S[T] = snapshot(D, T, target=a.target)
             X, y, _ = S[T]
             print(f"  T={T}: {len(X):,} candidate pairs, positives {int(y.sum()) if y is not None else 'n/a'}"
                   f" ({time.time() - t0:.0f}s)", flush=True)
@@ -299,7 +347,8 @@ def main():
         pct_pa = rankdata(X20["lpa"].values) / len(s20)
         key = {(r.a, r.b): i for i, r in enumerate(meta20.itertuples())}
         mech = set(D["ids"][i] for i in D["mech_idx"])
-        cum20 = cum(D, 2020)
+        cum20 = cum(D, 2020, "Cns") if a.target == "ns" else cum(D, 2020)
+        new_max = 1 if a.target == "ns" else NEW_MAX
         n_pairs = n_new = 0
         new_pct, new_pct_pa = [], []
         seen = set()
@@ -316,7 +365,7 @@ def main():
                         continue
                     seen.add(pr)
                     n_pairs += 1
-                    if cum20[D["idx"][a_], D["idx"][b_]] < NEW_MAX:
+                    if cum20[D["idx"][a_], D["idx"][b_]] < new_max:
                         n_new += 1
                         for k_ in ((a_, b_), (b_, a_)):
                             if k_ in key:
@@ -332,7 +381,7 @@ def main():
     # final forecast at the last complete year
     T_last = yrs[-1]
     m_fin = fit([T for T in range(first, T_last - H + 1)])
-    Xf, _, mf = snapshot(D, T_last, with_label=False)
+    Xf, _, mf = snapshot(D, T_last, with_label=False, target=a.target)
     sf = m_fin.predict_proba(Xf)[:, 1]
     fc = mf.assign(p_emerge=sf, cum_ab=Xf["cum_ab"].values, n_a=np.expm1(Xf["logn_a"].values).round(),
                    n_b=np.expm1(Xf["logn_b"].values).round(), g3_a=Xf["g3_a"].values, g3_b=Xf["g3_b"].values,
@@ -341,11 +390,15 @@ def main():
     fc["b_name"] = fc.b.map(lambda t: D["topics"][t]["name"])
     fc["b_subfield"] = fc.b.map(lambda t: D["topics"][t]["subfield_name"])
     fc = fc.sort_values("p_emerge", ascending=False)
+    fc["b_generic_ai"] = fc.b.map(lambda t: str(D["topics"][t]["subfield"]) in GENERIC_AI_SUBFIELDS).astype(int)
     fc.head(2000).to_csv(os.path.join(a.out, f"forecast_T{T_last}_top2000.csv"), index=False)
+    fc[fc.b_generic_ai == 0].head(2000).to_csv(os.path.join(a.out, f"forecast_T{T_last}_top2000_nonAI.csv"), index=False)
 
     summary = {"K1_pass": k1, "best_iter": n_it, "K3": k3, "n_topics": len(D["ids"]),
                "n_mech": int(len(D["mech_idx"])), "years": [yrs[0], yrs[-1]],
                "rules": {"NEW_MAX": NEW_MAX, "HIT": HIT, "H": H, "MIN_N": MIN_N},
+               "target": a.target, "scidata_features": bool(a.scidata),
+               "share_generic_ai_top100": float(fc.head(100).b_generic_ai.mean()),
                "runtime_s": round(time.time() - t0)}
     json.dump(summary, open(os.path.join(a.out, "summary.json"), "w"), indent=1)
     print("DONE", json.dumps(summary), flush=True)
