@@ -7,8 +7,9 @@
 #      (e.g. 2026 in January 2027) it is fetched as well. Partial current-year data is never added: model.py
 #      treats the last year in totals/ as complete.
 #      Superseded files are MOVED to <data>/_superseded/<date>/ (never deleted).
-#      Cost per refreshed year: ~90 list requests for totals+ns + ~2,100 for cooc  ->  ~$0.2 (budget $1/day free).
-#   2. Re-runs model.py --ext (fixed origins: val T=2018, test T=2021, K3 at T=2020, final forecast at the last
+#      Cost per refreshed year: ~90 list requests for totals+ns + ~2,100 for cooc + ~650 for cooc_ns  ->  ~$0.3 (budget $1/day free).
+#   2. Re-runs the primary radar model.py --ext --target ns (results/refresh/<date>/ns) and the control
+#      model.py --ext (old co-occurrence target, results/refresh/<date>/control) (fixed origins: val T=2018, test T=2021, K3 at T=2020, final forecast at the last
 #      year) into results/refresh/<date>/, and copies the refreshed aggregate data into data/openalex/.
 #   3. Appends one row to results/refresh_log.csv: date, last data year, requests used, test AUC / P@100 of the
 #      model and the best baseline, K1, K3 shares.
@@ -52,11 +53,11 @@ if [ "$FETCH" = 1 ]; then
     for sub in totals ns; do
       if [ -f "$DATA/$sub/$y.json" ]; then mkdir -p "$bak/$sub"; mv "$DATA/$sub/$y.json" "$bak/$sub/"; fi
     done
-    if [ -d "$DATA/cooc/$y" ]; then mkdir -p "$bak"; mv "$DATA/cooc/$y" "$bak/cooc"; fi
+    for sub in cooc cooc_ns; do if [ -d "$DATA/$sub/$y" ]; then mkdir -p "$bak/$sub"; mv "$DATA/$sub/$y" "$bak/$sub/"; fi; done
     echo "$(date '+%F %T') fetching year $y"
     # resumable: rerun after exit 3 (budget) until done
     for i in $(seq 1 48); do
-      set +e; "$VENV/bin/python" "$HERE/fetch_openalex.py" --out "$DATA" --ext --y0 "$y" --y1 "$y" --max-requests 9500; rc=$?; set -e
+      set +e; "$VENV/bin/python" "$HERE/fetch_openalex.py" --out "$DATA" --ext --ns-cooc --y0 "$y" --y1 "$y" --max-requests 9500; rc=$?; set -e
       [ "$rc" -eq 0 ] && break
       [ "$rc" -ne 3 ] && { echo "fetch failed rc=$rc"; exit "$rc"; }
       echo "$(date '+%F %T') budget used, retry in 30 min"; sleep 1800
@@ -68,7 +69,8 @@ n_req=$(( $(grep -c "" "$LOGF") - n_before ))
 
 OUT="$HERE/results/refresh/$TODAY"
 mkdir -p "$OUT"
-"$VENV/bin/python" "$HERE/model.py" --data "$DATA" --out "$OUT" --ext > "$OUT/model.log" 2>&1
+"$VENV/bin/python" "$HERE/model.py" --data "$DATA" --out "$OUT/ns" --ext --target ns > "$OUT/ns.log" 2>&1
+"$VENV/bin/python" "$HERE/model.py" --data "$DATA" --out "$OUT/control" --ext > "$OUT/control.log" 2>&1
 ORIGINS=""
 if "$VENV/bin/python" "$HERE/model.py" --help 2>/dev/null | grep -q -- "--test-T"; then
   last=$(ls "$DATA/totals" | sed 's/\.json$//' | sort -n | tail -1)
@@ -81,7 +83,7 @@ fi
 # copy refreshed aggregates into the repo (small: ~50 MB)
 mkdir -p "$REPO_DATA"
 cp "$DATA"/topics_all.json "$DATA"/mech_topics.json "$DATA"/ns_sources.json "$DATA"/ext_topics.json "$REPO_DATA"/
-for sub in totals ns cooc; do rm -rf "$REPO_DATA/$sub.new"; cp -r "$DATA/$sub" "$REPO_DATA/$sub.new"; \
+for sub in totals ns cooc cooc_ns; do rm -rf "$REPO_DATA/$sub.new"; cp -r "$DATA/$sub" "$REPO_DATA/$sub.new"; \
   rm -rf "$REPO_DATA/$sub"; mv "$REPO_DATA/$sub.new" "$REPO_DATA/$sub"; done
 find "$REPO_DATA" -name "*.tmp" -delete
 
@@ -90,7 +92,7 @@ import csv, json, os, sys
 log, out, data, n_req, today, origins = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6:]
 last_year = max(int(f[:-5]) for f in os.listdir(os.path.join(data, "totals")) if f.endswith(".json"))
 rows = []
-for d, origin in [(out, "fixed_T2021")] + [(os.path.join(out, f"T{t}"), f"T{t}") for t in origins]:
+for d, origin in [(os.path.join(out, "ns"), "fixed_T2021_ns_primary"), (os.path.join(out, "control"), "fixed_T2021_cooc_control")] + [(os.path.join(out, f"T{t}"), f"T{t}") for t in origins]:
     m = list(csv.DictReader(open(os.path.join(d, "metrics.csv"))))
     s = json.load(open(os.path.join(d, "summary.json")))
     test = [r for r in m if r["split"].startswith("test")]

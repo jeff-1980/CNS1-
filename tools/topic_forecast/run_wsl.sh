@@ -30,6 +30,7 @@ case "${1:-}" in
     exit "${rc:-1}" ;;
   abstracts) "$VENV/bin/python" "$HERE/fetch_abstracts.py" "$DATA" ;;
   model) "$VENV/bin/python" "$HERE/model.py" --data "$DATA" --out "$OUT" ;;
+  model_v1) "$VENV/bin/python" "$HERE/model.py" --data "$DATA" --out "$OUT/v1/ns" --ext --target ns ;;  # primary radar (jeff 2026-11-04)
   model_ext) "$VENV/bin/python" "$HERE/model.py" --data "$DATA" --out "$OUT/ext" --ext ;;
   resume)  # keep retrying the fetch (exit 3 = budget used) every 30 min, then fit the model
     for i in $(seq 1 "${2:-10}"); do
@@ -40,5 +41,5 @@ case "${1:-}" in
     done
     [ "${rc:-1}" -eq 0 ] || { echo "fetch still incomplete"; exit 3; }
     "$VENV/bin/python" "$HERE/model.py" --data "$DATA" --out "$OUT" ;;
-  *) echo "usage: run_wsl.sh probe|fetch|fetch_ext|abstracts|model|model_ext|resume|resume_ext [tries]"; exit 1 ;;
+  *) echo "usage: run_wsl.sh probe|fetch|fetch_ext|abstracts|model|model_v1|model_ext|resume|resume_ext [tries]"; exit 1 ;;
 esac
