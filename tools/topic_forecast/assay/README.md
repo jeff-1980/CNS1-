@@ -25,3 +25,8 @@
 `python3 assay/assay.py ext` 读 `results/ext/forecast_T2025_top2000.csv`，输出 `assayed_top50_ext.csv`、`assay_summary_ext.json`。
 化验后前 20 里"电动汽车与基础设施"占了近一半（配对抗鲁棒性、图神经网络、能效、气候、工业效率等），其余是制冷空调 + 可解释 AI、机器人操作 + 火灾安全、自动驾驶安全 + 基础设施韧性、电力线巡检机器人、地热 + 可解释 AI、故障诊断 + 电动汽车。
 注意：能源/交通起点主题在卡片先验里"机械核心占比"取默认值 0.31，会比机械起点主题略吃亏；这是已知偏差，不是结论。
+
+## Radar target decision (2026-11-04, jeff)
+Primary radar = v1 `ns` target (results/v1/ns: pair first co-appears in a Nature/Science-family paper), run with `python3 assay/assay.py v1`
+(mech-core source topics, generic-AI partners removed). The old co-occurrence target (results/ext, `assay.py ext`) is kept only as a
+control; both feed the scan with seed_source labels radar_v1 / radar_v0 so hit rates can be compared. Sci Data feature not adopted (no gain).
