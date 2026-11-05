@@ -274,6 +274,7 @@ def main():
     ap_.add_argument("--target", choices=["cooc", "ns"], default="cooc",
                      help="cooc: co-occurrence emergence (v0); ns: first Nature/Science-family co-paper")
     ap_.add_argument("--scidata", action="store_true", help="add Scientific Data leading-indicator features")
+    ap_.add_argument("--save-all", action="store_true", help="also write every candidate pair of the final forecast (gzip) with its percentile")
     a = ap_.parse_args()
     os.makedirs(a.out, exist_ok=True)
     t0 = time.time()
@@ -393,6 +394,9 @@ def main():
     fc["b_generic_ai"] = fc.b.map(lambda t: str(D["topics"][t]["subfield"]) in GENERIC_AI_SUBFIELDS).astype(int)
     fc.head(2000).to_csv(os.path.join(a.out, f"forecast_T{T_last}_top2000.csv"), index=False)
     fc[fc.b_generic_ai == 0].head(2000).to_csv(os.path.join(a.out, f"forecast_T{T_last}_top2000_nonAI.csv"), index=False)
+    if a.save_all:
+        fc["pct"] = (rankdata(fc.p_emerge.values) / len(fc)).round(4)
+        fc.to_csv(os.path.join(a.out, f"forecast_T{T_last}_all.csv.gz"), index=False, compression="gzip")
 
     summary = {"K1_pass": k1, "best_iter": n_it, "K3": k3, "n_topics": len(D["ids"]),
                "n_mech": int(len(D["mech_idx"])), "years": [yrs[0], yrs[-1]],
