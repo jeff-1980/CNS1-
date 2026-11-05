@@ -25,7 +25,9 @@ power_setpoint_kw, drivetrain_acc, metal_particles, energy_export_kwh, lost_prod
 status_type_id, cabinet_temp_c, setpoint_c, mains_v, state`. Each build's `meta.json` lists the core names it did not
 find.
 
-## Datasets
+## Datasets (all built 2026-11-05 on jeff's PC, `--check` VALIDATE OK)
+
+Built sizes / counts: kelmarsh 6 units, 133 channels (22 core), 503,470 events, 734 MB; penmanshiel 14 units, 127 (22), 1,056,488 events, 1.4 GB; hill_of_towie 21 units, 79 (14), 2,227,487 events, 1.3 GB; care_a/b/c 5/9/22 assets, 22/15/58 event windows; ult_revco 25 freezers, 12 (4), 97,432 events, 1.8 GB.
 
 | name | source on jeff's PC | units | events | notes |
 |---|---|---|---|---|
