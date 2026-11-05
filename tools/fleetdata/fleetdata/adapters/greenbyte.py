@@ -150,9 +150,8 @@ def build(site, out, zips_dir=None, static=None, channels="means", overwrite=Fal
                                      header=None, names=cols, usecols=use, chunksize=CHUNK, na_values=["NaN"],
                                      low_memory=False)
                 for ch in reader:
-                    ch = coalesce_duplicate_columns(ch.rename(columns=rename))
-                    ch["time"] = pd.to_datetime(ch.pop("Date and time"), utc=True, errors="coerce") + pd.Timedelta(
-                        minutes=10)
+                    tcol = pd.to_datetime(ch.pop("Date and time"), utc=True, errors="coerce") + pd.Timedelta(minutes=10)
+                    ch = coalesce_duplicate_columns(ch.rename(columns=rename)).assign(time=tcol.values).copy()
                     w.add_ts(uid, ch)
                     nrows += len(ch)
             log(f"  {uid} {os.path.basename(n)}: {nrows} rows")

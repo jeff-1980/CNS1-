@@ -35,8 +35,12 @@ def summary(f):
     for n in f.meta.get("notes", []):
         lines.append(f"note: {n}")
     probs = f.validate()
-    lines.append("VALIDATE " + ("OK" if not probs else "PROBLEMS: " + "; ".join(probs)))
-    return "\n".join(lines), not probs
+    errs = [p for p in probs if not p.startswith("WARN")]
+    for p in probs:
+        if p.startswith("WARN"):
+            lines.append(p)
+    lines.append("VALIDATE " + ("OK" if not errs else "PROBLEMS: " + "; ".join(errs)))
+    return "\n".join(lines), not errs
 
 
 def main():

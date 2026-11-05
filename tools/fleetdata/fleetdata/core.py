@@ -283,8 +283,8 @@ class Fleet:
         if unknown:
             probs.append(f"events reference unknown units {sorted(unknown)[:5]}")
         bad = self._events[(self._events["end"].notna()) & (self._events["end"] < self._events["start"])]
-        if len(bad):
-            probs.append(f"{len(bad)} events end before start")
+        if len(bad):  # a quirk of published logs, not a build error: reported, not fatal
+            probs.append(f"WARN {len(bad)} events end before start (kept as published)")
         for u in self.unit_ids:
             p = os.path.join(self.path, "ts", f"{u}.parquet")
             if os.path.exists(p):
